@@ -13,6 +13,10 @@
       
       
       
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../00_overview/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>0X · [Topic Name] - InterSystems IRIS Development Professional Learning</title>
+        <title>⚙️ Setup - InterSystems IRIS Development Professional Learning</title>
       
     
     
@@ -74,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#0x-topic-name" class="md-skip">
+        <a href="#local-development-setup" class="md-skip">
           Bỏ qua
         </a>
       
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              0X · [Topic Name]
+              ⚙️ Setup
             
           </span>
         </div>
@@ -226,9 +230,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../local-setup/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -368,10 +374,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../local-setup/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ⚙️ Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -387,6 +420,125 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-start-iris-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Start IRIS Container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-verify-management-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Verify Management Portal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-connect-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Connect VS Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-open-iris-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Open IRIS Terminal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compile-run-objectscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile &amp; Run ObjectScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1214,10 +1366,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Prerequisites
       
     </span>
   </a>
@@ -1225,10 +1377,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#section-1-core-concept" class="md-nav__link">
+  <a href="#step-1-start-iris-container" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Section 1: Core Concept]
+        Step 1 — Start IRIS Container
       
     </span>
   </a>
@@ -1236,10 +1388,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#section-2-common-patterns" class="md-nav__link">
+  <a href="#step-2-verify-management-portal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Section 2: Common Patterns]
+        Step 2 — Verify Management Portal
       
     </span>
   </a>
@@ -1247,10 +1399,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#section-3-advanced-edge-cases" class="md-nav__link">
+  <a href="#step-3-connect-vs-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Section 3: Advanced / Edge Cases]
+        Step 3 — Connect VS Code
       
     </span>
   </a>
@@ -1258,10 +1410,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-points" class="md-nav__link">
+  <a href="#step-4-open-iris-terminal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Points
+        Step 4 — Open IRIS Terminal
       
     </span>
   </a>
@@ -1269,10 +1421,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#terminal-snippets" class="md-nav__link">
+  <a href="#common-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        Common Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compile-run-objectscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile &amp; Run ObjectScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
       
     </span>
   </a>
@@ -1307,70 +1481,214 @@
 
 
 
-<h1 id="0x-topic-name">0X · [Topic Name]<a class="headerlink" href="#0x-topic-name" title="Permanent link">&para;</a></h1>
+<h1 id="local-development-setup">Local Development Setup<a class="headerlink" href="#local-development-setup" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>TX · Domain Name</code> — [mô tả ngắn ability được cover]</p>
+<p>Hướng dẫn này giúp bạn chạy môi trường IRIS học tập trên máy local bằng Docker và kết nối VS Code.</p>
 </blockquote>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>[2–3 câu giải thích khái niệm là gì, tại sao quan trọng với IRIS, khi nào dùng]</p>
-<hr />
-<h2 id="section-1-core-concept">[Section 1: Core Concept]<a class="headerlink" href="#section-1-core-concept" title="Permanent link">&para;</a></h2>
-<p>[Giải thích ngắn gọn]</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>// Code example
-</code></pre></div>
-<hr />
-<h2 id="section-2-common-patterns">[Section 2: Common Patterns]<a class="headerlink" href="#section-2-common-patterns" title="Permanent link">&para;</a></h2>
-<p>[Bảng so sánh hoặc giải thích các variants]</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Khái niệm</th>
-<th>Mô tả</th>
-<th>Khi dùng</th>
+<th>Công cụ</th>
+<th>Phiên bản</th>
+<th>Link</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
-<td>...</td>
-<td>...</td>
+<td><strong>Docker Desktop</strong></td>
+<td>≥ 4.x</td>
+<td><a href="https://www.docker.com/products/docker-desktop/">docker.com</a></td>
 </tr>
 <tr>
-<td>B</td>
-<td>...</td>
-<td>...</td>
+<td><strong>VS Code</strong></td>
+<td>≥ 1.80</td>
+<td><a href="https://code.visualstudio.com/">code.visualstudio.com</a></td>
+</tr>
+<tr>
+<td><strong>InterSystems ObjectScript</strong> extension</td>
+<td>Latest</td>
+<td><a href="https://marketplace.visualstudio.com/items?itemName=intersystems-community.vscode-objectscript">VS Code Marketplace</a></td>
+</tr>
+<tr>
+<td><strong>InterSystems Server Manager</strong> extension</td>
+<td>Latest</td>
+<td><a href="https://marketplace.visualstudio.com/items?itemName=intersystems-community.servermanager">VS Code Marketplace</a></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// Pattern example
+<hr />
+<h2 id="step-1-start-iris-container">Step 1 — Start IRIS Container<a class="headerlink" href="#step-1-start-iris-container" title="Permanent link">&para;</a></h2>
+<p>File <code>docker-compose.yml</code> đã có sẵn ở root của repo:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">iris</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">intersystemsdc/iris-community:latest</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iris-dev</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;1972:1972&quot;</span><span class="w">    </span><span class="c1"># SuperServer port (ObjectScript connection)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;52773:52773&quot;</span><span class="w">  </span><span class="c1"># Web port (Management Portal + REST)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IRIS_USERNAME=_SYSTEM</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IRIS_PASSWORD=SYS</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iris-data:/durable</span><span class="w">  </span><span class="c1"># Persistent data — data không mất khi restart container</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">iris-data</span><span class="p">:</span>
+</code></pre></div>
+<p>Chạy lệnh:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>Kiểm tra container đang chạy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>ps
+</code></pre></div>
+<p>Bạn sẽ thấy <code>iris-dev</code> với status <code>Up</code>.</p>
+<blockquote>
+<p>⏳ Lần đầu chạy có thể mất 1–2 phút để pull image và khởi động IRIS.</p>
+</blockquote>
+<hr />
+<h2 id="step-2-verify-management-portal">Step 2 — Verify Management Portal<a class="headerlink" href="#step-2-verify-management-portal" title="Permanent link">&para;</a></h2>
+<p>Mở trình duyệt → truy cập:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>http://localhost:52773/csp/sys/UtilHome.csp
+</code></pre></div>
+<p>Đăng nhập:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Username</strong></td>
+<td><code>_SYSTEM</code></td>
+</tr>
+<tr>
+<td><strong>Password</strong></td>
+<td><code>SYS</code></td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td><code>USER</code></td>
+</tr>
+</tbody>
+</table>
+<p>Nếu thấy trang Management Portal → IRIS đang chạy bình thường.</p>
+<hr />
+<h2 id="step-3-connect-vs-code">Step 3 — Connect VS Code<a class="headerlink" href="#step-3-connect-vs-code" title="Permanent link">&para;</a></h2>
+<p>File <code>.vscode/settings.json</code> đã được cấu hình sẵn:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;intersystems.servers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="nt">&quot;local&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">            </span><span class="nt">&quot;webServer&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">                </span><span class="nt">&quot;scheme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">                </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">                </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">52773</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">            </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_SYSTEM&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Local IRIS instance (Docker)&quot;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">&quot;objectscript.conn&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nt">&quot;server&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="nt">&quot;ns&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USER&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="nt">&quot;active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Sau khi clone repo và start container:</strong></p>
+<ol>
+<li>Mở repo trong VS Code</li>
+<li>VS Code tự đọc <code>.vscode/settings.json</code> và kết nối tới server <code>local</code></li>
+<li>Khi được hỏi password → nhập <code>SYS</code></li>
+<li>Kiểm tra status bar ở góc dưới trái VS Code — sẽ thấy <code>USER</code> (namespace đang kết nối)</li>
+</ol>
+<blockquote>
+<p>💡 Nếu không thấy status bar IRIS: nhấn <code>Ctrl+Shift+P</code> → <code>ObjectScript: Toggle Connection</code></p>
+</blockquote>
+<hr />
+<h2 id="step-4-open-iris-terminal">Step 4 — Open IRIS Terminal<a class="headerlink" href="#step-4-open-iris-terminal" title="Permanent link">&para;</a></h2>
+<p>Mở terminal trực tiếp vào IRIS từ command line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>iris-dev<span class="w"> </span>iris<span class="w"> </span>session<span class="w"> </span>iris<span class="w"> </span>-U<span class="w"> </span>USER
+</code></pre></div>
+<p>Test nhanh:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>WRITE &quot;Hello IRIS!&quot;, !
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>WRITE $ZVERSION, !
+</code></pre></div>
+<p>Thoát terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>HALT
 </code></pre></div>
 <hr />
-<h2 id="section-3-advanced-edge-cases">[Section 3: Advanced / Edge Cases]<a class="headerlink" href="#section-3-advanced-edge-cases" title="Permanent link">&para;</a></h2>
-<p>[Nội dung nâng cao, gotcha, hoặc use-case đặc biệt]</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// Advanced example
+<h2 id="common-commands">Common Commands<a class="headerlink" href="#common-commands" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Khởi động</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Dừng (giữ data)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>stop
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Dừng và xóa container (giữ volume data)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="c1"># Dừng và xóa cả data (reset hoàn toàn)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="c1"># Xem logs</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>docker<span class="w"> </span>logs<span class="w"> </span>iris-dev<span class="w"> </span>-f
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="c1"># Mở IRIS Terminal</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>iris-dev<span class="w"> </span>iris<span class="w"> </span>session<span class="w"> </span>iris<span class="w"> </span>-U<span class="w"> </span>USER
 </code></pre></div>
 <hr />
-<h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
-<ul>
-<li>✅ [Fact quan trọng nhất cần nhớ]</li>
-<li>✅ [Fact quan trọng thứ hai]</li>
-<li>⚠️ [Gotcha hoặc lỗi hay gặp]</li>
-<li>⚠️ [Gotcha thứ hai nếu có]</li>
-<li>💡 [Tip hoặc best practice]</li>
-</ul>
-<hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>// --- [Use case 1] ---
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>// copy-paste ready
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>// --- [Use case 2] ---
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>// copy-paste ready
+<h2 id="compile-run-objectscript">Compile &amp; Run ObjectScript<a class="headerlink" href="#compile-run-objectscript" title="Permanent link">&para;</a></h2>
+<p>Compile một file <code>.cls</code> từ IRIS Terminal:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>DO $SYSTEM.OBJ.Load(&quot;/path/to/MyClass.cls&quot;, &quot;ck&quot;)
 </code></pre></div>
+<p>Chạy exercise:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>DO ##class(Exercises.ObjectScriptBasics).Run()
+</code></pre></div>
+<p>Chạy unit test:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test.PersonTest&quot;)
+</code></pre></div>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Vấn đề</th>
+<th>Nguyên nhân</th>
+<th>Giải pháp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>localhost:52773</code> không mở được</td>
+<td>Container chưa chạy</td>
+<td><code>docker compose up -d</code></td>
+</tr>
+<tr>
+<td>VS Code không kết nối</td>
+<td>Password sai hoặc server chưa ready</td>
+<td>Chờ 30s sau khi start, nhập lại password <code>SYS</code></td>
+</tr>
+<tr>
+<td>Port 52773 bị conflict</td>
+<td>Có app khác dùng port</td>
+<td>Đổi port trong <code>docker-compose.yml</code> và <code>settings.json</code></td>
+</tr>
+<tr>
+<td>Data mất sau khi <code>down</code></td>
+<td>Dùng <code>down -v</code></td>
+<td>Dùng <code>docker compose stop</code> thay vì <code>down</code> để giữ volume</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/...">Official Docs — Topic Name</a></li>
-<li><a href="https://docs.intersystems.com/irislatest/...">Related Reference</a></li>
+<li><a href="https://hub.docker.com/_/intersystems-iris-community">InterSystems IRIS Community Edition</a></li>
+<li><a href="https://intersystems-community.github.io/vscode-objectscript/">VS Code ObjectScript Extension</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK">IRIS Docker Documentation</a></li>
 </ul>
 
 
