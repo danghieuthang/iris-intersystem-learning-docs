@@ -27,7 +27,7 @@
     
     
       
-        <title>01 — ObjectScript Basics - InterSystems IRIS Development Professional Learning</title>
+        <title>01 · ObjectScript Basics - InterSystems IRIS Development Professional Learning</title>
       
     
     
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              01 — ObjectScript Basics
+              01 · ObjectScript Basics
             
           </span>
         </div>
@@ -1177,22 +1177,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#key-concepts" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📌 Key Concepts
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="📌 Key Concepts">
+    <nav class="md-nav" aria-label="Overview">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bien-variables" class="md-nav__link">
+  <a href="#variables" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Biến (Variables)
+        Variables
       
     </span>
   </a>
@@ -1200,10 +1200,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cac-kieu-du-lieu" class="md-nav__link">
+  <a href="#data-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Các Kiểu Dữ Liệu
+        Data Types
       
     </span>
   </a>
@@ -1222,10 +1222,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#built-in-functions-hay-dung" class="md-nav__link">
+  <a href="#built-in-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Built-in Functions Hay Dùng
+        Built-in Functions
       
     </span>
   </a>
@@ -1233,10 +1233,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cau-lenh-thuong-dung" class="md-nav__link">
+  <a href="#common-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Câu Lệnh Thường Dùng
+        Common Commands
       
     </span>
   </a>
@@ -1249,10 +1249,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#nhung-iem-can-nho" class="md-nav__link">
+  <a href="#key-points" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ❓ Những Điểm Cần Nhớ
+        Key Points
       
     </span>
   </a>
@@ -1271,10 +1271,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xem-them-sub-topics" class="md-nav__link">
+  <a href="#sub-topics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📂 Xem Thêm (Sub-topics)
+        Sub-topics
       
     </span>
   </a>
@@ -1282,10 +1282,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tai-nguyen" class="md-nav__link">
+  <a href="#resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeygcos_intro" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🔗 Tài Nguyên
+        🔗 Resources(https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro)
       
     </span>
   </a>
@@ -1309,9 +1309,12 @@
 
 
 
-<h1 id="01-objectscript-basics">01 — ObjectScript Basics<a class="headerlink" href="#01-objectscript-basics" title="Permanent link">&para;</a></h1>
-<h2 id="key-concepts">📌 Key Concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
-<h3 id="bien-variables">Biến (Variables)<a class="headerlink" href="#bien-variables" title="Permanent link">&para;</a></h3>
+<h1 id="01-objectscript-basics">01 · ObjectScript Basics<a class="headerlink" href="#01-objectscript-basics" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> · <code>T4 · Code</code> — biến, kiểu dữ liệu, control flow là nền tảng cho tất cả các domain</p>
+</blockquote>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<h3 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; Local variable (chỉ tồn tại trong method/routine hiện tại)
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET x = 10
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET name = &quot;Alice&quot;
@@ -1319,7 +1322,7 @@
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>; Global variable (lưu trữ persistent trên disk)
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>SET ^GlobalVar = &quot;value&quot;
 </code></pre></div>
-<h3 id="cac-kieu-du-lieu">Các Kiểu Dữ Liệu<a class="headerlink" href="#cac-kieu-du-lieu" title="Permanent link">&para;</a></h3>
+<h3 id="data-types">Data Types<a class="headerlink" href="#data-types" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1376,7 +1379,7 @@
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    SET x = x + 1
 <a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>} WHILE x &lt; 10
 </code></pre></div>
-<h3 id="built-in-functions-hay-dung">Built-in Functions Hay Dùng<a class="headerlink" href="#built-in-functions-hay-dung" title="Permanent link">&para;</a></h3>
+<h3 id="built-in-functions">Built-in Functions<a class="headerlink" href="#built-in-functions" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; --- String ---
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$LENGTH(str)              ; độ dài chuỗi
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>$EXTRACT(str, from, to)   ; cắt substring
@@ -1395,19 +1398,20 @@
 <a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>$NOW()                    ; timestamp hiện tại
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>$ZDATETIME($HOROLOG, 3)   ; YYYY-MM-DD HH:MM:SS
 </code></pre></div>
-<h3 id="cau-lenh-thuong-dung">Câu Lệnh Thường Dùng<a class="headerlink" href="#cau-lenh-thuong-dung" title="Permanent link">&para;</a></h3>
+<h3 id="common-commands">Common Commands<a class="headerlink" href="#common-commands" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SET x = 5             ; gán
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>WRITE x, !            ; in + newline
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>KILL x                ; xóa biến
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>QUIT value            ; return giá trị từ method
 </code></pre></div>
 <hr />
-<h2 id="nhung-iem-can-nho">❓ Những Điểm Cần Nhớ<a class="headerlink" href="#nhung-iem-can-nho" title="Permanent link">&para;</a></h2>
+<h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
-<li>ObjectScript <strong>không phân biệt hoa/thường</strong> với commands (<code>write</code> = <code>WRITE</code>)</li>
-<li>Dấu <code>!</code> trong WRITE = xuống dòng</li>
-<li>Dấu <code>;</code> bắt đầu comment</li>
-<li>Variables không cần khai báo kiểu trước</li>
+<li>✅ ObjectScript không phân biệt hoa/thường với commands (<code>write</code> = <code>WRITE</code>)</li>
+<li>✅ Dấu <code>!</code> trong WRITE = xuống dòng (newline)</li>
+<li>✅ Variables không cần khai báo kiểu trước</li>
+<li>⚠️ Dấu <code>;</code> là comment trong terminal/routine (<code>.mac</code>, <code>.int</code>) — trong <code>.cls</code> file dùng <code>//</code> hoặc <code>///</code></li>
+<li>💡 <code>WRITE x, !</code> là cách in phổ biến nhất — <code>!</code> là newline</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
@@ -1440,7 +1444,7 @@
 <a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>WRITE $ZDATETIME($HOROLOG, 3), !
 </code></pre></div>
 <hr />
-<h2 id="xem-them-sub-topics">📂 Xem Thêm (Sub-topics)<a class="headerlink" href="#xem-them-sub-topics" title="Permanent link">&para;</a></h2>
+<h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1468,9 +1472,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="tai-nguyen">🔗 Tài Nguyên<a class="headerlink" href="#tai-nguyen" title="Permanent link">&para;</a></h2>
+<h2 id="resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeygcos_intro">🔗 Resources(https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro)<a class="headerlink" href="#resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeygcos_intro" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_intro">ObjectScript Basics</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_FUNC">Built-in Functions</a></li>
 </ul>
 
