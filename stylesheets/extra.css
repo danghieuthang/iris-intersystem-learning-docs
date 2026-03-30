@@ -1,0 +1,20 @@
+/* Tăng indent sidebar */
+.md-nav__list .md-nav__list {
+  padding-left: 1rem;
+}
+
+/* Level sâu hơn */
+.md-nav__list .md-nav__list .md-nav__list {
+  padding-left: 1.5rem;
+}
+
+/* Level 2 */
+.md-nav__item--nested > .md-nav__link {
+  font-weight: 600;
+}
+
+/* Level 3 */
+.md-nav__list .md-nav__list .md-nav__link {
+  font-size: 0.9em;
+  opacity: 0.85;
+}
