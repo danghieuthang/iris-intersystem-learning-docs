@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#custom-business-process" class="md-skip">
+        <a href="#custom-business-process-objectscript" class="md-skip">
           Bỏ qua
         </a>
       
@@ -358,6 +358,28 @@
 
       </a>
     </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tips/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  💡 Tips
+
+        </a>
+      </li>
+    
   
 
       
@@ -1469,10 +1491,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#routing-patterns" class="md-nav__link">
+  <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Routing Patterns
+        🖥️ Terminal Snippets
       
     </span>
   </a>
@@ -2017,6 +2039,110 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tips/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    💡 Tips
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    💡 Tips
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Môi trường Dev (Windows 11)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../exam-prep/" class="md-nav__link">
         
@@ -2111,10 +2237,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#routing-patterns" class="md-nav__link">
+  <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Routing Patterns
+        🖥️ Terminal Snippets
       
     </span>
   </a>
@@ -2163,9 +2289,9 @@
   
 
 
-<h1 id="custom-business-process">Custom Business Process<a class="headerlink" href="#custom-business-process" title="Permanent link">&para;</a></h1>
+<h1 id="custom-business-process-objectscript">Custom Business Process (ObjectScript)<a class="headerlink" href="#custom-business-process-objectscript" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — thiết kế và coding Business Process để routing, transform, và orchestrate messages</p>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — thiết kế và coding Business Process bằng ObjectScript để routing, transform, và orchestrate messages</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p><strong>Business Process (BP)</strong> là "bộ não" của Production — nhận message từ Business Service, quyết định routing (gửi đến BO nào), transform data, và orchestrate nhiều bước xử lý. BP có thể stateful (lưu trạng thái giữa các bước) hoặc stateless.</p>
@@ -2181,7 +2307,7 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/// Entry point — nhận message, quyết định routing
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Method OnRequest(pRequest As MyApp.Msg.FileData, Output pResponse As %RegisteredObject) As %Status
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Method OnRequest(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Persistent) As %Status
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>{
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    // Routing dựa trên nội dung message
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    IF pRequest.Priority = &quot;urgent&quot; {
@@ -2191,7 +2317,7 @@
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>}
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>/// Xử lý response từ downstream (chỉ cần nếu dùng Async)
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>Method OnResponse(pRequest As MyApp.Msg.FileData, Output pResponse As %RegisteredObject, pCallRequest As Ens.Request, pCallResponse As Ens.Response, pCompletionKey As %String) As %Status
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>Method OnResponse(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Persistent, pCallRequest As Ens.Request, pCallResponse As Ens.Response, pCompletionKey As %String) As %Status
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>{
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    // Xử lý kết quả trả về từ async call
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    RETURN $$$OK
@@ -2211,14 +2337,14 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>ObjectScript class</strong></td>
+<td><strong>ObjectScript class</strong> <em>(file này)</em></td>
 <td>Logic phức tạp, cần điều kiện động</td>
 <td>Linh hoạt, kiểm soát hoàn toàn</td>
 </tr>
 <tr>
-<td><strong>BPL (Business Process Language)</strong></td>
+<td><strong>BPL</strong> → 📄 <a href="../bpl-business-process/">bpl-business-process.md</a></td>
 <td>Flow đơn giản, cần visualize</td>
-<td>Drag-and-drop trong Studio/Portal, dễ đọc với non-dev</td>
+<td>Drag-and-drop trong Portal, không cần viết code</td>
 </tr>
 </tbody>
 </table>
@@ -2258,15 +2384,10 @@
 <td><strong>Luôn check <code>%Status</code></strong></td>
 <td>Đặc biệt với <code>SendRequestSync</code> — lỗi ở đây sẽ khiến toàn bộ flow fail</td>
 </tr>
-<tr>
-<td>6</td>
-<td><strong>Dùng BPL cho flow đơn giản</strong></td>
-<td>Dễ maintain hơn code thuần khi logic là sequential steps</td>
-</tr>
 </tbody>
 </table>
 <hr />
-<h2 id="routing-patterns">Routing Patterns<a class="headerlink" href="#routing-patterns" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// Pattern 1 — Content-based routing
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>IF pRequest.Type = &quot;order&quot; {
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    RETURN ..SendRequestSync(&quot;MyApp.BO.OrderProcessor&quot;, pRequest, .pResponse)
@@ -2291,8 +2412,11 @@
 <li>✅ <code>SendRequestSync</code> blocks cho đến khi BO xử lý xong</li>
 <li>✅ <code>SendRequestAsync</code> trả về ngay — response được nhận qua <code>OnResponse()</code></li>
 <li>⚠️ Target name trong <code>SendRequestSync/Async</code> phải khớp với <strong>config name</strong> trong Production (không phải class name)</li>
+<li>⚠️ <code>OnRequest</code> signature bắt buộc dùng <code>%Library.Persistent</code> cho cả hai tham số — dùng <code>%RegisteredObject</code> sẽ báo lỗi compile <code>#5478</code></li>
+<li>⚠️ <code>MessageMap</code> XData <strong>không dùng cho hand-coded BP</strong> — chỉ dùng trong BPL hoặc Routing Engine. Hand-coded BP luôn override <code>OnRequest</code> trực tiếp</li>
 <li>⚠️ Đừng để BP làm quá nhiều việc — BP là router/orchestrator, không phải worker</li>
 <li>💡 Dùng <strong>Visual Trace</strong> trong Management Portal để xem message đi qua BP như thế nào</li>
+<li>💡 Dùng BPL khi logic đơn giản — xem 📄 <a href="../bpl-business-process/">bpl-business-process.md</a></li>
 </ul>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>

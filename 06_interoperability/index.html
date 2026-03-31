@@ -366,6 +366,28 @@
   
   
   
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tips/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  💡 Tips
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
     <li class="md-tabs__item">
       <a href="../exam-prep/" class="md-tabs__link">
         
@@ -1891,6 +1913,110 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tips/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    💡 Tips
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    💡 Tips
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tips/environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Môi trường Dev (Windows 11)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../exam-prep/" class="md-nav__link">
         
@@ -2154,7 +2280,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Class MyApp.BP.Router Extends Ens.BusinessProcess
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Method OnRequest(pRequest As MyApp.Msg.FileData, Output pResponse As %RegisteredObject) As %Status
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Method OnRequest(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Persistent) As %Status
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>{
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    IF pRequest.Content [ &quot;urgent&quot; {
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        RETURN ..SendRequestSync(&quot;MyApp.BO.EmailSender&quot;, pRequest, .pResponse)
@@ -2168,7 +2294,7 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Class MyApp.BO.DatabaseWriter Extends Ens.BusinessOperation
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Method OnMessage(pRequest As MyApp.Msg.FileData, Output pResponse As %RegisteredObject) As %Status
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Method OnMessage(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Persistent) As %Status
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>{
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    SET record = ##class(MyApp.Data.FileRecord).%New()
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    SET record.Content = pRequest.Content
@@ -2215,7 +2341,8 @@
 <p>Mỗi component có conventions riêng khi coding. Xem chi tiết:</p>
 <ul>
 <li>📄 <a href="custom-business-service/">Custom Business Service</a> — nhận data từ ngoài vào</li>
-<li>📄 <a href="custom-business-process/">Custom Business Process</a> — routing, transform, orchestration</li>
+<li>📄 <a href="custom-business-process/">Custom Business Process</a> — routing, transform, orchestration (ObjectScript)</li>
+<li>📄 <a href="bpl-business-process/">BPL Business Process</a> — graphical designer, không cần viết code</li>
 <li>📄 <a href="custom-business-operation/">Custom Business Operation</a> — gửi data ra ngoài</li>
 </ul>
 <hr />
