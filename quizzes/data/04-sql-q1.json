@@ -1,0 +1,191 @@
+{
+  "id": "04-sql-q1",
+  "topic": "04_sql",
+  "topicLabel": "SQL in IRIS",
+  "title": "Quiz 01 — SQL in IRIS",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T3.1", "T3.2", "T3.3"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A persistent class MyApp.Order is defined in IRIS. What is the corresponding SQL table name?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "MyApp.Order"},
+        {"id": "B", "text": "MyApp_Order"},
+        {"id": "C", "text": "Order"},
+        {"id": "D", "text": "MyApp::Order"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.1",
+      "explanation": "IRIS maps class package dots to underscores in SQL. MyApp.Order → SQL table MyApp_Order."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Which Dynamic SQL method prepares and executes a query in a single step without calling %Prepare first?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "stmt.%Execute()"},
+        {"id": "B", "text": "%SQL.Statement.%RunQuery()"},
+        {"id": "C", "text": "##class(%SQL.Statement).%ExecDirect()"},
+        {"id": "D", "text": "stmt.%Query()"}
+      ],
+      "answer": ["C"],
+      "domain": "T3.1",
+      "explanation": "##class(%SQL.Statement).%ExecDirect(, sqlString, args...) prepares and executes in one call. Useful for one-off queries where you don't need to reuse the prepared statement."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does the following Dynamic SQL code print if a person with Age > 25 exists?",
+      "code": "SET stmt = ##class(%SQL.Statement).%New()\nDO stmt.%Prepare(\"SELECT Name FROM MyApp.Person WHERE Age > ?\")\nSET rs = stmt.%Execute(25)\nWHILE rs.%Next() {\n    WRITE rs.%Get(\"Name\"), !\n}",
+      "options": [
+        {"id": "A", "text": "Nothing — %Get requires a column index, not a name"},
+        {"id": "B", "text": "The name of each person with Age > 25, one per line"},
+        {"id": "C", "text": "Error — ? is not valid in Dynamic SQL; use :var instead"},
+        {"id": "D", "text": "The number of rows returned"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.1",
+      "explanation": "? is the correct placeholder for Dynamic SQL in IRIS. rs.%Get(\"ColumnName\") retrieves by name. The loop prints each matching person's name."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "After running &sql(SELECT Name INTO :name FROM MyApp.Person WHERE %ID = :id), which variable tells you whether the query succeeded?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "%SQLCODE"},
+        {"id": "B", "text": "SQLCODE"},
+        {"id": "C", "text": "sc"},
+        {"id": "D", "text": "rs.%SQLCODE"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.2",
+      "explanation": "After every &sql(...) statement, IRIS automatically sets the SQLCODE variable (no % prefix) in the current scope. %msg holds the error text when SQLCODE < 0."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What does SQLCODE = 100 mean after an Embedded SQL statement?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "100 rows were affected"},
+        {"id": "B", "text": "The query executed successfully with data returned"},
+        {"id": "C", "text": "No data was found (end of cursor or no matching row)"},
+        {"id": "D", "text": "A fatal SQL error occurred"}
+      ],
+      "answer": ["C"],
+      "domain": "T3.2",
+      "explanation": "SQLCODE = 100 is the no data code — the query ran successfully but found no matching rows, or the cursor has reached the end of the result set."
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "Which of the following are correct ways to avoid SQL injection in IRIS Dynamic SQL? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Use ? placeholders and pass values to %Execute()"},
+        {"id": "B", "text": "Use %SQL.Statement.%Prepare() with parameterized queries"},
+        {"id": "C", "text": "Concatenate user input directly into the query string after calling $ZCONVERT"},
+        {"id": "D", "text": "Use Embedded SQL with :variable host variables"}
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T3.1",
+      "explanation": "Using ? with %Execute, using %Prepare with parameters, and using Embedded SQL :variables all prevent SQL injection. Directly concatenating user input — even after $ZCONVERT — is never safe."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What is the correct order of operations when using a cursor in Embedded SQL?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "DECLARE → FETCH → OPEN → CLOSE"},
+        {"id": "B", "text": "OPEN → DECLARE → FETCH → CLOSE"},
+        {"id": "C", "text": "DECLARE → OPEN → FETCH (loop until SQLCODE ≠ 0) → CLOSE"},
+        {"id": "D", "text": "OPEN → FETCH → CLOSE (no DECLARE needed)"}
+      ],
+      "answer": ["C"],
+      "domain": "T3.2",
+      "explanation": "The correct cursor lifecycle is: DECLARE (define the cursor) → OPEN (execute) → FETCH in a loop until SQLCODE ≠ 0 → CLOSE."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "A Class Query named FindByAge is defined in MyApp.Person. How do you call it from ObjectScript?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "##class(MyApp.Person).FindByAge(25)"},
+        {"id": "B", "text": "##class(MyApp.Person).FindByAgeFunc(25)"},
+        {"id": "C", "text": "##class(%SQL.Statement).%ExecDirect(, \"FindByAge\", 25)"},
+        {"id": "D", "text": "DO ##class(MyApp.Person).FindByAge.Execute(25)"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.3",
+      "explanation": "IRIS auto-generates a method named <QueryName>Func() for each Class Query. For FindByAge, the generated method is FindByAgeFunc(pMinAge)."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What does the following code print if no person with ID 99 exists?",
+      "code": "SET id = 99\n&sql(SELECT Name INTO :name FROM MyApp.Person WHERE %ID = :id)\nIF SQLCODE = 0 {\n    WRITE name, !\n} ELSEIF SQLCODE = 100 {\n    WRITE \"Not found\", !\n} ELSE {\n    WRITE \"Error: \", %msg, !\n}",
+      "options": [
+        {"id": "A", "text": "Nothing"},
+        {"id": "B", "text": "Not found"},
+        {"id": "C", "text": "Error: ..."},
+        {"id": "D", "text": "99"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.2",
+      "explanation": "When no row matches, Embedded SQL sets SQLCODE = 100 (no data found). The ELSEIF SQLCODE = 100 branch fires and prints Not found."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "After a successful INSERT using Dynamic SQL, which result set property gives you the ID of the newly inserted row?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "rs.%ROWID"},
+        {"id": "B", "text": "rs.%ID"},
+        {"id": "C", "text": "rs.%LastInsertID"},
+        {"id": "D", "text": "rs.%Get(\"%ID\")"}
+      ],
+      "answer": ["A"],
+      "domain": "T3.1",
+      "explanation": "After a Dynamic SQL INSERT, rs.%ROWID contains the %ID of the newly inserted row. rs.%ROWCOUNT holds the number of affected rows."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following are true about Embedded SQL compared to Dynamic SQL? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Embedded SQL is checked for syntax errors at compile time"},
+        {"id": "B", "text": "Embedded SQL uses :variable host variables; Dynamic SQL uses ? placeholders"},
+        {"id": "C", "text": "Embedded SQL is generally faster because it is pre-compiled"},
+        {"id": "D", "text": "Embedded SQL can accept a fully dynamic table name at runtime"},
+        {"id": "E", "text": "Both Embedded SQL and Dynamic SQL set the SQLCODE variable after execution"}
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T3.2",
+      "explanation": "A: Embedded SQL syntax is validated at compile time. B: Correct — :var vs ?. C: Embedded SQL is pre-compiled and faster for fixed queries. D: Wrong — Embedded SQL cannot use dynamic table names at runtime. E: False — the local SQLCODE variable is only set automatically by Embedded SQL; in Dynamic SQL you check rs.%SQLCODE."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Which SQLCODE value indicates a unique constraint violation (duplicate key)?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "-1"},
+        {"id": "B", "text": "-119"},
+        {"id": "C", "text": "100"},
+        {"id": "D", "text": "-400"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.1",
+      "explanation": "SQLCODE = -119 indicates a unique constraint violation (duplicate key). SQLCODE = 100 is no data. Any negative SQLCODE is an error; -119 specifically means uniqueness was violated."
+    }
+  ]
+}

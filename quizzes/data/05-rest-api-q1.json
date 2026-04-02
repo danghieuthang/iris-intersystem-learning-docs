@@ -1,0 +1,191 @@
+{
+  "id": "05-rest-api-q1",
+  "topic": "05_rest-api",
+  "topicLabel": "REST API",
+  "title": "Quiz 01 — REST API",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T3.4", "T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A REST Dispatch Class in IRIS must extend which base class?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "%REST.API"},
+        {"id": "B", "text": "%CSP.REST"},
+        {"id": "C", "text": "%CSP.Page"},
+        {"id": "D", "text": "%JSON.Adaptor"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "REST Dispatch Classes in IRIS extend %CSP.REST. This base class provides the routing engine, %request/%response objects, and CORS support."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "In a REST ClassMethod, how do you set the HTTP response status to 404 Not Found?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "RETURN 404"},
+        {"id": "B", "text": "SET %response.Status = \"404 Not Found\""},
+        {"id": "C", "text": "SET %request.Status = \"404 Not Found\""},
+        {"id": "D", "text": "WRITE \"HTTP/1.1 404 Not Found\", !"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "HTTP status is set via SET %response.Status = \"404 Not Found\". The return value of the ClassMethod ($$$OK) signals ObjectScript execution status — not the HTTP status code."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does the following REST ClassMethod return to the client?",
+      "code": "ClassMethod GetOne(id As %String) As %Status\n{\n    SET person = ##class(MyApp.Person).%OpenId(id)\n    IF person = \"\" {\n        SET %response.Status = \"404 Not Found\"\n        RETURN $$$OK\n    }\n    DO person.%JSONExport()\n    RETURN $$$OK\n}",
+      "options": [
+        {"id": "A", "text": "The raw %Status value as a string"},
+        {"id": "B", "text": "The person object serialized as JSON, or a 404 response if not found"},
+        {"id": "C", "text": "The string \"$$$OK\" literally"},
+        {"id": "D", "text": "Nothing — RETURN $$$OK stops execution before JSON is written"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "%JSONExport() writes the JSON representation of the object to the output stream (sent as the HTTP response body). If %OpenId returns \"\", the 404 status is set and the method exits early."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Where are REST routes defined in a manual-coding Dispatch Class?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "In a ClassMethod named Routes()"},
+        {"id": "B", "text": "In an XData block named UrlMap with <Routes> XML"},
+        {"id": "C", "text": "In the class Parameter ROUTES"},
+        {"id": "D", "text": "In a JSON file referenced by the class"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "Routes are declared in an XData UrlMap block with XML <Routes> and <Route> elements specifying Url, Method, and Call."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "How do you read the JSON body of an incoming POST request inside a REST ClassMethod?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET body = %request.Body"},
+        {"id": "B", "text": "SET body = {}.%FromJSON(%request.Content)"},
+        {"id": "C", "text": "SET body = ##class(%JSON.Reader).%ParseRequest()"},
+        {"id": "D", "text": "SET body = %request.GetJSON()"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "The request body is available via %request.Content (a stream). {}.%FromJSON(%request.Content) parses it into a dynamic object."
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "Which of the following are true about %JSON.Adaptor? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "A class that extends %JSON.Adaptor gains %JSONExport() and %JSONImport() methods"},
+        {"id": "B", "text": "%JSONExport() writes the serialized JSON directly to the current output device (stdout)"},
+        {"id": "C", "text": "%JSON.Adaptor can only be mixed into %Persistent classes"},
+        {"id": "D", "text": "The JSONNAME property parameter overrides the JSON field name during serialization"},
+        {"id": "E", "text": "%JSONImport() both deserializes JSON and automatically calls %Save()"}
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T1.2",
+      "explanation": "A: Correct. B: Correct — %JSONExport() writes to stdout (the HTTP response). C: Wrong — %JSON.Adaptor can be mixed into any class (%Persistent, %Registered, etc.). D: Correct — JSONNAME renames the field in JSON output. E: Wrong — %JSONImport() only deserializes; you must call %Save() separately."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What must be configured in the IRIS Management Portal before a Dispatch Class can receive HTTP requests?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "A %CSP.Application instance in the database"},
+        {"id": "B", "text": "A Web Application entry with the correct URL path prefix and Dispatch Class"},
+        {"id": "C", "text": "An SSL certificate even for internal (non-HTTPS) endpoints"},
+        {"id": "D", "text": "A running Interoperability production"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "A Web Application must be created in Management Portal → Security → Web Applications, specifying the URL path prefix and the Dispatch Class. Without it, IRIS has no way to route HTTP requests to your class."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "In the specification-first REST approach, after importing an OpenAPI spec into IRIS:",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "IRIS generates only an Implementation Class; you must write the Dispatch Class manually"},
+        {"id": "B", "text": "IRIS generates both a Dispatch Class (routing, do not edit) and an Implementation Class (write your logic here)"},
+        {"id": "C", "text": "IRIS generates a single class that contains both routing and business logic"},
+        {"id": "D", "text": "The spec is stored but no code is generated until you manually trigger compilation"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "Specification-first generates two classes: a Dispatch Class that handles routing (auto-managed, should not be edited) and an Implementation Class with stub methods where you write business logic."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET obj = {}\nSET obj.name = \"Alice\"\nSET obj.age = 30\nWRITE obj.%ToJSON(), !",
+      "options": [
+        {"id": "A", "text": "name=Alice age=30"},
+        {"id": "B", "text": "{\"name\":\"Alice\",\"age\":30}"},
+        {"id": "C", "text": "Object reference"},
+        {"id": "D", "text": "Error — dynamic objects cannot mix string and numeric values"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "IRIS dynamic objects ({}) serialize to standard JSON via %ToJSON(). The output is {\"name\":\"Alice\",\"age\":30}. Mixing string and numeric values is fully valid."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "In a REST UrlMap, a route is defined as <Route Url=\"/orders/:id\" Method=\"GET\" Call=\"GetOrder\"/>. Which method signature correctly handles this route?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "ClassMethod GetOrder() As %Status"},
+        {"id": "B", "text": "ClassMethod GetOrder(id As %String) As %Status"},
+        {"id": "C", "text": "ClassMethod GetOrder(pId As %String) As %Status"},
+        {"id": "D", "text": "Method GetOrder(id As %String) As %Status"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "URL path parameters (:id) are passed as positional arguments to the ClassMethod. The parameter name must match the placeholder name in the Url pattern."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following statements about CORS in IRIS REST are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "CORS is enabled by default for all REST endpoints"},
+        {"id": "B", "text": "CORS must be explicitly enabled in the Web Application settings in the Management Portal"},
+        {"id": "C", "text": "Without CORS enabled, browsers will block cross-origin requests to the IRIS REST API"},
+        {"id": "D", "text": "CORS configuration is done inside the Dispatch Class using a Parameter"}
+      ],
+      "answer": ["B", "C"],
+      "domain": "T3.4",
+      "explanation": "B: Correct — CORS is off by default and must be explicitly enabled in Web Application settings. C: Correct — browsers enforce CORS and will block requests if the server does not send the correct headers. A is wrong (CORS is not on by default). D is wrong (CORS is not configured in the Dispatch Class)."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What is the correct return value at the end of every REST ClassMethod, regardless of the HTTP status code sent?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "RETURN %response.Status"},
+        {"id": "B", "text": "RETURN 200"},
+        {"id": "C", "text": "RETURN $$$OK"},
+        {"id": "D", "text": "No return statement is needed"}
+      ],
+      "answer": ["C"],
+      "domain": "T3.4",
+      "explanation": "REST ClassMethods always RETURN $$$OK at the end. This signals to the IRIS CSP engine that ObjectScript execution completed without a fatal error. The actual HTTP status code is controlled separately via %response.Status."
+    }
+  ]
+}

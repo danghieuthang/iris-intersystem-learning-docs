@@ -1,0 +1,191 @@
+{
+  "id": "03-globals-q1",
+  "topic": "03_globals",
+  "topicLabel": "Globals",
+  "title": "Quiz 01 — Globals",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which of the following correctly assigns a value to a global variable?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET People(1, \"Name\") = \"Alice\""},
+        {"id": "B", "text": "SET ^People(1, \"Name\") = \"Alice\""},
+        {"id": "C", "text": "GLOBAL ^People(1, \"Name\") = \"Alice\""},
+        {"id": "D", "text": "SET @^People(1, \"Name\") = \"Alice\""}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "Globals are identified by the ^ prefix. Without ^, it is a local array, not a global."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What distinguishes a global from a local array in ObjectScript?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Globals use parentheses for subscripts; local arrays use square brackets"},
+        {"id": "B", "text": "Globals start with ^ and are persisted to disk; local arrays exist only in process memory"},
+        {"id": "C", "text": "Globals can only have one level of subscripts; local arrays can be multi-dimensional"},
+        {"id": "D", "text": "Globals cannot be traversed with $ORDER"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "The key difference is persistence and the ^ prefix. Globals survive process termination and are stored on disk; local arrays are destroyed when the process ends."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does the following code print if ^People contains keys 1, 2, and 5?",
+      "code": "SET id = $ORDER(^People(\"\"))\nWRITE id, !",
+      "options": [
+        {"id": "A", "text": "\"\""},
+        {"id": "B", "text": "5"},
+        {"id": "C", "text": "1"},
+        {"id": "D", "text": "Error — $ORDER requires an existing key, not \"\""}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "$ORDER(^People(\"\")) returns the first key in collation order. For numeric keys 1, 2, 5, the first is 1."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "$DATA(^People(3)) returns 10. What does this mean?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Node ^People(3) does not exist"},
+        {"id": "B", "text": "Node ^People(3) has a data value and no children"},
+        {"id": "C", "text": "Node ^People(3) has no data value but has child subscripts"},
+        {"id": "D", "text": "Node ^People(3) has both a data value and child subscripts"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "$DATA = 10 means the node has no data value at that subscript level but has child subscripts beneath it (intermediate node)."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What does the following code do?",
+      "code": "MERGE ^Backup = ^People",
+      "options": [
+        {"id": "A", "text": "Moves all data from ^People to ^Backup and deletes ^People"},
+        {"id": "B", "text": "Creates a reference (pointer) so that ^Backup and ^People share the same storage"},
+        {"id": "C", "text": "Deep-copies the entire ^People subtree into ^Backup, leaving ^People intact"},
+        {"id": "D", "text": "Appends ^People data to any existing data in ^Backup, overwriting conflicts"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "MERGE performs a deep copy of the entire ^People subtree into ^Backup, leaving ^People fully intact. The source is never deleted."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What does KILL ^People(1) do?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Deletes only the data value at ^People(1) but keeps its child nodes"},
+        {"id": "B", "text": "Deletes ^People(1) and the entire subtree beneath it (e.g., ^People(1,\"Name\"), ^People(1,\"Age\"))"},
+        {"id": "C", "text": "Sets ^People(1) to \"\" (empty string)"},
+        {"id": "D", "text": "Has no effect if ^People(1) has children"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "KILL ^People(1) removes ^People(1) and the entire subtree below it. This is irreversible outside a transaction."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "How do you traverse the ^People global in reverse order?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET id = $ORDER(^People(\"\"), -1)"},
+        {"id": "B", "text": "SET id = $REVERSE($ORDER(^People(\"\")))" },
+        {"id": "C", "text": "SET id = $ORDER(^People(\"\"), 0)"},
+        {"id": "D", "text": "Reverse traversal is not supported by $ORDER on globals"}
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "Pass -1 as the second argument to $ORDER for reverse traversal. $ORDER(^People(\"\"), -1) returns the last key."
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which $DATA return values indicate that a node exists (even without a direct data value)? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "0"},
+        {"id": "B", "text": "1"},
+        {"id": "C", "text": "10"},
+        {"id": "D", "text": "11"}
+      ],
+      "answer": ["B", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "$DATA = 0 means the node does not exist. Values 1 (data only), 10 (children only), and 11 (data + children) all indicate the node exists in some form."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What does the following loop print if ^Counter does not exist?",
+      "code": "SET key = \"\"\nFOR {\n    SET key = $ORDER(^Counter(key))\n    QUIT:key=\"\"\n    WRITE key, !\n}",
+      "options": [
+        {"id": "A", "text": "An error — cannot call $ORDER on a non-existent global"},
+        {"id": "B", "text": "Nothing — the loop exits immediately because $ORDER returns \"\" when there are no keys"},
+        {"id": "C", "text": "\"\" (empty string)"},
+        {"id": "D", "text": "0"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "$ORDER on a non-existent global returns \"\" immediately — no error. The QUIT:key=\"\" fires on the first iteration and the loop exits without printing anything."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "Which of the following best describes a use case where globals are preferred over %Persistent classes?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Storing employee records that need to be queried with complex JOIN statements"},
+        {"id": "B", "text": "Implementing a high-speed in-memory lookup/cache that persists across restarts"},
+        {"id": "C", "text": "Defining a REST API response schema"},
+        {"id": "D", "text": "Storing audit log records that need a full-text search index"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "Globals excel at high-speed lookup tables and caches with flexible/sparse structure. They are not suited for complex SQL JOINs, full-text search, or schema-defined REST contracts."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following statements about globals are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Globals start with ^ and are stored permanently on disk"},
+        {"id": "B", "text": "$ORDER and $DATA work the same way for both local arrays and globals"},
+        {"id": "C", "text": "KILL ^Global can be undone with an undo command"},
+        {"id": "D", "text": "%Persistent classes use globals as their underlying storage backend"},
+        {"id": "E", "text": "Globals enforce a fixed schema like a SQL table"}
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T1.2",
+      "explanation": "A: Correct — ^ prefix and disk persistence. B: Correct — $ORDER, $DATA, MERGE, KILL work identically on locals and globals. C: Wrong — KILL on a global is permanent (unless inside a transaction). D: Correct — %Persistent classes store their data in globals at the IRIS engine level. E: Wrong — globals have no schema."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET ^Scores(\"Alice\") = 95\nSET ^Scores(\"Bob\") = 80\nSET ^Scores(\"Charlie\") = 90\n\nSET key = \"\"\nSET total = 0\nFOR {\n    SET key = $ORDER(^Scores(key))\n    QUIT:key=\"\"\n    SET total = total + ^Scores(key)\n}\nWRITE total, !",
+      "options": [
+        {"id": "A", "text": "95"},
+        {"id": "B", "text": "265"},
+        {"id": "C", "text": "3"},
+        {"id": "D", "text": "Error — cannot mix string and numeric subscripts"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "The loop visits Alice (95), Bob (80), and Charlie (90) in alphabetical order. total = 95 + 80 + 90 = 265."
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "01-objectscript-basics-q2",
+  "topic": "01_objectscript-basics",
+  "topicLabel": "ObjectScript Basics",
+  "title": "Quiz 02 — ObjectScript Basics",
+  "difficulty": "Intermediate",
+  "examDomains": ["T4.1", "T4.3", "T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "What is the correct way to check whether a %Status value indicates an error?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "IF sc = 0 { ... }"},
+        {"id": "B", "text": "IF $$$ISERR(sc) { ... }"},
+        {"id": "C", "text": "IF sc '= $$$OK { ... }"},
+        {"id": "D", "text": "Both B and C are valid"}
+      ],
+      "answer": ["D"],
+      "domain": "T4.1",
+      "explanation": "Both $$$ISERR(sc) (the macro) and sc '= $$$OK (direct comparison) correctly detect an error status. IF sc = 0 is wrong because $$$OK is 1, not 0."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET sc = $$$OK\nWRITE $$$ISOK(sc), !",
+      "options": [
+        {"id": "A", "text": "0"},
+        {"id": "B", "text": "1"},
+        {"id": "C", "text": "OK"},
+        {"id": "D", "text": "$$$OK"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "$$$OK equals 1, and $$$ISOK(1) returns 1 (true)."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does $FIND(\"Hello World\", \"World\") return?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "7"},
+        {"id": "B", "text": "6"},
+        {"id": "C", "text": "12"},
+        {"id": "D", "text": "1"}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "$FIND returns the position after the found substring. 'World' starts at position 7 and is 5 characters long, so $FIND returns 7 + 5 = 12."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET str = \"Apple:Banana:Cherry\"\nSET $PIECE(str, \":\", 2) = \"Mango\"\nWRITE str, !",
+      "options": [
+        {"id": "A", "text": "Apple:Mango:Cherry"},
+        {"id": "B", "text": "Apple:Banana:Cherry"},
+        {"id": "C", "text": "Mango"},
+        {"id": "D", "text": "Error — $PIECE cannot be used on the left-hand side of SET"}
+      ],
+      "answer": ["A"],
+      "domain": "T4.1",
+      "explanation": "$PIECE can be used on the left side of SET to replace a piece in-place. The 2nd :-delimited piece is replaced with Mango → Apple:Mango:Cherry."
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which of the following macros are valid for working with %Status values? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "$$$OK"},
+        {"id": "B", "text": "$$$ISERR(sc)"},
+        {"id": "C", "text": "$$$ISOK(sc)"},
+        {"id": "D", "text": "$$$ThrowOnError(sc)"},
+        {"id": "E", "text": "$$$STATUSERROR(sc)"}
+      ],
+      "answer": ["A", "B", "C", "D"],
+      "domain": "T4.1",
+      "explanation": "$$$OK, $$$ISERR, $$$ISOK, and $$$ThrowOnError are all standard IRIS macros for %Status handling. $$$STATUSERROR does not exist as a standard macro."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "TRY {\n    THROW ##class(%Exception.General).%New(\"TestError\", \"5001\", \"\", \"Something failed\")\n}\nCATCH ex {\n    WRITE ex.Name, !\n}",
+      "options": [
+        {"id": "A", "text": "5001"},
+        {"id": "B", "text": "Something failed"},
+        {"id": "C", "text": "TestError"},
+        {"id": "D", "text": "%Exception.General"}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "ex.Name returns the first argument passed to %New() when creating the exception — in this case \"TestError\"."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "You call person.%Save() inside a TRY block. Which line correctly throws an exception if the save fails?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "IF $$$ISERR(sc) THROW sc"},
+        {"id": "B", "text": "$$$ThrowOnError(sc)"},
+        {"id": "C", "text": "RETURN $$$ERROR(sc)"},
+        {"id": "D", "text": "QUIT:$$$ISERR(sc)"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "$$$ThrowOnError(sc) is the idiomatic macro that throws an exception if sc is an error status. It is the shortest and most readable pattern inside a TRY block."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What does $HOROLOG return?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "A Unix timestamp (seconds since epoch)"},
+        {"id": "B", "text": "The current date in YYYY-MM-DD format"},
+        {"id": "C", "text": "Two comma-separated integers representing days since Dec 31, 1840 and seconds since midnight"},
+        {"id": "D", "text": "The current time in HH:MM:SS format"}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "$HOROLOG returns a string in the format days,seconds where days are counted from December 31, 1840 and seconds since midnight."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET x = 7\nWRITE x # 3, !",
+      "options": [
+        {"id": "A", "text": "2"},
+        {"id": "B", "text": "1"},
+        {"id": "C", "text": "3"},
+        {"id": "D", "text": "0"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "# is the modulo operator. 7 # 3 = 1 (7 divided by 3 is 2 remainder 1)."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "In ObjectScript, what is the result of the expression \"10\" > \"9\"?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "1 (True) — numeric comparison"},
+        {"id": "B", "text": "0 (False) — string comparison, \"1\" comes before \"9\""},
+        {"id": "C", "text": "Error — mixed types cannot be compared"},
+        {"id": "D", "text": "1 (True) — string comparison, \"10\" comes after \"9\" alphabetically"}
+      ],
+      "answer": ["A"],
+      "domain": "T4.1",
+      "explanation": "In ObjectScript, when both operands look numeric, comparison is numeric. 10 > 9 is 1 (True)."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following are valid ways to pass a local array into a method? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Declare ByRef pArr in the method signature and call with .arr"},
+        {"id": "B", "text": "Declare pArr As %Array in the signature"},
+        {"id": "C", "text": "Use MERGE to copy the array to a global, then pass the global name as a string"},
+        {"id": "D", "text": "Use ByRef and call with ..Method(.myArr) from an instance method"}
+      ],
+      "answer": ["A", "D"],
+      "domain": "T4.1",
+      "explanation": "Both are correct ways to pass arrays by reference: declaring ByRef pArr and calling with a . prefix. B is wrong (%Array is not a valid parameter type for multidimensional arrays). C is a workaround, not the standard pattern."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET list = $LISTBUILD(\"X\", \"\", \"Z\")\nWRITE $LISTLENGTH(list), !",
+      "options": [
+        {"id": "A", "text": "2"},
+        {"id": "B", "text": "3"},
+        {"id": "C", "text": "XZ"},
+        {"id": "D", "text": "Error — empty string is not valid in $LISTBUILD"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "$LISTBUILD includes all three elements including the empty string. $LISTLENGTH returns 3 — empty string is a valid list element."
+    }
+  ]
+}

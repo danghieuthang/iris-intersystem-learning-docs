@@ -1,0 +1,193 @@
+{
+  "id": "06-interoperability-q1",
+  "topic": "06_interoperability",
+  "topicLabel": "Interoperability",
+  "title": "Quiz 01 — Interoperability",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2", "T4.1"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which describes the correct data flow in an IRIS Production?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "BO → BP → BS"},
+        {"id": "B", "text": "BP → BS → BO"},
+        {"id": "C", "text": "BS → BP → BO"},
+        {"id": "D", "text": "BS → BO → BP"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "Data enters via Business Service, is processed/routed by Business Process, then sent out via Business Operation: BS → BP → BO."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What is the base class for a custom Business Service?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Ens.BusinessProcess"},
+        {"id": "B", "text": "Ens.Director"},
+        {"id": "C", "text": "Ens.BusinessOperation"},
+        {"id": "D", "text": "Ens.BusinessService"}
+      ],
+      "answer": ["D"],
+      "domain": "T1.2",
+      "explanation": "A custom Business Service extends Ens.BusinessService. The other classes are for BP (Ens.BusinessProcess) and BO (Ens.BusinessOperation)."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What is the entry-point method that IRIS calls when a Business Operation receives a message?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "OnRequest()"},
+        {"id": "B", "text": "OnProcessInput()"},
+        {"id": "C", "text": "OnMessage()"},
+        {"id": "D", "text": "OnDispatch()"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "OnMessage() is the entry point for a Business Operation. OnProcessInput() is for Business Services; OnRequest() is for Business Processes."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What does the following code do inside a Business Process?",
+      "code": "RETURN ..SendRequestSync(\"MyApp.BO.DatabaseWriter\", pRequest, .pResponse)",
+      "options": [
+        {"id": "A", "text": "Creates a new instance of MyApp.BO.DatabaseWriter and calls it directly"},
+        {"id": "B", "text": "Sends a fire-and-forget message — the BP continues immediately without waiting"},
+        {"id": "C", "text": "Blocks the Business Process until MyApp.BO.DatabaseWriter returns a response"},
+        {"id": "D", "text": "Starts the Production and routes all future messages to DatabaseWriter"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "SendRequestSync blocks the caller (Business Process) until the target returns a response — use it when the result is needed to continue processing."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "If OnProcessInput() returns an error status in a Business Service that uses EnsLib.File.InboundAdapter, what does the adapter do?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Stops the entire Production immediately"},
+        {"id": "B", "text": "Deletes the source file and logs a warning"},
+        {"id": "C", "text": "Does NOT delete or acknowledge the source file — it will be reprocessed on the next poll"},
+        {"id": "D", "text": "Moves the file to an error archive directory"}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "When OnProcessInput() returns an error, the inbound adapter will NOT delete/acknowledge the source data, so the file will be reprocessed on the next polling cycle. This enables automatic retry."
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "In which scenarios should you prefer SendRequestAsync() over SendRequestSync() in a Business Process? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "When the downstream Business Operation's response is needed to decide the next routing step"},
+        {"id": "B", "text": "When multiple Business Operations can be triggered in parallel without waiting for each result"},
+        {"id": "C", "text": "When the next processing step does not depend on the downstream response"},
+        {"id": "D", "text": "When the adapter requires a synchronous acknowledgment before the message is accepted"}
+      ],
+      "answer": ["B", "C"],
+      "domain": "T1.2",
+      "explanation": "Use SendRequestAsync when results are not immediately needed: parallel fanout (B) or fire-and-forget flows (C). Options A and D require a synchronous result."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "A BPL Business Process class automatically extends which base class?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Ens.BusinessProcess"},
+        {"id": "B", "text": "Ens.BPL.Process"},
+        {"id": "C", "text": "Ens.BusinessProcessBPL"},
+        {"id": "D", "text": "Ens.BusinessProcessDesigner"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "A BPL class automatically extends Ens.BusinessProcessBPL — IRIS generates this code from the XML diagram in the Business Process Designer."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "In a BPL diagram, what is the purpose of the sync activity?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Saves the current context object to the database"},
+        {"id": "B", "text": "Sends a synchronous message to the next downstream target"},
+        {"id": "C", "text": "Waits for all preceding async call activities to complete before the flow continues"},
+        {"id": "D", "text": "Synchronizes the Production configuration with the Management Portal"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "The sync activity pauses the BPL flow until all previously dispatched async call activities have returned, enabling parallel fan-out followed by a join point."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which of the following are valid activities that can be used in a BPL Business Process diagram? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "assign"},
+        {"id": "B", "text": "foreach"},
+        {"id": "C", "text": "transform"},
+        {"id": "D", "text": "call"},
+        {"id": "E", "text": "if"}
+      ],
+      "answer": ["A", "B", "D", "E"],
+      "domain": "T1.2",
+      "explanation": "Valid BPL activities include assign, foreach, call, if, and sync. transform is not a standalone BPL activity — transformation is done with assign or via an ObjectScript BP."
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which of the following adapter classes are inbound adapters that can be used with a Business Service? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "EnsLib.File.InboundAdapter"},
+        {"id": "B", "text": "EnsLib.File.OutboundAdapter"},
+        {"id": "C", "text": "EnsLib.HTTP.InboundAdapter"},
+        {"id": "D", "text": "EnsLib.SQL.InboundAdapter"},
+        {"id": "E", "text": "EnsLib.HTTP.OutboundAdapter"}
+      ],
+      "answer": ["A", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "Inbound adapters: EnsLib.File.InboundAdapter, EnsLib.HTTP.InboundAdapter, and EnsLib.SQL.InboundAdapter. The OutboundAdapter variants (B, E) are used by Business Operations to send data out."
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "What is the correct base class for a message that carries a request between Production components?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Ens.Message"},
+        {"id": "B", "text": "%Persistent"},
+        {"id": "C", "text": "Ens.Response"},
+        {"id": "D", "text": "Ens.Request"}
+      ],
+      "answer": ["D"],
+      "domain": "T1.2",
+      "explanation": "Request messages extend Ens.Request; response messages extend Ens.Response. Using %Persistent directly or Ens.Message does not provide the required Production message infrastructure."
+    },
+    {
+      "id": 12,
+      "type": "MR",
+      "question": "Which of the following statements about Messages in an IRIS Production are true? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Messages are persisted to the database"},
+        {"id": "B", "text": "The target name in SendRequestSync must match the config name in the Production, not the class name"},
+        {"id": "C", "text": "Messages extend either Ens.Request or Ens.Response"},
+        {"id": "D", "text": "Messages are passed by reference in memory and are never written to disk"},
+        {"id": "E", "text": "Failed messages can be retried automatically because they are stored in the database"}
+      ],
+      "answer": ["A", "B", "C", "E"],
+      "domain": "T1.2",
+      "explanation": "Messages are persisted (A), require matching config names as targets (B), extend Ens.Request/Ens.Response (C), and support automatic retry via stored data (E). Option D is false — messages ARE written to disk."
+    }
+  ]
+}

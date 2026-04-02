@@ -1,0 +1,192 @@
+{
+  "id": "02-classes-objects-q1",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 01 — Classes & Objects",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2", "T4.1"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which class category should you use for a domain object that must be saved to the database and retrieved by ID later?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "%Registered"},
+        {"id": "B", "text": "%SerialObject"},
+        {"id": "C", "text": "%Persistent"},
+        {"id": "D", "text": "Abstract class"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "%Persistent stores data in the IRIS database and provides an auto-assigned %ID for retrieval. %Registered is memory-only, %SerialObject is embedded in a parent, Abstract classes cannot be instantiated."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does the following code print after a successful save?",
+      "code": "SET p = ##class(MyApp.Person).%New()\nSET p.Name = \"Alice\"\nSET sc = p.%Save()\nWRITE p.%Id(), !",
+      "options": [
+        {"id": "A", "text": "0"},
+        {"id": "B", "text": "An auto-assigned integer ID (e.g., 1)"},
+        {"id": "C", "text": "Alice"},
+        {"id": "D", "text": "Nothing — %Id() only works before %Save()"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "After a successful %Save(), IRIS assigns an integer ID. %Id() returns this ID — it is only populated after the first save."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "A %SerialObject class differs from a %Persistent class in that:",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "It can only store string properties"},
+        {"id": "B", "text": "It is stored embedded inside its parent object and has no independent ID"},
+        {"id": "C", "text": "It is stored in a separate database table"},
+        {"id": "D", "text": "It cannot define methods"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "%SerialObject is serialized and stored inline within its parent persistent object. It has no independent ID and cannot be retrieved on its own with %OpenId."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "How do you access the value of a Parameter named TIMEOUT from inside the same class?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "..TIMEOUT"},
+        {"id": "B", "text": "..#TIMEOUT"},
+        {"id": "C", "text": "$PARAMETER(..%ClassName(), \"TIMEOUT\")"},
+        {"id": "D", "text": "##class(MyApp.Config).TIMEOUT"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "Parameters (class constants) are accessed with the # sigil: ..#TIMEOUT from inside the class, or ##class(X).#TIMEOUT from outside."
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which of the following are valid property keywords that affect persistence behavior? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Required"},
+        {"id": "B", "text": "Transient"},
+        {"id": "C", "text": "Calculated"},
+        {"id": "D", "text": "ReadOnly"},
+        {"id": "E", "text": "Abstract"}
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "Required causes %Save() to fail if not set. Transient means the property is not stored in the database. Calculated means the value is computed dynamically (not stored). ReadOnly affects access control, not persistence. Abstract is not a property keyword."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What does the following code do?",
+      "code": "SET p = ##class(MyApp.Person).EmailIdxOpen(\"alice@example.com\")",
+      "options": [
+        {"id": "A", "text": "Runs a SQL query SELECT * FROM MyApp.Person WHERE Email = ?"},
+        {"id": "B", "text": "Opens a %Persistent object using a Unique index defined as Index EmailIdx On Email [ Unique ]"},
+        {"id": "C", "text": "Calls %OpenId with \"alice@example.com\" as the ID"},
+        {"id": "D", "text": "Returns an error because EmailIdxOpen must be called with an ID, not a value"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "When a Unique index named EmailIdx is defined, IRIS auto-generates an EmailIdxOpen(value) class method that performs a fast lookup by that indexed field."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "Which lifecycle callback is called before %Save() and can return an error to cancel the save?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "%OnNew()"},
+        {"id": "B", "text": "%OnAfterSave()"},
+        {"id": "C", "text": "%OnBeforeSave()"},
+        {"id": "D", "text": "%OnDelete()"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "%OnBeforeSave(insert As %Boolean) is called before every %Save(). Returning an error %Status from this callback cancels the save."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What is the correct way to call an instance method Greet() on the current object from inside another instance method of the same class?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "MyApp.Person.Greet()"},
+        {"id": "B", "text": "##class(MyApp.Person).Greet()"},
+        {"id": "C", "text": "..Greet()"},
+        {"id": "D", "text": "SELF.Greet()"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": ".. is the self-reference operator (equivalent to this). Use ..Greet() to call another instance method on the current object."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which of the following are valid ways to invoke operations on a %Persistent class? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "##class(MyApp.Person).%New()"},
+        {"id": "B", "text": "##class(MyApp.Person).%OpenId(1)"},
+        {"id": "C", "text": "##class(MyApp.Person).%DeleteId(1)"},
+        {"id": "D", "text": "##class(MyApp.Person).%KillExtent()"},
+        {"id": "E", "text": "##class(MyApp.Person).%Rollback()"}
+      ],
+      "answer": ["A", "B", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "%New(), %OpenId(), %DeleteId(), and %KillExtent() are all valid ClassMethod calls on %Persistent. Option E is incorrect: %Rollback() is an instance method — it must be called on an open object (obj.%Rollback()), not as a ClassMethod."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "You define a property: Property Status As %String(VALUELIST = \",active,inactive,pending\") [ Required ]. What happens when you call %Save() with Status = \"deleted\"?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "The value is saved as-is — VALUELIST is only a hint, not enforced"},
+        {"id": "B", "text": "%Save() fails and returns an error status"},
+        {"id": "C", "text": "The value is silently truncated to the first valid item"},
+        {"id": "D", "text": "IRIS throws a runtime exception"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "VALUELIST validation is enforced by IRIS at save time. If the value is not in the list, %Save() returns an error status."
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "What is the purpose of the %JSON.Adaptor mixin?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Stores the class definition as JSON in the database"},
+        {"id": "B", "text": "Adds %JSONExport() and %JSONImport() methods to automatically serialize/deserialize an object to/from JSON"},
+        {"id": "C", "text": "Replaces %Persistent for classes that only need JSON storage"},
+        {"id": "D", "text": "Generates a REST endpoint for the class automatically"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "%JSON.Adaptor is a mixin that adds %JSONExport() (serialize to stdout or string) and %JSONImport() (deserialize from string) to any class. It avoids manually building JSON."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Which statement about ClassMethod vs Method in IRIS is correct?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "ClassMethod can use .. (self-reference) just like Method"},
+        {"id": "B", "text": "Method is called on a class directly without instantiation; ClassMethod requires an instance"},
+        {"id": "C", "text": "ClassMethod is called on the class directly (e.g., ##class(X).MyClassMethod()), while Method is called on an instance (e.g., obj.MyMethod())"},
+        {"id": "D", "text": "There is no practical difference — both can be called either way"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "ClassMethod is invoked on the class itself (##class(X).MyClassMethod()), does not require an instance, and cannot use .. (self). Method is invoked on an instance (obj.MyMethod()) and can use .. for self-reference."
+    }
+  ]
+}

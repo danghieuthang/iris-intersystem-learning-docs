@@ -1,0 +1,175 @@
+{
+  "id": "01-objectscript-basics-q1",
+  "topic": "01_objectscript-basics",
+  "topicLabel": "ObjectScript Basics",
+  "title": "Quiz 01 — ObjectScript Basics",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T4.1", "T4.3", "T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which command is used to delete a variable in ObjectScript?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "DELETE x"},
+        {"id": "B", "text": "REMOVE x"},
+        {"id": "C", "text": "KILL x"},
+        {"id": "D", "text": "SET x = \"\""}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "KILL x deletes the variable entirely. SET x = \"\" only assigns an empty string — the variable still exists."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET str = \"Hello,World,IRIS\"\nWRITE $PIECE(str, \",\", 2), !",
+      "options": [
+        {"id": "A", "text": "Hello"},
+        {"id": "B", "text": "World"},
+        {"id": "C", "text": "Hello,World"},
+        {"id": "D", "text": "2"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "$PIECE(str, \",\", 2) returns the 2nd piece delimited by , → World."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does $ORDER(arr(\"\")) return?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "The value of the first element in the array"},
+        {"id": "B", "text": "The first key in the array"},
+        {"id": "C", "text": "The total number of elements in the array"},
+        {"id": "D", "text": "Always returns \"\""}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "$ORDER(arr(\"\")) returns the first key in the array, not its value."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET fruits = $LISTBUILD(\"Apple\", \"Banana\", \"Cherry\")\nWRITE $LISTLENGTH(fruits), !",
+      "options": [
+        {"id": "A", "text": "3"},
+        {"id": "B", "text": "Apple,Banana,Cherry"},
+        {"id": "C", "text": "21 (total length of all strings)"},
+        {"id": "D", "text": "Compile error"}
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "$LISTLENGTH (alias $LL) returns the number of elements → 3."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "$DATA(arr(5)) returns 10. What does this mean?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Node arr(5) does not exist"},
+        {"id": "B", "text": "Node arr(5) has data and has children"},
+        {"id": "C", "text": "Node arr(5) has no data but has children"},
+        {"id": "D", "text": "Node arr(5) has data but no children"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "$DATA = 10 means the node has no data value itself, but has descendant subscripts (children)."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET x = \"InterSystems\"\nWRITE $EXTRACT(x, 1, 5), !",
+      "options": [
+        {"id": "A", "text": "Inter"},
+        {"id": "B", "text": "System"},
+        {"id": "C", "text": "nterS"},
+        {"id": "D", "text": "I"}
+      ],
+      "answer": ["A"],
+      "domain": "T4.1",
+      "explanation": "$EXTRACT(x, 1, 5) extracts characters 1 through 5 → Inter."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "To pass a multidimensional array into a method, what must you do?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Declare the parameter as As %Array"},
+        {"id": "B", "text": "Declare ByRef in the signature and call with . before the variable"},
+        {"id": "C", "text": "Use MERGE to copy the array before passing it"},
+        {"id": "D", "text": "ObjectScript does not support passing arrays into methods"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "Declare ByRef pArr in the method signature and call with ..Method(.myArray)."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET str = \"abcde\"\nWRITE $TRANSLATE(str, \"ace\"), !",
+      "options": [
+        {"id": "A", "text": "ace"},
+        {"id": "B", "text": "bd"},
+        {"id": "C", "text": "abcde"},
+        {"id": "D", "text": "Error — $TRANSLATE requires exactly 3 arguments"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "$TRANSLATE(str, \"ace\") with no third argument deletes all occurrences of a, c, e → bd."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Which of the following correctly retrieves the last element of a $LIST?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "$LG(list, $LL(list)) only"},
+        {"id": "B", "text": "$LG(list, -1) only"},
+        {"id": "C", "text": "Both A and B are valid"},
+        {"id": "D", "text": "$LIST(list, \"last\")"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "Both are valid: $LG(list, $LL(list)) (by index) and $LG(list, -1) (negative index from end)."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "What is wrong with the following code?",
+      "code": "SET sc = person.%Save()\nWRITE \"Saved!\", !",
+      "options": [
+        {"id": "A", "text": "Nothing — it is correct"},
+        {"id": "B", "text": "Missing %Status check — if %Save() fails, the error is silently ignored"},
+        {"id": "C", "text": "Must use DO instead of SET when calling %Save()"},
+        {"id": "D", "text": "WRITE must come before SET"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "Always check $$$ISERR(sc) after %Save() — failing silently is a common mistake in IRIS development."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following are valid ways to iterate over all elements of a $LIST? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "FOR i = 1:1:$LL(list) { WRITE $LG(list, i), ! }"},
+        {"id": "B", "text": "SET p=0  WHILE $LISTNEXT(list, p, val) { WRITE val, ! }"},
+        {"id": "C", "text": "SET key=\"\"  FOR { SET key=$ORDER(list(key))  QUIT:key=\"\"  WRITE list(key),! }"},
+        {"id": "D", "text": "FOR i = 0:1:$LL(list)-1 { WRITE list[i], ! }"}
+      ],
+      "answer": ["A", "B"],
+      "domain": "T1.2",
+      "explanation": "FOR i=1:1:$LL and $LISTNEXT are the two correct ways. C uses global-style $ORDER which doesn't work on $LIST. D uses zero-based bracket syntax which is invalid in ObjectScript."
+    }
+  ]
+}

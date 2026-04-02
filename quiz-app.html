@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 IRIS Quiz — InterSystems IRIS Development Professional</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── CSS Variables ─────────────────────────────────────────── */
+    :root {
+      --primary: #6750a4;
+      --primary-light: #eaddff;
+      --bg: #fffbff;
+      --surface: #ffffff;
+      --surface-2: #f3f0ff;
+      --text: #1c1b1f;
+      --text-muted: #49454f;
+      --border: #cac4d0;
+      --success: #386a20;
+      --success-bg: #c5e1a5;
+      --error: #b3261e;
+      --error-bg: #fce8e6;
+      --warning: #7c5800;
+      --warning-bg: #fef08a;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-hover: 0 4px 16px rgba(103,80,164,0.15), 0 2px 6px rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --primary: #d0bcff;
+      --primary-light: #4a4458;
+      --bg: #1c1b1f;
+      --surface: #2b2930;
+      --surface-2: #332d41;
+      --text: #e6e1e5;
+      --text-muted: #cac4d0;
+      --border: #49454f;
+      --success: #a8d5a2;
+      --success-bg: #1e3a14;
+      --error: #f2b8b5;
+      --error-bg: #3b1212;
+      --warning: #fef08a;
+      --warning-bg: #3b2f00;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2);
+      --shadow-hover: 0 4px 16px rgba(208,188,255,0.15), 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* ── Reset & Base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.2s ease, color 0.2s ease;
+      line-height: 1.6;
+    }
+    #app { min-height: 100vh; }
+
+    /* ── Header ────────────────────────────────────────────────── */
+    .app-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-left { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .header-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); white-space: nowrap; }
+    .header-subtitle { font-size: 0.78rem; color: var(--text-muted); }
+    .btn-back {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 0;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-back:hover { opacity: 0.7; }
+    .btn-icon {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-icon:hover { background: var(--primary-light); box-shadow: var(--shadow-hover); }
+
+    /* ── Buttons ───────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(103,80,164,0.25);
+    }
+    .btn-primary:hover:not(:disabled) {
+      opacity: 0.92;
+      box-shadow: 0 4px 14px rgba(103,80,164,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled { opacity: 0.38; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 50px;
+      padding: 9px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-secondary:hover { background: var(--primary-light); }
+
+    /* ── Main Content Wrapper ───────────────────────────────────── */
+    .main-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* ── Stats Bar ─────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .stat { display: flex; align-items: center; gap: 6px; }
+
+    /* ── CORS Note ─────────────────────────────────────────────── */
+    .cors-note {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .cors-note code {
+      background: rgba(0,0,0,0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ── Quiz Grid ─────────────────────────────────────────────── */
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Quiz Card ─────────────────────────────────────────────── */
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .quiz-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .card-top { display: flex; align-items: flex-start; gap: 14px; }
+    .topic-icon { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+    .card-titles { flex: 1; min-width: 0; }
+    .card-topic {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .difficulty-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .domain-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .domain-tag {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-family: 'Consolas', 'Monaco', monospace;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .best-score { font-weight: 700; color: var(--primary); }
+
+    /* ── Loading / Error ───────────────────────────────────────── */
+    .loading-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+    .loading-spinner {
+      font-size: 2rem;
+      animation: spin 1.4s linear infinite;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-card {
+      background: var(--error-bg);
+      color: var(--error);
+      border: 1px solid var(--error);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    /* ── Quiz Screen Header ────────────────────────────────────── */
+    .quiz-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .quiz-header-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .quiz-header-info { flex: 1; min-width: 0; }
+    .quiz-header-info .qtitle {
+      font-size: 0.92rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .quiz-header-info .qcounter { font-size: 0.78rem; color: var(--text-muted); }
+    .timer {
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .progress-track { height: 4px; background: var(--border); }
+    .progress-fill { height: 100%; background: var(--primary); transition: width 0.35s ease; }
+
+    /* ── Quiz Main ─────────────────────────────────────────────── */
+    .quiz-main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 28px 24px 80px;
+    }
+
+    /* ── Question Card ─────────────────────────────────────────── */
+    .question-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .question-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .type-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--primary-light);
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+    .question-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .ic {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.87em;
+      font-family: 'Consolas', 'Monaco', monospace;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    .code-wrapper {
+      margin-top: 16px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .code-lang-bar {
+      background: #1a1a2e;
+      color: #a9b0bf;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .code-lang-bar::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #6750a4;
+    }
+    .code-wrapper pre {
+      margin: 0 !important;
+      padding: 16px !important;
+      border-radius: 0 !important;
+      background: #1a1a2e !important;
+      overflow-x: auto;
+    }
+    .code-wrapper pre code {
+      display: block !important;
+      padding: 0 !important;
+      font-size: 0.9rem !important;
+      line-height: 1.65 !important;
+      font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
+      background: transparent !important;
+      white-space: pre !important;
+    }
+
+    /* ── Options ───────────────────────────────────────────────── */
+    .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .option-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .option-card:hover:not(.disabled) { border-color: var(--primary); background: var(--surface-2); }
+    .option-card.selected:not(.correct):not(.wrong):not(.missed) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .option-card.correct { border-color: var(--success); background: var(--success-bg); cursor: default; }
+    .option-card.wrong   { border-color: var(--error);   background: var(--error-bg);   cursor: default; }
+    .option-card.missed  { border-color: var(--warning); background: var(--warning-bg); cursor: default; }
+    .option-card.disabled { cursor: default; }
+    .option-id {
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .option-card.selected .option-id  { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .option-card.correct  .option-id  { background: var(--success); color: #fff; border-color: var(--success); }
+    .option-card.wrong    .option-id  { background: var(--error);   color: #fff; border-color: var(--error);   }
+    .option-card.missed   .option-id  { background: var(--warning); color: #000; border-color: var(--warning); }
+    .option-text { font-size: 0.9rem; line-height: 1.55; color: var(--text); flex: 1; }
+
+    /* ── Explanation Box ───────────────────────────────────────── */
+    .explanation-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .expl-label {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ── Action Bar ────────────────────────────────────────────── */
+    .action-bar { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ── Results ───────────────────────────────────────────────── */
+    .results-main { max-width: 820px; margin: 0 auto; padding: 32px 24px 60px; }
+    .results-hero {
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 6px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .score-num  { font-size: 2.2rem; font-weight: 700; color: var(--primary); line-height: 1; }
+    .score-den  { font-size: 0.82rem; color: var(--text-muted); }
+    .score-pct  { font-size: 1.6rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    .grade-badge {
+      display: inline-block;
+      padding: 6px 22px;
+      border-radius: 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .grade-pass { background: var(--success-bg); color: var(--success); }
+    .grade-fail { background: var(--error-bg);   color: var(--error);   }
+    .time-display { font-size: 0.85rem; color: var(--text-muted); }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 24px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .domain-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      font-size: 0.88rem;
+    }
+    .domain-table th {
+      padding: 10px 16px;
+      text-align: left;
+      background: var(--surface-2);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+    .domain-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .domain-table tr:last-child td { border-bottom: none; }
+    .domain-score { font-weight: 700; }
+    .domain-bar-track { height: 6px; background: var(--border); border-radius: 3px; min-width: 80px; }
+    .domain-bar-fill  { height: 100%; border-radius: 3px; background: var(--primary); }
+
+    .review-list { display: flex; flex-direction: column; gap: 12px; }
+    .review-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left-width: 4px;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+    .review-item.correct { border-left-color: var(--success); }
+    .review-item.wrong   { border-left-color: var(--error);   }
+    .review-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .review-num { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
+    .review-result { font-size: 0.88rem; font-weight: 700; }
+    .review-result.ok { color: var(--success); }
+    .review-result.ko { color: var(--error); }
+    .review-q { font-size: 0.87rem; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+    .review-answers { font-size: 0.82rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 3px; }
+    .review-answers .ra-row { display: flex; gap: 8px; }
+    .ra-label { font-weight: 600; min-width: 90px; flex-shrink: 0; }
+    .ra-val-correct { color: var(--success); font-weight: 600; }
+    .ra-val-wrong   { color: var(--error); }
+
+    .results-actions { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+
+    /* ── Filter Bar ────────────────────────────────────────────── */
+    .filter-bar {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      min-width: 60px;
+      flex-shrink: 0;
+    }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filter-pill {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .filter-pill:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      font-weight: 600;
+    }
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* ── Mock Exam Banner ──────────────────────────────────────── */
+    .mock-exam-banner {
+      background: linear-gradient(135deg, #6750a4 0%, #7c3aed 100%);
+      border-radius: var(--radius);
+      padding: 22px 28px;
+      color: #fff;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .mock-exam-banner h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .mock-exam-banner p  { opacity: 0.85; font-size: 0.85rem; }
+    .mock-exam-actions   { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-mock {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+    .btn-mock:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── Detailed Review Screen ─────────────────────────────────── */
+    .review-detail-list { display: flex; flex-direction: column; gap: 20px; }
+    .review-detail-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .review-detail-card.rd-correct { border-color: var(--success); }
+    .review-detail-card.rd-wrong   { border-color: var(--error); }
+    .review-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .review-result.ok { color: var(--success); font-weight: 700; font-size: 0.9rem; }
+    .review-result.ko { color: var(--error);   font-weight: 700; font-size: 0.9rem; }
+
+    /* ── Shuffle Toggle ────────────────────────────────────────── */
+    .shuffle-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .shuffle-toggle.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ── Domain Dashboard ──────────────────────────────────────── */
+    .domain-dashboard {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .domain-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .domain-progress-row:last-child { margin-bottom: 0; }
+    .dp-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 170px;
+      font-size: 0.85rem;
+    }
+    .dp-bar-track {
+      flex: 1;
+      height: 10px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .dp-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+    .dp-pct {
+      min-width: 38px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: right;
+      color: var(--text-muted);
+    }
+
+    /* ── Mistakes Panel ────────────────────────────────────────── */
+    .mistakes-panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .mistake-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mistake-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .mistake-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    .mistake-count { color: var(--error); font-size: 0.8rem; font-weight: 700; }
+    .mistake-quiz  { color: var(--text-muted); font-size: 0.75rem; }
+    .mistake-q     { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* ── Bookmarks Bar ─────────────────────────────────────────── */
+    .bookmarks-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Bookmark Button (in quiz question) ────────────────────── */
+    .btn-bookmark {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      color: var(--text-muted);
+      transition: all 0.15s;
+      margin-left: auto;
+    }
+    .btn-bookmark.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+    .btn-bookmark:hover { border-color: var(--primary); }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .main-content { padding: 20px 16px; }
+      .quiz-grid { grid-template-columns: 1fr; }
+      .header-subtitle { display: none; }
+      .quiz-main { padding: 16px 16px 80px; }
+      .results-main { padding: 16px 16px 60px; }
+      .quiz-header-inner { padding: 10px 16px; }
+      .domain-table th:last-child,
+      .domain-table td:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    'use strict';
+
+    // ── Constants ─────────────────────────────────────────────────
+    const SCORES_KEY = 'iris-quiz-scores';
+    const DATA_BASE  = 'quizzes/data/';
+    const TOPIC_ICONS = {
+      '01_objectscript-basics': '🔤',
+      '02_classes-objects':     '🏗️',
+      '03_globals':             '🗄️',
+      '04_sql':                 '📊',
+      '05_rest-api':            '🌐',
+      '06_interoperability':    '🔄',
+    };
+
+    // ── State ─────────────────────────────────────────────────────
+    let quizList        = [];
+    let quiz            = null;
+    let qIdx            = 0;
+    let selections      = [];
+    let checked         = [];
+    let timerSecs       = 0;
+    let timerHandle     = null;
+    let filterTopic     = null;   // null = all, or topic key string
+    let filterDomain    = null;   // null = all, or "T1"/"T2"/"T3"/"T4"
+    let shuffleEnabled  = JSON.parse(localStorage.getItem('iris-quiz-shuffle') || 'false');
+
+    // ── Theme ─────────────────────────────────────────────────────
+    function initTheme() {
+      const saved = localStorage.getItem('iris-quiz-theme');
+      const sys   = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      applyTheme(saved || sys);
+    }
+    function applyTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('iris-quiz-theme', t);
+    }
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+      document.querySelectorAll('.btn-icon').forEach(b => {
+        b.textContent = cur === 'dark' ? '🌙' : '☀️';
+      });
+    }
+    function themeIcon() {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    }
+
+    // ── Utilities ─────────────────────────────────────────────────
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+    // Convert backtick-wrapped text to <code> tags (HTML-escape first)
+    function renderText(text) {
+      return esc(text).replace(/`([^`]+)`/g, '<code class="ic">$1</code>');
+    }
+    function formatTime(s) {
+      const m  = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      return `${m}:${ss}`;
+    }
+    function isCorrect(question, sel) {
+      if (!sel || sel.length === 0) return false;
+      return [...question.answer].sort().join(',') === [...sel].sort().join(',');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      localStorage.setItem('iris-quiz-shuffle', JSON.stringify(shuffleEnabled));
+      renderHome();
+    }
+
+    // ── Scores (localStorage) ─────────────────────────────────────
+    function getScores() {
+      try { return JSON.parse(localStorage.getItem(SCORES_KEY) || '{}'); }
+      catch { return {}; }
+    }
+    function saveScore(id, score, total, domains) {
+      const scores = getScores();
+      const pct    = Math.round((score / total) * 100);
+      if (!scores[id] || score > scores[id].score) {
+        scores[id] = { score, total, pct, date: new Date().toLocaleDateString(), domains: domains || {} };
+        localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
+      }
+    }
+
+    function getDomainSummary() {
+      const DOMAIN_NAMES = { T1:'Architecture', T2:'Dev Lifecycle', T3:'Data Retrieval', T4:'Code' };
+      const scores = getScores();
+      const summary = {};
+      Object.values(scores).forEach(s => {
+        if (!s.domains) return;
+        Object.entries(s.domains).forEach(([d, v]) => {
+          const prefix = d.split('.')[0];
+          if (!summary[prefix]) summary[prefix] = { correct: 0, total: 0, name: DOMAIN_NAMES[prefix] || prefix };
+          summary[prefix].correct += v.correct;
+          summary[prefix].total   += v.total;
+        });
+      });
+      return summary;
+    }
+
+    // ── Mistakes (localStorage) ───────────────────────────────────
+    const MISTAKES_KEY = 'iris-quiz-mistakes';
+    function getMistakes() {
+      try { return JSON.parse(localStorage.getItem(MISTAKES_KEY) || '{}'); }
+      catch { return {}; }
+    }
+    function recordMistake(key, data) {
+      const m = getMistakes();
+      if (!m[key]) m[key] = { ...data, count: 0 };
+      m[key].count++;
+      m[key].lastSeen = new Date().toLocaleDateString();
+      localStorage.setItem(MISTAKES_KEY, JSON.stringify(m));
+    }
+
+    // ── Bookmarks (localStorage) ──────────────────────────────────
+    const BOOKMARKS_KEY = 'iris-quiz-bookmarks';
+    function getBookmarks() {
+      try { return JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '{}'); }
+      catch { return {}; }
+    }
+    function toggleBookmark(bmKey, data) {
+      const bm = getBookmarks();
+      if (bm[bmKey]) delete bm[bmKey];
+      else bm[bmKey] = data;
+      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bm));
+      renderQuiz();
+    }
+    function handleBookmark() {
+      const q = quiz.questions[qIdx];
+      const bmKey = `${quiz.id}:${qIdx}`;
+      toggleBookmark(bmKey, { quizId: quiz.id, quizTitle: quiz.title, question: q });
+    }
+    function startBookmarkQuiz() {
+      const bm = getBookmarks();
+      const questions = Object.values(bm).map(b => b.question);
+      if (questions.length === 0) return;
+      quiz = {
+        id: 'bookmarks', topic: 'bookmarks', topicLabel: 'Bookmarks', file: null,
+        title: `Bookmarked — ${questions.length} Questions`, difficulty: 'Mixed',
+        examDomains: [...new Set(questions.map(q => q.domain.split('.')[0]))],
+        questions
+      };
+      qIdx       = 0;
+      selections = quiz.questions.map(() => []);
+      checked    = quiz.questions.map(() => false);
+      timerSecs  = 0;
+      renderQuiz();
+      startTimer();
+    }
+
+    // ── Fetch ─────────────────────────────────────────────────────
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status} — ${url}`);
+      return res.json();
+    }
+
+    // ── Header builder ────────────────────────────────────────────
+    function buildHeader(title, subtitle, backFn, docsHref) {
+      let leftBtn = '';
+      if (backFn) {
+        leftBtn = `<button class="btn-back" onclick="${backFn}">← Back</button>`;
+      } else if (docsHref) {
+        leftBtn = `<a class="btn-back" href="${docsHref}" style="text-decoration:none">← Docs</a>`;
+      }
+      return `
+        <header class="app-header">
+          <div class="header-inner">
+            ${leftBtn}
+            <div class="header-left">
+              <span class="header-title">${title}</span>
+              ${subtitle ? `<span class="header-subtitle">${esc(subtitle)}</span>` : ''}
+            </div>
+            <button class="btn-icon" onclick="toggleTheme()" title="Toggle dark mode">${themeIcon()}</button>
+          </div>
+        </header>`;
+    }
+
+    // ── Timer ─────────────────────────────────────────────────────
+    function startTimer() {
+      stopTimer();
+      timerHandle = setInterval(() => {
+        timerSecs++;
+        const el = document.getElementById('timer-display');
+        if (el) el.textContent = formatTime(timerSecs);
+      }, 1000);
+    }
+    function stopTimer() {
+      if (timerHandle) { clearInterval(timerHandle); timerHandle = null; }
+    }
+
+    // ── HOME SCREEN ───────────────────────────────────────────────
+    async function showHome() {
+      stopTimer();
+      const app = document.getElementById('app');
+      app.innerHTML =
+        buildHeader('🧠 IRIS Quiz', 'InterSystems IRIS Development Professional', null, './') +
+        `<main class="main-content">
+          <div id="stats-bar" class="stats-bar">
+            <div class="loading-spinner">⏳</div>
+          </div>
+          <div id="mock-exam-banner"></div>
+          <div id="domain-dashboard"></div>
+          <div id="mistakes-panel"></div>
+          <div id="bookmarks-bar"></div>
+          <div id="filter-bar" class="filter-bar"></div>
+          <div id="quiz-grid" class="quiz-grid"></div>
+        </main>`;
+
+      try {
+        quizList = await fetchJSON(DATA_BASE + 'index.json');
+        renderHome();
+      } catch (e) {
+        const isCors = location.protocol === 'file:';
+        document.getElementById('stats-bar').innerHTML = '';
+        document.getElementById('quiz-grid').innerHTML =
+          (isCors ? `<div class="cors-note" style="grid-column:1/-1">
+            ⚠️ <strong>Note:</strong> Open via a local server or GitHub Pages —
+            direct <code>file://</code> access won't load quizzes due to browser CORS policy.
+          </div>` : '') +
+          `<div class="error-card" style="grid-column:1/-1">
+            ❌ Failed to load quiz list: ${esc(e.message)}
+          </div>`;
+      }
+    }
+
+    function setFilter(type, value) {
+      if (type === 'topic')  filterTopic  = (filterTopic  === value ? null : value);
+      if (type === 'domain') filterDomain = (filterDomain === value ? null : value);
+      renderHome();
+    }
+
+    function renderHome() {
+      const total  = quizList.reduce((s, q) => s + q.totalQuestions, 0);
+      const scores = getScores();
+
+      document.getElementById('stats-bar').innerHTML = `
+        <div class="stat">📋 ${quizList.length} quizzes available</div>
+        <div class="stat">❓ ${total} total questions</div>
+        <button class="stat shuffle-toggle ${shuffleEnabled ? 'active' : ''}" onclick="toggleShuffle()">🔀 Shuffle ${shuffleEnabled ? 'ON' : 'OFF'}</button>`;
+
+      const totalLoaded = quizList.length;
+      document.getElementById('mock-exam-banner').innerHTML = `
+        <div class="mock-exam-banner">
+          <div>
+            <h3>🎯 Mock Exam Mode</h3>
+            <p>Randomly mixed questions from all topics — simulate the real cert exam</p>
+          </div>
+          <div class="mock-exam-actions">
+            <button class="btn-mock" onclick="startMockExam(20)">⚡ Quick (20q)</button>
+            <button class="btn-mock" onclick="startMockExam(40)">📝 Practice (40q)</button>
+            <button class="btn-mock" onclick="startMockExam(62)" ${totalLoaded < 3 ? 'disabled title="Need more quizzes"' : ''}>🏆 Full Mock (62q)</button>
+          </div>
+        </div>`;
+
+      // Domain dashboard
+      const domSummary = getDomainSummary();
+      const domEntries = Object.keys(domSummary).sort();
+      document.getElementById('domain-dashboard').innerHTML = domEntries.length === 0 ? '' : `
+        <div class="domain-dashboard">
+          <div class="section-title" style="margin-bottom:12px">📊 Domain Progress</div>
+          ${domEntries.map(d => {
+            const v = domSummary[d];
+            const pct = Math.round((v.correct / v.total) * 100);
+            const color = pct >= 65 ? 'var(--success)' : pct >= 40 ? 'var(--warning)' : 'var(--error)';
+            return `<div class="domain-progress-row">
+              <div class="dp-label"><span class="domain-tag">${esc(d)}</span><span>${esc(v.name)}</span></div>
+              <div class="dp-bar-track"><div class="dp-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+              <span class="dp-pct">${pct}%</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+
+      // Mistakes panel
+      const allMistakes = Object.values(getMistakes())
+        .filter(m => m.count > 0)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+      document.getElementById('mistakes-panel').innerHTML = allMistakes.length === 0 ? '' : `
+        <div class="mistakes-panel">
+          <div class="section-title" style="margin-bottom:12px">⚠️ Most Missed Questions</div>
+          ${allMistakes.map(m => `
+            <div class="mistake-item">
+              <div class="mistake-top">
+                <span class="domain-tag">${esc(m.domain)}</span>
+                <span class="mistake-count">❌ ${m.count}× missed</span>
+                <span class="mistake-quiz">${esc(m.quizTitle)}</span>
+              </div>
+              <div class="mistake-q">${renderText(m.question.length > 100 ? m.question.slice(0,97)+'…' : m.question)}</div>
+            </div>`).join('')}
+        </div>`;
+
+      // Bookmarks bar
+      const bmCount = Object.keys(getBookmarks()).length;
+      document.getElementById('bookmarks-bar').innerHTML = bmCount === 0 ? '' : `
+        <div class="bookmarks-bar">
+          <button class="btn-secondary" onclick="startBookmarkQuiz()">📌 Review Bookmarks (${bmCount})</button>
+          <span style="color:var(--text-muted);font-size:0.85rem">Bookmarked questions saved across all quizzes</span>
+        </div>`;
+
+      // Build unique topics + domains from quizList
+      const topics  = [...new Set(quizList.map(q => q.topic))];
+      const domains = [...new Set(quizList.flatMap(q => q.examDomains.map(d => d.split('.')[0])))].sort();
+
+      const topicPills = topics.map(t => {
+        const icon = TOPIC_ICONS[t] || '📚';
+        const label = quizList.find(q => q.topic === t)?.topicLabel || t;
+        const active = filterTopic === t ? 'active' : '';
+        return `<button class="filter-pill ${active}" onclick="setFilter('topic','${t}')">${icon} ${esc(label)}</button>`;
+      }).join('');
+
+      const domainPills = domains.map(d => {
+        const active = filterDomain === d ? 'active' : '';
+        return `<button class="filter-pill ${active}" onclick="setFilter('domain','${d}')">${esc(d)}</button>`;
+      }).join('');
+
+      const hasFilter = filterTopic || filterDomain;
+      const clearBtn  = hasFilter
+        ? `<button class="filter-pill" onclick="filterTopic=null;filterDomain=null;renderHome()" style="margin-left:4px">✕ Clear</button>`
+        : '';
+
+      document.getElementById('filter-bar').innerHTML = `
+        <div class="filter-row">
+          <span class="filter-label">📚 Topic</span>
+          <div class="filter-pills">${topicPills}</div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">🏷 Domain</span>
+          <div class="filter-pills">${domainPills}${clearBtn}</div>
+        </div>`;
+
+      // Filter quizzes
+      const visible = quizList.filter(q => {
+        if (filterTopic  && q.topic !== filterTopic) return false;
+        if (filterDomain && !q.examDomains.some(d => d.startsWith(filterDomain))) return false;
+        return true;
+      });
+
+      if (visible.length === 0) {
+        document.getElementById('quiz-grid').innerHTML =
+          `<div class="no-results">🔍 No quizzes match the selected filters.</div>`;
+        return;
+      }
+
+      document.getElementById('quiz-grid').innerHTML = visible.map(q => {
+        const icon = TOPIC_ICONS[q.topic] || '📚';
+        const best = scores[q.id];
+        const bestHTML = best
+          ? `<span class="best-score">🏆 Best: ${best.score}/${best.total} (${best.pct}%)</span>`
+          : `<span style="color:var(--text-muted);font-size:0.8rem">Not attempted</span>`;
+        const domainTags = q.examDomains.map(d => `<span class="domain-tag">${esc(d)}</span>`).join('');
+        return `
+          <div class="quiz-card">
+            <div class="card-top">
+              <span class="topic-icon">${icon}</span>
+              <div class="card-titles">
+                <div class="card-topic">${esc(q.topicLabel)}</div>
+                <div class="card-title">${esc(q.title)}</div>
+              </div>
+            </div>
+            <span class="difficulty-badge">${esc(q.difficulty)}</span>
+            <div class="domain-tags">${domainTags}</div>
+            <div class="card-meta">
+              <span>❓ ${q.totalQuestions} questions</span>
+              ${bestHTML}
+            </div>
+            <button class="btn-primary" onclick="startQuiz('${esc(q.file)}')">Start Quiz →</button>
+          </div>`;
+      }).join('');
+    }
+
+    // ── ObjectScript Syntax Colorizer (single-pass tokenizer) ─────
+    // Processes raw code text — no double-replacement bug
+    function colorizeObjectScript(code) {
+      const h = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const KEYWORDS = /^(SET|WRITE|KILL|DO|IF|ELSE|ELSEIF|FOR|WHILE|QUIT|RETURN|THROW|TRY|CATCH|MERGE|NEW|GOTO|HALT|HANG|XECUTE|ClassMethod|Method|Property|Parameter|Extends|As)$/i;
+      // Master token regex — order = priority
+      const RE = /("(?:[^"\\]|\\.)*")|('(?:[^'\\]|\\.)*')|(\/\/[^\n]*)|(\$\$\$\w+)|(\$[A-Za-z][A-Za-z0-9]*)|(\b[A-Za-z][A-Za-z0-9]*\b)|(##class)|(\b\d+(?:\.\d+)?\b)/g;
+      let out = '', last = 0, m;
+      RE.lastIndex = 0;
+      while ((m = RE.exec(code)) !== null) {
+        out += h(code.slice(last, m.index));   // unmatched gap
+        last = m.index + m[0].length;
+        const [, dqStr, sqStr, comment, macro, builtin, word, classKw, num] = m;
+        if      (dqStr)   out += `<span style="color:#98c379">${h(dqStr)}</span>`;
+        else if (sqStr)   out += `<span style="color:#98c379">${h(sqStr)}</span>`;
+        else if (comment) out += `<span style="color:#6a737d;font-style:italic">${h(comment)}</span>`;
+        else if (macro)   out += `<span style="color:#e5c07b;font-weight:600">${h(macro)}</span>`;
+        else if (builtin) out += `<span style="color:#56b6c2">${h(builtin)}</span>`;
+        else if (word)    out += KEYWORDS.test(word)
+                                 ? `<span style="color:#c678dd;font-weight:600">${h(word)}</span>`
+                                 : h(word);
+        else if (classKw) out += `<span style="color:#e06c75;font-weight:600">${h(classKw)}</span>`;
+        else if (num)     out += `<span style="color:#d19a66">${h(num)}</span>`;
+        else              out += h(m[0]);
+      }
+      out += h(code.slice(last));
+      return out;
+    }
+
+    // ── START QUIZ ────────────────────────────────────────────────
+    async function startQuiz(file) {
+      const app = document.getElementById('app');
+      app.innerHTML =
+        buildHeader('🧠 IRIS Quiz', '') +
+        `<main class="main-content">
+          <div class="loading-state">
+            <div class="loading-spinner">⏳</div>
+            <p>Loading quiz…</p>
+          </div>
+        </main>`;
+
+      try {
+        quiz       = await fetchJSON(DATA_BASE + file);
+        if (shuffleEnabled) {
+          quiz = { ...quiz, questions: shuffleArray(quiz.questions).map(q => ({ ...q, options: shuffleArray(q.options) })) };
+        }
+        qIdx       = 0;
+        selections = quiz.questions.map(() => []);
+        checked    = quiz.questions.map(() => false);
+        timerSecs  = 0;
+        renderQuiz();
+        startTimer();
+      } catch (e) {
+        app.innerHTML =
+          buildHeader('🧠 IRIS Quiz', '') +
+          `<main class="main-content">
+            <div class="error-card">❌ Failed to load quiz: ${esc(e.message)}</div>
+            <div style="margin-top:16px">
+              <button class="btn-secondary" onclick="showHome()">← Back to Home</button>
+            </div>
+          </main>`;
+      }
+    }
+
+    // ── QUIZ SCREEN ───────────────────────────────────────────────
+    function renderQuiz() {
+      const q       = quiz.questions[qIdx];
+      const total   = quiz.questions.length;
+      const isLast  = qIdx === total - 1;
+      const isChk   = checked[qIdx];
+      const sel     = selections[qIdx];
+      const hasSel  = sel.length > 0;
+      const progress = (qIdx / total) * 100;
+
+      // Options
+      const optionsHTML = q.options.map(opt => {
+        let cls = 'option-card';
+        if (isChk) {
+          cls += ' disabled';
+          const inAns  = q.answer.includes(opt.id);
+          const picked = sel.includes(opt.id);
+          if      (inAns && picked)  cls += ' correct';
+          else if (!inAns && picked) cls += ' wrong';
+          else if (inAns && !picked) cls += ' missed';
+        } else {
+          if (sel.includes(opt.id)) cls += ' selected';
+        }
+        const click = isChk ? '' : `onclick="toggleOption('${opt.id}')"`;
+        return `
+          <div class="${cls}" ${click}>
+            <span class="option-id">${esc(opt.id)}</span>
+            <span class="option-text">${renderText(opt.text)}</span>
+          </div>`;
+      }).join('');
+
+      // Explanation (after check)
+      const explanHTML = isChk
+        ? `<div class="explanation-box">
+            <div class="expl-label">💡 Explanation</div>
+            <div>${renderText(q.explanation)}</div>
+           </div>`
+        : '';
+
+      // Action button
+      const actionHTML = isChk
+        ? `<button class="btn-primary" onclick="nextQuestion()">${isLast ? '🏁 See Results' : 'Next Question →'}</button>`
+        : `<button class="btn-primary" id="check-btn" ${hasSel ? '' : 'disabled'} onclick="checkAnswer()">Check Answer</button>`;
+
+      const typeLabel = q.type === 'MC' ? 'MC — Single Answer' : 'MR — Select All That Apply';
+      const bmKey = `${quiz.id}:${qIdx}`;
+      const isBookmarked = !!getBookmarks()[bmKey];
+
+      document.getElementById('app').innerHTML = `
+        <div class="quiz-header">
+          <div class="quiz-header-inner">
+            <button class="btn-back" onclick="confirmBack()">← Back</button>
+            <div class="quiz-header-info">
+              <div class="qtitle">${esc(quiz.title)}</div>
+              <div class="qcounter">Q ${qIdx + 1} of ${total}</div>
+            </div>
+            <div class="timer" id="timer-display">${formatTime(timerSecs)}</div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:${progress}%"></div>
+          </div>
+        </div>
+        <main class="quiz-main">
+          <div class="question-card">
+            <div class="question-meta">
+              <span class="domain-tag">${esc(q.domain)}</span>
+              <span class="type-badge">${typeLabel}</span>
+              <button class="btn-bookmark ${isBookmarked ? 'active' : ''}" onclick="handleBookmark()" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}">${isBookmarked ? '🔖' : '🏷️'}</button>
+            </div>
+            <div class="question-text">${renderText(q.question)}</div>
+            ${q.code !== null
+              ? `<div class="code-wrapper"><div class="code-lang-bar">ObjectScript</div><pre><code id="qcode" class="nohighlight"></code></pre></div>`
+              : ''}
+          </div>
+          <div class="options-list">${optionsHTML}</div>
+          ${explanHTML}
+          <div class="action-bar">${actionHTML}</div>
+        </main>`;
+
+      // Render code block — single-pass tokenizer, no hljs needed
+      if (q.code !== null) {
+        const codeEl = document.getElementById('qcode');
+        if (codeEl) codeEl.innerHTML = colorizeObjectScript(q.code);
+      }
+    }
+
+    function toggleOption(id) {
+      const q   = quiz.questions[qIdx];
+      const sel = selections[qIdx];
+      if (q.type === 'MC') {
+        selections[qIdx] = [id];
+      } else {
+        const i = sel.indexOf(id);
+        if (i >= 0) sel.splice(i, 1);
+        else sel.push(id);
+      }
+      renderQuiz();
+    }
+
+    function checkAnswer() {
+      checked[qIdx] = true;
+      const q = quiz.questions[qIdx];
+      if (!isCorrect(q, selections[qIdx])) {
+        recordMistake(`${quiz.id}:${qIdx}`, {
+          question: q.question,
+          domain: q.domain,
+          quizTitle: quiz.title
+        });
+      }
+      renderQuiz();
+    }
+
+    function nextQuestion() {
+      if (qIdx < quiz.questions.length - 1) {
+        qIdx++;
+        renderQuiz();
+      } else {
+        showResults();
+      }
+    }
+
+    function confirmBack() {
+      if (confirm('Leave quiz? Your current progress will be lost.')) {
+        stopTimer();
+        showHome();
+      }
+    }
+
+    // ── RESULTS SCREEN ────────────────────────────────────────────
+    function showResults() {
+      stopTimer();
+      const totalQ = quiz.questions.length;
+      let correct  = 0;
+      quiz.questions.forEach((q, i) => { if (isCorrect(q, selections[i])) correct++; });
+      const pct  = Math.round((correct / totalQ) * 100);
+      const pass = pct >= 65;
+
+      // Domain breakdown (must be computed before saveScore)
+      const domains = {};
+      quiz.questions.forEach((q, i) => {
+        if (!domains[q.domain]) domains[q.domain] = { correct: 0, total: 0 };
+        domains[q.domain].total++;
+        if (isCorrect(q, selections[i])) domains[q.domain].correct++;
+      });
+      saveScore(quiz.id, correct, totalQ, domains);
+      const domainRows = Object.keys(domains).sort().map(d => {
+        const v    = domains[d];
+        const dpct = Math.round((v.correct / v.total) * 100);
+        return `<tr>
+          <td><span class="domain-tag">${esc(d)}</span></td>
+          <td class="domain-score">${v.correct} / ${v.total}</td>
+          <td>${dpct}%</td>
+          <td><div class="domain-bar-track">
+            <div class="domain-bar-fill" style="width:${dpct}%"></div>
+          </div></td>
+        </tr>`;
+      }).join('');
+
+      // Question review
+      const reviewItems = quiz.questions.map((q, i) => {
+        const ok       = isCorrect(q, selections[i]);
+        const userSel  = selections[i];
+        const makeLabel = (ids) => ids.map(id => {
+          const opt = q.options.find(o => o.id === id);
+          return opt ? `${id}) ${opt.text}` : id;
+        }).join(', ');
+        const userAns  = userSel.length ? makeLabel(userSel) : '(no answer)';
+        const corrAns  = makeLabel(q.answer);
+        const shortQ   = q.question.length > 110 ? q.question.slice(0, 107) + '…' : q.question;
+
+        return `
+          <div class="review-item ${ok ? 'correct' : 'wrong'}">
+            <div class="review-top">
+              <span class="review-num">Q${i + 1}</span>
+              <span class="domain-tag">${esc(q.domain)}</span>
+              <span class="type-badge">${q.type}</span>
+              <span class="review-result ${ok ? 'ok' : 'ko'}">${ok ? '✅ Correct' : '❌ Wrong'}</span>
+            </div>
+            <div class="review-q">${renderText(shortQ)}</div>
+            <div class="review-answers">
+              <div class="ra-row">
+                <span class="ra-label">Your answer:</span>
+                <span class="${ok ? 'ra-val-correct' : 'ra-val-wrong'}">${esc(userAns)}</span>
+              </div>
+              ${!ok ? `<div class="ra-row">
+                <span class="ra-label">Correct:</span>
+                <span class="ra-val-correct">${esc(corrAns)}</span>
+              </div>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+
+      const wrongCount = totalQ - correct;
+
+      document.getElementById('app').innerHTML =
+        buildHeader('Quiz Results', quiz.title) +
+        `<main class="results-main">
+          <div class="results-hero">
+            <div class="score-circle">
+              <span class="score-num">${correct}</span>
+              <span class="score-den">/ ${totalQ}</span>
+            </div>
+            <div class="score-pct">${pct}%</div>
+            <div class="grade-badge ${pass ? 'grade-pass' : 'grade-fail'}">${pass ? 'Pass ✅' : 'Needs Review ❌'}</div>
+            <div class="time-display">⏱ Time taken: ${formatTime(timerSecs)}</div>
+          </div>
+
+          <div class="section-title">📊 Domain Breakdown</div>
+          <table class="domain-table">
+            <thead><tr><th>Domain</th><th>Score</th><th>%</th><th>Progress</th></tr></thead>
+            <tbody>${domainRows}</tbody>
+          </table>
+
+          <div class="section-title">📝 Question Review</div>
+          <div class="review-list">${reviewItems}</div>
+
+          <div class="results-actions">
+            <button class="btn-primary" onclick="retryQuiz()">🔄 Retry Quiz</button>
+            ${wrongCount > 0 ? `<button class="btn-primary" onclick="retryWrong()" style="background:var(--error);border-color:var(--error)">🎯 Retry Wrong (${wrongCount})</button>` : ''}
+            <button class="btn-secondary" onclick="showDetailedReview()">📖 Full Review</button>
+            <button class="btn-secondary" onclick="showHome()">🏠 Home</button>
+          </div>
+        </main>`;
+    }
+
+    function retryQuiz() {
+      qIdx       = 0;
+      selections = quiz.questions.map(() => []);
+      checked    = quiz.questions.map(() => false);
+      timerSecs  = 0;
+      renderQuiz();
+      startTimer();
+    }
+
+    // ── RETRY WRONG ANSWERS ───────────────────────────────────────
+    function retryWrong() {
+      const wrongQs = quiz.questions.filter((q, i) => !isCorrect(q, selections[i]));
+      if (wrongQs.length === 0) return;
+      quiz = { ...quiz, id: quiz.id + '-retry', title: quiz.title + ' — Wrong Answers', questions: wrongQs };
+      qIdx       = 0;
+      selections = quiz.questions.map(() => []);
+      checked    = quiz.questions.map(() => false);
+      timerSecs  = 0;
+      renderQuiz();
+      startTimer();
+    }
+
+    // ── DETAILED REVIEW SCREEN ────────────────────────────────────
+    function showDetailedReview() {
+      const cards = quiz.questions.map((q, i) => {
+        const ok = isCorrect(q, selections[i]);
+        const optHTML = q.options.map(opt => {
+          let cls = 'option-card disabled';
+          const inAns  = q.answer.includes(opt.id);
+          const picked = selections[i].includes(opt.id);
+          if      (inAns && picked)  cls += ' correct';
+          else if (!inAns && picked) cls += ' wrong';
+          else if (inAns && !picked) cls += ' missed';
+          return `<div class="${cls}">
+            <span class="option-id">${esc(opt.id)}</span>
+            <span class="option-text">${renderText(opt.text)}</span>
+          </div>`;
+        }).join('');
+
+        return `
+          <div class="review-detail-card ${ok ? 'rd-correct' : 'rd-wrong'}">
+            <div class="review-detail-header">
+              <span class="review-num">Q${i + 1}</span>
+              <span class="domain-tag">${esc(q.domain)}</span>
+              <span class="type-badge">${q.type === 'MC' ? 'MC — Single Answer' : 'MR — Select All'}</span>
+              <span class="review-result ${ok ? 'ok' : 'ko'}">${ok ? '✅ Correct' : '❌ Wrong'}</span>
+            </div>
+            <div class="question-text" style="margin-bottom:14px">${renderText(q.question)}</div>
+            ${q.code !== null ? `<div class="code-wrapper"><div class="code-lang-bar">ObjectScript</div><pre><code data-review-idx="${i}" class="nohighlight"></code></pre></div>` : ''}
+            <div class="options-list" style="margin-bottom:12px">${optHTML}</div>
+            <div class="explanation-box">
+              <div class="expl-label">💡 Explanation</div>
+              <div>${renderText(q.explanation)}</div>
+            </div>
+          </div>`;
+      }).join('');
+
+      document.getElementById('app').innerHTML =
+        buildHeader('📖 Full Review', quiz.title, 'showResults()') +
+        `<main class="main-content">
+          <div class="review-detail-list">${cards}</div>
+          <div class="results-actions" style="margin-top:24px">
+            <button class="btn-secondary" onclick="showResults()">← Back to Results</button>
+            <button class="btn-secondary" onclick="showHome()">🏠 Home</button>
+          </div>
+        </main>`;
+
+      // Render code blocks after innerHTML is set
+      document.querySelectorAll('[data-review-idx]').forEach(el => {
+        const q = quiz.questions[parseInt(el.dataset.reviewIdx)];
+        if (q.code) el.innerHTML = colorizeObjectScript(q.code);
+      });
+    }
+
+    // ── MOCK EXAM ─────────────────────────────────────────────────
+    async function startMockExam(n) {
+      const app = document.getElementById('app');
+      app.innerHTML =
+        buildHeader('🎯 Mock Exam', `Preparing ${n} questions…`) +
+        `<main class="main-content">
+          <div class="loading-state">
+            <div class="loading-spinner">⏳</div>
+            <p>Loading questions from all topics…</p>
+          </div>
+        </main>`;
+      try {
+        const results = await Promise.all(quizList.map(q => fetchJSON(DATA_BASE + q.file)));
+        const pool = results.flatMap(q => q.questions);
+        // Fisher-Yates shuffle
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        const selected = pool.slice(0, Math.min(n, pool.length));
+        if (shuffleEnabled) pool.forEach(q => { q.options = shuffleArray(q.options); });
+        selected.forEach((q, i) => { q._origId = q.id; q.id = i + 1; });
+        quiz       = { id: 'mock-exam', topic: 'mock', topicLabel: 'Mock Exam', title: `Mock Exam — ${selected.length} Questions`, difficulty: 'Mixed', examDomains: ['T1','T2','T3','T4'], questions: selected };
+        qIdx       = 0;
+        selections = quiz.questions.map(() => []);
+        checked    = quiz.questions.map(() => false);
+        timerSecs  = 0;
+        renderQuiz();
+        startTimer();
+      } catch (e) {
+        app.innerHTML =
+          buildHeader('🎯 Mock Exam', '') +
+          `<main class="main-content">
+            <div class="error-card">❌ ${esc(e.message)}</div>
+            <div style="margin-top:16px"><button class="btn-secondary" onclick="showHome()">← Back</button></div>
+          </main>`;
+      }
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    initTheme();
+    showHome();
+  </script>
+</body>
+</html>
