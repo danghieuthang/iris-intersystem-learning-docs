@@ -2683,7 +2683,9 @@ Phân vùng dữ liệu trên nhiều đĩa: <code>^Orders(2023,*)</code> → <c
 <p><strong>Ví dụ use case — Global mapping:</strong><br />
 Chia sẻ <code>^SharedConfig</code> giữa nhiều application namespaces mà không cần copy dữ liệu.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// Check which database a global maps to (run in %SYS)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>WRITE ##class(Config.MapGlobals).Get(&quot;MYAPP&quot;, &quot;^SharedData&quot;, .props)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>// Note: global name does NOT include the ^ prefix
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>SET sc = ##class(Config.MapGlobals).Get(&quot;MYAPP&quot;, &quot;SharedData&quot;, .props)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>ZWRITE props
 </span></code></pre></div>
 <hr />
 <h2 id="mirroring-high-availability">Mirroring (High Availability)<a class="headerlink" href="#mirroring-high-availability" title="Permanent link">&para;</a></h2>
@@ -2817,12 +2819,18 @@ hoặc trực tiếp trong file <code>iris.cpf</code>.</p>
 - Global/package/routine mappings
 - Memory settings (buffers, gmheap)
 - Startup settings và journal configuration</p>
-<p><strong>Dùng trong CI/CD với lệnh <code>MERGE</code>:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>// Apply config changes from a partial CPF file (run as %SYS)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>DO ##class(SYS.Config.CPF).Merge(&quot;D:\configs\myapp.cpf&quot;)
+<p><strong>Dùng trong CI/CD với lệnh <code>iris merge</code>:</strong></p>
+<p>CPF Merge được thực hiện qua <strong>command-line tool</strong> (không phải ObjectScript API):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Apply config changes from a partial CPF merge file (Windows &amp; Linux)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\myapp-delta.cpf&quot;</span>
+</span></code></pre></div>
+<p>Merge file là một partial CPF chỉ chứa các sections cần thay đổi, ví dụ:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[config]
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>globals=0,0,800,0,0,0
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>gmheap=256000
 </span></code></pre></div></p>
 <blockquote>
-<p>⚠️ Không edit <code>iris.cpf</code> bằng tay trên hệ thống đang chạy. Dùng Management Portal hoặc <code>^%UTILC</code>.</p>
+<p>⚠️ Không edit <code>iris.cpf</code> bằng tay trên hệ thống đang chạy. Dùng Management Portal, Config API, hoặc <code>iris merge</code>.</p>
 </blockquote>
 <hr />
 <h2 id="iris-upgrade-implications">IRIS Upgrade Implications<a class="headerlink" href="#iris-upgrade-implications" title="Permanent link">&para;</a></h2>
@@ -2882,42 +2890,42 @@ hoặc trực tiếp trong file <code>iris.cpf</code>.</p>
 <li>⚠️ Dùng <strong>Virtual IP</strong> (mirror IP) trong connection strings, không dùng IP vật lý của từng server</li>
 <li>⚠️ Global Buffers quá nhỏ là nguyên nhân phổ biến nhất gây performance bottleneck</li>
 <li>💡 Tách <strong>code database</strong> khỏi <strong>data database</strong> giúp backup, restore, và maintain dễ hơn</li>
-<li>💡 Dùng lệnh <code>MERGE</code> trên CPF file để apply cấu hình tự động trong CI/CD pipeline</li>
+<li>💡 Dùng lệnh <code>iris merge IRIS merge-file.cpf</code> để apply cấu hình tự động trong CI/CD pipeline</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>// --- Check current namespace ---
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>WRITE $NAMESPACE, !
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>// --- Switch namespace ---
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ZNSPACE &quot;MYAPP&quot;
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>// --- Switch to system namespace ---
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>// --- List all databases (must be in %SYS) ---
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>DO ##class(SYS.Database).%GetAll(.dbList)
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>SET db = &quot;&quot;
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>FOR {
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    SET db = $ORDER(dbList(db))
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    QUIT:db=&quot;&quot;
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    WRITE db, !
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>}
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>// --- Check mirror status (must be in %SYS) ---
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>DO ##class(SYS.Mirror).GetInfo(.info)
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>ZWRITE info
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>// --- Check lock table usage ---
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>WRITE ##class(%SYSTEM.Lock).GetLockTableUsed(), !
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>
-</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>// --- Check per-process memory limit ---
-</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>WRITE $ZSTORAGE, !
-</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
-</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>// --- Apply CPF merge for CI/CD (must be in %SYS) ---
-</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>DO ##class(SYS.Config.CPF).Merge(&quot;D:\configs\myapp-delta.cpf&quot;)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>// --- Check current namespace ---
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>WRITE $NAMESPACE, !
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>// --- Switch namespace ---
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>ZNSPACE &quot;MYAPP&quot;
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>// --- Switch to system namespace ---
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>ZNSPACE &quot;%SYS&quot;
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>// --- List all databases (must be in %SYS) ---
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>ZNSPACE &quot;%SYS&quot;
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>DO ##class(SYS.Database).%GetAll(.dbList)
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>SET db = &quot;&quot;
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>FOR {
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    SET db = $ORDER(dbList(db))
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    QUIT:db=&quot;&quot;
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    WRITE db, !
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>}
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>// --- Check mirror status (accessible from any namespace) ---
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>WRITE $SYSTEM.Mirror.GetMemberStatus(), !
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>WRITE $SYSTEM.Mirror.IsPrimary(), !
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>WRITE $SYSTEM.Mirror.GetMemberType(), !
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>// --- Check lock table usage ---
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>WRITE ##class(%SYSTEM.Lock).GetLockTableUsed(), !
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>// --- Check per-process memory limit ---
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>WRITE $ZSTORAGE, !
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>// --- Apply CPF merge for CI/CD (command-line, not ObjectScript) ---
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>// Run from OS shell: iris merge IRIS &quot;D:\configs\myapp-delta.cpf&quot;
 </span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>

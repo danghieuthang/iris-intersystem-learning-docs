@@ -1,0 +1,192 @@
+{
+  "id": "10-architecture-q1",
+  "topic": "10_architecture",
+  "topicLabel": "Architecture & Database Design",
+  "title": "Quiz 01 — Architecture & Database Design",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.1", "T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Trong IRIS, sự khác biệt chính giữa 'Namespace' và 'Database' là gì?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Namespace là file vật lý (.IRIS.DAT); Database là container logic để chạy code"},
+        {"id": "B", "text": "Namespace là điểm truy cập logic; Database là file vật lý (.IRIS.DAT) lưu globals và routines trên đĩa"},
+        {"id": "C", "text": "Namespace và Database là hai tên khác nhau cho cùng một khái niệm"},
+        {"id": "D", "text": "Namespace chứa dữ liệu; Database chứa code"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "Namespace là điểm truy cập logic — nơi bạn viết code và query. Database là file vật lý (.IRIS.DAT) trên đĩa thực sự lưu globals và routines. Một namespace ánh xạ tới một hoặc nhiều databases vật lý."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Bạn cần chia sẻ global ^SharedConfig giữa 3 application namespaces khác nhau mà không cần sao chép dữ liệu. Loại mapping nào phù hợp nhất?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Package mapping"},
+        {"id": "B", "text": "Routine mapping"},
+        {"id": "C", "text": "Global mapping"},
+        {"id": "D", "text": "Subscript mapping"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "Global mapping cho phép một global từ database khác 'xuất hiện' trong namespace hiện tại. Đây là cách chia sẻ ^SharedConfig giữa nhiều namespaces mà không cần duplicate dữ liệu."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Bạn có global ^Orders với dữ liệu rất lớn và muốn lưu ^Orders(2023,*) sang ARCHIVE_DB và ^Orders(2024,*) sang CURRENT_DB. Loại mapping nào được dùng?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Global mapping"},
+        {"id": "B", "text": "Package mapping"},
+        {"id": "C", "text": "Subscript mapping"},
+        {"id": "D", "text": "Routine mapping"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "Subscript mapping cho phép map các subscript khác nhau của cùng một global tới các databases khác nhau. Đây chính là use case phân vùng dữ liệu trên nhiều đĩa theo subscript."
+    },
+    {
+      "id": 4,
+      "type": "MR",
+      "question": "Trong một mirror set của IRIS, thành phần nào sau đây có thể có? (chọn tất cả đúng)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Primary member — instance đang phục vụ read/write requests"},
+        {"id": "B", "text": "Backup/Failover member — standby instance nhận journal từ primary"},
+        {"id": "C", "text": "Async member — read-only copy dùng cho disaster recovery"},
+        {"id": "D", "text": "Arbiter — giải quyết tie-breaking khi mất kết nối"},
+        {"id": "E", "text": "Shard coordinator — quản lý phân phối dữ liệu giữa các nodes"}
+      ],
+      "answer": ["A", "B", "C", "D"],
+      "domain": "T1.1",
+      "explanation": "Mirror set gồm: Primary (active), Backup/Failover (standby), Async member (DR), và Arbiter (tiebreaker). Shard coordinator thuộc về Sharding, không phải Mirroring."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Tại sao nên dùng Virtual IP (mirror IP) trong connection strings thay vì IP vật lý của từng server?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Virtual IP nhanh hơn vì bỏ qua tầng mạng vật lý"},
+        {"id": "B", "text": "Khi failover xảy ra, Virtual IP tự động chuyển sang backup server — ứng dụng không cần thay đổi connection string"},
+        {"id": "C", "text": "Virtual IP là yêu cầu bắt buộc của IRIS — không dùng thì không kết nối được"},
+        {"id": "D", "text": "Virtual IP cho phép load balancing tự động giữa primary và backup"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "Khi primary down, backup được promote lên và Virtual IP tự động chuyển sang server mới. Ứng dụng dùng Virtual IP sẽ không cần thay đổi connection string, đảm bảo transparent failover."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Đâu là sự khác biệt cốt lõi giữa Mirroring và Sharding trong IRIS?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Mirroring dùng cho môi trường cloud; Sharding dùng cho on-premise"},
+        {"id": "B", "text": "Mirroring = High Availability (dữ liệu replicated full trên 2 nodes); Sharding = Horizontal Scale-out (dữ liệu partitioned trên N nodes)"},
+        {"id": "C", "text": "Mirroring tăng performance đọc; Sharding tăng performance ghi"},
+        {"id": "D", "text": "Mirroring và Sharding là hai tên khác nhau của cùng một tính năng"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "Mirroring = HA: 2 nodes (+ async), dữ liệu giống nhau ở cả 2 (full copy), có automatic failover. Sharding = Scalability: N nodes, mỗi node giữ 1 phần dữ liệu (partitioned), không có automatic failover khi 1 node fail."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "Setting 'Global Buffers' trong IRIS ảnh hưởng đến điều gì?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Kích thước tối đa của một global có thể lưu trữ"},
+        {"id": "B", "text": "Số lượng global variables tối đa có thể mở cùng lúc"},
+        {"id": "C", "text": "Memory cache cho database blocks — lớn hơn thì ít phải đọc đĩa hơn"},
+        {"id": "D", "text": "Giới hạn bộ nhớ cho mỗi process khi truy cập globals"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.1",
+      "explanation": "Global Buffers là memory cache cho database blocks. Buffer lớn hơn → nhiều data được giữ trong RAM → ít phải đọc từ đĩa → performance tốt hơn. Global Buffers quá nhỏ là nguyên nhân phổ biến nhất gây performance bottleneck."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "iris.cpf là gì và vai trò của nó trong CI/CD?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "File log của IRIS — dùng để debug production issues"},
+        {"id": "B", "text": "File cấu hình chính của một IRIS instance — source of truth cho databases, namespaces, mappings, memory settings; dùng lệnh 'iris merge' để apply config tự động trong CI/CD"},
+        {"id": "C", "text": "File chứa tất cả ObjectScript code đã compile — cần deploy lên production"},
+        {"id": "D", "text": "File certificate cho SSL/TLS connections"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "iris.cpf (Configuration Parameter File) là source of truth cho toàn bộ cấu hình IRIS instance: databases, namespaces, mappings, memory settings, journal config. Trong CI/CD, dùng command-line tool 'iris merge IRIS merge-file.cpf' để apply partial CPF file tự động — đây là cách chuẩn, không phải ObjectScript API."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Cách đúng để apply một partial CPF merge file vào IRIS instance đang chạy trong CI/CD pipeline là gì?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Chạy DO ##class(SYS.Config.CPF).Merge(\"path\\merge.cpf\") trong %SYS"},
+        {"id": "B", "text": "Chạy lệnh OS: iris merge IRIS \"path\\merge.cpf\""},
+        {"id": "C", "text": "Copy file merge.cpf đè lên iris.cpf trong khi IRIS đang chạy"},
+        {"id": "D", "text": "Chạy DO ##class(Config.CPF).Activate() sau khi sửa iris.cpf bằng tay"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "CPF Merge được thực hiện qua command-line tool 'iris merge', không phải ObjectScript API. 'iris merge IRIS merge-file.cpf' apply partial CPF (chỉ chứa sections cần thay đổi) vào instance đang chạy. Class SYS.Config.CPF và method Merge() không tồn tại trong IRIS. Config.CPF tồn tại nhưng chỉ có Activate(), Write(), Validate() — không có Merge()."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "Khi nâng cấp IRIS với Mirror setup, thứ tự đúng là gì?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Upgrade primary trước → failover → upgrade backup"},
+        {"id": "B", "text": "Upgrade cả 2 nodes cùng lúc để giảm downtime"},
+        {"id": "C", "text": "Upgrade backup member trước → failover (promote backup thành primary) → upgrade original primary"},
+        {"id": "D", "text": "Tắt mirror, upgrade từng node độc lập, rồi bật lại mirror"}
+      ],
+      "answer": ["C"],
+      "domain": "T1.1",
+      "explanation": "Mirror upgrade procedure: (1) Upgrade backup member trước — primary vẫn chạy bình thường. (2) Failover: promote backup thành primary. (3) Upgrade original primary (giờ là backup). (4) Tùy chọn: failover lại về original primary."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Những phát biểu nào sau đây về namespace %SYS là đúng? (chọn tất cả đúng)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "%SYS chứa cấu hình hệ thống, security, và management APIs"},
+        {"id": "B", "text": "Application code nên được đặt trong %SYS để có quyền truy cập hệ thống cao nhất"},
+        {"id": "C", "text": "Chỉnh sửa sai trong %SYS có thể làm hỏng toàn bộ IRIS instance"},
+        {"id": "D", "text": "Lệnh liệt kê databases và check mirror status phải chạy trong %SYS"},
+        {"id": "E", "text": "%SYS là namespace mặc định khi bạn kết nối vào IRIS lần đầu"}
+      ],
+      "answer": ["A", "C", "D"],
+      "domain": "T1.1",
+      "explanation": "A: Đúng — %SYS là system namespace. C: Đúng — %SYS rất nhạy cảm. D: Đúng — các management API như SYS.Database và SYS.Mirror (full API) chỉ chạy trong %SYS; mirror status cơ bản có thể check từ bất kỳ namespace nào qua $SYSTEM.Mirror. B: Sai — không dùng %SYS cho application code. E: Sai — namespace mặc định thường là USER hoặc namespace được cấu hình."
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Bạn cần chọn giải pháp analytics cho dữ liệu IRIS. IRIS BI (DeepSee) phù hợp hơn External BI (JDBC/ODBC) khi nào?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Khi cần tích hợp với Tableau hoặc Power BI"},
+        {"id": "B", "text": "Khi cần latency thấp và reporting gần real-time trong IRIS stack, với cubes được pre-built sẵn"},
+        {"id": "C", "text": "Khi muốn tiết kiệm storage vì không cần lưu thêm cube data"},
+        {"id": "D", "text": "Khi data source là từ nhiều hệ thống ngoài IRIS"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.1",
+      "explanation": "IRIS BI (DeepSee) có latency thấp vì cubes được pre-built, và hoạt động tốt trong IRIS stack. Trade-off: tốn thêm storage cho cube. External BI (JDBC/ODBC) phù hợp hơn khi cần tích hợp với Tableau, Power BI, hoặc data từ nhiều nguồn ngoài IRIS."
+    }
+  ]
+}
