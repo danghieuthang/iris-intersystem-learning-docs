@@ -2549,22 +2549,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#native-api" class="md-nav__link">
+  <a href="#native-sdk" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Native API
+        Native SDK
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Native API">
+    <nav class="md-nav" aria-label="Native SDK">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#ket-noi-tu-python-ben-ngoai-qua-pyirisnative" class="md-nav__link">
+  <a href="#ket-noi-tu-python-ben-ngoai-qua-intersystems-irispython" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Kết nối từ Python bên ngoài qua pyirisnative
+        Kết nối từ Python bên ngoài qua intersystems-irispython
       
     </span>
   </a>
@@ -2627,6 +2627,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#practice-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice Lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2673,7 +2684,7 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — Embedded Python, Native SDK, Python strategies for IRIS integration</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS hỗ trợ Python theo nhiều cách khác nhau, trong đó nổi bật nhất là <strong>Embedded Python</strong> — cho phép viết Python trực tiếp bên trong một ObjectScript class mà không cần rời khỏi môi trường IRIS. Điều này giúp tận dụng toàn bộ hệ sinh thái thư viện Python (NumPy, scikit-learn, Pandas...) ngay trong lõi IRIS. Ngoài ra, IRIS còn cung cấp Native API và DB-API để kết nối từ ứng dụng Python bên ngoài.</p>
+<p>InterSystems IRIS hỗ trợ Python theo nhiều cách khác nhau, trong đó nổi bật nhất là <strong>Embedded Python</strong> — cho phép viết Python trực tiếp bên trong một ObjectScript class mà không cần rời khỏi môi trường IRIS. Điều này giúp tận dụng thư viện Python ngay bên trong tiến trình IRIS. Ngoài ra, IRIS còn cung cấp <strong>Native SDK for Python</strong> và <strong>DB-API</strong> để kết nối từ ứng dụng Python bên ngoài.</p>
 <hr />
 <h2 id="python-strategies-for-iris">Python Strategies for IRIS<a class="headerlink" href="#python-strategies-for-iris" title="Permanent link">&para;</a></h2>
 <p>Có <strong>4 chiến lược</strong> tích hợp Python với IRIS, mỗi chiến lược phù hợp với một ngữ cảnh khác nhau:</p>
@@ -2683,7 +2694,7 @@
 <th>Approach</th>
 <th>Where runs</th>
 <th>Use case</th>
-<th>Package</th>
+<th>Package / module thực tế</th>
 </tr>
 </thead>
 <tbody>
@@ -2694,22 +2705,22 @@
 <td>Built-in (<code>%SYS.Python</code>)</td>
 </tr>
 <tr>
-<td><strong>Native API</strong></td>
-<td>Python client (in-process hoặc qua network)</td>
+<td><strong>Native SDK</strong></td>
+<td>Python client kết nối tới IRIS qua TCP</td>
 <td>Đọc/ghi globals trực tiếp, gọi class method từ Python app</td>
-<td><code>pyirisnative</code></td>
+<td><code>intersystems-irispython</code> → <code>import iris</code></td>
 </tr>
 <tr>
 <td><strong>DB-API</strong></td>
-<td>Python client qua network</td>
+<td>Python client qua TCP</td>
 <td>Truy vấn SQL từ script Python, notebooks, reporting</td>
-<td><code>intersystems-irispython</code></td>
+<td><code>intersystems-irispython</code> → <code>import iris.dbapi</code></td>
 </tr>
 <tr>
-<td><strong>External Gateway</strong></td>
+<td><strong>Interoperability integration</strong></td>
 <td>Tiến trình Python riêng biệt</td>
-<td>Python microservice đã có sẵn, tích hợp qua Interoperability</td>
-<td>PEX / External Gateway</td>
+<td>Python service đã có sẵn, tích hợp qua HTTP/REST, PEX, messaging</td>
+<td>Không có một package Python chuẩn duy nhất</td>
 </tr>
 </tbody>
 </table>
@@ -2763,67 +2774,63 @@
 <p>⚠️ Trong Embedded Python, ObjectScript method <code>%OpenId</code> được gọi là <code>_OpenId</code> (Python không cho phép tên bắt đầu bằng <code>%</code>).</p>
 </blockquote>
 <hr />
-<h2 id="native-api">Native API<a class="headerlink" href="#native-api" title="Permanent link">&para;</a></h2>
-<h3 id="ket-noi-tu-python-ben-ngoai-qua-pyirisnative">Kết nối từ Python bên ngoài qua <code>pyirisnative</code><a class="headerlink" href="#ket-noi-tu-python-ben-ngoai-qua-pyirisnative" title="Permanent link">&para;</a></h3>
-<p>Native API cho phép ứng dụng Python kết nối trực tiếp tới IRIS (không cần JDBC/ODBC) và thao tác với globals, class methods:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">irisnative</span>
+<h2 id="native-sdk">Native SDK<a class="headerlink" href="#native-sdk" title="Permanent link">&para;</a></h2>
+<h3 id="ket-noi-tu-python-ben-ngoai-qua-intersystems-irispython">Kết nối từ Python bên ngoài qua <code>intersystems-irispython</code><a class="headerlink" href="#ket-noi-tu-python-ben-ngoai-qua-intersystems-irispython" title="Permanent link">&para;</a></h3>
+<p>Native SDK cho phép ứng dụng Python kết nối trực tiếp tới IRIS (không cần JDBC/ODBC) và thao tác với globals, class methods:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">iris</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Connect to IRIS instance</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">connection</span> <span class="o">=</span> <span class="n">irisnative</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">1972</span><span class="p">,</span> <span class="s2">&quot;USER&quot;</span><span class="p">,</span> <span class="s2">&quot;_SYSTEM&quot;</span><span class="p">,</span> <span class="s2">&quot;SYS&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">connection</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">1972</span><span class="p">,</span> <span class="s2">&quot;USER&quot;</span><span class="p">,</span> <span class="s2">&quot;_SYSTEM&quot;</span><span class="p">,</span> <span class="s2">&quot;SYS&quot;</span><span class="p">)</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Create iris object to interact with IRIS</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">iris_native</span> <span class="o">=</span> <span class="n">irisnative</span><span class="o">.</span><span class="n">createIris</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">iris_native</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">createIRIS</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># Set a global value: ^MyGlobal(&quot;key&quot;) = &quot;value&quot;</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">iris_native</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;^MyGlobal&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Get a global value</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">val</span> <span class="o">=</span> <span class="n">iris_native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;^MyGlobal&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="c1"># Call a class method that returns a value</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iris_native</span><span class="o">.</span><span class="n">classMethodValue</span><span class="p">(</span><span class="s2">&quot;MyApp.Person&quot;</span><span class="p">,</span> <span class="s2">&quot;GetNameById&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="c1"># Call a class method with no return value</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="n">iris_native</span><span class="o">.</span><span class="n">classMethodVoid</span><span class="p">(</span><span class="s2">&quot;MyApp.Utils&quot;</span><span class="p">,</span> <span class="s2">&quot;LogEvent&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># In the Python SDK, pass the global name without the ^ character.</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">iris_native</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;MyGlobal&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="c1"># Get a global value</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="n">val</span> <span class="o">=</span> <span class="n">iris_native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MyGlobal&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c1"># Call a class method that returns a value</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iris_native</span><span class="o">.</span><span class="n">classMethodValue</span><span class="p">(</span><span class="s2">&quot;MyApp.Person&quot;</span><span class="p">,</span> <span class="s2">&quot;GetNameById&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1"># Call a class method with no return value</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="n">iris_native</span><span class="o">.</span><span class="n">classMethodVoid</span><span class="p">(</span><span class="s2">&quot;MyApp.Utils&quot;</span><span class="p">,</span> <span class="s2">&quot;LogEvent&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></code></pre></div>
 <hr />
 <h2 id="db-api">DB-API<a class="headerlink" href="#db-api" title="Permanent link">&para;</a></h2>
 <h3 id="truy-van-sql-tu-python-qua-intersystems-irispython">Truy vấn SQL từ Python qua <code>intersystems-irispython</code><a class="headerlink" href="#truy-van-sql-tu-python-qua-intersystems-irispython" title="Permanent link">&para;</a></h3>
-<p>DB-API tuân theo chuẩn Python DB-API 2.0 (PEP 249), cho phép chạy SQL query giống như dùng JDBC:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">intersystems_iris.dbapi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dbapi</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Open connection</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">connection</span> <span class="o">=</span> <span class="n">dbapi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">port</span><span class="o">=</span><span class="mi">1972</span><span class="p">,</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;USER&quot;</span><span class="p">,</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">username</span><span class="o">=</span><span class="s2">&quot;_SYSTEM&quot;</span><span class="p">,</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;SYS&quot;</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">)</span>
+<p>DB-API tuân theo chuẩn Python DB-API 2.0 (PEP 249), và là một phần của Python Native SDK:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">iris</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">iris.dbapi</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Open connection</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">connection</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">dbapi</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;localhost:1972/USER&quot;</span><span class="p">,</span> <span class="s2">&quot;_SYSTEM&quot;</span><span class="p">,</span> <span class="s2">&quot;SYS&quot;</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># Execute a SELECT query</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ID, Name, Age FROM MyApp_Person WHERE Age &gt; ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">30</span><span class="p">])</span>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="c1"># Execute a SELECT query</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ID, Name, Age FROM MyApp_Person WHERE Age &gt; ?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">30</span><span class="p">])</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="c1"># Fetch all results</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># Fetch all results</span>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="c1"># Insert data</span>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO MyApp_Person (Name, Age) VALUES (?, ?)&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># Insert data</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO MyApp_Person (Name, Age) VALUES (?, ?)&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></code></pre></div>
 <blockquote>
-<p>💡 Tên bảng trong SQL của IRIS: <code>ClassName</code> với dấu <code>.</code> thay bằng <code>_</code> → <code>MyApp.Person</code> → <code>MyApp_Person</code>.</p>
+<p>💡 Theo mặc định, tên bảng SQL của class thường là <code>Package_Class</code> (<code>MyApp.Person</code> → <code>MyApp_Person</code>). Tuy nhiên class có thể override bằng tham số SQL mapping, nên đừng xem đây là luật tuyệt đối.</p>
 </blockquote>
 <hr />
 <h2 id="when-to-use-which">When to Use Which<a class="headerlink" href="#when-to-use-which" title="Permanent link">&para;</a></h2>
@@ -2842,29 +2849,36 @@
 </tr>
 <tr>
 <td>Đọc/ghi globals hoặc gọi class method từ Python app</td>
-<td><strong>Native API</strong></td>
+<td><strong>Native SDK</strong></td>
 </tr>
 <tr>
 <td>Viết báo cáo SQL, chạy Jupyter notebook kết nối IRIS</td>
 <td><strong>DB-API</strong></td>
 </tr>
 <tr>
-<td>Python microservice tích hợp với IRIS Interoperability</td>
-<td><strong>External Gateway</strong></td>
+<td>Python service tích hợp với IRIS Interoperability</td>
+<td><strong>HTTP/REST, PEX, hoặc integration pattern phù hợp</strong></td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
-<li>✅ Embedded Python chạy <strong>in-process</strong> trong IRIS — không có network overhead, hiệu suất cao nhất</li>
+<li>✅ Embedded Python chạy <strong>in-process</strong> trong IRIS — tránh network round-trip giữa app Python ngoài và IRIS</li>
 <li>✅ <code>Language = python</code> trên một Method nghĩa là toàn bộ body phải viết bằng Python syntax</li>
-<li>✅ <code>import iris</code> bên trong Embedded Python cho phép truy cập mọi IRIS class, global, và SQL</li>
-<li>⚠️ Embedded Python yêu cầu <strong>IRIS 2021.2+</strong> và Python 3.x đã được cài đặt trên server</li>
+<li>✅ <code>import iris</code> bên trong Embedded Python cho phép truy cập class methods, objects, globals, và SQL của IRIS</li>
+<li>✅ Native SDK và DB-API hiện dùng chung package <strong><code>intersystems-irispython</code></strong></li>
+<li>⚠️ Embedded Python xuất hiện từ <strong>IRIS 2021.2+</strong>, nhưng version Python tương thích phụ thuộc bản IRIS và platform; nên kiểm tra docs/PyPI thay vì giả định "mọi Python 3.x đều dùng được"</li>
 <li>⚠️ Python method phải tuân theo <strong>Python indentation rules</strong> (dùng spaces, không dùng TAB của ObjectScript)</li>
 <li>⚠️ Tên method bắt đầu bằng <code>%</code> trong ObjectScript phải được gọi là <code>_</code> trong Python (ví dụ: <code>%OpenId</code> → <code>_OpenId</code>)</li>
 <li>💡 Cho kỳ thi: nắm rõ <strong>4 chiến lược</strong> và khi nào dùng từng loại (T3.1 ability 2)</li>
 <li>💡 <code>##class(%SYS.Python).Import("moduleName")</code> tương đương với <code>import moduleName</code> trong Python</li>
+</ul>
+<hr />
+<h2 id="practice-lab">Practice Lab<a class="headerlink" href="#practice-lab" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>exercises/09_python/Exercises.PythonExpenseSubmissionLab.cls</code> builds a Python-first expense submission flow with a server-side <code>ingest.py</code> module, a persistent <code>Expenses.Receipt</code> model, USD conversion on save, and a <code>matplotlib</code> vendor chart.</li>
+<li>Bonus REST review: <code>exercises/09_python/Expenses.REST.Dispatch.cls</code> exposes the latest receipts and chart payload without making REST the main focus of the lab.</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
@@ -2889,8 +2903,10 @@
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AEPYTHON">Embedded Python Overview</a></li>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BPYNAT_intro">Native API for Python</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON">Using Embedded Python</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=PAGE_python_native">Native SDK for Python</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BPYNAT_install">Native SDK Installation</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BPYDBAPI_about">Using the Python DB-API</a></li>
 <li><a href="https://learning.intersystems.com/course/view.php?name=Python%20QuickStart">Python QuickStart — InterSystems Learning</a></li>
 </ul>
 
