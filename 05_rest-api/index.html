@@ -2551,6 +2551,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="InterSystems API Manager (IAM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding-routes-via-rest-management-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Routes via REST Management API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2697,7 +2714,6 @@
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>SET body = {}.%FromJSON(%request.Content)
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>WRITE body.name
 </span></code></pre></div>
-<hr />
 <h2 id="jsonadaptor">%JSON.Adaptor<a class="headerlink" href="#jsonadaptor" title="Permanent link">&para;</a></h2>
 <p>Thêm <code>%JSON.Adaptor</code> vào class để tự động serialize/deserialize toàn bộ object mà không cần code thủ công.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Class MyApp.Person Extends (%Persistent, %JSON.Adaptor)
@@ -2775,6 +2791,31 @@
 <blockquote>
 <p>⚠️ <strong>IAM chỉ có trên môi trường Production</strong> — không được bundled trong IRIS Community Edition hay Docker image thông thường. Không thể test IAM trên local dev setup. Với kỳ thi, hiểu khái niệm là đủ.</p>
 </blockquote>
+<h3 id="finding-routes-via-rest-management-api">Finding Routes via REST Management API<a class="headerlink" href="#finding-routes-via-rest-management-api" title="Permanent link">&para;</a></h3>
+<p>Nếu câu hỏi hỏi <strong>“xem các routes của REST service”</strong> theo REST reference của IRIS, endpoint cần nhớ là endpoint trả về <strong>OpenAPI/Swagger spec</strong> của application:</p>
+<div class="language-http highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="err">GET http://&lt;server&gt;:52773/api/mgmnt/v1/&lt;namespace&gt;/spec/&lt;application&gt;</span>
+</span></code></pre></div>
+<ul>
+<li><strong>HTTP method:</strong> <code>GET</code></li>
+<li><strong>Protocol:</strong> <code>http</code> hoặc <code>https</code></li>
+<li><strong>Server location:</strong> IRIS web server / web gateway host</li>
+<li><strong>Application / base path:</strong> <code>/api/mgmnt</code></li>
+<li><strong>Request route:</strong> <code>/v1/&lt;namespace&gt;/spec/&lt;application&gt;</code></li>
+<li><strong>Parameters:</strong> <code>namespace</code>, <code>application</code></li>
+</ul>
+<p>Response là <strong>Swagger / OpenAPI 2.0 spec</strong>, từ đó bạn xem được toàn bộ routes có trong REST application.</p>
+<p>Ví dụ theo format exam:</p>
+<div class="language-http highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="err">GET http://ABCbookstore.com:52773/api/mgmnt/v1/USER/spec/bookinventory</span>
+</span></code></pre></div>
+<p>Trong đó:</p>
+<ul>
+<li><code>USER</code> là namespace</li>
+<li><code>bookinventory</code> là <strong>package/application name</strong> chứa REST dispatch class</li>
+<li>endpoint trả về spec để bạn xác định các route của service, ví dụ service web path có thể là <code>/rest/bookinventory</code></li>
+</ul>
+<blockquote>
+<p>⚠️ <code>application</code> ở đây là tên package/class application theo REST management API reference, <strong>không nhất thiết</strong> trùng nguyên văn với web application path.</p>
+</blockquote>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2782,6 +2823,8 @@
 <li>✅ HTTP status set qua <code>SET %response.Status = "404 Not Found"</code></li>
 <li>✅ Request body đọc qua <code>%request.Content</code></li>
 <li>✅ Specification-first: IRIS sinh Dispatch Class từ OpenAPI spec; bạn chỉ viết logic trong Implementation Class</li>
+<li>✅ JSON object ngắn nhất trong ObjectScript: <code>SET obj = {}</code></li>
+<li>✅ Muốn xem routes của REST service theo REST management API: dùng <code>GET /api/mgmnt/v1/&lt;namespace&gt;/spec/&lt;application&gt;</code></li>
 <li>⚠️ Web Application <strong>phải</strong> được tạo trước — không tự có khi deploy class</li>
 <li>⚠️ CORS không bật mặc định — cần enable trong Management Portal nếu gọi từ browser</li>
 <li>⚠️ IAM (API Manager) <strong>không có</strong> trên local/Community Edition — chỉ Production</li>
@@ -2789,19 +2832,19 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>// --- Test REST endpoint từ Terminal (không cần HTTP) ---
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>SET sc = ##class(MyApp.REST.Dispatch).GetAll()
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>WRITE $SYSTEM.Status.GetErrorText(sc), !
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>// --- Serialize object sang JSON string ---
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>SET person = ##class(MyApp.Person).%OpenId(1)
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>SET writer = ##class(%JSON.Writer).%New()
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>DO writer.RootObject(person)
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>// --- Parse JSON string ---
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>SET json = &quot;{&quot;&quot;name&quot;&quot;:&quot;&quot;Alice&quot;&quot;,&quot;&quot;age&quot;&quot;:30}&quot;
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>SET obj = {}.%FromJSON(json)
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>WRITE obj.name, !
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>// --- Test REST endpoint từ Terminal (không cần HTTP) ---
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET sc = ##class(MyApp.REST.Dispatch).GetAll()
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>WRITE $SYSTEM.Status.GetErrorText(sc), !
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>// --- Serialize object sang JSON string ---
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>SET person = ##class(MyApp.Person).%OpenId(1)
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>SET writer = ##class(%JSON.Writer).%New()
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>DO writer.RootObject(person)
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>// --- Parse JSON string ---
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>SET json = &quot;{&quot;&quot;name&quot;&quot;:&quot;&quot;Alice&quot;&quot;,&quot;&quot;age&quot;&quot;:30}&quot;
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>SET obj = {}.%FromJSON(json)
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>WRITE obj.name, !
 </span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>

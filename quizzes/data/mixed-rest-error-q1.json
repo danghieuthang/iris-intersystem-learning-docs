@@ -1,0 +1,162 @@
+{
+  "id": "mixed-rest-error-q1",
+  "topic": "mixed-rest-error",
+  "topicLabel": "REST API + Error Handling",
+  "title": "Quiz 01 — REST API + Error Handling",
+  "difficulty": "Intermediate",
+  "examDomains": ["T3.4", "T4.1", "T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "What is the shortest correct way to initialize an empty JSON object in ObjectScript?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET obj = ##class(%DynamicObject).%New()"},
+        {"id": "B", "text": "SET obj = {}"},
+        {"id": "C", "text": "SET obj = []"},
+        {"id": "D", "text": "SET obj = %New(%DynamicObject)"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "`{}` is the literal constructor for an empty %DynamicObject. It is shorter than calling ##class(%DynamicObject).%New()."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Which ObjectScript statement correctly creates a JSON object using runtime values inside a literal constructor?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET obj = {\"name\":person.Name,\"active\":person.Active}"},
+        {"id": "B", "text": "SET obj = {\"name\":(person.Name),\"active\":(person.Active)}"},
+        {"id": "C", "text": "SET obj = {name=(person.Name),active=(person.Active)}"},
+        {"id": "D", "text": "SET obj = {\"name\"=(person.Name),\"active\"=(person.Active)}"}
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "Inside a JSON literal constructor, ObjectScript runtime expressions must be wrapped in parentheses, for example {\"name\":(person.Name)}."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Which GET request lets you identify the routes available for the /rest/bookinventory service at ABCbookstore.com using the IRIS REST management API?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "GET http://ABCbookstore.com:52773/rest/bookinventory/routes"},
+        {"id": "B", "text": "GET http://ABCbookstore.com:52773/api/mgmnt/v1/USER/spec/bookinventory"},
+        {"id": "C", "text": "GET http://ABCbookstore.com:8001/services/rest%2Fbookinventory/routes"},
+        {"id": "D", "text": "GET http://ABCbookstore.com:52773/csp/sys/api/bookinventory"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "The IRIS REST management endpoint that returns the OpenAPI/Swagger spec is GET /api/mgmnt/v1/<namespace>/spec/<application>. From that spec, you can identify the available routes."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What does GET /api/mgmnt/v1/<namespace>/spec/<application> return?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Only the web application path prefix"},
+        {"id": "B", "text": "A list of globals used by the REST service"},
+        {"id": "C", "text": "A Swagger / OpenAPI 2.0 specification for the REST application"},
+        {"id": "D", "text": "A compiled dispatch class source listing"}
+      ],
+      "answer": ["C"],
+      "domain": "T3.4",
+      "explanation": "According to the IRIS REST reference, this endpoint returns the Swagger (OpenAPI 2.0) specification for the given REST application."
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which statements about REST ClassMethods in IRIS are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "The method should RETURN $$$OK even when the HTTP status is 404 or 400"},
+        {"id": "B", "text": "HTTP status is set through %response.Status"},
+        {"id": "C", "text": "The request body is typically read from %request.Content"},
+        {"id": "D", "text": "The method should RETURN the HTTP numeric code instead of $$$OK"},
+        {"id": "E", "text": "A Web Application must be configured before the Dispatch Class can receive HTTP requests"}
+      ],
+      "answer": ["A", "B", "C", "E"],
+      "domain": "T3.4",
+      "explanation": "A, B, C, and E are all core REST patterns in IRIS. The return value is $$$OK for ObjectScript execution status; the HTTP status code is controlled separately through %response.Status."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Which is the correct way to handle invalid JSON when using dynamic entities in ObjectScript?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Call %FromJSON() and only check $$$ISERR(sc) afterward"},
+        {"id": "B", "text": "Wrap %FromJSON() in TRY/CATCH because invalid JSON can throw an exception"},
+        {"id": "C", "text": "Use DO {}.%FromJSON(json) because DO suppresses parse errors"},
+        {"id": "D", "text": "Always ignore parse failures and default to an empty object"}
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "%FromJSON() on dynamic entities can throw an exception for invalid JSON, so the correct pattern is TRY/CATCH around the parse operation."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "In a REST endpoint that parses a request body into a dynamic object, which snippet is most correct for invalid JSON handling?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "SET body = {}.%FromJSON(%request.Content.Read())"},
+        {"id": "B", "text": "SET sc = {}.%FromJSON(%request.Content.Read()) IF $$$ISERR(sc) { SET %response.Status = \"400 Bad Request\" }"},
+        {"id": "C", "text": "TRY { SET body = {}.%FromJSON(%request.Content.Read()) } CATCH ex { SET %response.Status = \"400 Bad Request\" WRITE {\"error\":\"Invalid JSON\",\"detail\":(ex.DisplayString())}.%ToJSON() RETURN $$$OK }"},
+        {"id": "D", "text": "SET %response.Status = \"400 Bad Request\" SET body = {}"}
+      ],
+      "answer": ["C"],
+      "domain": "T4.1",
+      "explanation": "This is the safest REST pattern: catch exceptions from %FromJSON(), set an HTTP 400 response, write an error payload, and still RETURN $$$OK from the ClassMethod."
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which statements about %FromJSON() and dynamic entities are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "{}.%FromJSON(jsonString) can parse JSON into a dynamic object"},
+        {"id": "B", "text": "Invalid JSON may raise an exception that should be handled with TRY/CATCH"},
+        {"id": "C", "text": "%FromJSON() automatically converts all parse errors into $$$OK / $$$ERROR values only"},
+        {"id": "D", "text": "If your public method returns %Status, you can catch the exception and convert it into an error status"},
+        {"id": "E", "text": "In REST code, invalid JSON is a good reason to return HTTP 400 Bad Request"}
+      ],
+      "answer": ["A", "B", "D", "E"],
+      "domain": "T4.1",
+      "explanation": "A, B, D, and E are correct. %FromJSON() is used to parse JSON into dynamic entities, invalid JSON may throw, and callers often convert errors into %Status or HTTP 400 responses."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Which statement best describes the application parameter in GET /api/mgmnt/v1/<namespace>/spec/<application>?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "It must always be the exact web application path, such as /rest/bookinventory"},
+        {"id": "B", "text": "It is the fully qualified package name that contains the REST service class"},
+        {"id": "C", "text": "It is the IAM service identifier"},
+        {"id": "D", "text": "It is the CSP physical directory on disk"}
+      ],
+      "answer": ["B"],
+      "domain": "T3.4",
+      "explanation": "The REST reference defines application as the fully qualified name of the package that contains the REST service class. It is not simply the visible web application path."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "A method catches an exception from %FromJSON() and wants to continue using standard ObjectScript error flow. What is the best next step?",
+      "code": null,
+      "options": [
+        {"id": "A", "text": "Return an error %Status such as $$$ERROR(...)"},
+        {"id": "B", "text": "Return 0"},
+        {"id": "C", "text": "QUIT without returning anything"},
+        {"id": "D", "text": "Overwrite the exception object with {} and retry automatically"}
+      ],
+      "answer": ["A"],
+      "domain": "T4.1",
+      "explanation": "If the method contract uses %Status, the idiomatic pattern is to catch the exception and return an error %Status, preserving normal IRIS error handling."
+    }
+  ]
+}
