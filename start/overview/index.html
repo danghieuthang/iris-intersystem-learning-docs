@@ -335,7 +335,7 @@
   
     
   
-  📝 Review
+  📝 Review|Quiz
 
         </a>
       </li>
@@ -2570,7 +2570,7 @@
   <span class="md-ellipsis">
     
   
-    📝 Review
+    📝 Review|Quiz
   
 
     
@@ -2592,7 +2592,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    📝 Review
+    📝 Review|Quiz
   
 
           </label>
@@ -3345,51 +3345,100 @@
 </blockquote>
 <hr />
 <h2 id="kien-truc-tong-quan">Kiến Trúc Tổng Quan<a class="headerlink" href="#kien-truc-tong-quan" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                  IRIS Data Platform                 │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                     │
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  ┌─────────────┐  ┌──────────────┐  ┌───────────┐   │
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │ ObjectScript│  │   REST/SOAP  │  │  Python   │   │
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │   Runtime   │  │  Web Services│  │  Gateway  │   │
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  └──────┬──────┘  └──────┬───────┘  └─────┬─────┘   │
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│         │                │                │         │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  ┌──────▼────────────────▼────────────────▼──────┐  │
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  │            Interoperability Engine            │  │
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  │        (Productions / Business Services)      │  │
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  └───────────────────────┬───────────────────────┘  │
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│                          │                          │
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  ┌───────────────────────▼───────────────────────┐  │
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  │              IRIS Database Engine             │  │
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  │   Object  │   SQL   │  Document  │  Global    │  │
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  └───────────────────────────────────────────────┘  │
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>└─────────────────────────────────────────────────────┘
-</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    subgraph IRIS["IRIS Data Platform"]
+        OS["ObjectScript&lt;br/&gt;Runtime"]
+        REST["REST/SOAP&lt;br/&gt;Web Services"]
+        LANG["Language APIs&lt;br/&gt;Python / Java / .NET / Node.js"]
+        IE["Interoperability Engine&lt;br/&gt;(Productions / Business Services)"]
+        DB["IRIS Database Engine&lt;br/&gt;Object | SQL | Document | Global"]
+
+        OS --&gt; IE
+        REST --&gt; IE
+        LANG --&gt; IE
+        IE --&gt; DB
+    end</code></pre>
+<blockquote>
+<p>💡 Sơ đồ trên cố ý đơn giản hóa để dễ ghi nhớ nhanh. Thực tế, IRIS thường được nhìn theo các lớp truy cập, ứng dụng, tích hợp, và dữ liệu như sau:</p>
+</blockquote>
+<pre class="mermaid"><code>flowchart TD
+    CLIENT["Clients / External Systems&lt;br/&gt;Browser | API Consumer | BI Tool | External App"]
+
+    subgraph ACCESS["Access Layer"]
+        WG["Web Server + Web Gateway"]
+        API["REST / SOAP / CSP Web Apps"]
+        SQLC["JDBC / ODBC / SQL Clients"]
+        LANGACC["Language APIs / SDKs&lt;br/&gt;Embedded Python | Native SDK | DB-API"]
+    end
+
+    subgraph APP["Application Layer"]
+        AS["IRIS Application Server Processes"]
+        OS2["ObjectScript Business Logic"]
+        LANGRT["Language Runtime Integration"]
+        SEC["Security / Auth / Roles / Resources"]
+    end
+
+    subgraph INT["Integration Layer"]
+        PROD["Interoperability Productions"]
+        COMP["Business Services / Processes / Operations"]
+        MSG["Messages / Adapters / Routing"]
+    end
+
+    subgraph DATA["Data Layer"]
+        NS["Namespaces / Databases / Mappings"]
+        ENG["IRIS Data Engine"]
+        MODELS["Globals | Objects | SQL | Documents"]
+    end
+
+    CLIENT --&gt; WG
+    CLIENT --&gt; SQLC
+    CLIENT --&gt; LANGACC
+
+    WG --&gt; API
+    API --&gt; AS
+    SQLC --&gt; AS
+    LANGACC --&gt; AS
+
+    AS --&gt; OS2
+    AS --&gt; LANGRT
+    AS --&gt; SEC
+    AS --&gt; PROD
+
+    PROD --&gt; COMP
+    COMP --&gt; MSG
+    MSG --&gt; ENG
+
+    OS2 --&gt; ENG
+    LANGRT --&gt; ENG
+    SEC --&gt; NS
+    ENG --&gt; MODELS
+    NS --&gt; ENG</code></pre>
 <hr />
 <h2 id="cac-khai-niem-nen-tang">Các Khái Niệm Nền Tảng<a class="headerlink" href="#cac-khai-niem-nen-tang" title="Permanent link">&para;</a></h2>
 <h3 id="1-globals-trai-tim-cua-iris">1. Globals — Trái Tim Của IRIS<a class="headerlink" href="#1-globals-trai-tim-cua-iris" title="Permanent link">&para;</a></h3>
 <p>Mọi thứ trong IRIS đều được lưu bằng <strong>Globals</strong> — cấu trúc dữ liệu đa chiều, sparse, persistent:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>^Data(&quot;users&quot;, 1, &quot;name&quot;) = &quot;Alice&quot;
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>^Data(&quot;users&quot;, 1, &quot;age&quot;)  = 30
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>^Data(&quot;users&quot;, 1, &quot;name&quot;) = &quot;Alice&quot;
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>^Data(&quot;users&quot;, 1, &quot;age&quot;)  = 30
 </span></code></pre></div>
 - Class <code>%Persistent</code> → IRIS tự sinh ra globals phía sau
 - SQL tables → cũng là globals
 - Rất nhanh, không cần schema cứng nhắc</p>
 <h3 id="2-namespace-database">2. Namespace &amp; Database<a class="headerlink" href="#2-namespace-database" title="Permanent link">&para;</a></h3>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Namespace  =  logical view  (USER, MYAPP, %SYS...)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Database   =  physical file (.DAT) chứa globals &amp; code
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Namespace  =  logical view  (USER, MYAPP, %SYS...)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Database   =  physical file (.DAT) chứa globals &amp; code
 </span></code></pre></div>
 - Một namespace map đến một hoặc nhiều databases
 - Code (classes) và data có thể ở databases khác nhau</p>
 <h3 id="3-multi-model-access-cung-mot-data">3. Multi-Model Access — Cùng Một Data<a class="headerlink" href="#3-multi-model-access-cung-mot-data" title="Permanent link">&para;</a></h3>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>; Cách 1: Object
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>SET p = ##class(MyApp.Person).%OpenId(1)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>WRITE p.Name
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>; Cách 2: SQL
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&amp;sql(SELECT Name FROM MyApp.Person WHERE ID = 1)
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>; Cách 3: Global trực tiếp
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>WRITE ^MyApp.PersonD(1, &quot;Name&quot;)
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; Cách 1: Object
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>SET p = ##class(MyApp.Person).%OpenId(1)
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>WRITE p.Name
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>; Cách 2: SQL
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>&amp;sql(SELECT Name FROM MyApp.Person WHERE ID = 1)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>; Cách 3: Global trực tiếp
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>WRITE ^MyApp.PersonD(1, &quot;Name&quot;)
 </span></code></pre></div>
 Ba cách truy cập <strong>cùng một dữ liệu</strong> — không cần sync.</p>
 <h3 id="4-objectscript">4. ObjectScript<a class="headerlink" href="#4-objectscript" title="Permanent link">&para;</a></h3>
@@ -3409,7 +3458,7 @@ Ba cách truy cập <strong>cùng một dữ liệu</strong> — không cần sy
 - Security (users, roles)</p>
 <h3 id="iris-terminal">IRIS Terminal<a class="headerlink" href="#iris-terminal" title="Permanent link">&para;</a></h3>
 <p>Shell tương tác để chạy ObjectScript:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker exec -it iris-dev iris session iris
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker exec -it iris-dev iris session iris
 </span></code></pre></div>
 Hoặc qua Management Portal → System &gt; Terminal</p>
 <h3 id="vs-code-objectscript-extension">VS Code + ObjectScript Extension<a class="headerlink" href="#vs-code-objectscript-extension" title="Permanent link">&para;</a></h3>
@@ -3469,22 +3518,22 @@ Hoặc qua Management Portal → System &gt; Terminal</p>
 <hr />
 <h2 id="lo-trinh-certificate-iris-development-professional">Lộ Trình Certificate: IRIS Development Professional<a class="headerlink" href="#lo-trinh-certificate-iris-development-professional" title="Permanent link">&para;</a></h2>
 <p>Các kỹ năng được kiểm tra:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Core Development
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── ObjectScript syntax &amp; built-ins
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├── Classes: Persistent, Registered, Serial
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>├── Properties, Methods, Parameters, Indices
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>├── SQL: Embedded, Dynamic, Stored Procedures
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>└── Globals: Read/Write, $ORDER, $DATA
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Integration &amp; APIs
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>├── REST API: Dispatch class, UrlMap, JSON
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>├── Interoperability: Productions, Messages
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>└── Business Components (BS, BP, BO)
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>Best Practices
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>├── Error handling (%Status, $$$ISERR)
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>├── Unit Testing (%UnitTest)
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>└── Security: Namespaces, Roles, Authentication
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Core Development
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>├── ObjectScript syntax &amp; built-ins
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>├── Classes: Persistent, Registered, Serial
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>├── Properties, Methods, Parameters, Indices
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>├── SQL: Embedded, Dynamic, Stored Procedures
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>└── Globals: Read/Write, $ORDER, $DATA
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Integration &amp; APIs
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>├── REST API: Dispatch class, UrlMap, JSON
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>├── Interoperability: Productions, Messages
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>└── Business Components (BS, BP, BO)
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Best Practices
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>├── Error handling (%Status, $$$ISERR)
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>├── Unit Testing (%UnitTest)
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>└── Security: Namespaces, Roles, Authentication
 </span></code></pre></div>
 <hr />
 <h2 id="tai-nguyen-quan-trong">🔗 Tài Nguyên Quan Trọng<a class="headerlink" href="#tai-nguyen-quan-trong" title="Permanent link">&para;</a></h2>
@@ -3628,6 +3677,10 @@ Hoặc qua Management Portal → System &gt; Terminal</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../../assets/javascripts/mermaid.js"></script>
       
     
   </body>
