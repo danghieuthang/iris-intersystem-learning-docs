@@ -1,0 +1,190 @@
+{
+  "id": "01-objectscript-basics-q4",
+  "topic": "01_objectscript-basics",
+  "topicLabel": "ObjectScript Basics",
+  "title": "Quiz 04 — Lists",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2", "T4.1"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which function is the standard way to create a native ObjectScript list?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "$ARRAYBUILD(...)" },
+        { "id": "B", "text": "$LISTBUILD(...)" },
+        { "id": "C", "text": "$LISTMAKE(...)" },
+        { "id": "D", "text": "$STRINGBUILD(...)" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $LISTBUILD, often abbreviated as $LB, creates a native IRIS list value."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET fruits = $LB(\"Apple\", \"Banana\", \"Cherry\")\nWRITE $LG(fruits, 2), !",
+      "options": [
+        { "id": "A", "text": "Apple" },
+        { "id": "B", "text": "Banana" },
+        { "id": "C", "text": "Cherry" },
+        { "id": "D", "text": "2" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $LG is the short form of $LIST and returns the element at the requested 1-based position. Index 2 is Banana."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET colors = $LB(\"Red\", \"Green\", \"Blue\")\nWRITE $LG(colors, -1), !",
+      "options": [
+        { "id": "A", "text": "Red" },
+        { "id": "B", "text": "Green" },
+        { "id": "C", "text": "Blue" },
+        { "id": "D", "text": "0" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — a negative index counts from the end of the list. -1 returns the last element, which is Blue."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET mixed = $LB(\"Alice\", 30, \"\", \"active\")\nWRITE $LL(mixed), !",
+      "options": [
+        { "id": "A", "text": "2" },
+        { "id": "B", "text": "3" },
+        { "id": "C", "text": "4" },
+        { "id": "D", "text": "Error because one element is empty" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $LL is the short form of $LISTLENGTH. Empty string is still a valid list element, so the length is 4."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Which statement about a native $LIST value is correct?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It is plain CSV text and can be safely parsed by splitting on commas." },
+        { "id": "B", "text": "It uses binary encoding and should be accessed with list functions." },
+        { "id": "C", "text": "It can only contain strings, not numbers." },
+        { "id": "D", "text": "It behaves exactly like a multidimensional array." }
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — native IRIS lists are binary-encoded values, not human-readable CSV strings, so they should be manipulated using list functions."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET fruits = $LB(\"Apple\", \"Banana\", \"Cherry\")\nWRITE $LISTFIND(fruits, \"Mango\"), !",
+      "options": [
+        { "id": "A", "text": "0" },
+        { "id": "B", "text": "1" },
+        { "id": "C", "text": "3" },
+        { "id": "D", "text": "\"\"" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $LISTFIND returns the 1-based position when found and 0 when the target value is not present."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "You need to iterate through a large list efficiently. Which pattern is most appropriate?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Use $ORDER(list(key)) in a loop." },
+        { "id": "B", "text": "Use $LISTNEXT(list, pointer, value)." },
+        { "id": "C", "text": "Use $DATA(list(i)) in a loop." },
+        { "id": "D", "text": "Use MERGE to convert the list into an array first." }
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — the lesson notes that $LISTNEXT is the more efficient pattern for iterating larger list values."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET list = $LB(\"a\", \"b\", \"c\")\nSET list = list _ $LB(\"d\")\nWRITE $LG(list, 4), !",
+      "options": [
+        { "id": "A", "text": "a" },
+        { "id": "B", "text": "b" },
+        { "id": "C", "text": "c" },
+        { "id": "D", "text": "d" }
+      ],
+      "answer": ["D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — concatenating with _ and another $LB appends a new element to the end of the list, so position 4 becomes d."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which statements about $LIST and arrays are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "$LIST is ordered and indexed as 1, 2, 3, ..." },
+        { "id": "B", "text": "A multidimensional array can use arbitrary subscripts, including strings." },
+        { "id": "C", "text": "$LIST must be passed ByRef, but arrays are passed by value." },
+        { "id": "D", "text": "$LIST is often convenient for small ordered data passed between methods." }
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — lists are ordered positional values, arrays support arbitrary keys, and lists are convenient for small ordered collections. Arrays, not lists, are the ones that need ByRef."
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which snippets are valid ways to work with a native list? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "FOR i = 1:1:$LL(list) { WRITE $LG(list, i), ! }" },
+        { "id": "B", "text": "SET p=0  WHILE $LISTNEXT(list, p, val) { WRITE val, ! }" },
+        { "id": "C", "text": "WRITE $LISTVALID(list), !" },
+        { "id": "D", "text": "SET key=\"\"  FOR { SET key=$ORDER(list(key)) QUIT:key=\"\"  WRITE list(key),! }" }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — FOR with $LL/$LG, $LISTNEXT, and $LISTVALID are all valid list patterns. $ORDER traversal is for arrays/globals, not native $LIST values."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "What does the lesson identify as true about list handling? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "$LB is a shorthand for $LISTBUILD." },
+        { "id": "B", "text": "$LG is a shorthand for $LIST." },
+        { "id": "C", "text": "$LL is a shorthand for $LISTLENGTH." },
+        { "id": "D", "text": "$LISTNEXT always returns the total number of elements." }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson explicitly maps $LB to $LISTBUILD, $LG to $LIST, and $LL to $LISTLENGTH. $LISTNEXT iterates elements; it does not return the list length."
+    },
+    {
+      "id": 12,
+      "type": "MR",
+      "question": "Given the code below, which statements are correct? (select all that apply)",
+      "code": "SET list = $LB(\"a\", \"b\", \"c\")\nSET sub = $LIST(list, 2, 3)",
+      "options": [
+        { "id": "A", "text": "$LG(sub, 1) returns \"b\"." },
+        { "id": "B", "text": "$LG(sub, 2) returns \"c\"." },
+        { "id": "C", "text": "$LL(sub) returns 2." },
+        { "id": "D", "text": "$LL(sub) returns 3 because the source list had 3 elements." }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — $LIST(list, 2, 3) creates a sublist from positions 2 through 3, so the resulting list contains b and c and has length 2."
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 [
   {"id":"01-objectscript-basics-q1","file":"01-objectscript-basics-q1.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T4.1","T4.3","T1.2"],"totalQuestions":11},
   {"id":"01-objectscript-basics-q2","file":"01-objectscript-basics-q2.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 02","difficulty":"Intermediate","examDomains":["T4.1","T4.3","T1.2"],"totalQuestions":12},
+  {"id":"01-objectscript-basics-q3","file":"01-objectscript-basics-q3.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 03","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
+  {"id":"01-objectscript-basics-q4","file":"01-objectscript-basics-q4.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 04","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
   {"id":"02-classes-objects-q1","file":"02-classes-objects-q1.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
   {"id":"03-globals-q1","file":"03-globals-q1.json","topic":"03_globals","topicLabel":"Globals","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":12},
   {"id":"04-sql-q1","file":"04-sql-q1.json","topic":"04_sql","topicLabel":"SQL in IRIS","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T3.1","T3.2","T3.3"],"totalQuestions":12},

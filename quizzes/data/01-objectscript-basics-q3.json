@@ -1,0 +1,190 @@
+{
+  "id": "01-objectscript-basics-q3",
+  "topic": "01_objectscript-basics",
+  "topicLabel": "ObjectScript Basics",
+  "title": "Quiz 03 — Arrays",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2", "T4.1"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which statement best describes a local array in ObjectScript?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It must be declared with a fixed size before use." },
+        { "id": "B", "text": "It is always one-dimensional and numeric-only." },
+        { "id": "C", "text": "It is multidimensional, sparse, and does not need prior declaration." },
+        { "id": "D", "text": "It is stored on disk automatically like a global." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — ObjectScript local arrays are multidimensional and sparse, so subscripts do not need to be contiguous and the array does not need to be declared first."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET arr(\"b\") = \"Banana\"\nSET arr(\"a\") = \"Apple\"\nWRITE $ORDER(arr(\"\")), !",
+      "options": [
+        { "id": "A", "text": "Apple" },
+        { "id": "B", "text": "Banana" },
+        { "id": "C", "text": "a" },
+        { "id": "D", "text": "\"\"" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $ORDER(arr(\"\")) returns the first subscript key, not the stored value. Here the first key is \"a\"."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET arr(\"a\") = \"Apple\"\nSET arr(\"b\") = \"Banana\"\nSET arr(\"c\") = \"Cherry\"\nSET key = $ORDER(arr(\"\"), -1)\nWRITE key, !",
+      "options": [
+        { "id": "A", "text": "a" },
+        { "id": "B", "text": "b" },
+        { "id": "C", "text": "c" },
+        { "id": "D", "text": "Cherry" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — using $ORDER with the second argument -1 starts reverse traversal. $ORDER(arr(\"\"), -1) returns the last key, which is \"c\"."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Given the code below, what does $DATA(arr(1)) return?",
+      "code": "SET arr(1) = \"value\"\nSET arr(1, \"sub\") = \"child\"",
+      "options": [
+        { "id": "A", "text": "0" },
+        { "id": "B", "text": "1" },
+        { "id": "C", "text": "10" },
+        { "id": "D", "text": "11" }
+      ],
+      "answer": ["D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — $DATA = 11 means the node has both its own data value and children beneath it."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "After this code runs, which nodes are removed?",
+      "code": "SET arr(1) = \"a\"\nSET arr(1, \"sub\") = \"b\"\nSET arr(2) = \"c\"\nKILL arr(1)",
+      "options": [
+        { "id": "A", "text": "Only arr(1) is removed; arr(1,\"sub\") remains." },
+        { "id": "B", "text": "arr(1) and all descendants under arr(1) are removed." },
+        { "id": "C", "text": "The entire array arr is removed." },
+        { "id": "D", "text": "Only arr(1,\"sub\") is removed." }
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — KILL on a node removes that node and its full subtree. arr(2) remains, but arr(1) and arr(1,\"sub\") are deleted."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "To pass a local array into a method for traversal or modification, which pattern is correct?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Declare the parameter as As %Array and call normally." },
+        { "id": "B", "text": "Use ByRef in the method signature and call with a leading . before the variable." },
+        { "id": "C", "text": "Convert the array to JSON first, then pass it as %String." },
+        { "id": "D", "text": "Use only globals because methods cannot accept arrays." }
+      ],
+      "answer": ["B"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — ObjectScript passes multidimensional arrays by reference. The method must declare ByRef and the caller must use .myArray."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET arr(1) = \"first\"\nSET arr(100) = \"hundredth\"\nSET count = 0\nSET key = \"\"\nFOR {\n    SET key = $ORDER(arr(key))\n    QUIT:key=\"\"\n    SET count = count + 1\n}\nWRITE count, !",
+      "options": [
+        { "id": "A", "text": "2" },
+        { "id": "B", "text": "100" },
+        { "id": "C", "text": "101" },
+        { "id": "D", "text": "0" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — arrays are sparse, so only existing top-level nodes are counted. The loop sees keys 1 and 100, so count becomes 2."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "Which statement is true when comparing a local array and a global?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "A local array persists after the process ends, but a global does not." },
+        { "id": "B", "text": "A global uses the ^ prefix and persists beyond the current process." },
+        { "id": "C", "text": "Only globals can be traversed with $ORDER." },
+        { "id": "D", "text": "Only local arrays can use $DATA and MERGE." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — globals are persistent structures prefixed with ^, while local arrays live only in the current process memory."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which statements about local arrays are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Subscripts can be strings as well as numbers." },
+        { "id": "B", "text": "Sparse keys are allowed; subscripts do not have to be contiguous." },
+        { "id": "C", "text": "You must define arr(1) before defining arr(100)." },
+        { "id": "D", "text": "A local array can be multidimensional." }
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — ObjectScript arrays support string and numeric subscripts, allow sparse storage, and can have multiple dimensions. There is no requirement to define every intermediate key."
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which lines are valid array-copying or array-passing patterns in ObjectScript? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "MERGE dest = source" },
+        { "id": "B", "text": "MERGE dest(\"copy\") = source(1)" },
+        { "id": "C", "text": "DO ..ProcessData(.myArray)" },
+        { "id": "D", "text": "SET dest = source" }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — MERGE copies arrays or subtrees, and ByRef with a leading dot passes an array into a method. SET dest = source copies only a scalar node value, not a multidimensional array tree."
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Given the code below, which statements are correct? (select all that apply)",
+      "code": "SET arr(1) = \"value\"\nSET arr(1, \"sub\") = \"child\"",
+      "options": [
+        { "id": "A", "text": "$DATA(arr(1)) returns 11." },
+        { "id": "B", "text": "$DATA(arr(1,\"sub\")) returns 1." },
+        { "id": "C", "text": "$DATA(arr(99)) returns 0." },
+        { "id": "D", "text": "$DATA(arr(1)) returns 10 because arr(1) has a child node." }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the parent node has both data and a child so it returns 11, the child leaf returns 1, and a missing node returns 0. Returning 10 would mean children exist but the node itself has no value."
+    },
+    {
+      "id": 12,
+      "type": "MR",
+      "question": "Which snippets correctly traverse all top-level nodes of a local array? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "SET key = \"\"  FOR { SET key = $ORDER(arr(key)) QUIT:key=\"\"  WRITE arr(key), ! }" },
+        { "id": "B", "text": "SET key = \"\"  WHILE 1 { SET key = $ORDER(arr(key)) QUIT:key=\"\"  WRITE arr(key), ! }" },
+        { "id": "C", "text": "FOR i = 1:1:$LENGTH(arr) { WRITE arr(i), ! }" },
+        { "id": "D", "text": "SET key = $ORDER(arr(\"\"), -1)  FOR { QUIT:key=\"\"  WRITE arr(key), !  SET key = $ORDER(arr(key), -1) }" }
+      ],
+      "answer": ["A", "B", "D"],
+      "domain": "T4.1",
+      "explanation": "T4.1 — standard traversal uses $ORDER in a loop, either forward or reverse. $LENGTH(arr) does not count array nodes, so option C is not a valid traversal pattern."
+    }
+  ]
+}
