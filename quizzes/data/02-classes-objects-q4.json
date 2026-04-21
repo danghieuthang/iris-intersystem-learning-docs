@@ -1,0 +1,162 @@
+{
+  "id": "02-classes-objects-q4",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 04 — Indices",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Why do indices matter for SQL queries in IRIS?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "They automatically encrypt query results." },
+        { "id": "B", "text": "They prevent every property from being nullable." },
+        { "id": "C", "text": "They help IRIS avoid full table scans for common lookups." },
+        { "id": "D", "text": "They replace all need for query plan analysis." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson explains that without an index, IRIS may need to scan the whole table; with the right index, it can jump directly to matching rows."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Which index type is the general-purpose choice for columns that you frequently filter or sort on?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Standard" },
+        { "id": "B", "text": "Bitmap" },
+        { "id": "C", "text": "Bitslice" },
+        { "id": "D", "text": "Key only" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson describes the standard index as the default choice for filter and sort access patterns."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What is the main additional behavior of a `Unique` index compared with a standard index?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It stores values only in memory." },
+        { "id": "B", "text": "It guarantees uniqueness and causes `%Save()` to fail on duplicates." },
+        { "id": "C", "text": "It is optimized only for aggregate queries." },
+        { "id": "D", "text": "It can be defined only on numeric properties." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — a unique index both supports lookup and enforces that duplicate values cannot be saved."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Which index type is most appropriate for a low-cardinality field such as `Status` or `IsActive`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Standard" },
+        { "id": "B", "text": "Bitmap" },
+        { "id": "C", "text": "Bitslice" },
+        { "id": "D", "text": "Expression only" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson explicitly recommends bitmap indices for low-cardinality values like booleans or status fields."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Which index type is best suited for aggregate queries such as `AVG(Age)` and range filters on numeric data?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Unique" },
+        { "id": "B", "text": "Bitmap" },
+        { "id": "C", "text": "Bitslice" },
+        { "id": "D", "text": "Key" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — bitslice indices are presented as the optimized choice for numeric aggregates and range queries."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What is the caution given for a key/IDKEY index after data already exists?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It can only be used on string properties." },
+        { "id": "B", "text": "It cannot be changed once data already exists." },
+        { "id": "C", "text": "It disables `%OpenId()` permanently." },
+        { "id": "D", "text": "It is incompatible with SQL queries." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson warns that a key index should be chosen carefully because it cannot be changed after the class already has data."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "Which index definition is intended for case-insensitive search on `Name`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Index NameIdx On Name;" },
+        { "id": "B", "text": "Index NameUpper On (Name As %SQLUPPER);" },
+        { "id": "C", "text": "Index NameBitslice On Name [ Type = bitslice ];" },
+        { "id": "D", "text": "Index NameKey On Name [ Type = key ];" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson uses `%SQLUPPER` in an expression index to support case-insensitive matching."
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Match each scenario to the most appropriate index strategy. Which choices are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Email must be unique → Unique index" },
+        { "id": "B", "text": "Frequent filter or sort on Name → Standard index" },
+        { "id": "C", "text": "Status has only a few possible values → Bitmap index" },
+        { "id": "D", "text": "AVG(Age) over a numeric range → Bitslice index" },
+        { "id": "E", "text": "PatientCode should become the object's key → Key/IDKEY index" }
+      ],
+      "answer": ["A", "B", "C", "D", "E"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — these pairings follow the selection table in the lesson: standard for common filter/sort, unique for uniqueness, bitmap for low-cardinality, bitslice for numeric aggregates, and key for a custom primary key."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which operations are described for index maintenance after bulk import or rebuild work? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "DO ##class(MyApp.Person).%BuildIndices()" },
+        { "id": "B", "text": "DO ##class(MyApp.Person).%BuildIndices($LISTBUILD(\"NameIdx\"))" },
+        { "id": "C", "text": "DO ##class(MyApp.Person).%PurgeIndices()" },
+        { "id": "D", "text": "DO ##class(MyApp.Person).%OpenId(1)" },
+        { "id": "E", "text": "DO ##class(MyApp.Person).%DeleteId(1)" }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson lists `%BuildIndices()` for rebuild, targeted rebuild with a list, and `%PurgeIndices()` before rebuilding."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "When you run `EXPLAIN SELECT ...`, what should you generally hope to see for a well-indexed query?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "`table scan`" },
+        { "id": "B", "text": "`index scan`" },
+        { "id": "C", "text": "`stream scan`" },
+        { "id": "D", "text": "`serial scan`" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson says to look for an `index scan` instead of a `table scan` in the query plan."
+    }
+  ]
+}

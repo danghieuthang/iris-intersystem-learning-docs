@@ -1,0 +1,162 @@
+{
+  "id": "02-classes-objects-q5",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 05 — Streams",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "When does the lesson recommend using a Stream instead of `%String`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Only for boolean values" },
+        { "id": "B", "text": "When content may exceed about 1MB or has no fixed size" },
+        { "id": "C", "text": "Only when the class is abstract" },
+        { "id": "D", "text": "Only inside SQL queries" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson's rule of thumb is to use streams for large or unbounded content such as uploads, large JSON, XML, or HTML."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Which class is the most common choice for large text content stored in IRIS globals?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%Stream.GlobalCharacter" },
+        { "id": "B", "text": "%Stream.GlobalBinary" },
+        { "id": "C", "text": "%Stream.FileBinary" },
+        { "id": "D", "text": "%String" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Stream.GlobalCharacter` is the documented stream class for text stored in IRIS globals."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "You need to store a PDF attachment as a stream property in a persistent class. Which type is the best fit?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%Stream.GlobalCharacter" },
+        { "id": "B", "text": "%Stream.GlobalBinary" },
+        { "id": "C", "text": "%Stream.FileCharacter" },
+        { "id": "D", "text": "%String(MAXLEN = 0)" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson maps `%Stream.GlobalBinary` to binary content such as images, PDFs, and other files."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Which statement about size limits is correct?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "`%String` has no practical limit, but streams do." },
+        { "id": "B", "text": "Streams are limited to 32KB, but `%String` is unlimited." },
+        { "id": "C", "text": "`%String` is limited to about 3.6MB, while streams are effectively unlimited." },
+        { "id": "D", "text": "Both `%String` and streams share the same 3.6MB limit." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson contrasts `%String` at about 3,641,144 characters with streams, which are used for unbounded content."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Which pattern does the lesson recommend for reading very large stream content safely?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Always call `Read()` once with no argument, regardless of size." },
+        { "id": "B", "text": "Use a loop with `While 'stream.AtEnd { Set chunk = stream.Read(32000) }`." },
+        { "id": "C", "text": "Convert the stream to an array and use `$ORDER`." },
+        { "id": "D", "text": "Use `%OpenId()` on the stream itself for each chunk." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the key point recommends chunked reads with `AtEnd` and `Read(32000)` for very large content."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "In a REST endpoint, what does `%request.Content` represent according to the lesson?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "A pre-parsed dynamic object" },
+        { "id": "B", "text": "A normal `%String` variable" },
+        { "id": "C", "text": "A stream containing the request body" },
+        { "id": "D", "text": "A query plan object" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the REST section states that `%request.Content` is already a stream, so you can rewind and read it."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What does `SET sc = dest.CopyFrom(source)` do?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It converts the source stream into a SQL query." },
+        { "id": "B", "text": "It copies the content of one stream into another stream." },
+        { "id": "C", "text": "It rewinds both streams automatically and saves them." },
+        { "id": "D", "text": "It creates a bitmap index for the stream." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the copying section explicitly shows `CopyFrom(source)` as the way to copy one stream into another."
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which statements about streams are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Stream data is stored in separate stream globals rather than inline like a small `%String`." },
+        { "id": "B", "text": "`%request.Content` is already a stream in REST handlers." },
+        { "id": "C", "text": "Reading a huge stream all at once can use a lot of memory." },
+        { "id": "D", "text": "`%Stream.FileCharacter` is used for text stored on the filesystem." },
+        { "id": "E", "text": "`%String` has the same unlimited capacity as streams." }
+      ],
+      "answer": ["A", "B", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson contrasts inline `%String` storage with separate stream storage, notes `%request.Content` is a stream, warns about large `Read()` calls, and lists file-based stream classes."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which snippets are valid stream-related patterns from the lesson? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Property Content As %Stream.GlobalCharacter;" },
+        { "id": "B", "text": "DO myStream.Write(myString)" },
+        { "id": "C", "text": "SET str = myStream.Read()" },
+        { "id": "D", "text": "DO myStream.Rewind()" },
+        { "id": "E", "text": "SET requestBody = %request.Content" }
+      ],
+      "answer": ["A", "B", "C", "D", "E"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — all of these examples appear in the lesson as valid stream declarations or usage patterns, with the note that reading into a string is safe only when content is small enough."
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "According to the lesson's key points, what should you do after writing to a stream and before reading it again from the beginning?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Call `%Save()` on the stream object itself" },
+        { "id": "B", "text": "Use `$ORDER()` to reset the stream" },
+        { "id": "C", "text": "Call `Rewind()`" },
+        { "id": "D", "text": "Convert the stream into JSON first" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson explicitly warns that stream position does not reset automatically, so `Rewind()` is needed before reading from the beginning again."
+    }
+  ]
+}

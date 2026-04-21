@@ -1,0 +1,163 @@
+{
+  "id": "02-classes-objects-q2",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 02 — Class Categories",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which class category should you choose for a domain object that must be saved to the database and reopened later by ID?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%Registered" },
+        { "id": "B", "text": "%SerialObject" },
+        { "id": "C", "text": "%Persistent" },
+        { "id": "D", "text": "%DataType" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Persistent` stores data in the IRIS database and provides an object ID, so it can be saved and reopened later."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "A validator object is used only during one request and should never be stored. Which superclass is the best fit?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%Persistent" },
+        { "id": "B", "text": "%Registered" },
+        { "id": "C", "text": "%SerialObject" },
+        { "id": "D", "text": "%XML.Adaptor" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Registered` is for in-memory helper or service objects that do not need persistence."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Which statement best describes `%SerialObject`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It has its own independent `%ID` and table." },
+        { "id": "B", "text": "It is embedded inside a parent object and has no standalone ID." },
+        { "id": "C", "text": "It can only contain numeric properties." },
+        { "id": "D", "text": "It is a memory-only object just like `%Registered`." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%SerialObject` is stored inline with its parent and cannot be opened independently by ID."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What is true about a class defined with `[ Abstract ]`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It is automatically persisted without `%Save()`." },
+        { "id": "B", "text": "It can be instantiated but not subclassed." },
+        { "id": "C", "text": "It is intended as a base class and cannot be instantiated directly." },
+        { "id": "D", "text": "It must extend `%Registered`." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — an abstract class is used to define shared structure or behavior for subclasses and is not instantiated directly."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Which mixin adds JSON import and export support to a class?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%JSON.Adaptor" },
+        { "id": "B", "text": "%SerialObject" },
+        { "id": "C", "text": "%DataType" },
+        { "id": "D", "text": "%Library.DynamicObject" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%JSON.Adaptor` adds methods such as `%JSONExport()` and `%JSONImport()`."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "You want to store an address inside `MyApp.Person` without creating a separate ID for the address. Which design is most appropriate?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Make both classes `%Persistent` and save them separately." },
+        { "id": "B", "text": "Use `%SerialObject` for the address and embed it in the person." },
+        { "id": "C", "text": "Use `%Registered` for the address and call `%Save()` on it." },
+        { "id": "D", "text": "Use `[ Abstract ]` for the address and instantiate it directly." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson describes `%SerialObject` as the correct choice when related fields should be stored inline inside a parent object."
+    },
+    {
+      "id": 7,
+      "type": "MR",
+      "question": "Which statements about `%Persistent` are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "`%Save()` returns a `%Status`." },
+        { "id": "B", "text": "`%OpenId(id)` opens an object by its ID." },
+        { "id": "C", "text": "`%KillExtent()` deletes all instances of the class." },
+        { "id": "D", "text": "`%Persistent` objects never have an object ID." },
+        { "id": "E", "text": "`%Persistent` data exists only in process memory." }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Persistent` objects have IDs, are stored in the database, and use methods like `%Save()`, `%OpenId()`, and `%KillExtent()`."
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which statements about `%Registered`, `%SerialObject`, and abstract classes are correct? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "`%Registered` exists only in memory." },
+        { "id": "B", "text": "`%SerialObject` can be opened independently with `%OpenId()`." },
+        { "id": "C", "text": "An abstract class is intended to be subclassed rather than instantiated directly." },
+        { "id": "D", "text": "`%SerialObject` is saved together with its parent object." },
+        { "id": "E", "text": "`%Registered` automatically persists when the process ends." }
+      ],
+      "answer": ["A", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Registered` is memory-only, `%SerialObject` is embedded in its parent, and abstract classes define shared behavior without direct instantiation."
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What does the following code print after `p.%Rollback()` runs?",
+      "code": "SET p = ##class(MyApp.Person).%OpenId(1)\nSET p.Name = \"New Name\"\nDO p.%Rollback()\nWRITE p.%IsModified(), !",
+      "options": [
+        { "id": "A", "text": "0" },
+        { "id": "B", "text": "1" },
+        { "id": "C", "text": "\"New Name\"" },
+        { "id": "D", "text": "An automatic save occurs, so it prints the ID" }
+      ],
+      "answer": ["A"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson shows `%Rollback()` discarding in-memory changes, so `%IsModified()` becomes 0 afterward."
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which scenarios are good fits for `%Registered`? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "A request-time validator object" },
+        { "id": "B", "text": "A DTO used only to pass temporary data between methods" },
+        { "id": "C", "text": "A helper service object with no persistence requirement" },
+        { "id": "D", "text": "A patient record that must be stored permanently and reopened by ID" },
+        { "id": "E", "text": "An embedded address object stored inside a persistent parent" }
+      ],
+      "answer": ["A", "B", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%Registered` is for temporary in-memory helpers or DTO-style objects, not for persistent records or embedded serial objects."
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "id": "02-classes-objects-q3",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 03 — Class Members",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which property keyword makes `%Save()` fail if the property has not been set?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Transient" },
+        { "id": "B", "text": "Required" },
+        { "id": "C", "text": "Internal" },
+        { "id": "D", "text": "ReadOnly" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `Required` enforces that a value must be present before the object can be saved."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "What does `InitialExpression` do on a property definition?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "It defines the SQL index used for the property." },
+        { "id": "B", "text": "It sets a default value when `%New()` creates the object." },
+        { "id": "C", "text": "It makes the property read-only after the first save." },
+        { "id": "D", "text": "It converts the property into a calculated field automatically." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `InitialExpression` provides a default value at object creation time."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "You define `Property Status As %String(VALUELIST = \",active,inactive,pending\") [ Required ];`. What happens if `Status = \"deleted\"` when `%Save()` is called?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "The invalid value is saved as-is." },
+        { "id": "B", "text": "`%Save()` fails with an error status." },
+        { "id": "C", "text": "IRIS silently changes it to `inactive`." },
+        { "id": "D", "text": "The property becomes `NULL` automatically." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson notes that `VALUELIST` enforces valid values, so `%Save()` fails for values outside the list."
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Given a property `Tags As List Of %String`, which line correctly adds an item to the list?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "SET obj.Tags = \"developer\"" },
+        { "id": "B", "text": "DO obj.Tags.Insert(\"developer\")" },
+        { "id": "C", "text": "DO obj.Tags.SetAt(\"developer\", 1)" },
+        { "id": "D", "text": "SET obj.Tags(1) = \"developer\"" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson shows list collections using methods such as `Insert()`, `Count()`, and `GetAt()`."
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What does the following code print?",
+      "code": "SET obj = ##class(MyApp.Person).%New()\nSET obj.Config.SetAt(\"value1\", \"key1\")\nWRITE obj.Config.GetAt(\"key1\"), !",
+      "options": [
+        { "id": "A", "text": "key1" },
+        { "id": "B", "text": "1" },
+        { "id": "C", "text": "value1" },
+        { "id": "D", "text": "<UNDEFINED>" }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `Array Of` collection properties use `SetAt(value, key)` and `GetAt(key)`."
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Which statement about `Method` and `ClassMethod` is correct?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "A `ClassMethod` can use `..` self-reference just like an instance `Method`." },
+        { "id": "B", "text": "A `Method` is called on the class, while a `ClassMethod` is called on an instance." },
+        { "id": "C", "text": "A `ClassMethod` is called on the class directly, and `..` cannot be used inside it." },
+        { "id": "D", "text": "There is no difference in how they are called." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson explicitly notes that `..` is available in instance methods, not in class methods."
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "Which lifecycle callback runs before `%Save()` and can stop the save by returning an error `%Status`?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%OnAfterSave()" },
+        { "id": "B", "text": "%OnBeforeSave()" },
+        { "id": "C", "text": "%OnDelete()" },
+        { "id": "D", "text": "%OnNew()" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — `%OnBeforeSave(insert As %Boolean)` is the callback used for pre-save validation."
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "How do you access a class parameter named `VERSION` from inside the same class?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "..VERSION" },
+        { "id": "B", "text": "..#VERSION" },
+        { "id": "C", "text": "#VERSION" },
+        { "id": "D", "text": "$PROPERTY(..%ClassName(), \"VERSION\")" }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the documented syntax for reading a class parameter inside the class is `..#PARAMNAME`."
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which items are listed in the lesson as the six main types of class members? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Properties" },
+        { "id": "B", "text": "Methods" },
+        { "id": "C", "text": "Parameters" },
+        { "id": "D", "text": "Indices" },
+        { "id": "E", "text": "XData" },
+        { "id": "F", "text": "Queries" }
+      ],
+      "answer": ["A", "B", "C", "D", "E", "F"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the overview names six member categories: Properties, Methods, Parameters, Indices, XData, and Queries."
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which statements are correct according to the lesson? (select all that apply)",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "`Calculated` properties are not stored." },
+        { "id": "B", "text": "`Transient` properties are not persisted." },
+        { "id": "C", "text": "A class query named `FindByAge` can be called through `FindByAgeFunc()`." },
+        { "id": "D", "text": "An `XData` block can hold embedded XML or JSON-style configuration." },
+        { "id": "E", "text": "A `ReadOnly` property is always hidden from class documentation." }
+      ],
+      "answer": ["A", "B", "C", "D"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — the lesson describes `Calculated` and `Transient` as non-stored, shows `FindByAgeFunc()` for class queries, and uses `XData` for embedded configuration data."
+    }
+  ]
+}
