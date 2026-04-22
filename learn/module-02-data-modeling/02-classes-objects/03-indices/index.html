@@ -1362,6 +1362,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#practice-with-a-large-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice with a Large Dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#index-maintenance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3223,6 +3234,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#practice-with-a-large-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice with a Large Dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#index-maintenance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3396,16 +3418,38 @@
 </span></code></pre></div>
 <p>Tìm <code>"index scan"</code> thay vì <code>"table scan"</code> trong plan. Table scan trên bảng lớn = đang thiếu index.</p>
 <hr />
+<h2 id="practice-with-a-large-dataset">Practice with a Large Dataset<a class="headerlink" href="#practice-with-a-large-dataset" title="Permanent link">&para;</a></h2>
+<p>Nếu muốn <strong>thực hành thật</strong> thay vì chỉ xem ví dụ nhỏ, dùng lab:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>DO $SYSTEM.OBJ.LoadDir(&quot;C:\path\to\exercises\02-classes-objects\lab-03-indices\src&quot;, &quot;ck&quot;)
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>DO ##class(Exercises.IndicesLab).Run(50000)
+</span></code></pre></div>
+<p>Lab này sẽ tạo class <code>MyApp.IndexLab.Person</code>, seed mặc định <strong>50,000 rows</strong>, rồi gợi ý các bài tập để bạn:</p>
+<ul>
+<li>lookup bằng unique index <code>EmailIdx</code></li>
+<li>xem plan cho bitmap filter trên <code>Status</code> + <code>IsActive</code></li>
+<li>xem plan cho range/aggregate query trên <code>Age</code> và <code>Salary</code> (hai field đã được khai báo bitslice index)</li>
+<li>thử composite, unique, bitmap, và bitslice index trên cùng một dataset</li>
+</ul>
+<p>Sau khi seed, bạn có thể test thêm:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">%</span><span class="n">ID</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">IsActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Salary</span><span class="p">)</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">40</span>
+</span></code></pre></div>
+<hr />
 <h2 id="index-maintenance">Index Maintenance<a class="headerlink" href="#index-maintenance" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>; Rebuild TẤT CẢ index của một class (sau khi import hàng loạt)
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>DO ##class(MyApp.Person).%BuildIndices()
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>; Rebuild một index cụ thể
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>DO ##class(MyApp.Person).%BuildIndices($LISTBUILD(&quot;NameIdx&quot;))
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>; Purge (xóa) và rebuild lại
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>DO ##class(MyApp.Person).%PurgeIndices()
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>DO ##class(MyApp.Person).%BuildIndices()
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>; Rebuild TẤT CẢ index của một class (sau khi import hàng loạt)
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>DO ##class(MyApp.Person).%BuildIndices()
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>; Rebuild một index cụ thể
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>DO ##class(MyApp.Person).%BuildIndices($LISTBUILD(&quot;NameIdx&quot;))
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>; Purge (xóa) và rebuild lại
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>DO ##class(MyApp.Person).%PurgeIndices()
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>DO ##class(MyApp.Person).%BuildIndices()
 </span></code></pre></div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
@@ -3418,16 +3462,16 @@
 <li>💡 Chạy <code>EXPLAIN SELECT...</code> trong SQL Explorer để xác nhận index được sử dụng</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>; Kiểm tra các index hiện có trên một class
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>SET classDef = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;)
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>FOR i=1:1:classDef.Indices.Count() {
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    SET idx = classDef.Indices.GetAt(i)
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    WRITE idx.Name, &quot; on &quot;, idx.Properties, &quot; [&quot;, idx.Type, &quot;]&quot;, !
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>}
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>; Rebuild index sau khi load dữ liệu hàng loạt
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>DO ##class(MyApp.Person).%BuildIndices()
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>WRITE &quot;Done&quot;, !
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>; Kiểm tra các index hiện có trên một class
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SET classDef = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;)
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>FOR i=1:1:classDef.Indices.Count() {
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    SET idx = classDef.Indices.GetAt(i)
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    WRITE idx.Name, &quot; on &quot;, idx.Properties, &quot; [&quot;, idx.Type, &quot;]&quot;, !
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>}
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>; Rebuild index sau khi load dữ liệu hàng loạt
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>DO ##class(MyApp.Person).%BuildIndices()
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>WRITE &quot;Done&quot;, !
 </span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
