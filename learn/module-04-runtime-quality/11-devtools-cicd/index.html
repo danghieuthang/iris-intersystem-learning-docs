@@ -3490,15 +3490,14 @@
 <hr />
 <h3 id="background-execution-job-command">Background Execution — JOB Command<a class="headerlink" href="#background-execution-job-command" title="Permanent link">&para;</a></h3>
 <p>Lệnh <code>JOB</code> tạo một process con độc lập chạy nền, phù hợp cho các tác vụ tốn thời gian:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// Spawn a background process
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>JOB ##class(MyApp.Worker).Process()
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>// Pass arguments to background job
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>JOB ##class(MyApp.Worker).ProcessBatch(100)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>// Check child process PID
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>WRITE &quot;Child PID: &quot;, $ZCHILD, !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Spawn a background process
+JOB ##class(MyApp.Worker).Process()
+
+// Pass arguments to background job
+JOB ##class(MyApp.Worker).ProcessBatch(100)
+
+// Check child process PID
+WRITE &quot;Child PID: &quot;, $ZCHILD, !</code></pre>
 <ul>
 <li><strong><code>$ZCHILD</code></strong>: biến system chứa PID của process con vừa được tạo</li>
 <li>Process con chạy độc lập — parent process không block để chờ</li>
@@ -3507,17 +3506,16 @@
 <hr />
 <h3 id="code-documentation-with">Code Documentation with <code>///</code><a class="headerlink" href="#code-documentation-with" title="Permanent link">&para;</a></h3>
 <p>IRIS hỗ trợ auto-documentation bằng cú pháp triple-slash <code>///</code>. Tài liệu này có thể xem trong Management Portal → System Explorer → Classes.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/// Finds a person by their name.
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>/// @param pName The name to search for
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>/// @return A Person object or &quot;&quot; if not found
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>ClassMethod FindByName(pName As %String) As MyApp.Person
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>{
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    // implementation
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>}
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>/// Maximum number of retry attempts
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Parameter MAXRETRIES = 3;
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">/// Finds a person by their name.
+/// @param pName The name to search for
+/// @return A Person object or &quot;&quot; if not found
+ClassMethod FindByName(pName As %String) As MyApp.Person
+{
+    // implementation
+}
+
+/// Maximum number of retry attempts
+Parameter MAXRETRIES = 3;</code></pre>
 <blockquote>
 <p><strong>Lưu ý:</strong> Phải dùng đúng <code>///</code> (triple slash). Comment <code>//</code> thông thường <strong>không</strong> được đưa vào tài liệu.</p>
 </blockquote>
@@ -3546,21 +3544,21 @@
 </tbody>
 </table>
 <p><strong>Cấu trúc <code>docker-compose.yml</code> cơ bản:</strong>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">iris</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">intersystemsdc/iris-community:latest</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;52773:52773&quot;</span><span class="w">   </span><span class="c1"># Web access (Management Portal + REST)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;1972:1972&quot;</span><span class="w">     </span><span class="c1"># SuperServer (JDBC/ODBC/Native API)</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./src:/home/irisowner/dev</span><span class="w">  </span><span class="c1"># Mount source code into container</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IRIS_PASSWORD=SYS</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iris&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;status&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">iris</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">intersystemsdc/iris-community:latest</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;52773:52773&quot;</span><span class="w">   </span><span class="c1"># Web access (Management Portal + REST)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;1972:1972&quot;</span><span class="w">     </span><span class="c1"># SuperServer (JDBC/ODBC/Native API)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./src:/home/irisowner/dev</span><span class="w">  </span><span class="c1"># Mount source code into container</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IRIS_PASSWORD=SYS</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;iris&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;status&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </span></code></pre></div></p>
 <blockquote>
 <p><strong>Health check</strong> rất quan trọng trong CI/CD để các bước tiếp theo chỉ chạy sau khi IRIS đã sẵn sàng.</p>
@@ -3598,19 +3596,19 @@
 <hr />
 <h3 id="cpf-file-management">CPF File Management<a class="headerlink" href="#cpf-file-management" title="Permanent link">&para;</a></h3>
 <p><strong>CPF (Configuration Parameter File)</strong> là file cấu hình chính của IRIS instance (tương tự <code>/etc/myapp.conf</code>). Trong CI/CD, MERGE command cho phép áp dụng cấu hình tăng dần (incremental) mà không ghi đè toàn bộ:</p>
-<div class="language-ini highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">; merge.cpf — only adds/changes, never removes existing settings</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">[config]</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="na">globals</span><span class="o">=</span><span class="s">0,0,25,0,0,0</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">[Namespaces]</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="na">USER</span>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">; merge.cpf — only adds/changes, never removes existing settings</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">[config]</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="na">globals</span><span class="o">=</span><span class="s">0,0,25,0,0,0</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">[Namespaces]</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="na">USER</span>
 </span></code></pre></div>
 <p><strong>Áp dụng merge trong Dockerfile:</strong>
-<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">COPY</span><span class="w"> </span>merge.cpf<span class="w"> </span>/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">RUN</span><span class="w"> </span>iris<span class="w"> </span>start<span class="w"> </span>IRIS<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>iris<span class="w"> </span>session<span class="w"> </span>IRIS<span class="w"> </span>-U<span class="s2">&quot;%SYS&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="s2">&quot;##class(Config.CPF).Upgrade()&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span>iris<span class="w"> </span>stop<span class="w"> </span>IRIS<span class="w"> </span>quietly
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">COPY</span><span class="w"> </span>merge.cpf<span class="w"> </span>/
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">RUN</span><span class="w"> </span>iris<span class="w"> </span>start<span class="w"> </span>IRIS<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span>iris<span class="w"> </span>session<span class="w"> </span>IRIS<span class="w"> </span>-U<span class="s2">&quot;%SYS&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="s2">&quot;##class(Config.CPF).Upgrade()&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>iris<span class="w"> </span>stop<span class="w"> </span>IRIS<span class="w"> </span>quietly
 </span></code></pre></div></p>
 <p>Có thể dùng REST API <code>/api/monitor</code> để thay đổi cấu hình programmatically.</p>
 <hr />
@@ -3626,12 +3624,11 @@
 - Giải pháp: dùng <code>%Migration</code> class hoặc viết migration script trước khi deploy</p>
 <hr />
 <h3 id="unittest-in-cicd">%UnitTest in CI/CD<a class="headerlink" href="#unittest-in-cicd" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>// Run all tests in a package (recursive)
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test&quot;, &quot;/recursive&quot;)
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>// Run specific test class
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test.PersonTest&quot;)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Run all tests in a package (recursive)
+DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test&quot;, &quot;/recursive&quot;)
+
+// Run specific test class
+DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test.PersonTest&quot;)</code></pre>
 <ul>
 <li>Kết quả lưu trong global <code>^UnitTestRoot</code> — CI/CD pipeline có thể đọc để xác định pass/fail</li>
 <li><strong>Integration tests</strong>: test với external systems (DB, API) — nên chạy trong phase riêng</li>
@@ -3639,15 +3636,14 @@
 </ul>
 <hr />
 <h3 id="promoting-changes-between-environments">Promoting Changes Between Environments<a class="headerlink" href="#promoting-changes-between-environments" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>// Export a class to filesystem
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>DO $SYSTEM.OBJ.Export(&quot;MyApp.Person.cls&quot;, &quot;C:\export\MyApp.Person.cls&quot;)
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>// Export multiple classes matching a pattern
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>DO $SYSTEM.OBJ.Export(&quot;MyApp.*.cls&quot;, &quot;C:\export\MyApp.xml&quot;)
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>// Import and compile
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>DO $SYSTEM.OBJ.Load(&quot;C:\export\MyApp.Person.cls&quot;, &quot;ck&quot;)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Export a class to filesystem
+DO $SYSTEM.OBJ.Export(&quot;MyApp.Person.cls&quot;, &quot;C:\export\MyApp.Person.cls&quot;)
+
+// Export multiple classes matching a pattern
+DO $SYSTEM.OBJ.Export(&quot;MyApp.*.cls&quot;, &quot;C:\export\MyApp.xml&quot;)
+
+// Import and compile
+DO $SYSTEM.OBJ.Load(&quot;C:\export\MyApp.Person.cls&quot;, &quot;ck&quot;)</code></pre>
 <p><strong>Flags cho <code>$SYSTEM.OBJ.Load()</code>:</strong></p>
 <table>
 <thead>
@@ -3693,25 +3689,24 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>// --- Start line-level profiler ---
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>DO ^%SYS.MONLBL
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>// --- Run a background job ---
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>JOB ##class(MyApp.Worker).Process()
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>WRITE &quot;Child PID: &quot;, $ZCHILD, !
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>// --- Export class to filesystem ---
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>DO $SYSTEM.OBJ.Export(&quot;MyApp.Person.cls&quot;, &quot;C:\export\MyApp.Person.cls&quot;)
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>// --- Import and compile class (c=compile, k=keep source) ---
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>DO $SYSTEM.OBJ.Load(&quot;C:\export\MyApp.Person.cls&quot;, &quot;ck&quot;)
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>// --- Run all unit tests recursively ---
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test&quot;, &quot;/recursive&quot;)
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>// --- Check unit test results global ---
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>ZWRITE ^UnitTestRoot
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Start line-level profiler ---
+DO ^%SYS.MONLBL
+
+// --- Run a background job ---
+JOB ##class(MyApp.Worker).Process()
+WRITE &quot;Child PID: &quot;, $ZCHILD, !
+
+// --- Export class to filesystem ---
+DO $SYSTEM.OBJ.Export(&quot;MyApp.Person.cls&quot;, &quot;C:\export\MyApp.Person.cls&quot;)
+
+// --- Import and compile class (c=compile, k=keep source) ---
+DO $SYSTEM.OBJ.Load(&quot;C:\export\MyApp.Person.cls&quot;, &quot;ck&quot;)
+
+// --- Run all unit tests recursively ---
+DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test&quot;, &quot;/recursive&quot;)
+
+// --- Check unit test results global ---
+ZWRITE ^UnitTestRoot</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3834,6 +3829,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

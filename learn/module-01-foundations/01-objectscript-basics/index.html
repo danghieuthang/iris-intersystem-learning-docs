@@ -3089,13 +3089,12 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; Local variable (chỉ tồn tại trong method/routine hiện tại)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET x = 10
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET name = &quot;Alice&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>; Global variable (lưu trữ persistent trên disk)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>SET ^GlobalVar = &quot;value&quot;
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Local variable (chỉ tồn tại trong method/routine hiện tại)
+SET x = 10
+SET name = &quot;Alice&quot;
+
+; Global variable (lưu trữ persistent trên disk)
+SET ^GlobalVar = &quot;value&quot;</code></pre>
 <h3 id="data-types">Data Types<a class="headerlink" href="#data-types" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -3129,55 +3128,52 @@
 </tbody>
 </table>
 <h3 id="control-flow">Control Flow<a class="headerlink" href="#control-flow" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>; IF / ELSEIF / ELSE
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>IF x &gt; 10 {
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    WRITE &quot;Lớn hơn 10&quot;
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>} ELSEIF x = 10 {
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    WRITE &quot;Bằng 10&quot;
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>} ELSE {
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    WRITE &quot;Nhỏ hơn 10&quot;
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>}
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>; FOR loop (start:step:end)
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>FOR i = 1:1:10 {
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    WRITE i, !
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>}
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>; WHILE loop
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>WHILE x &gt; 0 {
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    SET x = x - 1
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>}
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>; DO WHILE
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>DO {
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    SET x = x + 1
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>} WHILE x &lt; 10
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; IF / ELSEIF / ELSE
+IF x &gt; 10 {
+    WRITE &quot;Lớn hơn 10&quot;
+} ELSEIF x = 10 {
+    WRITE &quot;Bằng 10&quot;
+} ELSE {
+    WRITE &quot;Nhỏ hơn 10&quot;
+}
+
+; FOR loop (start:step:end)
+FOR i = 1:1:10 {
+    WRITE i, !
+}
+
+; WHILE loop
+WHILE x &gt; 0 {
+    SET x = x - 1
+}
+
+; DO WHILE
+DO {
+    SET x = x + 1
+} WHILE x &lt; 10</code></pre>
 <h3 id="built-in-functions">Built-in Functions<a class="headerlink" href="#built-in-functions" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; --- String ---
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$LENGTH(str)              ; độ dài chuỗi
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>$EXTRACT(str, from, to)   ; cắt substring
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>$FIND(str, target)        ; tìm vị trí (trả về pos sau target)
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>$REPLACE(str, old, new)   ; thay thế
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>$PIECE(str, delim, n)     ; lấy phần tử thứ n phân cách bởi delim
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>$UPPERCASE(str)           ; chuyển hoa
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>$LOWERCASE(str)           ; chuyển thường
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>; --- Numeric ---
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>$RANDOM(n)                ; số ngẫu nhiên 0 đến n-1
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>$TRUNCATE(num, dec)       ; cắt số thập phân
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>; --- Date/Time ---
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>$HOROLOG                  ; định dạng nội bộ &quot;days,seconds&quot;
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>$NOW()                    ; timestamp hiện tại
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>$ZDATETIME($HOROLOG, 3)   ; YYYY-MM-DD HH:MM:SS
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; --- String ---
+$LENGTH(str)              ; độ dài chuỗi
+$EXTRACT(str, from, to)   ; cắt substring
+$FIND(str, target)        ; tìm vị trí (trả về pos sau target)
+$REPLACE(str, old, new)   ; thay thế
+$PIECE(str, delim, n)     ; lấy phần tử thứ n phân cách bởi delim
+$UPPERCASE(str)           ; chuyển hoa
+$LOWERCASE(str)           ; chuyển thường
+
+; --- Numeric ---
+$RANDOM(n)                ; số ngẫu nhiên 0 đến n-1
+$TRUNCATE(num, dec)       ; cắt số thập phân
+
+; --- Date/Time ---
+$HOROLOG                  ; định dạng nội bộ &quot;days,seconds&quot;
+$NOW()                    ; timestamp hiện tại
+$ZDATETIME($HOROLOG, 3)   ; YYYY-MM-DD HH:MM:SS</code></pre>
 <h3 id="common-commands">Common Commands<a class="headerlink" href="#common-commands" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SET x = 5             ; gán
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>WRITE x, !            ; in + newline
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>KILL x                ; xóa biến
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>QUIT value            ; return giá trị từ method
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET x = 5             ; gán
+WRITE x, !            ; in + newline
+KILL x                ; xóa biến
+QUIT value            ; return giá trị từ method</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3190,33 +3186,32 @@
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <p>Các lệnh copy-paste thẳng vào IRIS Terminal để thử nhanh:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>; --- Biến &amp; In ---
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SET name = &quot;Alice&quot;  SET age = 30
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>WRITE &quot;Hello, &quot;, name, &quot;! Age: &quot;, age, !
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>; --- String functions ---
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>SET s = &quot;Hello InterSystems IRIS&quot;
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>WRITE $LENGTH(s), !
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>WRITE $UPPERCASE(s), !
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>WRITE $PIECE(s, &quot; &quot;, 2), !          ; lấy từ thứ 2: &quot;InterSystems&quot;
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>WRITE $EXTRACT(s, 1, 5), !          ; &quot;Hello&quot;
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>WRITE $REPLACE(s, &quot;Hello&quot;, &quot;Hi&quot;), !
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>; --- FOR loop ---
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>FOR i = 1:1:5 { WRITE i, &quot; &quot; }
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>WRITE !
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>; --- FizzBuzz (1 dòng) ---
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>FOR i=1:1:20 { IF i#15=0 { WRITE &quot;FizzBuzz&quot; } ELSEIF i#3=0 { WRITE &quot;Fizz&quot; } ELSEIF i#5=0 { WRITE &quot;Buzz&quot; } ELSE { WRITE i } WRITE ! }
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>; --- IF/ELSE ---
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>SET score = 85
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>IF score &gt;= 90 { WRITE &quot;A&quot; } ELSEIF score &gt;= 80 { WRITE &quot;B&quot; } ELSEIF score &gt;= 70 { WRITE &quot;C&quot; } ELSE { WRITE &quot;F&quot; }
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>WRITE !
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>; --- Date/Time ---
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>WRITE $ZDATETIME($HOROLOG, 3), !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; --- Biến &amp; In ---
+SET name = &quot;Alice&quot;  SET age = 30
+WRITE &quot;Hello, &quot;, name, &quot;! Age: &quot;, age, !
+
+; --- String functions ---
+SET s = &quot;Hello InterSystems IRIS&quot;
+WRITE $LENGTH(s), !
+WRITE $UPPERCASE(s), !
+WRITE $PIECE(s, &quot; &quot;, 2), !          ; lấy từ thứ 2: &quot;InterSystems&quot;
+WRITE $EXTRACT(s, 1, 5), !          ; &quot;Hello&quot;
+WRITE $REPLACE(s, &quot;Hello&quot;, &quot;Hi&quot;), !
+
+; --- FOR loop ---
+FOR i = 1:1:5 { WRITE i, &quot; &quot; }
+WRITE !
+
+; --- FizzBuzz (1 dòng) ---
+FOR i=1:1:20 { IF i#15=0 { WRITE &quot;FizzBuzz&quot; } ELSEIF i#3=0 { WRITE &quot;Fizz&quot; } ELSEIF i#5=0 { WRITE &quot;Buzz&quot; } ELSE { WRITE i } WRITE ! }
+
+; --- IF/ELSE ---
+SET score = 85
+IF score &gt;= 90 { WRITE &quot;A&quot; } ELSEIF score &gt;= 80 { WRITE &quot;B&quot; } ELSEIF score &gt;= 70 { WRITE &quot;C&quot; } ELSE { WRITE &quot;F&quot; }
+WRITE !
+
+; --- Date/Time ---
+WRITE $ZDATETIME($HOROLOG, 3), !</code></pre>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -3365,6 +3360,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

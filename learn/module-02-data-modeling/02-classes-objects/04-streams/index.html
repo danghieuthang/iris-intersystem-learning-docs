@@ -3352,72 +3352,66 @@
 <p>Phổ biến nhất trong thực tế: <strong><code>%Stream.GlobalCharacter</code></strong> cho văn bản, <strong><code>%Stream.GlobalBinary</code></strong> cho nhị phân.</p>
 <hr />
 <h2 id="stream-property-declaration">Stream Property Declaration<a class="headerlink" href="#stream-property-declaration" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Class MyApp.Document Extends %Persistent
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>{
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    Property Title   As %String(MAXLEN = 200);
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    Property Content As %Stream.GlobalCharacter;   ; văn bản không giới hạn
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    Property File    As %Stream.GlobalBinary;      ; file đính kèm nhị phân
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.Document Extends %Persistent
+{
+    Property Title   As %String(MAXLEN = 200);
+    Property Content As %Stream.GlobalCharacter;   ; văn bản không giới hạn
+    Property File    As %Stream.GlobalBinary;      ; file đính kèm nhị phân
+}</code></pre>
 <hr />
 <h2 id="writing-to-a-stream">Writing to a Stream<a class="headerlink" href="#writing-to-a-stream" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SET doc = ##class(MyApp.Document).%New()
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SET doc.Title = &quot;Báo Cáo Tháng 6&quot;
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>; Ghi từng phần
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>DO doc.Content.Write(&quot;Phần nội dung đầu tiên. &quot;)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>DO doc.Content.Write(&quot;Phần nội dung tiếp theo.&quot;)
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>; Hoặc ghi toàn bộ một lần
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>DO doc.Content.Write(&quot;Toàn bộ nội dung trong một lần gọi.&quot;)
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>DO doc.%Save()
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET doc = ##class(MyApp.Document).%New()
+SET doc.Title = &quot;Báo Cáo Tháng 6&quot;
+
+; Ghi từng phần
+DO doc.Content.Write(&quot;Phần nội dung đầu tiên. &quot;)
+DO doc.Content.Write(&quot;Phần nội dung tiếp theo.&quot;)
+
+; Hoặc ghi toàn bộ một lần
+DO doc.Content.Write(&quot;Toàn bộ nội dung trong một lần gọi.&quot;)
+
+DO doc.%Save()</code></pre>
 <hr />
 <h2 id="reading-from-a-stream">Reading from a Stream<a class="headerlink" href="#reading-from-a-stream" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SET doc = ##class(MyApp.Document).%OpenId(1)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>; Đọc toàn bộ stream một lần
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>WRITE doc.Content.Read(), !
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>; Đọc theo từng chunk (cho nội dung rất lớn)
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>DO doc.Content.Rewind()
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>WHILE &#39;doc.Content.AtEnd {
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    SET chunk = doc.Content.Read(32000)   ; đọc tối đa 32KB mỗi lần
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    ; xử lý chunk
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET doc = ##class(MyApp.Document).%OpenId(1)
+
+; Đọc toàn bộ stream một lần
+WRITE doc.Content.Read(), !
+
+; Đọc theo từng chunk (cho nội dung rất lớn)
+DO doc.Content.Rewind()
+WHILE &#x27;doc.Content.AtEnd {
+    SET chunk = doc.Content.Read(32000)   ; đọc tối đa 32KB mỗi lần
+    ; xử lý chunk
+}</code></pre>
 <hr />
 <h2 id="copying-streams">Copying Streams<a class="headerlink" href="#copying-streams" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>; Sao chép một stream vào stream khác
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>SET sc = dest.CopyFrom(source)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>; Sao chép từ string vào stream
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>DO myStream.Write(myString)
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>; Sao chép từ stream sang string (chỉ an toàn nếu nội dung &lt; giới hạn string)
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>SET str = myStream.Read()
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Sao chép một stream vào stream khác
+SET sc = dest.CopyFrom(source)
+
+; Sao chép từ string vào stream
+DO myStream.Write(myString)
+
+; Sao chép từ stream sang string (chỉ an toàn nếu nội dung &lt; giới hạn string)
+SET str = myStream.Read()</code></pre>
 <hr />
 <h2 id="streams-in-rest">Streams in REST<a class="headerlink" href="#streams-in-rest" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>; Đọc request body dạng stream trong REST endpoint
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SET requestBody = %request.Content   ; đây đã là một stream
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>DO requestBody.Rewind()
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>SET jsonStr = requestBody.Read()
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>SET body = {}.%FromJSON(jsonStr)
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>; Ghi response lớn
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>DO %response.Output.Write(largeContent)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Đọc request body dạng stream trong REST endpoint
+SET requestBody = %request.Content   ; đây đã là một stream
+
+DO requestBody.Rewind()
+SET jsonStr = requestBody.Read()
+SET body = {}.%FromJSON(jsonStr)
+
+; Ghi response lớn
+DO %response.Output.Write(largeContent)</code></pre>
 <hr />
 <h2 id="stream-size">Stream Size<a class="headerlink" href="#stream-size" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>; Kích thước tính bằng byte (không luôn chính xác trước khi save)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>WRITE doc.Content.Size, !
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>; Kiểm tra có rỗng không
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>WRITE doc.Content.IsEmpty(), !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Kích thước tính bằng byte (không luôn chính xác trước khi save)
+WRITE doc.Content.Size, !
+
+; Kiểm tra có rỗng không
+WRITE doc.Content.IsEmpty(), !</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3429,19 +3423,18 @@
 <li>💡 Dùng <code>WHILE 'stream.AtEnd { SET chunk = stream.Read(32000) }</code> cho nội dung rất lớn</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>; Tạo và ghi vào stream
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>SET s = ##class(%Stream.GlobalCharacter).%New()
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>DO s.Write(&quot;Xin &quot;)
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>DO s.Write(&quot;chào!&quot;)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>WRITE s.Read(), !           ; Xin chào!
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>; Rewind và đọc lại
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>DO s.Rewind()
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>WRITE s.Read(4), !          ; Xin 
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>; Kiểm tra kích thước
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>WRITE s.Size, !             ; 9
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Tạo và ghi vào stream
+SET s = ##class(%Stream.GlobalCharacter).%New()
+DO s.Write(&quot;Xin &quot;)
+DO s.Write(&quot;chào!&quot;)
+WRITE s.Read(), !           ; Xin chào!
+
+; Rewind và đọc lại
+DO s.Rewind()
+WRITE s.Read(4), !          ; Xin 
+
+; Kiểm tra kích thước
+WRITE s.Size, !             ; 9</code></pre>
 <hr />
 <h2 id="resources">🔗 [Resources]<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3561,6 +3554,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

@@ -3112,30 +3112,29 @@
 
 <h1 id="classes-objects-cheatsheet">Classes &amp; Objects · Cheatsheet<a class="headerlink" href="#classes-objects-cheatsheet" title="Permanent link">&para;</a></h1>
 <h2 id="syntax">Syntax<a class="headerlink" href="#syntax" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; CRUD
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET p = ##class(MyApp.Person).%New()
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET p.Name = &quot;Alice&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>SET sc = p.%Save()                      ; always capture %Status
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>WRITE p.%Id()
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>SET p = ##class(MyApp.Person).%OpenId(1)           ; by ID → &quot;&quot; if not found
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>SET p = ##class(MyApp.Person).EmailIdxOpen(&quot;a@b.com&quot;) ; by Unique index (auto-generated)
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>SET sc = ##class(MyApp.Person).%DeleteId(1)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>; JSON
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>DO p.%JSONExport()                      ; WRITE to output (void)
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>DO p.%JSONExportToString(.str)          ; get as string
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>DO p.%JSONImport(jsonStringOrDynObj)
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>; Dynamic object
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>SET obj = {&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:30}
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>WRITE obj.%ToJSON()
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>SET obj = {}.%FromJSON(jsonStr)
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>SET arr = []  DO arr.%Push(obj)
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>; Self-reference (instance method only)
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>..PropertyName   ..MethodName()   ..#PARAMETER
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; CRUD
+SET p = ##class(MyApp.Person).%New()
+SET p.Name = &quot;Alice&quot;
+SET sc = p.%Save()                      ; always capture %Status
+WRITE p.%Id()
+
+SET p = ##class(MyApp.Person).%OpenId(1)           ; by ID → &quot;&quot; if not found
+SET p = ##class(MyApp.Person).EmailIdxOpen(&quot;a@b.com&quot;) ; by Unique index (auto-generated)
+SET sc = ##class(MyApp.Person).%DeleteId(1)
+
+; JSON
+DO p.%JSONExport()                      ; WRITE to output (void)
+DO p.%JSONExportToString(.str)          ; get as string
+DO p.%JSONImport(jsonStringOrDynObj)
+
+; Dynamic object
+SET obj = {&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:30}
+WRITE obj.%ToJSON()
+SET obj = {}.%FromJSON(jsonStr)
+SET arr = []  DO arr.%Push(obj)
+
+; Self-reference (instance method only)
+..PropertyName   ..MethodName()   ..#PARAMETER</code></pre>
 <h2 id="decision-class-types">🔀 Decision — Class Types<a class="headerlink" href="#decision-class-types" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3340,6 +3339,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

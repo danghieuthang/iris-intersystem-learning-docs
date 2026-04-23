@@ -22,3 +22,174 @@
 .mermaid {
   text-align: center;
 }
+
+.md-typeset pre > code.language-objectscript,
+.md-typeset pre > code.language-cos,
+.md-typeset pre > code.language-cls {
+  tab-size: 4;
+}
+
+.md-typeset pre.objectscript > code,
+.md-typeset pre.cls > code,
+.md-typeset pre.cos > code {
+  tab-size: 4;
+}
+
+.md-typeset pre.objectscript > code,
+.md-typeset pre.cls > code,
+.md-typeset pre.cos > code {
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+[data-md-color-scheme="default"] .language-objectscript .os-comment,
+[data-md-color-scheme="default"] .objectscript-highlight .os-comment,
+[data-md-color-scheme="default"] pre.objectscript .os-comment,
+[data-md-color-scheme="default"] pre.cls .os-comment,
+[data-md-color-scheme="default"] pre.cos .os-comment {
+  color: #6b7280;
+}
+
+[data-md-color-scheme="default"] .language-objectscript .os-keyword,
+[data-md-color-scheme="default"] .objectscript-highlight .os-keyword,
+[data-md-color-scheme="default"] pre.objectscript .os-keyword,
+[data-md-color-scheme="default"] pre.cls .os-keyword,
+[data-md-color-scheme="default"] pre.cos .os-keyword,
+[data-md-color-scheme="default"] .language-objectscript .os-meta,
+[data-md-color-scheme="default"] .objectscript-highlight .os-meta,
+[data-md-color-scheme="default"] pre.objectscript .os-meta,
+[data-md-color-scheme="default"] pre.cls .os-meta,
+[data-md-color-scheme="default"] pre.cos .os-meta {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+[data-md-color-scheme="default"] .language-objectscript .os-built-in,
+[data-md-color-scheme="default"] .objectscript-highlight .os-built-in,
+[data-md-color-scheme="default"] pre.objectscript .os-built-in,
+[data-md-color-scheme="default"] pre.cls .os-built-in,
+[data-md-color-scheme="default"] pre.cos .os-built-in,
+[data-md-color-scheme="default"] .language-objectscript .os-macro,
+[data-md-color-scheme="default"] .objectscript-highlight .os-macro,
+[data-md-color-scheme="default"] pre.objectscript .os-macro,
+[data-md-color-scheme="default"] pre.cls .os-macro,
+[data-md-color-scheme="default"] pre.cos .os-macro {
+  color: #0f766e;
+}
+
+[data-md-color-scheme="default"] .language-objectscript .os-string,
+[data-md-color-scheme="default"] .objectscript-highlight .os-string,
+[data-md-color-scheme="default"] pre.objectscript .os-string,
+[data-md-color-scheme="default"] pre.cls .os-string,
+[data-md-color-scheme="default"] pre.cos .os-string,
+[data-md-color-scheme="default"] .language-objectscript .os-number,
+[data-md-color-scheme="default"] .objectscript-highlight .os-number,
+[data-md-color-scheme="default"] pre.objectscript .os-number,
+[data-md-color-scheme="default"] pre.cls .os-number,
+[data-md-color-scheme="default"] pre.cos .os-number {
+  color: #047857;
+}
+
+[data-md-color-scheme="default"] .language-objectscript .os-classref,
+[data-md-color-scheme="default"] .objectscript-highlight .os-classref,
+[data-md-color-scheme="default"] pre.objectscript .os-classref,
+[data-md-color-scheme="default"] pre.cls .os-classref,
+[data-md-color-scheme="default"] pre.cos .os-classref,
+[data-md-color-scheme="default"] .language-objectscript .os-type,
+[data-md-color-scheme="default"] .objectscript-highlight .os-type,
+[data-md-color-scheme="default"] pre.objectscript .os-type,
+[data-md-color-scheme="default"] pre.cls .os-type,
+[data-md-color-scheme="default"] pre.cos .os-type,
+[data-md-color-scheme="default"] .language-objectscript .os-variable,
+[data-md-color-scheme="default"] .objectscript-highlight .os-variable,
+[data-md-color-scheme="default"] pre.objectscript .os-variable,
+[data-md-color-scheme="default"] pre.cls .os-variable,
+[data-md-color-scheme="default"] pre.cos .os-variable,
+[data-md-color-scheme="default"] .language-objectscript .os-global,
+[data-md-color-scheme="default"] .objectscript-highlight .os-global,
+[data-md-color-scheme="default"] pre.objectscript .os-global,
+[data-md-color-scheme="default"] pre.cls .os-global,
+[data-md-color-scheme="default"] pre.cos .os-global,
+[data-md-color-scheme="default"] .language-objectscript .os-instance,
+[data-md-color-scheme="default"] .objectscript-highlight .os-instance,
+[data-md-color-scheme="default"] pre.objectscript .os-instance,
+[data-md-color-scheme="default"] pre.cls .os-instance,
+[data-md-color-scheme="default"] pre.cos .os-instance {
+  color: #b45309;
+}
+
+[data-md-color-scheme="slate"] .language-objectscript .os-comment,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-comment,
+[data-md-color-scheme="slate"] pre.objectscript .os-comment,
+[data-md-color-scheme="slate"] pre.cls .os-comment,
+[data-md-color-scheme="slate"] pre.cos .os-comment {
+  color: #94a3b8;
+}
+
+[data-md-color-scheme="slate"] .language-objectscript .os-keyword,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-keyword,
+[data-md-color-scheme="slate"] pre.objectscript .os-keyword,
+[data-md-color-scheme="slate"] pre.cls .os-keyword,
+[data-md-color-scheme="slate"] pre.cos .os-keyword,
+[data-md-color-scheme="slate"] .language-objectscript .os-meta,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-meta,
+[data-md-color-scheme="slate"] pre.objectscript .os-meta,
+[data-md-color-scheme="slate"] pre.cls .os-meta,
+[data-md-color-scheme="slate"] pre.cos .os-meta {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .language-objectscript .os-built-in,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-built-in,
+[data-md-color-scheme="slate"] pre.objectscript .os-built-in,
+[data-md-color-scheme="slate"] pre.cls .os-built-in,
+[data-md-color-scheme="slate"] pre.cos .os-built-in,
+[data-md-color-scheme="slate"] .language-objectscript .os-macro,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-macro,
+[data-md-color-scheme="slate"] pre.objectscript .os-macro,
+[data-md-color-scheme="slate"] pre.cls .os-macro,
+[data-md-color-scheme="slate"] pre.cos .os-macro {
+  color: #5eead4;
+}
+
+[data-md-color-scheme="slate"] .language-objectscript .os-string,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-string,
+[data-md-color-scheme="slate"] pre.objectscript .os-string,
+[data-md-color-scheme="slate"] pre.cls .os-string,
+[data-md-color-scheme="slate"] pre.cos .os-string,
+[data-md-color-scheme="slate"] .language-objectscript .os-number,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-number,
+[data-md-color-scheme="slate"] pre.objectscript .os-number,
+[data-md-color-scheme="slate"] pre.cls .os-number,
+[data-md-color-scheme="slate"] pre.cos .os-number {
+  color: #34d399;
+}
+
+[data-md-color-scheme="slate"] .language-objectscript .os-classref,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-classref,
+[data-md-color-scheme="slate"] pre.objectscript .os-classref,
+[data-md-color-scheme="slate"] pre.cls .os-classref,
+[data-md-color-scheme="slate"] pre.cos .os-classref,
+[data-md-color-scheme="slate"] .language-objectscript .os-type,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-type,
+[data-md-color-scheme="slate"] pre.objectscript .os-type,
+[data-md-color-scheme="slate"] pre.cls .os-type,
+[data-md-color-scheme="slate"] pre.cos .os-type,
+[data-md-color-scheme="slate"] .language-objectscript .os-variable,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-variable,
+[data-md-color-scheme="slate"] pre.objectscript .os-variable,
+[data-md-color-scheme="slate"] pre.cls .os-variable,
+[data-md-color-scheme="slate"] pre.cos .os-variable,
+[data-md-color-scheme="slate"] .language-objectscript .os-global,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-global,
+[data-md-color-scheme="slate"] pre.objectscript .os-global,
+[data-md-color-scheme="slate"] pre.cls .os-global,
+[data-md-color-scheme="slate"] pre.cos .os-global,
+[data-md-color-scheme="slate"] .language-objectscript .os-instance,
+[data-md-color-scheme="slate"] .objectscript-highlight .os-instance,
+[data-md-color-scheme="slate"] pre.objectscript .os-instance,
+[data-md-color-scheme="slate"] pre.cls .os-instance,
+[data-md-color-scheme="slate"] pre.cos .os-instance {
+  color: #fbbf24;
+}

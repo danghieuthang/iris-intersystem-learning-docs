@@ -3087,74 +3087,66 @@
 <hr />
 <h2 id="dynamic-sql">Dynamic SQL<a class="headerlink" href="#dynamic-sql" title="Permanent link">&para;</a></h2>
 <p>Xây dựng và thực thi query lúc runtime. Dùng <code>?</code> làm placeholder — <strong>không bao giờ</strong> nối string trực tiếp (SQL injection).</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET sc = stmt.%Prepare(&quot;SELECT %ID, Name, Age FROM MyApp.Person WHERE Age &gt; ?&quot;)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>SET rs = stmt.%Execute(25)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>IF rs.%SQLCODE &lt; 0 { WRITE &quot;Lỗi: &quot;, rs.%Message, !  QUIT }
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>WHILE rs.%Next() {
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    WRITE rs.%Get(&quot;Name&quot;), &quot; — &quot;, rs.%Get(&quot;Age&quot;), !
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET stmt = ##class(%SQL.Statement).%New()
+SET sc = stmt.%Prepare(&quot;SELECT %ID, Name, Age FROM MyApp.Person WHERE Age &gt; ?&quot;)
+
+SET rs = stmt.%Execute(25)
+IF rs.%SQLCODE &lt; 0 { WRITE &quot;Lỗi: &quot;, rs.%Message, !  QUIT }
+
+WHILE rs.%Next() {
+    WRITE rs.%Get(&quot;Name&quot;), &quot; — &quot;, rs.%Get(&quot;Age&quot;), !
+}</code></pre>
 <p><strong>INSERT / UPDATE / DELETE:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>DO stmt.%Prepare(&quot;INSERT INTO MyApp.Person (Name, Age) VALUES (?, ?)&quot;)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SET rs = stmt.%Execute(&quot;Alice&quot;, 30)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>WRITE &quot;ID mới: &quot;, rs.%ROWID, &quot;  Row ảnh hưởng: &quot;, rs.%ROWCOUNT, !
-</span></code></pre></div></p>
+<pre class="objectscript"><code class="language-objectscript">DO stmt.%Prepare(&quot;INSERT INTO MyApp.Person (Name, Age) VALUES (?, ?)&quot;)
+SET rs = stmt.%Execute(&quot;Alice&quot;, 30)
+WRITE &quot;ID mới: &quot;, rs.%ROWID, &quot;  Row ảnh hưởng: &quot;, rs.%ROWCOUNT, !</code></pre></p>
 <p><strong>Quick one-liner (không cần %Prepare):</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name FROM MyApp.Person WHERE Age &gt; 25&quot;)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
-</span></code></pre></div></p>
+<pre class="objectscript"><code class="language-objectscript">SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name FROM MyApp.Person WHERE Age &gt; 25&quot;)
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }</code></pre></p>
 <hr />
 <h2 id="embedded-sql">Embedded SQL<a class="headerlink" href="#embedded-sql" title="Permanent link">&para;</a></h2>
 <p>SQL nhúng trực tiếp vào ObjectScript, được kiểm tra lúc compile. Dùng <code>:variable</code> làm host variable.</p>
 <p><strong>SELECT một row:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SET id = 1
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&amp;sql(SELECT Name, Age INTO :name, :age FROM MyApp.Person WHERE %ID = :id)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>IF SQLCODE = 0 { WRITE name, &quot; — &quot;, age, ! }
-</span></code></pre></div></p>
+<pre class="objectscript"><code class="language-objectscript">SET id = 1
+&amp;sql(SELECT Name, Age INTO :name, :age FROM MyApp.Person WHERE %ID = :id)
+IF SQLCODE = 0 { WRITE name, &quot; — &quot;, age, ! }</code></pre></p>
 <p><strong>SELECT nhiều row (cursor):</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&amp;sql(DECLARE C1 CURSOR FOR
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    SELECT Name, Age INTO :name, :age
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    FROM MyApp.Person WHERE Age &gt; :minAge)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>SET minAge = 25
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&amp;sql(OPEN C1)
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>FOR {
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    &amp;sql(FETCH C1)
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    QUIT:SQLCODE&#39;=0
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    WRITE name, &quot; — &quot;, age, !
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>}
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>&amp;sql(CLOSE C1)
-</span></code></pre></div></p>
+<pre class="objectscript"><code class="language-objectscript">&amp;sql(DECLARE C1 CURSOR FOR
+    SELECT Name, Age INTO :name, :age
+    FROM MyApp.Person WHERE Age &gt; :minAge)
+
+SET minAge = 25
+&amp;sql(OPEN C1)
+FOR {
+    &amp;sql(FETCH C1)
+    QUIT:SQLCODE&#x27;=0
+    WRITE name, &quot; — &quot;, age, !
+}
+&amp;sql(CLOSE C1)</code></pre></p>
 <p><strong>INSERT / UPDATE / DELETE:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&amp;sql(INSERT INTO MyApp.Person (Name, Age) VALUES (&#39;Bob&#39;, 28))
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>IF SQLCODE &lt; 0 { WRITE &quot;Lỗi: &quot;, %msg, ! }
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&amp;sql(UPDATE MyApp.Person SET Age = 29 WHERE Name = &#39;Bob&#39;)
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>&amp;sql(DELETE FROM MyApp.Person WHERE Age &lt; 18)
-</span></code></pre></div></p>
+<pre class="objectscript"><code class="language-objectscript">&amp;sql(INSERT INTO MyApp.Person (Name, Age) VALUES (&#x27;Bob&#x27;, 28))
+IF SQLCODE &lt; 0 { WRITE &quot;Lỗi: &quot;, %msg, ! }
+
+&amp;sql(UPDATE MyApp.Person SET Age = 29 WHERE Name = &#x27;Bob&#x27;)
+&amp;sql(DELETE FROM MyApp.Person WHERE Age &lt; 18)</code></pre></p>
 <hr />
 <h2 id="class-query">Class Query<a class="headerlink" href="#class-query" title="Permanent link">&para;</a></h2>
 <p>Query được định nghĩa ngay trong class, có tên rõ ràng, tái sử dụng từ bất kỳ đâu. IRIS tự sinh method <code>&lt;QueryName&gt;Func()</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Class MyApp.Person Extends %Persistent
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>{
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    Query FindByAge(pMinAge As %Integer) As %SQLQuery
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    {
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        SELECT %ID, Name, Age
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        FROM MyApp.Person
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        WHERE Age &gt;= :pMinAge
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        ORDER BY Age
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    }
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>}
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>; Gọi từ ObjectScript
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET rs = ##class(MyApp.Person).FindByAgeFunc(25)
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>WHILE rs.%Next() {
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    WRITE rs.%Get(&quot;Name&quot;), &quot; — &quot;, rs.%Get(&quot;Age&quot;), !
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.Person Extends %Persistent
+{
+    Query FindByAge(pMinAge As %Integer) As %SQLQuery
+    {
+        SELECT %ID, Name, Age
+        FROM MyApp.Person
+        WHERE Age &gt;= :pMinAge
+        ORDER BY Age
+    }
+}</code></pre>
+<pre class="objectscript"><code class="language-objectscript">; Gọi từ ObjectScript
+SET rs = ##class(MyApp.Person).FindByAgeFunc(25)
+WHILE rs.%Next() {
+    WRITE rs.%Get(&quot;Name&quot;), &quot; — &quot;, rs.%Get(&quot;Age&quot;), !
+}</code></pre>
 <hr />
 <h2 id="sqlcode-reference">SQLCODE Reference<a class="headerlink" href="#sqlcode-reference" title="Permanent link">&para;</a></h2>
 <table>
@@ -3195,21 +3187,20 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>// --- Quick Dynamic SQL ---
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name, Age FROM MyApp_Person WHERE Age &gt; 25&quot;)
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), &quot; - &quot;, rs.%Get(&quot;Age&quot;), ! }
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>// --- Parameterized query ---
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>DO stmt.%Prepare(&quot;SELECT %ID, Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>SET rs = stmt.%Execute(25)
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>// --- Check SQLCODE after embedded SQL ---
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>SET id = 1
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :id)
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>IF SQLCODE = 0 { WRITE name, ! } ELSEIF SQLCODE = 100 { WRITE &quot;Not found&quot;, ! } ELSE { WRITE &quot;Error: &quot;, %msg, ! }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Quick Dynamic SQL ---
+SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name, Age FROM MyApp_Person WHERE Age &gt; 25&quot;)
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), &quot; - &quot;, rs.%Get(&quot;Age&quot;), ! }
+
+// --- Parameterized query ---
+SET stmt = ##class(%SQL.Statement).%New()
+DO stmt.%Prepare(&quot;SELECT %ID, Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
+SET rs = stmt.%Execute(25)
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
+
+// --- Check SQLCODE after embedded SQL ---
+SET id = 1
+&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :id)
+IF SQLCODE = 0 { WRITE name, ! } ELSEIF SQLCODE = 100 { WRITE &quot;Not found&quot;, ! } ELSE { WRITE &quot;Error: &quot;, %msg, ! }</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3331,6 +3322,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

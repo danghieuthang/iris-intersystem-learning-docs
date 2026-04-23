@@ -3339,57 +3339,50 @@
 <hr />
 <h2 id="standard-index">Standard Index<a class="headerlink" href="#standard-index" title="Permanent link">&para;</a></h2>
 <p>Index đa năng. Lưu danh sách <code>giá trị → ID</code> theo thứ tự sắp xếp.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/// Index đơn field
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Index NameIdx On Name;
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/// Composite — hữu ích khi query lọc trên nhiều column cùng lúc
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Index NameAgeIdx On (Name, Age);
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">/// Index đơn field
+Index NameIdx On Name;
+
+/// Composite — hữu ích khi query lọc trên nhiều column cùng lúc
+Index NameAgeIdx On (Name, Age);</code></pre>
 <p><strong>Khi nào dùng:</strong> Bất kỳ column nào bạn filter/sort thường xuyên trong SQL.</p>
 <hr />
 <h2 id="unique-index">Unique Index<a class="headerlink" href="#unique-index" title="Permanent link">&para;</a></h2>
 <p>Tương tự Standard nhưng còn <strong>đảm bảo tính duy nhất</strong> — <code>%Save()</code> thất bại nếu bị trùng.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Index EmailIdx On Email [ Unique ];
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>; %Save() trả về lỗi nếu Email đã tồn tại
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>SET sc = person.%Save()
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>IF $$$ISERR(sc) {
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    ; SQLCODE -119 = vi phạm unique constraint
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Index EmailIdx On Email [ Unique ];</code></pre>
+<pre class="objectscript"><code class="language-objectscript">; %Save() trả về lỗi nếu Email đã tồn tại
+SET sc = person.%Save()
+IF $$$ISERR(sc) {
+    ; SQLCODE -119 = vi phạm unique constraint
+}</code></pre>
 <hr />
 <h2 id="bitmap-index">Bitmap Index<a class="headerlink" href="#bitmap-index" title="Permanent link">&para;</a></h2>
 <p>Tối ưu cho các field <strong>low-cardinality</strong> (ít giá trị phân biệt: boolean, status, gender...).</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Index StatusIdx On Status [ Type = bitmap ];
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Index IsActiveIdx On IsActive [ Type = bitmap ];
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Index StatusIdx On Status [ Type = bitmap ];
+Index IsActiveIdx On IsActive [ Type = bitmap ];</code></pre>
 <p><strong>Cách hoạt động:</strong> Lưu 1 bit cho mỗi row — rất nhanh cho <code>COUNT(*)</code>, range query, và kết hợp điều kiện AND/OR.</p>
 <p><strong>Khi nào dùng:</strong> Field có &lt; ~100 giá trị phân biệt, dùng trong aggregate query.<br />
 <strong>Không nên dùng:</strong> Field high-cardinality như Name, Email, ID.</p>
 <hr />
 <h2 id="bitslice-index">Bitslice Index<a class="headerlink" href="#bitslice-index" title="Permanent link">&para;</a></h2>
 <p>Tối ưu cho <strong>range query và SUM/AVG</strong> trên field số.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Index AgeIdx On Age [ Type = bitslice ];
-</span></code></pre></div>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- Rất nhanh khi có bitslice index:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">40</span>
+<pre class="objectscript"><code class="language-objectscript">Index AgeIdx On Age [ Type = bitslice ];</code></pre>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Rất nhanh khi có bitslice index:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Age</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">40</span>
 </span></code></pre></div>
 <hr />
 <h2 id="idkey-index">IDKEY Index<a class="headerlink" href="#idkey-index" title="Permanent link">&para;</a></h2>
 <p>Biến một property (hoặc tổ hợp) thành <strong>primary key</strong> của object thay vì ID tự sinh.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Index PatientIdx On PatientCode [ Type = key ];
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Index PatientIdx On PatientCode [ Type = key ];</code></pre>
 <blockquote>
 <p>⚠️ Một khi đã set, không thể thay đổi sau khi đã có dữ liệu. Dùng cẩn thận.</p>
 </blockquote>
 <hr />
 <h2 id="expression-index">Expression Index<a class="headerlink" href="#expression-index" title="Permanent link">&para;</a></h2>
 <p>Index trên giá trị đã biến đổi — hữu ích cho tìm kiếm không phân biệt hoa thường.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/// Index trên chữ hoa của Name để tìm kiếm case-insensitive
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Index NameUpper On (Name As %SQLUPPER);
-</span></code></pre></div>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">-- Dùng index NameUpper dù query dùng Name gốc</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="o">%</span><span class="n">SQLUPPER</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ALICE&#39;</span>
+<pre class="objectscript"><code class="language-objectscript">/// Index trên chữ hoa của Name để tìm kiếm case-insensitive
+Index NameUpper On (Name As %SQLUPPER);</code></pre>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Dùng index NameUpper dù query dùng Name gốc</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="o">%</span><span class="n">SQLUPPER</span><span class="p">(</span><span class="n">Name</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ALICE&#39;</span>
 </span></code></pre></div>
 <hr />
 <h2 id="choosing-the-right-index">Choosing the Right Index<a class="headerlink" href="#choosing-the-right-index" title="Permanent link">&para;</a></h2>
@@ -3430,15 +3423,14 @@
 <hr />
 <h2 id="query-plan-analysis">Query Plan Analysis<a class="headerlink" href="#query-plan-analysis" title="Permanent link">&para;</a></h2>
 <p>Trong Management Portal → SQL Explorer, chạy <code>EXPLAIN</code> để xem index có được dùng không:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span>
 </span></code></pre></div>
 <p>Tìm <code>"index scan"</code> thay vì <code>"table scan"</code> trong plan. Table scan trên bảng lớn = đang thiếu index.</p>
 <hr />
 <h2 id="practice-with-a-large-dataset">Practice with a Large Dataset<a class="headerlink" href="#practice-with-a-large-dataset" title="Permanent link">&para;</a></h2>
 <p>Nếu muốn <strong>thực hành thật</strong> thay vì chỉ xem ví dụ nhỏ, dùng lab:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>DO $SYSTEM.OBJ.LoadDir(&quot;C:\path\to\exercises\02-classes-objects\lab-03-indices\src&quot;, &quot;ck&quot;)
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>DO ##class(Exercises.IndicesLab).Run(50000)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">DO $SYSTEM.OBJ.LoadDir(&quot;C:\path\to\exercises\02-classes-objects\lab-03-indices\src&quot;, &quot;ck&quot;)
+DO ##class(Exercises.IndicesLab).Run(50000)</code></pre>
 <p>Lab này sẽ tạo class <code>MyApp.IndexLab.Person</code>, seed mặc định <strong>50,000 rows</strong>, rồi gợi ý các bài tập để bạn:</p>
 <ul>
 <li>lookup bằng unique index <code>EmailIdx</code></li>
@@ -3447,26 +3439,25 @@
 <li>thử composite, unique, bitmap, và bitslice index trên cùng một dataset</li>
 </ul>
 <p>Sau khi seed, bạn có thể test thêm:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">%</span><span class="n">ID</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">IsActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Salary</span><span class="p">)</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">40</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">%</span><span class="n">ID</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Active&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">IsActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Age</span><span class="p">),</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">Salary</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_IndexLab</span><span class="p">.</span><span class="n">Person</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">40</span>
 </span></code></pre></div>
 <hr />
 <h2 id="index-maintenance">Index Maintenance<a class="headerlink" href="#index-maintenance" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>; Rebuild TẤT CẢ index của một class (sau khi import hàng loạt)
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>DO ##class(MyApp.Person).%BuildIndices()
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>; Rebuild một index cụ thể
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>DO ##class(MyApp.Person).%BuildIndices($LISTBUILD(&quot;NameIdx&quot;))
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>; Purge (xóa) và rebuild lại
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>DO ##class(MyApp.Person).%PurgeIndices()
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>DO ##class(MyApp.Person).%BuildIndices()
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Rebuild TẤT CẢ index của một class (sau khi import hàng loạt)
+DO ##class(MyApp.Person).%BuildIndices()
+
+; Rebuild một index cụ thể
+DO ##class(MyApp.Person).%BuildIndices($LISTBUILD(&quot;NameIdx&quot;))
+
+; Purge (xóa) và rebuild lại
+DO ##class(MyApp.Person).%PurgeIndices()
+DO ##class(MyApp.Person).%BuildIndices()</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3478,17 +3469,16 @@
 <li>💡 Chạy <code>EXPLAIN SELECT...</code> trong SQL Explorer để xác nhận index được sử dụng</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>; Kiểm tra các index hiện có trên một class
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SET classDef = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;)
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>FOR i=1:1:classDef.Indices.Count() {
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    SET idx = classDef.Indices.GetAt(i)
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    WRITE idx.Name, &quot; on &quot;, idx.Properties, &quot; [&quot;, idx.Type, &quot;]&quot;, !
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>}
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>; Rebuild index sau khi load dữ liệu hàng loạt
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>DO ##class(MyApp.Person).%BuildIndices()
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>WRITE &quot;Done&quot;, !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Kiểm tra các index hiện có trên một class
+SET classDef = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;)
+FOR i=1:1:classDef.Indices.Count() {
+    SET idx = classDef.Indices.GetAt(i)
+    WRITE idx.Name, &quot; on &quot;, idx.Properties, &quot; [&quot;, idx.Type, &quot;]&quot;, !
+}
+
+; Rebuild index sau khi load dữ liệu hàng loạt
+DO ##class(MyApp.Person).%BuildIndices()
+WRITE &quot;Done&quot;, !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 
@@ -3605,6 +3595,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

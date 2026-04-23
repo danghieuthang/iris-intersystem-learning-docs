@@ -444,6 +444,33 @@ body {
   font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
   background: transparent !important;
   white-space: pre !important;
+  tab-size: 4;
+}
+
+.code-wrapper .os-comment { color: #94a3b8; font-style: italic; }
+
+.code-wrapper .os-keyword,
+.code-wrapper .os-meta {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+.code-wrapper .os-built-in,
+.code-wrapper .os-macro {
+  color: #5eead4;
+}
+
+.code-wrapper .os-string,
+.code-wrapper .os-number {
+  color: #34d399;
+}
+
+.code-wrapper .os-classref,
+.code-wrapper .os-type,
+.code-wrapper .os-variable,
+.code-wrapper .os-global,
+.code-wrapper .os-instance {
+  color: #fbbf24;
 }
 
 .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }

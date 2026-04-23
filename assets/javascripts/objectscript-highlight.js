@@ -1,92 +1,22 @@
-export const DATA_BASE = 'quizzes/data/';
+const OBJECTSCRIPT_BLOCK_SELECTOR = [
+  'pre.objectscript > code',
+  'pre.cls > code',
+  'pre.cos > code',
+  'pre.language-objectscript > code',
+  'pre.language-cls > code',
+  'pre.language-cos > code'
+].join(', ');
 
-export const STORAGE_KEYS = {
-  scores: 'iris-quiz-scores',
-  mistakes: 'iris-quiz-mistakes',
-  bookmarks: 'iris-quiz-bookmarks',
-  reviewItems: 'iris-quiz-review-items',
-  session: 'iris-quiz-session',
-  theme: 'iris-quiz-theme',
-  shuffle: 'iris-quiz-shuffle',
-};
+const OBJECTSCRIPT_WRAPPER_SELECTOR = [
+  'pre.objectscript',
+  'pre.cls',
+  'pre.cos',
+  'pre.language-objectscript',
+  'pre.language-cls',
+  'pre.language-cos'
+].join(', ');
 
-export const TOPIC_ICONS = {
-  '01_objectscript-basics': '🔤',
-  '02_classes-objects': '🏗️',
-  '03_globals': '🗄️',
-  '04_sql': '📊',
-  '05_rest-api': '🌐',
-  '06_interoperability': '🔄',
-  '07_unit-testing': '🧪',
-  '08_security': '🔐',
-  '09_python': '🐍',
-  '10_architecture': '🧭',
-  '11_devtools-cicd': '🛠️',
-  '12_transactions-locking': '🔒',
-  '13_jdbc-odbc': '🔌',
-};
-
-export const DOMAIN_NAMES = {
-  T1: 'Architecture',
-  T2: 'Dev Lifecycle',
-  T3: 'Data Retrieval',
-  T4: 'Code',
-};
-
-export function esc(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-export function renderText(text) {
-  return esc(text).replace(/`([^`]+)`/g, '<code class="ic">$1</code>');
-}
-
-export function formatTime(totalSeconds) {
-  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
-  return `${minutes}:${seconds}`;
-}
-
-export function isCorrect(question, selection) {
-  if (!selection || selection.length === 0) return false;
-  return [...question.answer].sort().join(',') === [...selection].sort().join(',');
-}
-
-export function shuffleArray(items) {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
-export function deepClone(value) {
-  return JSON.parse(JSON.stringify(value));
-}
-
-export function getSystemTheme() {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-export function themeIcon(theme) {
-  return theme === 'dark' ? '☀️' : '🌙';
-}
-
-export function toIsoDate(date = new Date()) {
-  return date.toISOString().slice(0, 10);
-}
-
-export function addDays(isoDate, days) {
-  const date = new Date(`${isoDate}T00:00:00`);
-  date.setDate(date.getDate() + days);
-  return toIsoDate(date);
-}
-
+// Keep these token groups roughly aligned with tree-sitter-objectscript highlights.scm.
 const SQL_KEYWORDS = [
   'and', 'as', 'by', 'close', 'declare', 'delete', 'fetch', 'for', 'from',
   'group', 'having', 'in', 'insert', 'into', 'join', 'left', 'like', 'not',
@@ -122,14 +52,40 @@ const OBJECTSCRIPT_OPERATORS = [
   '>=', '>', '@', '**', '*', "'!", "'?", '!', '?', '--'
 ];
 
-export function colorizeObjectScript(code) {
-  return code
+function applyObjectScriptHighlighting() {
+  const blocks = document.querySelectorAll(OBJECTSCRIPT_BLOCK_SELECTOR);
+  for (const block of blocks) {
+    if (block.dataset.objectscriptHighlighted === 'true') {
+      continue;
+    }
+
+    const wrapper = block.closest(OBJECTSCRIPT_WRAPPER_SELECTOR);
+
+    if (wrapper) {
+      wrapper.classList.remove('language-cls', 'language-cos', 'cls', 'cos');
+      wrapper.classList.add('language-objectscript', 'objectscript-highlight');
+      wrapper.dataset.objectscriptHighlighted = 'true';
+    }
+
+    highlightBlock(block);
+  }
+}
+
+function highlightBlock(block) {
+  const source = block.textContent;
+  block.innerHTML = renderObjectScript(source);
+  block.classList.add('language-objectscript');
+  block.dataset.objectscriptHighlighted = 'true';
+}
+
+function renderObjectScript(source) {
+  return source
     .split('\n')
-    .map((line) => renderObjectScriptLine(line))
+    .map((line) => renderLine(line))
     .join('\n');
 }
 
-function renderObjectScriptLine(line) {
+function renderLine(line) {
   const segments = [];
   let current = '';
   let i = 0;
@@ -178,32 +134,44 @@ function renderObjectScriptLine(line) {
     segments.push({ type: 'plain', text: current });
   }
 
-  return segments.map(renderObjectScriptSegment).join('');
+  return segments.map(renderSegment).join('');
 }
 
-function renderObjectScriptSegment(segment) {
+function renderSegment(segment) {
   if (segment.type === 'comment') {
-    return wrapToken('os-comment', escapeCodeHtml(segment.text));
+    return wrap('os-comment', escapeHtml(segment.text));
   }
 
   if (segment.type === 'string') {
-    return wrapToken('os-string', escapeCodeHtml(segment.text));
+    return wrap('os-string', escapeHtml(segment.text));
   }
 
-  return highlightObjectScriptPlain(segment.text);
+  return highlightPlain(segment.text);
 }
 
-function highlightObjectScriptPlain(text) {
-  const escaped = escapeCodeHtml(text);
+function highlightPlain(text) {
+  const escaped = escapeHtml(text);
   const patterns = [
     { className: 'os-string', regex: /'[^'\n]*'/g },
     { className: 'os-macro', regex: /\$\$\$[A-Za-z%][\w]*/g },
     { className: 'os-meta', regex: /(?:&|##)(?:sql|html|xml|js)\b/gi },
     { className: 'os-keyword', regex: createExactPattern(OBJECTSCRIPT_DIRECTIVES, 'gi') },
-    { className: 'os-keyword', regex: createWordPattern(SQL_KEYWORDS, 'gi') },
-    { className: 'os-keyword', regex: createWordPattern(OBJECTSCRIPT_KEYWORDS, 'gi') },
-    { className: 'os-built-in', regex: createWordPattern(OBJECTSCRIPT_BUILTINS, 'gi') },
-    { className: 'os-keyword', regex: createExactPattern(OBJECTSCRIPT_OPERATORS, 'g') },
+    {
+      className: 'os-keyword',
+      regex: createWordPattern(SQL_KEYWORDS, 'gi')
+    },
+    {
+      className: 'os-keyword',
+      regex: createWordPattern(OBJECTSCRIPT_KEYWORDS, 'gi')
+    },
+    {
+      className: 'os-built-in',
+      regex: createWordPattern(OBJECTSCRIPT_BUILTINS, 'gi')
+    },
+    {
+      className: 'os-keyword',
+      regex: createExactPattern(OBJECTSCRIPT_OPERATORS, 'g')
+    },
     { className: 'os-classref', regex: /##class\([^)\n]+\)/gi },
     { className: 'os-global', regex: /\^[%A-Za-z][\w.]*/g },
     { className: 'os-instance', regex: /\.\.[A-Za-z%][\w]*/g },
@@ -213,13 +181,13 @@ function highlightObjectScriptPlain(text) {
     { className: 'os-variable', regex: /:[A-Za-z][\w]*/g },
     { className: 'os-variable', regex: /\b(SQLCODE|SQLSTATE|ROWCOUNT|ROWID)\b/g },
     { className: 'os-type', regex: /\b(?:%?[A-Z][\w]*)(?:\.(?:%?[A-Z][\w]*))+\b/g },
-    { className: 'os-number', regex: /(?<![\w.])\d+(?:\.\d+)?(?![\w.])/g },
+    { className: 'os-number', regex: /(?<![\w.])\d+(?:\.\d+)?(?![\w.])/g }
   ];
 
-  return applyTokenPatterns(escaped, patterns);
+  return applyPatterns(escaped, patterns);
 }
 
-function applyTokenPatterns(text, patterns) {
+function applyPatterns(text, patterns) {
   const placeholders = [];
   let output = text;
 
@@ -228,7 +196,7 @@ function applyTokenPatterns(text, patterns) {
       const token = `\uE000${toAlphaToken(placeholders.length)}\uE001`;
       placeholders.push({
         token,
-        html: wrapToken(pattern.className, match),
+        html: wrap(pattern.className, match)
       });
       return token;
     });
@@ -241,11 +209,11 @@ function applyTokenPatterns(text, patterns) {
   return output;
 }
 
-function wrapToken(className, text) {
+function wrap(className, text) {
   return `<span class="${className}">${text}</span>`;
 }
 
-function escapeCodeHtml(text) {
+function escapeHtml(text) {
   return text
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -275,4 +243,14 @@ function toAlphaToken(index) {
   } while (value >= 0);
 
   return token;
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', applyObjectScriptHighlighting);
+} else {
+  applyObjectScriptHighlighting();
+}
+
+if (typeof document$ !== 'undefined' && typeof document$.subscribe === 'function') {
+  document$.subscribe(applyObjectScriptHighlighting);
 }

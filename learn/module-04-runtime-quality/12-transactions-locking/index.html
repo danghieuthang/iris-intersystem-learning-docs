@@ -3338,18 +3338,17 @@
 <li><code>TCOMMIT</code> — commit, giảm <code>$TLEVEL</code> xuống 1; dữ liệu chỉ thực sự được ghi khi <code>$TLEVEL</code> trở về 0</li>
 <li><code>TROLLBACK</code> — rollback <strong>toàn bộ</strong> về level 0, bất kể đang ở nesting depth nào</li>
 </ul>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>TSTART
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>TRY {
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    SET person = ##class(MyApp.Person).%New()
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    SET person.Name = &quot;Alice&quot;
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    SET sc = person.%Save()
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    IF $$$ISERR(sc) { $$$ThrowOnError(sc) }
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    TCOMMIT
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>} CATCH ex {
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    TROLLBACK
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    WRITE ex.DisplayString(), !
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">TSTART
+TRY {
+    SET person = ##class(MyApp.Person).%New()
+    SET person.Name = &quot;Alice&quot;
+    SET sc = person.%Save()
+    IF $$$ISERR(sc) { $$$ThrowOnError(sc) }
+    TCOMMIT
+} CATCH ex {
+    TROLLBACK
+    WRITE ex.DisplayString(), !
+}</code></pre>
 <blockquote>
 <p>⚠️ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — bạn phải gọi TROLLBACK một cách tường minh.</p>
 </blockquote>
@@ -3394,13 +3393,12 @@
 </tbody>
 </table>
 <p><strong>Tắt journaling cho global tạm thời</strong> (ví dụ: cache, temp data không cần recovery):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// Option 1: suppress journaling for this transaction only
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>TSTART:NoLog
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>SET ^TEMP(&quot;key&quot;) = &quot;value&quot;
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>TCOMMIT
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>// Option 2: name temp globals with system-recognized prefixes (e.g. ^CacheTemp, ^||local)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Option 1: suppress journaling for this transaction only
+TSTART:NoLog
+SET ^TEMP(&quot;key&quot;) = &quot;value&quot;
+TCOMMIT
+
+// Option 2: name temp globals with system-recognized prefixes (e.g. ^CacheTemp, ^||local)</code></pre>
 <blockquote>
 <p>💡 Journal files tích lũy theo thời gian — phải được purge định kỳ sau backup để tránh đầy disk.</p>
 </blockquote>
@@ -3420,29 +3418,27 @@
 <hr />
 <h2 id="lock-command">LOCK Command<a class="headerlink" href="#lock-command" title="Permanent link">&para;</a></h2>
 <p>LOCK dùng để kiểm soát đồng thời — ngăn nhiều process cùng sửa đổi một tài nguyên.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>LOCK ^global(subscript)      // acquire exclusive lock (replaces ALL current locks)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>LOCK +^global(subscript)     // increment lock — add to existing locks
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>LOCK -^global(subscript)     // decrement lock — release
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>LOCK +^global(subscript):5   // try for 5 seconds; check $TEST after
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">LOCK ^global(subscript)      // acquire exclusive lock (replaces ALL current locks)
+LOCK +^global(subscript)     // increment lock — add to existing locks
+LOCK -^global(subscript)     // decrement lock — release
+LOCK +^global(subscript):5   // try for 5 seconds; check $TEST after</code></pre>
 <blockquote>
 <p>⚠️ <code>LOCK</code> (không có <code>+</code>) <strong>thay thế toàn bộ</strong> locks hiện tại của process. Hầu như luôn dùng <code>LOCK +</code>.</p>
 </blockquote>
 <h3 id="pattern-chuan-lock-voi-timeout">Pattern chuẩn: lock với timeout<a class="headerlink" href="#pattern-chuan-lock-voi-timeout" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>// Acquire lock with timeout
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>LOCK +^MyApp.PersonLock(id):5
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>IF &#39;$TEST {
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    WRITE &quot;Could not acquire lock&quot;, !
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    QUIT
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>}
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>TRY {
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    // ... critical section
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    TCOMMIT
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>} CATCH ex {
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    TROLLBACK
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>}
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>LOCK -^MyApp.PersonLock(id)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Acquire lock with timeout
+LOCK +^MyApp.PersonLock(id):5
+IF &#x27;$TEST {
+    WRITE &quot;Could not acquire lock&quot;, !
+    QUIT
+}
+TRY {
+    // ... critical section
+    TCOMMIT
+} CATCH ex {
+    TROLLBACK
+}
+LOCK -^MyApp.PersonLock(id)</code></pre>
 <hr />
 <h2 id="row-locks-vs-table-locks">Row Locks vs Table Locks<a class="headerlink" href="#row-locks-vs-table-locks" title="Permanent link">&para;</a></h2>
 <table>
@@ -3511,9 +3507,8 @@
 </tr>
 </tbody>
 </table>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>// Check current process memory usage
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>WRITE $ZSTORAGE, !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Check current process memory usage
+WRITE $ZSTORAGE, !</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3528,49 +3523,48 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>// --- Transaction with error handling ---
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>TSTART
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>TRY {
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    // ... perform operations
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    TCOMMIT
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>} CATCH ex {
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    IF $TLEVEL &gt; 0 { TROLLBACK }
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    WRITE &quot;Error: &quot;, ex.DisplayString(), !
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>}
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>// --- Check transaction nesting level ---
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>WRITE &quot;TLevel: &quot;, $TLEVEL, !
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>// --- Lock with timeout (5 seconds) ---
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>LOCK +^AppLock(&quot;resource&quot;):5
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>IF &#39;$TEST { WRITE &quot;Lock timeout!&quot;, !  QUIT }
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>// ... critical work ...
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>LOCK -^AppLock(&quot;resource&quot;)
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>// --- Rollback explicitly if %Save fails ---
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>TSTART
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>SET sc = obj.%Save()
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>IF $$$ISERR(sc) {
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    TROLLBACK
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    WRITE $SYSTEM.Status.GetErrorText(sc), !
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>} ELSE {
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    TCOMMIT
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>}
-</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>
-</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>// --- Nested transaction example ---
-</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>TSTART                  // $TLEVEL = 1
-</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>TRY {
-</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>    TSTART              // $TLEVEL = 2
-</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    // ... inner work
-</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>    TCOMMIT             // $TLEVEL = 1 (not permanent yet)
-</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>    // ... outer work
-</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>    TCOMMIT             // $TLEVEL = 0 — now permanent
-</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>} CATCH ex {
-</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>    TROLLBACK           // rolls back to level 0 regardless of depth
-</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Transaction with error handling ---
+TSTART
+TRY {
+    // ... perform operations
+    TCOMMIT
+} CATCH ex {
+    IF $TLEVEL &gt; 0 { TROLLBACK }
+    WRITE &quot;Error: &quot;, ex.DisplayString(), !
+}
+
+// --- Check transaction nesting level ---
+WRITE &quot;TLevel: &quot;, $TLEVEL, !
+
+// --- Lock with timeout (5 seconds) ---
+LOCK +^AppLock(&quot;resource&quot;):5
+IF &#x27;$TEST { WRITE &quot;Lock timeout!&quot;, !  QUIT }
+
+// ... critical work ...
+
+LOCK -^AppLock(&quot;resource&quot;)
+
+// --- Rollback explicitly if %Save fails ---
+TSTART
+SET sc = obj.%Save()
+IF $$$ISERR(sc) {
+    TROLLBACK
+    WRITE $SYSTEM.Status.GetErrorText(sc), !
+} ELSE {
+    TCOMMIT
+}
+
+// --- Nested transaction example ---
+TSTART                  // $TLEVEL = 1
+TRY {
+    TSTART              // $TLEVEL = 2
+    // ... inner work
+    TCOMMIT             // $TLEVEL = 1 (not permanent yet)
+    // ... outer work
+    TCOMMIT             // $TLEVEL = 0 — now permanent
+} CATCH ex {
+    TROLLBACK           // rolls back to level 0 regardless of depth
+}</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3692,6 +3686,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

@@ -3890,32 +3890,31 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>// --- Check SuperServer port (run in %SYS namespace) ---
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>WRITE ##class(Security.System).Get(&quot;SuperServerPort&quot;), !
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>// --- Grant SELECT privilege to a SQL user ---
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>DO ##class(%SYSTEM.SQL.Security).GrantPrivilege(&quot;SELECT&quot;, &quot;MyApp_Person&quot;, &quot;sqlusr&quot;)
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>// --- Create a dedicated SQL user (run in %SYS) ---
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>SET props(&quot;Password&quot;) = &quot;SYS123&quot;
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>SET props(&quot;Roles&quot;) = &quot;%DB_USER&quot;
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>DO ##class(Security.Users).Create(&quot;sqlusr&quot;, &quot;&quot;, .props)
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>// --- List all SSL/TLS configurations ---
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>SET rs = ##class(%ResultSet).%New(&quot;Security.SSLConfigs:List&quot;)
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>DO rs.Execute()
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>WHILE rs.Next() {
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>    WRITE rs.Get(&quot;Name&quot;), !
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>}
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>// --- Test JDBC connectivity from ObjectScript (using %Net.Remote.Gateway) ---
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>SET gw = ##class(%Net.Remote.Gateway).%New()
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>SET sc = gw.%Connect(&quot;localhost&quot;, 1972, &quot;USER&quot;)
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>IF $$$ISERR(sc) { WRITE $SYSTEM.Status.GetErrorText(sc), ! }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Check SuperServer port (run in %SYS namespace) ---
+ZNSPACE &quot;%SYS&quot;
+WRITE ##class(Security.System).Get(&quot;SuperServerPort&quot;), !
+
+// --- Grant SELECT privilege to a SQL user ---
+DO ##class(%SYSTEM.SQL.Security).GrantPrivilege(&quot;SELECT&quot;, &quot;MyApp_Person&quot;, &quot;sqlusr&quot;)
+
+// --- Create a dedicated SQL user (run in %SYS) ---
+ZNSPACE &quot;%SYS&quot;
+SET props(&quot;Password&quot;) = &quot;SYS123&quot;
+SET props(&quot;Roles&quot;) = &quot;%DB_USER&quot;
+DO ##class(Security.Users).Create(&quot;sqlusr&quot;, &quot;&quot;, .props)
+
+// --- List all SSL/TLS configurations ---
+ZNSPACE &quot;%SYS&quot;
+SET rs = ##class(%ResultSet).%New(&quot;Security.SSLConfigs:List&quot;)
+DO rs.Execute()
+WHILE rs.Next() {
+    WRITE rs.Get(&quot;Name&quot;), !
+}
+
+// --- Test JDBC connectivity from ObjectScript (using %Net.Remote.Gateway) ---
+SET gw = ##class(%Net.Remote.Gateway).%New()
+SET sc = gw.%Connect(&quot;localhost&quot;, 1972, &quot;USER&quot;)
+IF $$$ISERR(sc) { WRITE $SYSTEM.Status.GetErrorText(sc), ! }</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4037,6 +4036,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

@@ -3300,136 +3300,129 @@
 <p>Array trong ObjectScript là cấu trúc dữ liệu đa chiều, sparse, không cần khai báo trước. Chúng là nền tảng của globals và được dùng rộng rãi để lưu trữ tạm thời trong process. Cú pháp và hàm thao tác (<code>$ORDER</code>, <code>$DATA</code>, <code>MERGE</code>) giống nhau cho cả local array và global.</p>
 <h2 id="local-arrays">Local Arrays<a class="headerlink" href="#local-arrays" title="Permanent link">&para;</a></h2>
 <p>Khác với ngôn ngữ khác, array trong ObjectScript là <strong>đa chiều, sparse</strong> (không cần liên tục) và không cần khai báo trước.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; Gán giá trị
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET arr(1) = &quot;Alice&quot;
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET arr(2) = &quot;Bob&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>SET arr(3) = &quot;Charlie&quot;
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>; Đa chiều
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>SET person(1, &quot;name&quot;) = &quot;Alice&quot;
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>SET person(1, &quot;age&quot;)  = 30
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>SET person(2, &quot;name&quot;) = &quot;Bob&quot;
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>SET person(2, &quot;age&quot;)  = 25
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>; Sparse — index không cần liên tục
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>SET data(1)   = &quot;first&quot;
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>SET data(100) = &quot;hundredth&quot;   ; không cần data(2..99)
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>SET data(&quot;key&quot;) = &quot;string key cũng được&quot;
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Gán giá trị
+SET arr(1) = &quot;Alice&quot;
+SET arr(2) = &quot;Bob&quot;
+SET arr(3) = &quot;Charlie&quot;
+
+; Đa chiều
+SET person(1, &quot;name&quot;) = &quot;Alice&quot;
+SET person(1, &quot;age&quot;)  = 30
+SET person(2, &quot;name&quot;) = &quot;Bob&quot;
+SET person(2, &quot;age&quot;)  = 25
+
+; Sparse — index không cần liên tục
+SET data(1)   = &quot;first&quot;
+SET data(100) = &quot;hundredth&quot;   ; không cần data(2..99)
+SET data(&quot;key&quot;) = &quot;string key cũng được&quot;</code></pre>
 <hr />
 <h2 id="traversal-with-order">Traversal with $ORDER<a class="headerlink" href="#traversal-with-order" title="Permanent link">&para;</a></h2>
 <p><code>$ORDER</code> trả về <strong>key tiếp theo</strong> — dùng để iterate:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>; Duyệt 1 chiều
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SET key = &quot;&quot;
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>FOR {
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    SET key = $ORDER(arr(key))
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    QUIT:key=&quot;&quot;
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    WRITE key, &quot;: &quot;, arr(key), !
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>}
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>; Duyệt 2 chiều (nested)
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>SET id = &quot;&quot;
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>FOR {
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    SET id = $ORDER(person(id))
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    QUIT:id=&quot;&quot;
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    WRITE &quot;Person &quot;, id, !
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    SET field = &quot;&quot;
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    FOR {
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        SET field = $ORDER(person(id, field))
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        QUIT:field=&quot;&quot;
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        WRITE &quot;  &quot;, field, &quot;: &quot;, person(id, field), !
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    }
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Duyệt 1 chiều
+SET key = &quot;&quot;
+FOR {
+    SET key = $ORDER(arr(key))
+    QUIT:key=&quot;&quot;
+    WRITE key, &quot;: &quot;, arr(key), !
+}
+
+; Duyệt 2 chiều (nested)
+SET id = &quot;&quot;
+FOR {
+    SET id = $ORDER(person(id))
+    QUIT:id=&quot;&quot;
+    WRITE &quot;Person &quot;, id, !
+
+    SET field = &quot;&quot;
+    FOR {
+        SET field = $ORDER(person(id, field))
+        QUIT:field=&quot;&quot;
+        WRITE &quot;  &quot;, field, &quot;: &quot;, person(id, field), !
+    }
+}</code></pre>
 <blockquote>
 <p>💡 <code>$ORDER</code> với argument rỗng <code>""</code> trả về key đầu tiên.<br />
 Khi không còn key nào, trả về <code>""</code>.</p>
 </blockquote>
 <h3 id="reverse-traversal">Reverse Traversal<a class="headerlink" href="#reverse-traversal" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; $ORDER(arr(key), -1) = key TRƯỚC key hiện tại
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>SET key = $ORDER(arr(&quot;&quot;), -1)   ; key cuối cùng
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>FOR {
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    QUIT:key=&quot;&quot;
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    WRITE key, &quot;: &quot;, arr(key), !
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    SET key = $ORDER(arr(key), -1)
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; $ORDER(arr(key), -1) = key TRƯỚC key hiện tại
+SET key = $ORDER(arr(&quot;&quot;), -1)   ; key cuối cùng
+FOR {
+    QUIT:key=&quot;&quot;
+    WRITE key, &quot;: &quot;, arr(key), !
+    SET key = $ORDER(arr(key), -1)
+}</code></pre>
 <hr />
 <h2 id="checking-nodes-with-data">Checking Nodes with $DATA<a class="headerlink" href="#checking-nodes-with-data" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>; Giá trị trả về:
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>; 0  = node không tồn tại
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>; 1  = có data, không có children
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>; 10 = không có data, có children (intermediate node)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>; 11 = có cả data lẫn children
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>SET arr(1) = &quot;value&quot;
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>SET arr(1, &quot;sub&quot;) = &quot;child&quot;
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>WRITE $DATA(arr(1))      ; 11
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>WRITE $DATA(arr(1,&quot;sub&quot;)); 1
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>WRITE $DATA(arr(99))     ; 0
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>; Dùng trong IF
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>IF $DATA(arr(key)) {
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    WRITE &quot;Tồn tại: &quot;, arr(key), !
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Giá trị trả về:
+; 0  = node không tồn tại
+; 1  = có data, không có children
+; 10 = không có data, có children (intermediate node)
+; 11 = có cả data lẫn children
+
+SET arr(1) = &quot;value&quot;
+SET arr(1, &quot;sub&quot;) = &quot;child&quot;
+
+WRITE $DATA(arr(1))      ; 11
+WRITE $DATA(arr(1,&quot;sub&quot;)); 1
+WRITE $DATA(arr(99))     ; 0
+
+; Dùng trong IF
+IF $DATA(arr(key)) {
+    WRITE &quot;Tồn tại: &quot;, arr(key), !
+}</code></pre>
 <hr />
 <h2 id="deleting-with-kill">Deleting with KILL<a class="headerlink" href="#deleting-with-kill" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SET arr(1) = &quot;a&quot;
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SET arr(1, &quot;sub&quot;) = &quot;b&quot;
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SET arr(2) = &quot;c&quot;
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>KILL arr(1)       ; xóa arr(1) VÀ toàn bộ subtree arr(1,...)
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>KILL arr          ; xóa toàn bộ array
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>; Xóa chỉ data, giữ lại node (ít dùng)
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>; Không có lệnh riêng — dùng KILL rồi set lại children nếu cần
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET arr(1) = &quot;a&quot;
+SET arr(1, &quot;sub&quot;) = &quot;b&quot;
+SET arr(2) = &quot;c&quot;
+
+KILL arr(1)       ; xóa arr(1) VÀ toàn bộ subtree arr(1,...)
+KILL arr          ; xóa toàn bộ array
+
+; Xóa chỉ data, giữ lại node (ít dùng)
+; Không có lệnh riêng — dùng KILL rồi set lại children nếu cần</code></pre>
 <hr />
 <h2 id="merging-arrays">Merging Arrays<a class="headerlink" href="#merging-arrays" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>; Copy toàn bộ array
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>MERGE dest = source
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>; Copy một subtree
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>MERGE dest(&quot;copy&quot;) = source(1)
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>; Dùng để truyền array vào method
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Method ProcessData(ByRef pData)
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>{
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    SET key = &quot;&quot;
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    FOR {
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        SET key = $ORDER(pData(key))
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        QUIT:key=&quot;&quot;
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        // xử lý pData(key)
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    }
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>}
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>// Gọi:
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>DO ..ProcessData(.myArray)   ; chú ý dấu . trước biến
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Copy toàn bộ array
+MERGE dest = source
+
+; Copy một subtree
+MERGE dest(&quot;copy&quot;) = source(1)
+
+; Dùng để truyền array vào method
+Method ProcessData(ByRef pData)
+{
+    SET key = &quot;&quot;
+    FOR {
+        SET key = $ORDER(pData(key))
+        QUIT:key=&quot;&quot;
+        // xử lý pData(key)
+    }
+}
+// Gọi:
+DO ..ProcessData(.myArray)   ; chú ý dấu . trước biến</code></pre>
 <blockquote>
 <p>⚠️ Truyền array vào method/function phải dùng <strong>ByRef</strong> và gọi với dấu <code>.</code> (pass by reference).</p>
 </blockquote>
 <hr />
 <h2 id="counting-elements">Counting Elements<a class="headerlink" href="#counting-elements" title="Permanent link">&para;</a></h2>
 <p>ObjectScript không có hàm <code>length(arr)</code> — phải đếm thủ công hoặc tự track:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>; Cách 1: Đếm khi duyệt
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>SET count = 0
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>SET key = &quot;&quot;
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>FOR {
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    SET key = $ORDER(arr(key))
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    QUIT:key=&quot;&quot;
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    SET count = count + 1
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>}
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>WRITE &quot;Count: &quot;, count, !
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>; Cách 2: Dùng node đặc biệt để track count
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>SET arr = 0           ; arr (không subscript) = count
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>SET arr = arr + 1
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>SET arr(arr) = &quot;new item&quot;
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>WRITE &quot;Count: &quot;, arr, !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Cách 1: Đếm khi duyệt
+SET count = 0
+SET key = &quot;&quot;
+FOR {
+    SET key = $ORDER(arr(key))
+    QUIT:key=&quot;&quot;
+    SET count = count + 1
+}
+WRITE &quot;Count: &quot;, count, !
+
+; Cách 2: Dùng node đặc biệt để track count
+SET arr = 0           ; arr (không subscript) = count
+SET arr = arr + 1
+SET arr(arr) = &quot;new item&quot;
+WRITE &quot;Count: &quot;, arr, !</code></pre>
 <hr />
 <h2 id="arrays-vs-globals">Arrays vs Globals<a class="headerlink" href="#arrays-vs-globals" title="Permanent link">&para;</a></h2>
 <table>
@@ -3474,19 +3467,20 @@ Khi không còn key nào, trả về <code>""</code>.</p>
 <li>💡 Dùng array để lưu tạm dữ liệu trong process, dùng Global (<code>^</code>) để persist</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<p>SET fruit("a") = "Apple"
-SET fruit("b") = "Banana"
-SET fruit("c") = "Cherry"
-SET k = ""  FOR { SET k=$ORDER(fruit(k))  QUIT:k=""  WRITE k,": ",fruit(k),! }</p>
-<p>; Kiểm tra $DATA
-SET x(1)="val"  SET x(1,"child")="sub"
-WRITE "$DATA(x(1)) = ", $DATA(x(1)), !       ; 11
-WRITE "$DATA(x(2)) = ", $DATA(x(2)), !       ; 0</p>
-<p>; Merge
+<pre class="objectscript"><code class="language-objectscript">SET fruit(&quot;a&quot;) = &quot;Apple&quot;
+SET fruit(&quot;b&quot;) = &quot;Banana&quot;
+SET fruit(&quot;c&quot;) = &quot;Cherry&quot;
+SET k = &quot;&quot;  FOR { SET k=$ORDER(fruit(k))  QUIT:k=&quot;&quot;  WRITE k,&quot;: &quot;,fruit(k),! }
+
+; Kiểm tra $DATA
+SET x(1)=&quot;val&quot;  SET x(1,&quot;child&quot;)=&quot;sub&quot;
+WRITE &quot;$DATA(x(1)) = &quot;, $DATA(x(1)), !       ; 11
+WRITE &quot;$DATA(x(2)) = &quot;, $DATA(x(2)), !       ; 0
+
+; Merge
 MERGE copy = fruit
 KILL fruit
-SET k = ""  FOR { SET k=$ORDER(copy(k))  QUIT:k=""  WRITE copy(k),! }
-```</p>
+SET k = &quot;&quot;  FOR { SET k=$ORDER(copy(k))  QUIT:k=&quot;&quot;  WRITE copy(k),! }</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3608,6 +3602,8 @@ SET k = ""  FOR { SET k=$ORDER(copy(k))  QUIT:k=""  WRITE copy(k),! }
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

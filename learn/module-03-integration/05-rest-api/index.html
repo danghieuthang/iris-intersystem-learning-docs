@@ -3301,81 +3301,78 @@
 <hr />
 <h2 id="manual-coding-dispatch-class">Manual Coding — Dispatch Class<a class="headerlink" href="#manual-coding-dispatch-class" title="Permanent link">&para;</a></h2>
 <p>Mỗi REST endpoint là một <code>ClassMethod</code> trả về <code>%Status</code>. HTTP status code set qua <code>%response.Status</code>, không phải return value.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Class MyApp.REST.Dispatch Extends %CSP.REST
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Parameter CONTENTTYPE = &quot;application/json&quot;;
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>XData UrlMap [ XMLNamespace = &quot;http://www.intersystems.com/urlmap&quot; ]
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>{
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>&lt;Routes&gt;
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  &lt;Route Url=&quot;/people&quot;       Method=&quot;GET&quot;    Call=&quot;GetAll&quot;/&gt;
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;GET&quot;    Call=&quot;GetOne&quot;/&gt;
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  &lt;Route Url=&quot;/people&quot;       Method=&quot;POST&quot;   Call=&quot;Create&quot;/&gt;
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;PUT&quot;    Call=&quot;Update&quot;/&gt;
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;DELETE&quot; Call=&quot;Delete&quot;/&gt;
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>&lt;/Routes&gt;
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>}
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>ClassMethod GetAll() As %Status
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>{
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    SET result = []
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    // ... populate array
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    WRITE result.%ToJSON()
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    RETURN $$$OK
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>}
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>ClassMethod GetOne(id As %String) As %Status
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>{
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    SET person = ##class(MyApp.Person).%OpenId(id)
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    IF person = &quot;&quot; {
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        SET %response.Status = &quot;404 Not Found&quot;
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        RETURN $$$OK
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    }
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    DO person.%JSONExport()
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    RETURN $$$OK
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>}
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.REST.Dispatch Extends %CSP.REST
+{
+
+Parameter CONTENTTYPE = &quot;application/json&quot;;
+
+XData UrlMap [ XMLNamespace = &quot;http://www.intersystems.com/urlmap&quot; ]
+{
+&lt;Routes&gt;
+  &lt;Route Url=&quot;/people&quot;       Method=&quot;GET&quot;    Call=&quot;GetAll&quot;/&gt;
+  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;GET&quot;    Call=&quot;GetOne&quot;/&gt;
+  &lt;Route Url=&quot;/people&quot;       Method=&quot;POST&quot;   Call=&quot;Create&quot;/&gt;
+  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;PUT&quot;    Call=&quot;Update&quot;/&gt;
+  &lt;Route Url=&quot;/people/:id&quot;   Method=&quot;DELETE&quot; Call=&quot;Delete&quot;/&gt;
+&lt;/Routes&gt;
+}
+
+ClassMethod GetAll() As %Status
+{
+    SET result = []
+    // ... populate array
+    WRITE result.%ToJSON()
+    RETURN $$$OK
+}
+
+ClassMethod GetOne(id As %String) As %Status
+{
+    SET person = ##class(MyApp.Person).%OpenId(id)
+    IF person = &quot;&quot; {
+        SET %response.Status = &quot;404 Not Found&quot;
+        RETURN $$$OK
+    }
+    DO person.%JSONExport()
+    RETURN $$$OK
+}
+
+}</code></pre>
 <hr />
 <h2 id="json-handling">JSON Handling<a class="headerlink" href="#json-handling" title="Permanent link">&para;</a></h2>
 <p>IRIS có built-in JSON support qua dynamic objects <code>{}</code> và <code>[]</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// Tạo object và array
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>SET obj = {}
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>SET obj.name = &quot;Alice&quot;
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>SET obj.age = 30
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>SET arr = []
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>DO arr.%Push(obj)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>// Serialize → string/stdout
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>WRITE obj.%ToJSON()
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>// Deserialize từ string
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>SET obj = {}.%FromJSON(jsonString)
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>// Đọc request body
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>SET body = {}.%FromJSON(%request.Content)
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>WRITE body.name
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Tạo object và array
+SET obj = {}
+SET obj.name = &quot;Alice&quot;
+SET obj.age = 30
+
+SET arr = []
+DO arr.%Push(obj)
+
+// Serialize → string/stdout
+WRITE obj.%ToJSON()
+
+// Deserialize từ string
+SET obj = {}.%FromJSON(jsonString)
+
+// Đọc request body
+SET body = {}.%FromJSON(%request.Content)
+WRITE body.name</code></pre>
 <h2 id="jsonadaptor">%JSON.Adaptor<a class="headerlink" href="#jsonadaptor" title="Permanent link">&para;</a></h2>
 <p>Thêm <code>%JSON.Adaptor</code> vào class để tự động serialize/deserialize toàn bộ object mà không cần code thủ công.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Class MyApp.Person Extends (%Persistent, %JSON.Adaptor)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    Property Name As %String;
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    Property Age As %Integer;
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>// Serialize → stdout
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>SET person = ##class(MyApp.Person).%OpenId(1)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>DO person.%JSONExport()
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>// Deserialize vào object mới
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>SET person = ##class(MyApp.Person).%New()
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>DO person.%JSONImport(jsonString)
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>DO person.%Save()
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.Person Extends (%Persistent, %JSON.Adaptor)
+{
+    Property Name As %String;
+    Property Age As %Integer;
+}
+
+// Serialize → stdout
+SET person = ##class(MyApp.Person).%OpenId(1)
+DO person.%JSONExport()
+
+// Deserialize vào object mới
+SET person = ##class(MyApp.Person).%New()
+DO person.%JSONImport(jsonString)
+DO person.%Save()</code></pre>
 <hr />
 <h2 id="web-application-setup">Web Application Setup<a class="headerlink" href="#web-application-setup" title="Permanent link">&para;</a></h2>
 <table>
@@ -3418,11 +3415,11 @@
    - <strong>Dispatch Class</strong> — handle routing (không cần sửa)
    - <strong>Implementation Class</strong> — chứa stub methods → bạn viết logic vào đây
 4. Khi update spec, re-import sẽ cập nhật Dispatch Class mà không xóa logic trong Implementation Class</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>OpenAPI Spec (.yaml)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>      ↓ Import vào IRIS
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Dispatch Class (auto-generated, không sửa)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>      ↓ delegate
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Implementation Class (bạn viết logic ở đây)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>OpenAPI Spec (.yaml)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>      ↓ Import vào IRIS
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Dispatch Class (auto-generated, không sửa)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>      ↓ delegate
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Implementation Class (bạn viết logic ở đây)
 </span></code></pre></div>
 <blockquote>
 <p>💡 Specification-first là cách được khuyến nghị cho project thực tế — API contract rõ ràng trước khi code, có sẵn Swagger UI để test.</p>
@@ -3438,7 +3435,7 @@
 </blockquote>
 <h3 id="finding-routes-via-rest-management-api">Finding Routes via REST Management API<a class="headerlink" href="#finding-routes-via-rest-management-api" title="Permanent link">&para;</a></h3>
 <p>Nếu câu hỏi hỏi <strong>“xem các routes của REST service”</strong> theo REST reference của IRIS, endpoint cần nhớ là endpoint trả về <strong>OpenAPI/Swagger spec</strong> của application:</p>
-<div class="language-http highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="err">GET http://&lt;server&gt;:52773/api/mgmnt/v1/&lt;namespace&gt;/spec/&lt;application&gt;</span>
+<div class="language-http highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">GET http://&lt;server&gt;:52773/api/mgmnt/v1/&lt;namespace&gt;/spec/&lt;application&gt;</span>
 </span></code></pre></div>
 <ul>
 <li><strong>HTTP method:</strong> <code>GET</code></li>
@@ -3450,7 +3447,7 @@
 </ul>
 <p>Response là <strong>Swagger / OpenAPI 2.0 spec</strong>, từ đó bạn xem được toàn bộ routes có trong REST application.</p>
 <p>Ví dụ theo format exam:</p>
-<div class="language-http highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="err">GET http://ABCbookstore.com:52773/api/mgmnt/v1/USER/spec/bookinventory</span>
+<div class="language-http highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">GET http://ABCbookstore.com:52773/api/mgmnt/v1/USER/spec/bookinventory</span>
 </span></code></pre></div>
 <p>Trong đó:</p>
 <ul>
@@ -3477,20 +3474,19 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>// --- Test REST endpoint từ Terminal (không cần HTTP) ---
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET sc = ##class(MyApp.REST.Dispatch).GetAll()
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>WRITE $SYSTEM.Status.GetErrorText(sc), !
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>// --- Serialize object sang JSON string ---
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>SET person = ##class(MyApp.Person).%OpenId(1)
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>SET writer = ##class(%JSON.Writer).%New()
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>DO writer.RootObject(person)
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>// --- Parse JSON string ---
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>SET json = &quot;{&quot;&quot;name&quot;&quot;:&quot;&quot;Alice&quot;&quot;,&quot;&quot;age&quot;&quot;:30}&quot;
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>SET obj = {}.%FromJSON(json)
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>WRITE obj.name, !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Test REST endpoint từ Terminal (không cần HTTP) ---
+SET sc = ##class(MyApp.REST.Dispatch).GetAll()
+WRITE $SYSTEM.Status.GetErrorText(sc), !
+
+// --- Serialize object sang JSON string ---
+SET person = ##class(MyApp.Person).%OpenId(1)
+SET writer = ##class(%JSON.Writer).%New()
+DO writer.RootObject(person)
+
+// --- Parse JSON string ---
+SET json = &quot;{&quot;&quot;name&quot;&quot;:&quot;&quot;Alice&quot;&quot;,&quot;&quot;age&quot;&quot;:30}&quot;
+SET obj = {}.%FromJSON(json)
+WRITE obj.name, !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3614,6 +3610,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

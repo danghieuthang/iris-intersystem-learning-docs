@@ -3682,10 +3682,9 @@
 </tbody>
 </table>
 <h3 id="lay-query-plan-tu-objectscript">Lấy Query Plan từ ObjectScript<a class="headerlink" href="#lay-query-plan-tu-objectscript" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>WRITE stmt.%GetImplementationClass().GetPlan(), !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET stmt = ##class(%SQL.Statement).%New()
+DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
+WRITE stmt.%GetImplementationClass().GetPlan(), !</code></pre>
 <hr />
 <h2 id="sql-statistics-statement-index">SQL Statistics &amp; Statement Index<a class="headerlink" href="#sql-statistics-statement-index" title="Permanent link">&para;</a></h2>
 <h3 id="sql-statement-index">SQL Statement Index<a class="headerlink" href="#sql-statement-index" title="Permanent link">&para;</a></h3>
@@ -3696,11 +3695,10 @@
 <p>Xem tại: <strong>Management Portal → System → SQL → SQL Statement Index</strong> (hoặc <em>Cached Queries</em>). Đây là công cụ chính để tìm slow query và query được gọi nhiều nhất.</p>
 <h3 id="tunetable-thu-thap-thong-ke-bang">TuneTable — Thu thập thống kê bảng<a class="headerlink" href="#tunetable-thu-thap-thong-ke-bang" title="Permanent link">&para;</a></h3>
 <p>Query optimizer của IRIS dựa trên thống kê (row count, selectivity theo field/index) để chọn plan tối ưu. Nếu thống kê cũ hoặc thiếu, optimizer có thể chọn sai plan.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>// Gather statistics for a table (1 = verbose output)
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Gather statistics for a table (1 = verbose output)
+DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)</code></pre>
 <p>Hoặc từ SQL:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">TUNE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MyApp_Person</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">TUNE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MyApp_Person</span>
 </span></code></pre></div>
 <blockquote>
 <p>Nên chạy <code>TuneTable</code> sau mỗi lần load dữ liệu lớn (bulk import) hoặc khi thấy query đột ngột chậm.</p>
@@ -3708,61 +3706,58 @@
 <p><strong>Import thống kê từ môi trường production</strong> để đảm bảo optimizer trong dev có thể mô phỏng hành vi thực tế — đặc biệt quan trọng khi dev database có ít data hơn production.</p>
 <h3 id="extentsize">ExtentSize<a class="headerlink" href="#extentsize" title="Permanent link">&para;</a></h3>
 <p><code>EXTENTSIZE</code> là gợi ý số row dự kiến cho optimizer — được dùng khi chưa có thống kê thực tế:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>// Read current ExtentSize
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>WRITE ##class(MyApp.Person).%GetParameter(&quot;EXTENTSIZE&quot;), !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Read current ExtentSize
+WRITE ##class(MyApp.Person).%GetParameter(&quot;EXTENTSIZE&quot;), !</code></pre>
 <p>Hoặc khai báo trong class:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Class MyApp.Person Extends %Persistent
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>{
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    Parameter EXTENTSIZE = 50000;
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    // ...
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.Person Extends %Persistent
+{
+    Parameter EXTENTSIZE = 50000;
+    // ...
+}</code></pre>
 <hr />
 <h2 id="sql-security">SQL Security<a class="headerlink" href="#sql-security" title="Permanent link">&para;</a></h2>
 <h3 id="grant-va-revoke">GRANT và REVOKE<a class="headerlink" href="#grant-va-revoke" title="Permanent link">&para;</a></h3>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">-- Grant SELECT on a table to a user</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">appuser</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1">-- Grant multiple privileges at once</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">appuser</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1">-- Grant to a role</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">%</span><span class="n">DB_USER</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1">-- Revoke a privilege</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="k">REVOKE</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">appuser</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- Grant SELECT on a table to a user</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">appuser</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1">-- Grant multiple privileges at once</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">appuser</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">-- Grant to a role</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">%</span><span class="n">DB_USER</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1">-- Revoke a privilege</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="k">REVOKE</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_Person</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">appuser</span>
 </span></code></pre></div>
 <p>Các privilege SQL bao gồm: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>REFERENCES</code>, <code>EXECUTE</code> (cho stored procedure).</p>
 <h3 id="table-level-vs-column-level-security">Table-level vs Column-level Security<a class="headerlink" href="#table-level-vs-column-level-security" title="Permanent link">&para;</a></h3>
 <p>IRIS không hỗ trợ column-level privilege trực tiếp. Thay vào đó, dùng <strong>View</strong> để giới hạn cột người dùng được phép truy cập:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">-- Expose only safe columns via a view</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">MyApp_PersonPublic</span><span class="w"> </span><span class="k">AS</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Email</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_Person</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1">-- Grant access to the view, not the base table</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_PersonPublic</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">publicuser</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">-- Expose only safe columns via a view</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">MyApp_PersonPublic</span><span class="w"> </span><span class="k">AS</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Email</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_Person</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1">-- Grant access to the view, not the base table</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">MyApp_PersonPublic</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">publicuser</span>
 </span></code></pre></div>
 <h3 id="row-level-security-voi-views">Row-Level Security với Views<a class="headerlink" href="#row-level-security-voi-views" title="Permanent link">&para;</a></h3>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">-- Filter rows based on the current SQL user</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">MyApp_MyPersonView</span><span class="w"> </span><span class="k">AS</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_Person</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">OwnerUsername</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CURRENT_USER</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">-- Filter rows based on the current SQL user</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">MyApp_MyPersonView</span><span class="w"> </span><span class="k">AS</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp_Person</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">OwnerUsername</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CURRENT_USER</span>
 </span></code></pre></div>
 <p>Cấp quyền trên view thay vì bảng gốc — người dùng chỉ thấy đúng rows của họ.</p>
 <h3 id="sql-injection-prevention">SQL Injection Prevention<a class="headerlink" href="#sql-injection-prevention" title="Permanent link">&para;</a></h3>
 <p><strong>Không bao giờ</strong> nối chuỗi input của user vào SQL string. Luôn dùng <strong>parameterized query</strong>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>// WRONG - SQL injection risk
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>SET sql = &quot;SELECT * FROM MyApp_Person WHERE Name = &#39;&quot; _ userInput _ &quot;&#39;&quot;
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>// CORRECT - use ? placeholder in Dynamic SQL
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>DO stmt.%Prepare(&quot;SELECT * FROM MyApp_Person WHERE Name = ?&quot;)
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>SET rs = stmt.%Execute(userInput)
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>// CORRECT - use :varName in Embedded SQL
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :targetId)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// WRONG - SQL injection risk
+SET sql = &quot;SELECT * FROM MyApp_Person WHERE Name = &#x27;&quot; _ userInput _ &quot;&#x27;&quot;
+
+// CORRECT - use ? placeholder in Dynamic SQL
+SET stmt = ##class(%SQL.Statement).%New()
+DO stmt.%Prepare(&quot;SELECT * FROM MyApp_Person WHERE Name = ?&quot;)
+SET rs = stmt.%Execute(userInput)
+
+// CORRECT - use :varName in Embedded SQL
+&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :targetId)</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3778,28 +3773,27 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>// --- Tune table statistics ---
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)  // 1 = verbose output
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>// --- Check EXPLAIN plan ---
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;EXPLAIN SELECT Name FROM MyApp_Person WHERE Age &gt; 25&quot;)
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>WHILE rs.%Next() { WRITE rs.%GetData(1), ! }
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>// --- Grant privilege (run as admin) ---
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>SET sc = ##class(%SYSTEM.SQL.Security).GrantObjectPrivilege(&quot;SELECT&quot;, &quot;MyApp_Person&quot;, &quot;sqlusr&quot;)
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>// --- View SQL Statement Index from ObjectScript ---
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Statement, RowCount, TotalTime FROM %SYS_CACHEQUERY.Statement ORDER BY TotalTime DESC&quot;)
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Statement&quot;), &quot; -- &quot;, rs.%Get(&quot;TotalTime&quot;), ! }
-</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>// --- Read ExtentSize hint ---
-</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>WRITE ##class(MyApp.Person).%GetParameter(&quot;EXTENTSIZE&quot;), !
-</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>
-</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>// --- Get plan from prepared statement ---
-</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
-</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>WRITE stmt.%GetImplementationClass().GetPlan(), !
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Tune table statistics ---
+DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)  // 1 = verbose output
+
+// --- Check EXPLAIN plan ---
+SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;EXPLAIN SELECT Name FROM MyApp_Person WHERE Age &gt; 25&quot;)
+WHILE rs.%Next() { WRITE rs.%GetData(1), ! }
+
+// --- Grant privilege (run as admin) ---
+SET sc = ##class(%SYSTEM.SQL.Security).GrantObjectPrivilege(&quot;SELECT&quot;, &quot;MyApp_Person&quot;, &quot;sqlusr&quot;)
+
+// --- View SQL Statement Index from ObjectScript ---
+SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Statement, RowCount, TotalTime FROM %SYS_CACHEQUERY.Statement ORDER BY TotalTime DESC&quot;)
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Statement&quot;), &quot; -- &quot;, rs.%Get(&quot;TotalTime&quot;), ! }
+
+// --- Read ExtentSize hint ---
+WRITE ##class(MyApp.Person).%GetParameter(&quot;EXTENTSIZE&quot;), !
+
+// --- Get plan from prepared statement ---
+SET stmt = ##class(%SQL.Statement).%New()
+DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
+WRITE stmt.%GetImplementationClass().GetPlan(), !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3922,6 +3916,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

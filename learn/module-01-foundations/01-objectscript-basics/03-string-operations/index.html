@@ -3287,104 +3287,97 @@
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>ObjectScript cung cấp bộ hàm chuỗi phong phú tích hợp sẵn: <code>$PIECE</code> để tách/ghép theo delimiter, <code>$EXTRACT</code> để cắt theo vị trí, <code>$TRANSLATE</code> để thay thế ký tự, và Pattern Matching như regex đơn giản. Hầu hết hàm đều hỗ trợ cả đọc lẫn ghi (SET vào left-hand side).</p>
 <h2 id="concatenation">Concatenation<a class="headerlink" href="#concatenation" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; Dùng toán tử _ (underscore)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET first = &quot;Hello&quot;
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET last  = &quot; World&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>SET full  = first _ last
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>WRITE full   ; Hello World
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>; Nối trực tiếp với số (auto-convert)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>SET msg = &quot;Count: &quot; _ 42
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>WRITE msg    ; Count: 42
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Dùng toán tử _ (underscore)
+SET first = &quot;Hello&quot;
+SET last  = &quot; World&quot;
+SET full  = first _ last
+WRITE full   ; Hello World
+
+; Nối trực tiếp với số (auto-convert)
+SET msg = &quot;Count: &quot; _ 42
+WRITE msg    ; Count: 42</code></pre>
 <hr />
 <h2 id="piece-split-join">$PIECE — Split &amp; Join<a class="headerlink" href="#piece-split-join" title="Permanent link">&para;</a></h2>
 <p><code>$PIECE</code> là function <strong>quan trọng nhất</strong> trong string operations — làm việc với chuỗi có delimiter:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>; $PIECE(string, delimiter, from, to)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SET csv = &quot;Alice,30,Engineer,Hanoi&quot;
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>; Lấy phần tử thứ n
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>WRITE $PIECE(csv, &quot;,&quot;, 1)      ; Alice
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>WRITE $PIECE(csv, &quot;,&quot;, 2)      ; 30
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>WRITE $PIECE(csv, &quot;,&quot;, 3)      ; Engineer
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>; Lấy từ n đến m
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>WRITE $PIECE(csv, &quot;,&quot;, 2, 3)   ; 30,Engineer
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>; Dùng $PIECE để SET — thay thế phần tử
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>SET $PIECE(csv, &quot;,&quot;, 2) = 31
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>WRITE csv   ; Alice,31,Engineer,Hanoi
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; $PIECE(string, delimiter, from, to)
+SET csv = &quot;Alice,30,Engineer,Hanoi&quot;
+
+; Lấy phần tử thứ n
+WRITE $PIECE(csv, &quot;,&quot;, 1)      ; Alice
+WRITE $PIECE(csv, &quot;,&quot;, 2)      ; 30
+WRITE $PIECE(csv, &quot;,&quot;, 3)      ; Engineer
+
+; Lấy từ n đến m
+WRITE $PIECE(csv, &quot;,&quot;, 2, 3)   ; 30,Engineer
+
+; Dùng $PIECE để SET — thay thế phần tử
+SET $PIECE(csv, &quot;,&quot;, 2) = 31
+WRITE csv   ; Alice,31,Engineer,Hanoi</code></pre>
 <hr />
 <h2 id="extract-substring-by-position">$EXTRACT — Substring by Position<a class="headerlink" href="#extract-substring-by-position" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SET str = &quot;InterSystems&quot;
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>; $EXTRACT(string, pos)         — lấy 1 ký tự
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>; $EXTRACT(string, from, to)    — lấy substring
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>WRITE $EXTRACT(str, 1)          ; I
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>WRITE $EXTRACT(str, 1, 5)       ; Inter
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>WRITE $EXTRACT(str, 6)          ; S (đến hết)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>; SET với $EXTRACT — thay thế ký tự
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>SET $EXTRACT(str, 1, 5) = &quot;Hyper&quot;
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>WRITE str   ; HyperSystems
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET str = &quot;InterSystems&quot;
+
+; $EXTRACT(string, pos)         — lấy 1 ký tự
+; $EXTRACT(string, from, to)    — lấy substring
+WRITE $EXTRACT(str, 1)          ; I
+WRITE $EXTRACT(str, 1, 5)       ; Inter
+WRITE $EXTRACT(str, 6)          ; S (đến hết)
+
+; SET với $EXTRACT — thay thế ký tự
+SET $EXTRACT(str, 1, 5) = &quot;Hyper&quot;
+WRITE str   ; HyperSystems</code></pre>
 <hr />
 <h2 id="find-finding-position">$FIND — Finding Position<a class="headerlink" href="#find-finding-position" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>; $FIND(string, target, start)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>; Trả về vị trí NGAY SAU target (không phải vị trí bắt đầu!)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>SET str = &quot;Hello World Hello&quot;
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>WRITE $FIND(str, &quot;Hello&quot;)      ; 6 (sau ký tự thứ 5)
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>WRITE $FIND(str, &quot;Hello&quot;, 6)   ; 18 (tìm từ vị trí 6)
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>WRITE $FIND(str, &quot;xyz&quot;)        ; 0 (không tìm thấy)
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>; Tìm vị trí bắt đầu thực sự:
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>SET pos = $FIND(str, &quot;World&quot;) - $LENGTH(&quot;World&quot;) - 1  ; = 6
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; $FIND(string, target, start)
+; Trả về vị trí NGAY SAU target (không phải vị trí bắt đầu!)
+SET str = &quot;Hello World Hello&quot;
+
+WRITE $FIND(str, &quot;Hello&quot;)      ; 6 (sau ký tự thứ 5)
+WRITE $FIND(str, &quot;Hello&quot;, 6)   ; 18 (tìm từ vị trí 6)
+WRITE $FIND(str, &quot;xyz&quot;)        ; 0 (không tìm thấy)
+
+; Tìm vị trí bắt đầu thực sự:
+SET pos = $FIND(str, &quot;World&quot;) - $LENGTH(&quot;World&quot;) - 1  ; = 6</code></pre>
 <hr />
 <h2 id="translate-character-replacement">$TRANSLATE — Character Replacement<a class="headerlink" href="#translate-character-replacement" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>; $TRANSLATE(string, from, to)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>; Thay từng ký tự trong &#39;from&#39; bằng ký tự tương ứng trong &#39;to&#39;
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SET str = &quot;Hello World&quot;
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>WRITE $TRANSLATE(str, &quot;aeiou&quot;, &quot;AEIOU&quot;)   ; HEllO WOrld
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>WRITE $TRANSLATE(str, &quot;lo&quot;, &quot;LO&quot;)         ; HeLLO WOrLd
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>; Xóa ký tự — &#39;to&#39; ngắn hơn &#39;from&#39;
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>WRITE $TRANSLATE(str, &quot; &quot;)                ; HelloWorld (xóa khoảng trắng)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; $TRANSLATE(string, from, to)
+; Thay từng ký tự trong &#x27;from&#x27; bằng ký tự tương ứng trong &#x27;to&#x27;
+SET str = &quot;Hello World&quot;
+
+WRITE $TRANSLATE(str, &quot;aeiou&quot;, &quot;AEIOU&quot;)   ; HEllO WOrld
+WRITE $TRANSLATE(str, &quot;lo&quot;, &quot;LO&quot;)         ; HeLLO WOrLd
+
+; Xóa ký tự — &#x27;to&#x27; ngắn hơn &#x27;from&#x27;
+WRITE $TRANSLATE(str, &quot; &quot;)                ; HelloWorld (xóa khoảng trắng)</code></pre>
 <hr />
 <h2 id="length-length-and-counting">$LENGTH — Length and Counting<a class="headerlink" href="#length-length-and-counting" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SET str = &quot;Hello,World,IRIS&quot;
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>; Độ dài chuỗi
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>WRITE $LENGTH(str)               ; 16
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>; Đếm số phần tử phân cách bởi delimiter
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>WRITE $LENGTH(str, &quot;,&quot;)          ; 3  ← dùng để biết có bao nhiêu piece
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET str = &quot;Hello,World,IRIS&quot;
+
+; Độ dài chuỗi
+WRITE $LENGTH(str)               ; 16
+
+; Đếm số phần tử phân cách bởi delimiter
+WRITE $LENGTH(str, &quot;,&quot;)          ; 3  ← dùng để biết có bao nhiêu piece</code></pre>
 <hr />
 <h2 id="pattern-matching">Pattern Matching<a class="headerlink" href="#pattern-matching" title="Permanent link">&para;</a></h2>
 <p>Thay thế đơn giản cho regex trong nhiều trường hợp:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>; Cú pháp: string ? pattern
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>; Ký hiệu: nL = n chữ cái, nN = n số, nE = n ký tự bất kỳ, nP = n dấu câu
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>; Kiểm tra số điện thoại đơn giản (10 chữ số)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>IF phone?10N {
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    WRITE &quot;Hợp lệ&quot;
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>}
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>; Kiểm tra có phải chỉ gồm chữ cái
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>IF name?1.A {      ; 1 hoặc nhiều chữ cái (A = alpha = L hoặc U)
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    WRITE &quot;Chỉ có chữ cái&quot;
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>}
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>; Email đơn giản
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>IF email?1.E1&quot;@&quot;1.E1&quot;.&quot;1.E {
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    WRITE &quot;Có vẻ là email&quot;
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Cú pháp: string ? pattern
+; Ký hiệu: nL = n chữ cái, nN = n số, nE = n ký tự bất kỳ, nP = n dấu câu
+
+; Kiểm tra số điện thoại đơn giản (10 chữ số)
+IF phone?10N {
+    WRITE &quot;Hợp lệ&quot;
+}
+
+; Kiểm tra có phải chỉ gồm chữ cái
+IF name?1.A {      ; 1 hoặc nhiều chữ cái (A = alpha = L hoặc U)
+    WRITE &quot;Chỉ có chữ cái&quot;
+}
+
+; Email đơn giản
+IF email?1.E1&quot;@&quot;1.E1&quot;.&quot;1.E {
+    WRITE &quot;Có vẻ là email&quot;
+}</code></pre>
 <p>Mẹo nhớ nhanh: hãy đọc pattern theo công thức <strong>"số lượng + loại ký tự"</strong>.</p>
 <ul>
 <li><code>phone?10N</code> = có <strong>10</strong> ký tự loại <strong>Number</strong></li>
@@ -3446,21 +3439,20 @@
 </ul>
 <hr />
 <h2 id="trim-padding">Trim &amp; Padding<a class="headerlink" href="#trim-padding" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>; Không có hàm trim built-in — dùng kết hợp
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET str = &quot;  hello  &quot;
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>; Trim trái (xóa khoảng trắng đầu)
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>WHILE $EXTRACT(str, 1) = &quot; &quot; { SET str = $EXTRACT(str, 2, *) }
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>; Trim phải
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>WHILE $EXTRACT(str, *) = &quot; &quot; { SET str = $EXTRACT(str, 1, *-1) }
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>; $EXTRACT(str, *) = ký tự cuối cùng
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>; $EXTRACT(str, n, *) = từ n đến cuối
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>; Padding phải (right-pad đến độ dài n)
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>SET padded = $JUSTIFY(&quot;hello&quot;, 10)   ; &quot;     hello&quot; (right-justify)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Không có hàm trim built-in — dùng kết hợp
+SET str = &quot;  hello  &quot;
+
+; Trim trái (xóa khoảng trắng đầu)
+WHILE $EXTRACT(str, 1) = &quot; &quot; { SET str = $EXTRACT(str, 2, *) }
+
+; Trim phải
+WHILE $EXTRACT(str, *) = &quot; &quot; { SET str = $EXTRACT(str, 1, *-1) }
+
+; $EXTRACT(str, *) = ký tự cuối cùng
+; $EXTRACT(str, n, *) = từ n đến cuối
+
+; Padding phải (right-pad đến độ dài n)
+SET padded = $JUSTIFY(&quot;hello&quot;, 10)   ; &quot;     hello&quot; (right-justify)</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3473,21 +3465,20 @@
 <li>💡 <code>$TRANSLATE(str, " ")</code> là cách nhanh nhất để xóa tất cả khoảng trắng</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>WRITE &quot;Year:  &quot;, $PIECE(line,&quot;,&quot;,1), !
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>WRITE &quot;Name:  &quot;, $PIECE(line,&quot;,&quot;,2), !
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>WRITE &quot;Role:  &quot;, $PIECE(line,&quot;,&quot;,3), !
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>; Đếm pieces
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>WRITE &quot;Count: &quot;, $LENGTH(line,&quot;,&quot;), !
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>; $TRANSLATE — xóa khoảng trắng
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>SET messy = &quot;H e l l o&quot;
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>WRITE $TRANSLATE(messy,&quot; &quot;), !   ; Hello
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>; Pattern matching
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>SET phone = &quot;0912345678&quot;
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>IF phone?10N { WRITE &quot;Valid phone!&quot;, ! }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">WRITE &quot;Year:  &quot;, $PIECE(line,&quot;,&quot;,1), !
+WRITE &quot;Name:  &quot;, $PIECE(line,&quot;,&quot;,2), !
+WRITE &quot;Role:  &quot;, $PIECE(line,&quot;,&quot;,3), !
+
+; Đếm pieces
+WRITE &quot;Count: &quot;, $LENGTH(line,&quot;,&quot;), !
+
+; $TRANSLATE — xóa khoảng trắng
+SET messy = &quot;H e l l o&quot;
+WRITE $TRANSLATE(messy,&quot; &quot;), !   ; Hello
+
+; Pattern matching
+SET phone = &quot;0912345678&quot;
+IF phone?10N { WRITE &quot;Valid phone!&quot;, ! }</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3609,6 +3600,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

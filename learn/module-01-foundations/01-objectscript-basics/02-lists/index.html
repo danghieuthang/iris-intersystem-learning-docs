@@ -3291,84 +3291,77 @@
 </blockquote>
 <hr />
 <h2 id="creating-a-list">Creating a List<a class="headerlink" href="#creating-a-list" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; $LISTBUILD (viết tắt: $LB)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>SET colors = $LISTBUILD(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET mixed  = $LISTBUILD(&quot;Alice&quot;, 30, &quot;&quot;, &quot;active&quot;)  ; có thể mix kiểu, có thể rỗng
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>; Tạo list rỗng
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>SET empty = $LISTBUILD()
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; $LISTBUILD (viết tắt: $LB)
+SET colors = $LISTBUILD(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;)
+SET mixed  = $LISTBUILD(&quot;Alice&quot;, 30, &quot;&quot;, &quot;active&quot;)  ; có thể mix kiểu, có thể rỗng
+
+; Tạo list rỗng
+SET empty = $LISTBUILD()</code></pre>
 <hr />
 <h2 id="accessing-elements">Accessing Elements<a class="headerlink" href="#accessing-elements" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>; $LIST(list, index) — lấy phần tử tại index (bắt đầu từ 1)
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>WRITE $LIST(fruits, 1)   ; Apple
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>WRITE $LIST(fruits, 2)   ; Banana
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>WRITE $LIST(fruits, 3)   ; Cherry
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>; $LG là alias của $LIST (viết tắt: List Get)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>WRITE $LG(fruits, 2)     ; Banana
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>; Index âm: đếm từ cuối
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>WRITE $LG(fruits, -1)    ; Cherry (phần tử cuối)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
+
+; $LIST(list, index) — lấy phần tử tại index (bắt đầu từ 1)
+WRITE $LIST(fruits, 1)   ; Apple
+WRITE $LIST(fruits, 2)   ; Banana
+WRITE $LIST(fruits, 3)   ; Cherry
+
+; $LG là alias của $LIST (viết tắt: List Get)
+WRITE $LG(fruits, 2)     ; Banana
+
+; Index âm: đếm từ cuối
+WRITE $LG(fruits, -1)    ; Cherry (phần tử cuối)</code></pre>
 <hr />
 <h2 id="list-length">List Length<a class="headerlink" href="#list-length" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>WRITE $LISTLENGTH(fruits)   ; 3
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>WRITE $LL(fruits)            ; 3 (viết tắt)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
+WRITE $LISTLENGTH(fruits)   ; 3
+WRITE $LL(fruits)            ; 3 (viết tắt)</code></pre>
 <hr />
 <h2 id="iterating-a-list">Iterating a List<a class="headerlink" href="#iterating-a-list" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>; Cách 1: FOR loop với $LL
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>FOR i = 1:1:$LL(fruits) {
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    WRITE i, &quot;: &quot;, $LG(fruits, i), !
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>}
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>; Cách 2: $LISTNEXT (hiệu quả hơn cho list lớn)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>SET pointer = 0
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>WHILE $LISTNEXT(fruits, pointer, value) {
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    WRITE value, !
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
+
+; Cách 1: FOR loop với $LL
+FOR i = 1:1:$LL(fruits) {
+    WRITE i, &quot;: &quot;, $LG(fruits, i), !
+}
+
+; Cách 2: $LISTNEXT (hiệu quả hơn cho list lớn)
+SET pointer = 0
+WHILE $LISTNEXT(fruits, pointer, value) {
+    WRITE value, !
+}</code></pre>
 <hr />
 <h2 id="searching-with-listfind">Searching with $LISTFIND<a class="headerlink" href="#searching-with-listfind" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>; $LISTFIND trả về index nếu tìm thấy, 0 nếu không
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>WRITE $LISTFIND(fruits, &quot;Banana&quot;)   ; 2
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>WRITE $LISTFIND(fruits, &quot;Mango&quot;)    ; 0
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>IF $LISTFIND(fruits, &quot;Apple&quot;) {
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    WRITE &quot;Found Apple!&quot;, !
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET fruits = $LB(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;)
+
+; $LISTFIND trả về index nếu tìm thấy, 0 nếu không
+WRITE $LISTFIND(fruits, &quot;Banana&quot;)   ; 2
+WRITE $LISTFIND(fruits, &quot;Mango&quot;)    ; 0
+
+IF $LISTFIND(fruits, &quot;Apple&quot;) {
+    WRITE &quot;Found Apple!&quot;, !
+}</code></pre>
 <hr />
 <h2 id="modifying-a-list">Modifying a List<a class="headerlink" href="#modifying-a-list" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SET list = $LB(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>; Thêm vào cuối — dùng _ (concatenation)
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>SET list = list _ $LB(&quot;d&quot;)
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>WRITE $LL(list)   ; 4
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>; Thay thế phần tử tại vị trí n
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>SET list = $LIST(list, 1, 1, $LB(&quot;A&quot;))  ; thay &quot;a&quot; thành &quot;A&quot;
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>WRITE $LG(list, 1)   ; A
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>; Lấy sublist (slice)
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>SET sub = $LIST(list, 2, 3)   ; lấy index 2 đến 3
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>WRITE $LL(sub)   ; 2
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET list = $LB(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+
+; Thêm vào cuối — dùng _ (concatenation)
+SET list = list _ $LB(&quot;d&quot;)
+WRITE $LL(list)   ; 4
+
+; Thay thế phần tử tại vị trí n
+SET list = $LIST(list, 1, 1, $LB(&quot;A&quot;))  ; thay &quot;a&quot; thành &quot;A&quot;
+WRITE $LG(list, 1)   ; A
+
+; Lấy sublist (slice)
+SET sub = $LIST(list, 2, 3)   ; lấy index 2 đến 3
+WRITE $LL(sub)   ; 2</code></pre>
 <hr />
 <h2 id="validation-with-listvalid">Validation with $LISTVALID<a class="headerlink" href="#validation-with-listvalid" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>; Kiểm tra xem biến có phải là $LIST hợp lệ không
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>IF $LISTVALID(myVar) {
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    WRITE &quot;Đây là list hợp lệ&quot;
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Kiểm tra xem biến có phải là $LIST hợp lệ không
+IF $LISTVALID(myVar) {
+    WRITE &quot;Đây là list hợp lệ&quot;
+}</code></pre>
 <hr />
 <h2 id="list-vs-array">List vs Array<a class="headerlink" href="#list-vs-array" title="Permanent link">&para;</a></h2>
 <table>
@@ -3423,16 +3416,18 @@
 <li>💡 Dùng <code>$LIST</code> cho danh sách nhỏ truyền qua method; dùng Array cho dataset lớn cần tra cứu nhanh</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<p>SET colors = $LB("Red","Green","Blue")
-FOR i=1:1:$LL(colors) { WRITE i,": ",$LG(colors,i),! }</p>
-<p>; $LISTNEXT
-SET p=0  WHILE $LISTNEXT(colors,p,v) { WRITE v,! }</p>
-<p>; Tìm kiếm
-WRITE "$LISTFIND: ", $LISTFIND(colors,"Green"), !   ; 2</p>
-<p>; Thêm phần tử
-SET colors = colors _ $LB("Yellow")
-WRITE "Length sau khi thêm: ", $LL(colors), !
-```</p>
+<pre class="objectscript"><code class="language-objectscript">SET colors = $LB(&quot;Red&quot;,&quot;Green&quot;,&quot;Blue&quot;)
+FOR i=1:1:$LL(colors) { WRITE i,&quot;: &quot;,$LG(colors,i),! }
+
+; $LISTNEXT
+SET p=0  WHILE $LISTNEXT(colors,p,v) { WRITE v,! }
+
+; Tìm kiếm
+WRITE &quot;$LISTFIND: &quot;, $LISTFIND(colors,&quot;Green&quot;), !   ; 2
+
+; Thêm phần tử
+SET colors = colors _ $LB(&quot;Yellow&quot;)
+WRITE &quot;Length sau khi thêm: &quot;, $LL(colors), !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3554,6 +3549,8 @@ WRITE "Length sau khi thêm: ", $LL(colors), !
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

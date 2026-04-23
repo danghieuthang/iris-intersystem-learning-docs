@@ -3206,14 +3206,13 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    ├── Database: MYAPP_DATA  (globals)
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    └── Database: MYAPP_CODE  (classes, routines)
 </span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// Xem namespace hiện tại
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>WRITE $NAMESPACE, !
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>// Chuyển namespace
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ZNSPACE &quot;USER&quot;
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>// hoặc
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>SET $NAMESPACE = &quot;MYAPP&quot;
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Xem namespace hiện tại
+WRITE $NAMESPACE, !
+
+// Chuyển namespace
+ZNSPACE &quot;USER&quot;
+// hoặc
+SET $NAMESPACE = &quot;MYAPP&quot;</code></pre>
 <hr />
 <h2 id="security-model">Security Model<a class="headerlink" href="#security-model" title="Permanent link">&para;</a></h2>
 <table>
@@ -3288,20 +3287,19 @@
 </table>
 <hr />
 <h2 id="permission-check-in-code">Permission Check in Code<a class="headerlink" href="#permission-check-in-code" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>// Kiểm tra user có privilege trên resource không
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>IF $SYSTEM.Security.Check(&quot;%DB_USER&quot;, &quot;USE&quot;) {
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    // có quyền
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>}
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>// Lấy thông tin user hiện tại
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>WRITE $USERNAME, !
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>WRITE $ROLES, !   // danh sách roles, phân cách bằng dấu phẩy
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>// Kiểm tra role cụ thể
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>IF ($ROLES [ &quot;%Manager&quot;) {
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    // user có role %Manager
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// Kiểm tra user có privilege trên resource không
+IF $SYSTEM.Security.Check(&quot;%DB_USER&quot;, &quot;USE&quot;) {
+    // có quyền
+}
+
+// Lấy thông tin user hiện tại
+WRITE $USERNAME, !
+WRITE $ROLES, !   // danh sách roles, phân cách bằng dấu phẩy
+
+// Kiểm tra role cụ thể
+IF ($ROLES [ &quot;%Manager&quot;) {
+    // user có role %Manager
+}</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3313,22 +3311,21 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>// --- Xem namespace và user hiện tại ---
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>WRITE &quot;Namespace: &quot;, $NAMESPACE, !
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>WRITE &quot;User: &quot;, $USERNAME, !
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>WRITE &quot;Roles: &quot;, $ROLES, !
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>// --- Chuyển namespace ---
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>ZNSPACE &quot;USER&quot;
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>// --- Kiểm tra privilege ---
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>WRITE $SYSTEM.Security.Check(&quot;%DB_USER&quot;, &quot;USE&quot;), !
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>// --- List tất cả namespaces (chạy trong %SYS) ---
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>ZNSPACE &quot;%SYS&quot;
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>DO ##class(Config.Namespaces).List(.list)
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>SET ns = &quot;&quot; FOR { SET ns = $ORDER(list(ns)) QUIT:ns=&quot;&quot;  WRITE ns, ! }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">// --- Xem namespace và user hiện tại ---
+WRITE &quot;Namespace: &quot;, $NAMESPACE, !
+WRITE &quot;User: &quot;, $USERNAME, !
+WRITE &quot;Roles: &quot;, $ROLES, !
+
+// --- Chuyển namespace ---
+ZNSPACE &quot;USER&quot;
+
+// --- Kiểm tra privilege ---
+WRITE $SYSTEM.Security.Check(&quot;%DB_USER&quot;, &quot;USE&quot;), !
+
+// --- List tất cả namespaces (chạy trong %SYS) ---
+ZNSPACE &quot;%SYS&quot;
+DO ##class(Config.Namespaces).List(.list)
+SET ns = &quot;&quot; FOR { SET ns = $ORDER(list(ns)) QUIT:ns=&quot;&quot;  WRITE ns, ! }</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3450,6 +3447,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

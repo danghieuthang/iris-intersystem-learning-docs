@@ -3354,13 +3354,12 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Hầu hết mọi method trong IRIS trả về <code>%Status</code> — <strong>không kiểm tra là bỏ sót lỗi thầm lặng</strong>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>; ❌ Sai — không kiểm tra lỗi
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>DO person.%Save()
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>; ✅ Đúng
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>SET sc = person.%Save()
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>IF $$$ISERR(sc) { DO $SYSTEM.Status.DisplayError(sc) }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; ❌ Sai — không kiểm tra lỗi
+DO person.%Save()
+
+; ✅ Đúng
+SET sc = person.%Save()
+IF $$$ISERR(sc) { DO $SYSTEM.Status.DisplayError(sc) }</code></pre>
 <hr />
 <h2 id="what-is-status">What is %Status?<a class="headerlink" href="#what-is-status" title="Permanent link">&para;</a></h2>
 <p><code>%Status</code> là một string đặc biệt:
@@ -3369,76 +3368,71 @@
 <hr />
 <h2 id="core-macros">Core Macros<a class="headerlink" href="#core-macros" title="Permanent link">&para;</a></h2>
 <p>Cách chuẩn để kiểm tra <code>%Status</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>; Tạo status OK
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SET sc = $$$OK              ; = 1
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>; Kiểm tra thành công
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>IF sc = $$$OK { ... }
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>IF $$$ISOK(sc) { ... }      ; tương đương
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>; Kiểm tra lỗi
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>IF $$$ISERR(sc) { ... }
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>; Ví dụ thực tế
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>SET sc = ##class(MyApp.Person).%Save()
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>IF $$$ISERR(sc) {
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    WRITE &quot;Lỗi: &quot;, $SYSTEM.Status.GetErrorText(sc), !
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    QUIT sc
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Tạo status OK
+SET sc = $$$OK              ; = 1
+
+; Kiểm tra thành công
+IF sc = $$$OK { ... }
+IF $$$ISOK(sc) { ... }      ; tương đương
+
+; Kiểm tra lỗi
+IF $$$ISERR(sc) { ... }
+
+; Ví dụ thực tế
+SET sc = ##class(MyApp.Person).%Save()
+IF $$$ISERR(sc) {
+    WRITE &quot;Lỗi: &quot;, $SYSTEM.Status.GetErrorText(sc), !
+    QUIT sc
+}</code></pre>
 <hr />
 <h2 id="creating-error-status">Creating Error Status<a class="headerlink" href="#creating-error-status" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; Tạo error từ text
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>SET sc = $$$ERROR($$$GeneralError, &quot;Tên không được để trống&quot;)
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>; Các error codes thường dùng
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>$$$GeneralError          ; lỗi chung
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>$$$InvalidArgument       ; đối số không hợp lệ
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>$$$AccessDenied          ; không có quyền
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>; Wrap error với context
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>SET sc = $$$ERROR($$$GeneralError, &quot;Save failed for ID: &quot; _ id)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Tạo error từ text
+SET sc = $$$ERROR($$$GeneralError, &quot;Tên không được để trống&quot;)
+
+; Các error codes thường dùng
+$$$GeneralError          ; lỗi chung
+$$$InvalidArgument       ; đối số không hợp lệ
+$$$AccessDenied          ; không có quyền
+
+; Wrap error với context
+SET sc = $$$ERROR($$$GeneralError, &quot;Save failed for ID: &quot; _ id)</code></pre>
 <hr />
 <h2 id="try-catch">TRY / CATCH<a class="headerlink" href="#try-catch" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>TRY {
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    SET result = ..RiskyOperation()
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    IF $$$ISERR(result) { $$$ThrowStatus(result) }
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    WRITE &quot;Success: &quot;, result, !
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>CATCH ex {
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    WRITE &quot;Exception: &quot;, ex.DisplayString(), !
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    WRITE &quot;Type: &quot;, ex.%ClassName(), !
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">TRY {
+    SET result = ..RiskyOperation()
+    IF $$$ISERR(result) { $$$ThrowStatus(result) }
+    WRITE &quot;Success: &quot;, result, !
+}
+CATCH ex {
+    WRITE &quot;Exception: &quot;, ex.DisplayString(), !
+    WRITE &quot;Type: &quot;, ex.%ClassName(), !
+}</code></pre>
 <h3 id="exception-object-properties">Exception Object Properties<a class="headerlink" href="#exception-object-properties" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ex.Name          ; tên exception
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ex.Code          ; error code
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ex.Data          ; data kèm theo
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>ex.Location      ; nơi xảy ra (method, line)
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ex.DisplayString() ; string mô tả đầy đủ
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>ex.AsStatus()    ; convert thành %Status
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">ex.Name          ; tên exception
+ex.Code          ; error code
+ex.Data          ; data kèm theo
+ex.Location      ; nơi xảy ra (method, line)
+ex.DisplayString() ; string mô tả đầy đủ
+ex.AsStatus()    ; convert thành %Status</code></pre>
 <hr />
 <h2 id="throwonerror-pattern">$$$ThrowOnError Pattern<a class="headerlink" href="#throwonerror-pattern" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>; Thay vì viết IF $$$ISERR(sc) { THROW ... }
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>; Dùng macro này cho gọn:
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>$$$ThrowOnError(sc)
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>; Ví dụ:
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>TRY {
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    SET sc = person.%Save()
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    $$$ThrowOnError(sc)
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    SET sc = ##class(Validator).Validate(person)
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    $$$ThrowOnError(sc)
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    WRITE &quot;All OK!&quot;, !
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>}
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>CATCH ex {
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    WRITE &quot;Failed: &quot;, ex.DisplayString(), !
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Thay vì viết IF $$$ISERR(sc) { THROW ... }
+; Dùng macro này cho gọn:
+$$$ThrowOnError(sc)
+
+; Ví dụ:
+TRY {
+    SET sc = person.%Save()
+    $$$ThrowOnError(sc)
+
+    SET sc = ##class(Validator).Validate(person)
+    $$$ThrowOnError(sc)
+
+    WRITE &quot;All OK!&quot;, !
+}
+CATCH ex {
+    WRITE &quot;Failed: &quot;, ex.DisplayString(), !
+}</code></pre>
 <hr />
 <h2 id="dynamic-entities-and-invalid-json">Dynamic Entities and Invalid JSON<a class="headerlink" href="#dynamic-entities-and-invalid-json" title="Permanent link">&para;</a></h2>
 <p>Với <strong>dynamic entities</strong> như <code>%DynamicObject</code> / <code>%DynamicArray</code>, có một bẫy quan trọng:</p>
@@ -3447,26 +3441,24 @@
 <li>nhưng parse JSON bằng <code>%FromJSON()</code> có thể <strong>throw exception</strong> nếu JSON không hợp lệ</li>
 </ul>
 <p>Vì vậy, cách xử lý đúng là dùng <strong>TRY/CATCH</strong> quanh đoạn parse JSON.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ClassMethod ParseBody(json As %String, ByRef body As %DynamicObject) As %Status
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>{
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    TRY {
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        SET body = {}.%FromJSON(json)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        QUIT $$$OK
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    } CATCH ex {
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        QUIT $$$ERROR($$$GeneralError, &quot;Invalid JSON: &quot; _ ex.DisplayString())
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    }
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">ClassMethod ParseBody(json As %String, ByRef body As %DynamicObject) As %Status
+{
+    TRY {
+        SET body = {}.%FromJSON(json)
+        QUIT $$$OK
+    } CATCH ex {
+        QUIT $$$ERROR($$$GeneralError, &quot;Invalid JSON: &quot; _ ex.DisplayString())
+    }
+}</code></pre>
 <p>Trong REST code, pattern thực tế thường là:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>TRY {
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    SET body = {}.%FromJSON(%request.Content.Read())
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    SET name = body.name
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>} CATCH ex {
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    SET %response.Status = &quot;400 Bad Request&quot;
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    WRITE {&quot;error&quot;:&quot;Invalid JSON&quot;,&quot;detail&quot;:(ex.DisplayString())}.%ToJSON()
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    RETURN $$$OK
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">TRY {
+    SET body = {}.%FromJSON(%request.Content.Read())
+    SET name = body.name
+} CATCH ex {
+    SET %response.Status = &quot;400 Bad Request&quot;
+    WRITE {&quot;error&quot;:&quot;Invalid JSON&quot;,&quot;detail&quot;:(ex.DisplayString())}.%ToJSON()
+    RETURN $$$OK
+}</code></pre>
 <h3 id="exam-takeaway">Exam Takeaway<a class="headerlink" href="#exam-takeaway" title="Permanent link">&para;</a></h3>
 <p>Nếu câu hỏi hỏi:</p>
 <blockquote>
@@ -3483,42 +3475,40 @@
 </blockquote>
 <hr />
 <h2 id="returning-errors-from-methods">Returning Errors from Methods<a class="headerlink" href="#returning-errors-from-methods" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Method SavePerson(pName As %String) As %Status
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>{
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    ; Validate
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    IF pName = &quot;&quot; {
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        RETURN $$$ERROR($$$GeneralError, &quot;Name is required&quot;)
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    }
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    SET person = ##class(MyApp.Person).%New()
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    SET person.Name = pName
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    ; Trả về status của %Save trực tiếp
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    RETURN person.%Save()
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>}
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>; Gọi method:
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>SET sc = ..SavePerson(&quot;Alice&quot;)
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>IF $$$ISERR(sc) {
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>    DO $SYSTEM.Status.DisplayError(sc)
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Method SavePerson(pName As %String) As %Status
+{
+    ; Validate
+    IF pName = &quot;&quot; {
+        RETURN $$$ERROR($$$GeneralError, &quot;Name is required&quot;)
+    }
+
+    SET person = ##class(MyApp.Person).%New()
+    SET person.Name = pName
+
+    ; Trả về status của %Save trực tiếp
+    RETURN person.%Save()
+}
+
+; Gọi method:
+SET sc = ..SavePerson(&quot;Alice&quot;)
+IF $$$ISERR(sc) {
+    DO $SYSTEM.Status.DisplayError(sc)
+}</code></pre>
 <hr />
 <h2 id="systemstatus-utilities">$SYSTEM.Status Utilities<a class="headerlink" href="#systemstatus-utilities" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>; In lỗi ra terminal
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>DO $SYSTEM.Status.DisplayError(sc)
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>; Lấy error text
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>SET msg = $SYSTEM.Status.GetErrorText(sc)
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>; Lấy error code
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>SET code = $SYSTEM.Status.GetErrorCodes(sc)
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>; Kết hợp nhiều status
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>SET sc1 = method1()
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>SET sc2 = method2()
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>SET combined = $SYSTEM.Status.AppendStatus(sc1, sc2)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; In lỗi ra terminal
+DO $SYSTEM.Status.DisplayError(sc)
+
+; Lấy error text
+SET msg = $SYSTEM.Status.GetErrorText(sc)
+
+; Lấy error code
+SET code = $SYSTEM.Status.GetErrorCodes(sc)
+
+; Kết hợp nhiều status
+SET sc1 = method1()
+SET sc2 = method2()
+SET combined = $SYSTEM.Status.AppendStatus(sc1, sc2)</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3532,22 +3522,21 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>; Test %Status
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>SET sc = $$$OK
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>WRITE &quot;$$$ISOK: &quot;, $$$ISOK(sc), !       ; 1
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>WRITE &quot;$$$ISERR: &quot;, $$$ISERR(sc), !     ; 0
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>; Tạo error và đọc message
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>SET sc = $$$ERROR($$$GeneralError, &quot;Test error message&quot;)
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>WRITE $SYSTEM.Status.GetErrorText(sc), !
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>; TRY/CATCH đơn giản
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>TRY {
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    THROW ##class(%Exception.General).%New(&quot;Test&quot;,&quot;0&quot;,&quot;&quot;,&quot;Test exception&quot;)
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>} CATCH ex {
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    WRITE &quot;Caught: &quot;, ex.DisplayString(), !
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Test %Status
+SET sc = $$$OK
+WRITE &quot;$$$ISOK: &quot;, $$$ISOK(sc), !       ; 1
+WRITE &quot;$$$ISERR: &quot;, $$$ISERR(sc), !     ; 0
+
+; Tạo error và đọc message
+SET sc = $$$ERROR($$$GeneralError, &quot;Test error message&quot;)
+WRITE $SYSTEM.Status.GetErrorText(sc), !
+
+; TRY/CATCH đơn giản
+TRY {
+    THROW ##class(%Exception.General).%New(&quot;Test&quot;,&quot;0&quot;,&quot;&quot;,&quot;Test exception&quot;)
+} CATCH ex {
+    WRITE &quot;Caught: &quot;, ex.DisplayString(), !
+}</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
@@ -3669,6 +3658,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>

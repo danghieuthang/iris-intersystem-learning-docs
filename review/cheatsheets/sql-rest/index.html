@@ -3237,40 +3237,37 @@
 </tbody>
 </table>
 <h2 id="syntax-dynamic-sql">Syntax — Dynamic SQL<a class="headerlink" href="#syntax-dynamic-sql" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SET stmt = ##class(%SQL.Statement).%New()
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>DO stmt.%Prepare(&quot;SELECT %ID AS id, Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>SET rs = stmt.%Execute(25)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>IF rs.%SQLCODE &lt; 0 { WRITE rs.%Message  QUIT }
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>; DML — check %ROWCOUNT
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>DO stmt.%Prepare(&quot;UPDATE MyApp_Person SET Age = ? WHERE %ID = ?&quot;)
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>SET rs = stmt.%Execute(30, 1)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>WRITE rs.%ROWCOUNT                      ; rows affected
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>; One-liner
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name FROM MyApp_Person&quot;)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">SET stmt = ##class(%SQL.Statement).%New()
+DO stmt.%Prepare(&quot;SELECT %ID AS id, Name FROM MyApp_Person WHERE Age &gt; ?&quot;)
+SET rs = stmt.%Execute(25)
+IF rs.%SQLCODE &lt; 0 { WRITE rs.%Message  QUIT }
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
+
+; DML — check %ROWCOUNT
+DO stmt.%Prepare(&quot;UPDATE MyApp_Person SET Age = ? WHERE %ID = ?&quot;)
+SET rs = stmt.%Execute(30, 1)
+WRITE rs.%ROWCOUNT                      ; rows affected
+
+; One-liner
+SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name FROM MyApp_Person&quot;)</code></pre>
 <h2 id="syntax-embedded-sql">Syntax — Embedded SQL<a class="headerlink" href="#syntax-embedded-sql" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>; Single row
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :id)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>IF SQLCODE = 0 { WRITE name }
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>; Cursor — must OPEN → FETCH → CLOSE
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>&amp;sql(DECLARE C1 CURSOR FOR SELECT Name INTO :name FROM MyApp_Person WHERE Age &gt; :min)
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>SET min = 25
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>&amp;sql(OPEN C1)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>FOR { &amp;sql(FETCH C1)  QUIT:SQLCODE&#39;=0  WRITE name, ! }
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>&amp;sql(CLOSE C1)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">; Single row
+&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :id)
+IF SQLCODE = 0 { WRITE name }
+
+; Cursor — must OPEN → FETCH → CLOSE
+&amp;sql(DECLARE C1 CURSOR FOR SELECT Name INTO :name FROM MyApp_Person WHERE Age &gt; :min)
+SET min = 25
+&amp;sql(OPEN C1)
+FOR { &amp;sql(FETCH C1)  QUIT:SQLCODE&#x27;=0  WRITE name, ! }
+&amp;sql(CLOSE C1)</code></pre>
 <h2 id="syntax-class-query">Syntax — Class Query<a class="headerlink" href="#syntax-class-query" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Query FindByAge(pMin As %Integer) As %SQLQuery {
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    SELECT %ID, Name FROM MyApp_Person WHERE Age &gt;= :pMin
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>}
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>; IRIS auto-generates FindByAgeFunc() method:
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>SET rs = ##class(MyApp.Person).FindByAgeFunc(25)
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Query FindByAge(pMin As %Integer) As %SQLQuery {
+    SELECT %ID, Name FROM MyApp_Person WHERE Age &gt;= :pMin
+}
+; IRIS auto-generates FindByAgeFunc() method:
+SET rs = ##class(MyApp.Person).FindByAgeFunc(25)
+WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), ! }</code></pre>
 <h2 id="sqlcode">SQLCODE<a class="headerlink" href="#sqlcode" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3299,24 +3296,23 @@
 </tbody>
 </table>
 <h2 id="syntax-rest-dispatch">Syntax — REST Dispatch<a class="headerlink" href="#syntax-rest-dispatch" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Class MyApp.REST.Dispatch Extends %CSP.REST {
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    Parameter CONTENTTYPE = &quot;application/json&quot;;
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    XData UrlMap ... {
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    &lt;Routes&gt;
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      &lt;Route Url=&quot;/items&quot;     Method=&quot;GET&quot;    Call=&quot;GetAll&quot;/&gt;
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;GET&quot;    Call=&quot;GetOne&quot;/&gt;
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>      &lt;Route Url=&quot;/items&quot;     Method=&quot;POST&quot;   Call=&quot;Create&quot;/&gt;
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;PUT&quot;    Call=&quot;Update&quot;/&gt;
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;DELETE&quot; Call=&quot;Delete&quot;/&gt;
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    &lt;/Routes&gt;
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    }
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    ClassMethod GetOne(id As %String) As %Status {
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        SET %response.Status = &quot;404 Not Found&quot;  ; set HTTP status HERE
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>        WRITE {&quot;error&quot;: &quot;Not found&quot;}.%ToJSON()
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>        RETURN $$$OK                            ; always $$$OK
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    }
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>}
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.REST.Dispatch Extends %CSP.REST {
+    Parameter CONTENTTYPE = &quot;application/json&quot;;
+    XData UrlMap ... {
+    &lt;Routes&gt;
+      &lt;Route Url=&quot;/items&quot;     Method=&quot;GET&quot;    Call=&quot;GetAll&quot;/&gt;
+      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;GET&quot;    Call=&quot;GetOne&quot;/&gt;
+      &lt;Route Url=&quot;/items&quot;     Method=&quot;POST&quot;   Call=&quot;Create&quot;/&gt;
+      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;PUT&quot;    Call=&quot;Update&quot;/&gt;
+      &lt;Route Url=&quot;/items/:id&quot; Method=&quot;DELETE&quot; Call=&quot;Delete&quot;/&gt;
+    &lt;/Routes&gt;
+    }
+    ClassMethod GetOne(id As %String) As %Status {
+        SET %response.Status = &quot;404 Not Found&quot;  ; set HTTP status HERE
+        WRITE {&quot;error&quot;: &quot;Not found&quot;}.%ToJSON()
+        RETURN $$$OK                            ; always $$$OK
+    }
+}</code></pre>
 <h2 id="http-status-constants">HTTP Status Constants<a class="headerlink" href="#http-status-constants" title="Permanent link">&para;</a></h2>
 <p><code>..#HTTP200OK</code> · <code>..#HTTP201CREATED</code> · <code>..#HTTP204NORESPONSE</code>
 <code>..#HTTP400BADREQUEST</code> · <code>..#HTTP404NOTFOUND</code> · <code>..#HTTP500INTERNALSERVERERROR</code></p>
@@ -3450,6 +3446,8 @@
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
         <script src="../../../assets/javascripts/mermaid.js"></script>
+      
+        <script src="../../../assets/javascripts/objectscript-highlight.js"></script>
       
     
   </body>
