@@ -1091,10 +1091,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-trim-padding" class="md-nav__link">
+  <a href="#trim-padding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Trim &amp; Padding
+        Trim &amp; Padding
       
     </span>
   </a>
@@ -1124,10 +1124,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeyrcos_fpiece" class="md-nav__link">
+  <a href="#resources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🔗 Resources(https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fpiece)
+        🔗 Resources
       
     </span>
   </a>
@@ -3217,10 +3217,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-trim-padding" class="md-nav__link">
+  <a href="#trim-padding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Trim &amp; Padding
+        Trim &amp; Padding
       
     </span>
   </a>
@@ -3250,10 +3250,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeyrcos_fpiece" class="md-nav__link">
+  <a href="#resources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🔗 Resources(https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fpiece)
+        🔗 Resources
       
     </span>
   </a>
@@ -3385,46 +3385,67 @@
 </span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    WRITE &quot;Có vẻ là email&quot;
 </span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>}
 </span></code></pre></div>
+<p>Mẹo nhớ nhanh: hãy đọc pattern theo công thức <strong>"số lượng + loại ký tự"</strong>.</p>
+<ul>
+<li><code>phone?10N</code> = có <strong>10</strong> ký tự loại <strong>Number</strong></li>
+<li><code>name?1.A</code> = có <strong>ít nhất 1</strong> ký tự loại <strong>Alpha</strong></li>
+<li><code>email?1.E1"@"1.E1"."1.E</code> = có dạng <code>something@something.something</code></li>
+</ul>
 <table>
 <thead>
 <tr>
 <th>Ký hiệu</th>
+<th>Mẹo nhớ</th>
 <th>Ý nghĩa</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>N</code></td>
+<td>Number</td>
 <td>Chữ số (0-9)</td>
 </tr>
 <tr>
 <td><code>U</code></td>
+<td>Upper</td>
 <td>Chữ hoa</td>
 </tr>
 <tr>
 <td><code>L</code></td>
+<td>Lower</td>
 <td>Chữ thường</td>
 </tr>
 <tr>
 <td><code>A</code></td>
+<td>Alpha</td>
 <td>Chữ cái (U hoặc L)</td>
 </tr>
 <tr>
 <td><code>E</code></td>
+<td>Everything</td>
 <td>Bất kỳ ký tự nào</td>
 </tr>
 <tr>
 <td><code>P</code></td>
+<td>Punctuation</td>
 <td>Dấu câu</td>
 </tr>
 <tr>
 <td><code>n.</code></td>
-<td>n hoặc nhiều hơn</td>
+<td><code>n</code> trở lên</td>
+<td><code>1.A</code> = 1 hoặc nhiều chữ cái</td>
 </tr>
 </tbody>
 </table>
+<p>Các quy tắc dễ nhớ:</p>
+<ul>
+<li><code>?</code> = "có khớp mẫu này không?"</li>
+<li>Số đứng trước ký hiệu = số lượng cần khớp</li>
+<li>Dấu <code>.</code> = "trở lên" / "còn tiếp"</li>
+<li>Chuỗi trong dấu <code>"</code> = ký tự cố định, ví dụ <code>1"@"</code> hoặc <code>1"."</code></li>
+</ul>
 <hr />
-<h2 id="8-trim-padding">8. Trim &amp; Padding<a class="headerlink" href="#8-trim-padding" title="Permanent link">&para;</a></h2>
+<h2 id="trim-padding">Trim &amp; Padding<a class="headerlink" href="#trim-padding" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>; Không có hàm trim built-in — dùng kết hợp
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET str = &quot;  hello  &quot;
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
@@ -3446,26 +3467,31 @@
 <li>✅ <code>$PIECE(str, delim, n)</code> là function phổ biến nhất khi làm việc với CSV/delimited data</li>
 <li>✅ <code>SET $PIECE(str, ",", 2) = "new"</code> cho phép thay thế piece in-place</li>
 <li>✅ <code>$LENGTH(str, delim)</code> đếm số pieces (không phải độ dài) khi có delimiter</li>
+<li>✅ Pattern matching nên đọc theo kiểu <code>số lượng + loại ký tự</code>, ví dụ <code>10N</code>, <code>3A</code>, <code>1.E</code></li>
 <li>⚠️ <code>$FIND</code> trả về vị trí <strong>sau</strong> target, không phải vị trí bắt đầu — phải trừ đi <code>$LENGTH(target)</code></li>
 <li>⚠️ ObjectScript không có trim built-in — phải dùng vòng lặp hoặc <code>$ZSTRIP</code> (IRIS specific)</li>
 <li>💡 <code>$TRANSLATE(str, " ")</code> là cách nhanh nhất để xóa tất cả khoảng trắng</li>
 </ul>
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<p>WRITE "Year:  ", $PIECE(line,",",1), !
-WRITE "Name:  ", $PIECE(line,",",2), !
-WRITE "Role:  ", $PIECE(line,",",3), !</p>
-<p>; Đếm pieces
-WRITE "Count: ", $LENGTH(line,","), !</p>
-<p>; $TRANSLATE — xóa khoảng trắng
-SET messy = "H e l l o"
-WRITE $TRANSLATE(messy," "), !   ; Hello</p>
-<p>; Pattern matching
-SET phone = "0912345678"
-IF phone?10N { WRITE "Valid phone!", ! }
-```</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>WRITE &quot;Year:  &quot;, $PIECE(line,&quot;,&quot;,1), !
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>WRITE &quot;Name:  &quot;, $PIECE(line,&quot;,&quot;,2), !
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>WRITE &quot;Role:  &quot;, $PIECE(line,&quot;,&quot;,3), !
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>; Đếm pieces
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>WRITE &quot;Count: &quot;, $LENGTH(line,&quot;,&quot;), !
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>; $TRANSLATE — xóa khoảng trắng
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>SET messy = &quot;H e l l o&quot;
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>WRITE $TRANSLATE(messy,&quot; &quot;), !   ; Hello
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>; Pattern matching
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>SET phone = &quot;0912345678&quot;
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>IF phone?10N { WRITE &quot;Valid phone!&quot;, ! }
+</span></code></pre></div>
 <hr />
-<h2 id="resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeyrcos_fpiece">🔗 Resources(https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fpiece)<a class="headerlink" href="#resourceshttpsdocsintersystemscomirislatestcspdocbookdocbookuipageclskeyrcos_fpiece" title="Permanent link">&para;</a></h2>
+<h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fpiece">$PIECE</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_ftranslate">$TRANSLATE</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_operators#GCOS_operators_pattern">Pattern Matching</a></li>
 </ul>
