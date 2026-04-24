@@ -33,14 +33,6 @@
          <lastmod>2026-04-24</lastmod>
     </url>
     <url>
-         <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-01-foundations/10-architecture/01-scaling-patterns/</loc>
-         <lastmod>2026-04-24</lastmod>
-    </url>
-    <url>
-         <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-01-foundations/10-architecture/02-ha-security-architecture/</loc>
-         <lastmod>2026-04-24</lastmod>
-    </url>
-    <url>
          <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-02-data-modeling/</loc>
          <lastmod>2026-04-24</lastmod>
     </url>
@@ -146,6 +138,18 @@
     </url>
     <url>
          <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-04-runtime-quality/08-security/03-authentication-authorization/</loc>
+         <lastmod>2026-04-24</lastmod>
+    </url>
+    <url>
+         <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-04-runtime-quality/10-production-architecture/</loc>
+         <lastmod>2026-04-24</lastmod>
+    </url>
+    <url>
+         <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-04-runtime-quality/10-production-architecture/01-scaling-patterns/</loc>
+         <lastmod>2026-04-24</lastmod>
+    </url>
+    <url>
+         <loc>https://danghieuthang.github.io/iris-intersystem-learning-docs/learn/module-04-runtime-quality/10-production-architecture/02-ha-security-architecture/</loc>
          <lastmod>2026-04-24</lastmod>
     </url>
     <url>
