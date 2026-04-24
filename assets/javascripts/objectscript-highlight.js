@@ -150,7 +150,6 @@ function renderSegment(segment) {
 }
 
 function highlightPlain(text) {
-  const escaped = escapeHtml(text);
   const patterns = [
     { className: 'os-string', regex: /'[^'\n]*'/g },
     { className: 'os-macro', regex: /\$\$\$[A-Za-z%][\w]*/g },
@@ -184,7 +183,7 @@ function highlightPlain(text) {
     { className: 'os-number', regex: /(?<![\w.])\d+(?:\.\d+)?(?![\w.])/g }
   ];
 
-  return applyPatterns(escaped, patterns);
+  return applyPatterns(text, patterns);
 }
 
 function applyPatterns(text, patterns) {
@@ -196,11 +195,13 @@ function applyPatterns(text, patterns) {
       const token = `\uE000${toAlphaToken(placeholders.length)}\uE001`;
       placeholders.push({
         token,
-        html: wrap(pattern.className, match)
+        html: wrap(pattern.className, escapeHtml(match))
       });
       return token;
     });
   }
+
+  output = escapeHtml(output);
 
   for (const placeholder of placeholders) {
     output = output.replaceAll(placeholder.token, placeholder.html);
