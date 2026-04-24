@@ -1,0 +1,818 @@
+{
+  "id": "ability-t3-4-q1",
+  "topic": "ability_t3_4",
+  "topicLabel": "T3.4 · Creates REST Services",
+  "title": "T3.4: Creates REST Services",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T3.4"
+  ],
+  "description": "Test your knowledge of REST service development in InterSystems IRIS",
+  "version": "1.0",
+  "publishedDate": "2025-12-29",
+  "importedFrom": "quiz_temp/T3_4.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which class must your REST service class extend to create a REST service in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%CSP.REST"
+        },
+        {
+          "id": "B",
+          "text": "%REST.Service"
+        },
+        {
+          "id": "C",
+          "text": "%SOAP.WebService"
+        },
+        {
+          "id": "D",
+          "text": "%Net.REST.Service"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T3.4",
+      "explanation": "REST services in InterSystems IRIS must extend %CSP.REST, which provides the foundation for handling HTTP requests and routing them to appropriate methods. %SOAP.WebService is for SOAP services, not REST. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which two of the following are valid approaches for defining REST service routes in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Using XData UrlMap block in the service class"
+        },
+        {
+          "id": "B",
+          "text": "Configuring routes in the iris.cpf file"
+        },
+        {
+          "id": "C",
+          "text": "Using the OpenAPI specification with spec-first approach"
+        },
+        {
+          "id": "D",
+          "text": "Defining routes in the Management Portal only"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T3.4",
+      "explanation": "REST routes can be defined using an XData UrlMap block in the code-first approach, or by importing an OpenAPI specification in the spec-first approach. Routes are not configured in iris.cpf or solely through the Management Portal. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_intro"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "In a REST service class, which XData block defines the routing configuration for HTTP requests?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "XData Routes"
+        },
+        {
+          "id": "B",
+          "text": "XData UrlMap"
+        },
+        {
+          "id": "C",
+          "text": "XData Mapping"
+        },
+        {
+          "id": "D",
+          "text": "XData HTTPConfig"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "The XData UrlMap block defines the routing configuration, mapping URL patterns and HTTP methods to class methods. This block contains XML that specifies Routes and Maps for the REST service. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What is the correct syntax for defining a route in the XData UrlMap block that handles GET requests to retrieve a patient by ID?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "<Route Url=\"/patient/:id\" Method=\"GET\" Call=\"GetPatient\"/>"
+        },
+        {
+          "id": "B",
+          "text": "<Map Prefix=\"/patient\" Forward=\"GetPatient\" Method=\"GET\"/>"
+        },
+        {
+          "id": "C",
+          "text": "<Route Path=\"/patient/{id}\" Verb=\"GET\" Handler=\"GetPatient\"/>"
+        },
+        {
+          "id": "D",
+          "text": "<URL Pattern=\"/patient/:id\" GET=\"GetPatient\"/>"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T3.4",
+      "explanation": "The correct syntax uses the Route element with Url attribute containing the path (with :id for parameters), Method for the HTTP verb, and Call for the method name to invoke. The colon notation (:id) indicates a URL parameter. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which HTTP methods are commonly used in RESTful services? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "GET - retrieve resources"
+        },
+        {
+          "id": "B",
+          "text": "POST - create new resources"
+        },
+        {
+          "id": "C",
+          "text": "PUT - update existing resources"
+        },
+        {
+          "id": "D",
+          "text": "DELETE - remove resources"
+        },
+        {
+          "id": "E",
+          "text": "CONNECT - establish tunnel"
+        },
+        {
+          "id": "F",
+          "text": "OPTIONS - describe communication options"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "domain": "T3.4",
+      "explanation": "RESTful services typically use GET (retrieve), POST (create), PUT (update), DELETE (remove), and OPTIONS (describe). CONNECT is used for proxying and is not typically part of REST API design. PATCH is also common for partial updates. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "In spec-first REST development, what is the primary file format used to define the REST API contract?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "WSDL (Web Services Description Language)"
+        },
+        {
+          "id": "B",
+          "text": "OpenAPI Specification (formerly Swagger)"
+        },
+        {
+          "id": "C",
+          "text": "RAML (RESTful API Modeling Language)"
+        },
+        {
+          "id": "D",
+          "text": "JSON Schema"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "InterSystems IRIS supports the OpenAPI Specification (OAS) format for spec-first REST development. You can import an OpenAPI specification to automatically generate REST service classes. WSDL is for SOAP services, not REST. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 7,
+      "type": "MR",
+      "question": "What are the advantages of using the spec-first approach for REST service development? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "API contract is defined before implementation"
+        },
+        {
+          "id": "B",
+          "text": "Automatic generation of implementation classes"
+        },
+        {
+          "id": "C",
+          "text": "Better collaboration between frontend and backend teams"
+        },
+        {
+          "id": "D",
+          "text": "No need to write any code"
+        },
+        {
+          "id": "E",
+          "text": "Automatic documentation generation"
+        },
+        {
+          "id": "F",
+          "text": "Guaranteed performance optimization"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T3.4",
+      "explanation": "Spec-first advantages include defining the contract upfront, automatic class generation, improved team collaboration, and automatic documentation. You still need to implement business logic, and performance depends on implementation quality. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "When using JWT (JSON Web Token) authentication for a REST service, which two classes must you configure to enable this authentication method?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "OAuth/OpenID Connect client configuration and the dispatch class"
+        },
+        {
+          "id": "B",
+          "text": "The implementation (.impl) class and the specification (.spec) class"
+        },
+        {
+          "id": "C",
+          "text": "OAuth/OpenID Connect client configuration and the specification (.spec) class"
+        },
+        {
+          "id": "D",
+          "text": "The dispatch class and CSP application security settings"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.4",
+      "explanation": "To enable JWT authentication, you must configure the OAuth/OpenID Connect client configuration in the system and update the specification (.spec) class to reference this authentication method. The .impl class contains business logic, not security configuration. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_securing"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "What parameter must be set to 1 in a REST service class to enable CORS (Cross-Origin Resource Sharing)?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Parameter CORS = 1;"
+        },
+        {
+          "id": "B",
+          "text": "Parameter CONTENTTYPE = \"application/json\";"
+        },
+        {
+          "id": "C",
+          "text": "Parameter HandleCorsRequest = 1;"
+        },
+        {
+          "id": "D",
+          "text": "Parameter AllowOrigin = 1;"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.4",
+      "explanation": "Setting 'Parameter HandleCorsRequest = 1;' enables CORS support in the REST service class. This allows the service to handle preflight OPTIONS requests and add appropriate CORS headers to responses for cross-origin requests. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which of the following are valid authentication methods for securing REST services in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Basic Authentication (username/password)"
+        },
+        {
+          "id": "B",
+          "text": "JWT (JSON Web Token)"
+        },
+        {
+          "id": "C",
+          "text": "OAuth 2.0"
+        },
+        {
+          "id": "D",
+          "text": "API Key"
+        },
+        {
+          "id": "E",
+          "text": "Kerberos"
+        },
+        {
+          "id": "F",
+          "text": "Certificate-based authentication"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T3.4",
+      "explanation": "InterSystems IRIS REST services support Basic Authentication, JWT, OAuth 2.0, and Kerberos authentication methods through CSP application configuration and OAuth/OpenID Connect integration. API Key and certificate-based authentication require custom implementation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_securing"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "In the Management Portal, where do you configure the authentication method for a REST service application?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "System Administration > Security > Applications > Web Applications"
+        },
+        {
+          "id": "B",
+          "text": "System Administration > Configuration > REST Services"
+        },
+        {
+          "id": "C",
+          "text": "Interoperability > Configure > REST Services"
+        },
+        {
+          "id": "D",
+          "text": "System Explorer > Applications > REST Configuration"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T3.4",
+      "explanation": "REST service authentication is configured in the Web Applications settings under System Administration > Security > Applications > Web Applications. Here you specify the CSP application path, authentication method, and required security settings. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_securing"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What is the purpose of the %request object in a REST service method?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To generate HTTP responses"
+        },
+        {
+          "id": "B",
+          "text": "To access HTTP request data including headers, parameters, and body"
+        },
+        {
+          "id": "C",
+          "text": "To manage database transactions"
+        },
+        {
+          "id": "D",
+          "text": "To handle authentication and authorization"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "The %request object provides access to all incoming HTTP request data including headers, query parameters, URL parameters, and the request body. It is automatically available in REST service methods for processing client requests. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "Which method should you call to return a JSON response from a REST service method?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Write ##class(%Library.DynamicObject).%ToJSON()"
+        },
+        {
+          "id": "B",
+          "text": "Do ..WriteJSON(myObject)"
+        },
+        {
+          "id": "C",
+          "text": "Return %response.WriteJSON(myObject)"
+        },
+        {
+          "id": "D",
+          "text": "Set %response.ContentType = \"application/json\""
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "The inherited method WriteJSON() is used to serialize objects or dynamic objects to JSON and write them to the HTTP response stream with the correct content-type header. This is the standard pattern for returning JSON data from REST endpoints. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 14,
+      "type": "MR",
+      "question": "What features does the InterSystems API Manager provide for REST services? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Real-time monitoring of API calls and performance"
+        },
+        {
+          "id": "B",
+          "text": "Rate limiting and throttling"
+        },
+        {
+          "id": "C",
+          "text": "Automatic code generation"
+        },
+        {
+          "id": "D",
+          "text": "API analytics and reporting"
+        },
+        {
+          "id": "E",
+          "text": "Developer portal for API documentation"
+        },
+        {
+          "id": "F",
+          "text": "Database schema migration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T3.4",
+      "explanation": "API Manager provides monitoring, rate limiting, analytics/reporting, and a developer portal. Code generation is handled by the OpenAPI import feature in IRIS itself, and database migration is not an API Manager function. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "When documenting a REST service using OpenAPI, which section defines the data structures used in requests and responses?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "definitions"
+        },
+        {
+          "id": "B",
+          "text": "components/schemas"
+        },
+        {
+          "id": "C",
+          "text": "models"
+        },
+        {
+          "id": "D",
+          "text": "types"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "In OpenAPI 3.x, the components/schemas section defines reusable data structures (schemas) for request and response bodies. In OpenAPI 2.0 (Swagger), this was called 'definitions'. These schemas use JSON Schema format. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "What HTTP status code should a REST endpoint return when a resource is successfully created?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "200 OK"
+        },
+        {
+          "id": "B",
+          "text": "201 Created"
+        },
+        {
+          "id": "C",
+          "text": "202 Accepted"
+        },
+        {
+          "id": "D",
+          "text": "204 No Content"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "HTTP status code 201 Created indicates that a new resource was successfully created. The response should typically include a Location header with the URI of the new resource. 200 OK is for successful GET/PUT, 204 for successful DELETE. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 17,
+      "type": "MR",
+      "question": "Which of the following are best practices for REST API design in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use nouns for resource names (e.g., /patients, not /getPatients)"
+        },
+        {
+          "id": "B",
+          "text": "Use HTTP methods to indicate operations (GET, POST, PUT, DELETE)"
+        },
+        {
+          "id": "C",
+          "text": "Include version number in the URL (e.g., /api/v1/patients)"
+        },
+        {
+          "id": "D",
+          "text": "Always return XML format for compatibility"
+        },
+        {
+          "id": "E",
+          "text": "Use meaningful HTTP status codes"
+        },
+        {
+          "id": "F",
+          "text": "Include authentication tokens in URL query parameters"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T3.4",
+      "explanation": "REST best practices include using nouns for resources, HTTP methods for operations, API versioning, and meaningful status codes. JSON is the standard format (not XML), and authentication tokens should be in headers (Authorization), not URL parameters for security. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_intro"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "In the XData UrlMap, what does the Forward attribute in a Map element do?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Forwards the request to another server"
+        },
+        {
+          "id": "B",
+          "text": "Delegates handling to another REST class"
+        },
+        {
+          "id": "C",
+          "text": "Creates a permanent redirect"
+        },
+        {
+          "id": "D",
+          "text": "Enables request forwarding through a proxy"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "The Forward attribute in a Map element delegates request handling to another REST service class. This allows you to organize large APIs by splitting functionality across multiple classes while maintaining a unified URL structure. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "How do you access a URL parameter defined as '/patient/:id' within the REST service method?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%request.Get(\"id\")"
+        },
+        {
+          "id": "B",
+          "text": "pId parameter in the method signature"
+        },
+        {
+          "id": "C",
+          "text": "%request.Data(\"id\",1)"
+        },
+        {
+          "id": "D",
+          "text": "%urlparameters.id"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "URL parameters defined with colon notation (:id) are automatically passed as method parameters with a 'p' prefix. So ':id' becomes the 'pId' parameter in the method signature: Method GetPatient(pId As %String). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "What is the recommended way to handle errors and return appropriate error messages in a REST service?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Always return HTTP 200 with error details in the response body"
+        },
+        {
+          "id": "B",
+          "text": "Set HTTP status code appropriately and return error details in JSON format"
+        },
+        {
+          "id": "C",
+          "text": "Throw an exception and let IRIS handle it automatically"
+        },
+        {
+          "id": "D",
+          "text": "Use HTTP 500 for all errors"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "Best practice is to set an appropriate HTTP status code (4xx for client errors, 5xx for server errors) and return error details in a consistent JSON structure. Use %response.Status to set the status code and return structured error information. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "When importing an OpenAPI specification into InterSystems IRIS, which type of class is automatically generated?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the implementation (.impl) class"
+        },
+        {
+          "id": "B",
+          "text": "Only the specification (.spec) class"
+        },
+        {
+          "id": "C",
+          "text": "Both specification (.spec) and implementation (.impl) classes"
+        },
+        {
+          "id": "D",
+          "text": "A single combined REST service class"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.4",
+      "explanation": "Importing an OpenAPI specification generates both a .spec class (containing the API contract and routing) and a .impl class (containing method stubs for implementation). The .spec class should not be modified as it's regenerated from the specification. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 22,
+      "type": "MR",
+      "question": "Which of the following are valid content types for REST service requests and responses in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "application/json"
+        },
+        {
+          "id": "B",
+          "text": "application/xml"
+        },
+        {
+          "id": "C",
+          "text": "text/plain"
+        },
+        {
+          "id": "D",
+          "text": "multipart/form-data"
+        },
+        {
+          "id": "E",
+          "text": "application/x-www-form-urlencoded"
+        },
+        {
+          "id": "F",
+          "text": "application/octet-stream"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "domain": "T3.4",
+      "explanation": "InterSystems IRIS REST services can handle all these content types. JSON and XML are most common for APIs, text/plain for simple responses, multipart/form-data for file uploads, application/x-www-form-urlencoded for form submissions, and application/octet-stream for binary data. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "What is the purpose of the OnPreDispatch() method in a REST service class?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To validate the request before routing to the appropriate handler method"
+        },
+        {
+          "id": "B",
+          "text": "To generate the response after the handler method completes"
+        },
+        {
+          "id": "C",
+          "text": "To define URL routing patterns"
+        },
+        {
+          "id": "D",
+          "text": "To configure database connections"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T3.4",
+      "explanation": "OnPreDispatch() is called before dispatching the request to the handler method. It's commonly used for authentication, request validation, logging, or setting up resources needed by handler methods. Return 1 to continue, 0 to halt processing. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSOAP_intro"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "In API Manager, what is the primary purpose of defining a Service?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To create the REST service implementation code"
+        },
+        {
+          "id": "B",
+          "text": "To group and expose one or more REST APIs through a common endpoint"
+        },
+        {
+          "id": "C",
+          "text": "To configure database connections"
+        },
+        {
+          "id": "D",
+          "text": "To generate API documentation"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.4",
+      "explanation": "In API Manager, a Service groups one or more REST APIs (Routes) and exposes them through a managed endpoint. Services provide centralized control for monitoring, rate limiting, authentication, and analytics across multiple APIs. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW"
+    },
+    {
+      "id": 25,
+      "type": "MR",
+      "question": "When implementing OAuth 2.0 authentication for a REST service, which components are required? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "OAuth 2.0 Authorization Server configuration"
+        },
+        {
+          "id": "B",
+          "text": "OAuth 2.0 Client configuration in IRIS"
+        },
+        {
+          "id": "C",
+          "text": "Resource Server configuration in the REST service"
+        },
+        {
+          "id": "D",
+          "text": "SQL database for token storage"
+        },
+        {
+          "id": "E",
+          "text": "SSL/TLS certificates for secure communication"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T3.4",
+      "explanation": "OAuth 2.0 implementation requires an Authorization Server (may be external like Azure AD), Client configuration in IRIS, Resource Server settings in the REST service to validate tokens, and SSL/TLS for secure token transmission. Tokens are typically stored in memory or cache, not SQL databases. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_iam_oauth"
+    }
+  ]
+}

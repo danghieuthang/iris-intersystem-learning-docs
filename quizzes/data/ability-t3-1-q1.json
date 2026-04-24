@@ -1,0 +1,607 @@
+{
+  "id": "ability-t3-1-q1",
+  "topic": "ability_t3_1",
+  "topicLabel": "T3.1 · Uses Python with InterSystems IRIS",
+  "title": "T3.1: Uses Python with InterSystems IRIS",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T3.1"
+  ],
+  "description": "Test your knowledge of Python integration with InterSystems IRIS, including Embedded Python capabilities and selecting appropriate Python strategies for different use cases",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T3_1.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "You are developing an IRIS class and need to add a method that uses Python machine learning libraries to analyze data stored in globals. Which keyword must you add to the method declaration to enable Embedded Python execution?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Method Analyze() As %Status [ Python ]"
+        },
+        {
+          "id": "B",
+          "text": "ClassMethod Analyze() As %Status [ Language = python ]"
+        },
+        {
+          "id": "C",
+          "text": "Method Analyze() As %Status [ Embedded = python ]"
+        },
+        {
+          "id": "D",
+          "text": "ClassMethod Analyze() As %Status [ Runtime = python ]"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "The Language = python keyword is used to declare that a method should execute Python code instead of ObjectScript. This enables Embedded Python execution within IRIS classes. The keyword must be added to the method declaration using the square bracket syntax. Methods can be either ClassMethod or instance Method, but the keyword is always 'Language = python' not 'Python', 'Embedded', or 'Runtime'. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_runpython"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which of the following statements about the iris module in Embedded Python are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The iris module provides access to IRIS globals via iris.gref()"
+        },
+        {
+          "id": "B",
+          "text": "The iris module requires a connection string to connect to IRIS"
+        },
+        {
+          "id": "C",
+          "text": "The iris module supports transaction control with iris.tstart() and iris.tcommit()"
+        },
+        {
+          "id": "D",
+          "text": "The iris module is identical to the DB-API driver module"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "The iris module in Embedded Python provides access to globals using iris.gref() and supports transaction control with iris.tstart(), iris.tcommit(), and iris.trollback(). However, it does NOT require a connection string because Embedded Python runs in-process within the IRIS kernel. The Embedded Python iris module is different from the DB-API driver module - they have different APIs and are not interchangeable. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_reference_core"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Consider the following ObjectScript class:\n\nClass User.Test Extends %RegisteredObject\n{\n  ClassMethod bar(ByRef pResult)\n  {\n      Set pResult = \"Hello World\"\n  }\n}\n\nWhich of the following sequence of commands will successfully call the bar method from Embedded Python and retrieve the value of pResult?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "import iris\ntest = iris.cls(\"User.Test\")\nresult = test.invokeMethod(\"bar\", iris.var())"
+        },
+        {
+          "id": "B",
+          "text": "import iris\ntest = iris.cls(\"User.Test\")\nresult = iris.bar(pResult)\nprint(result)"
+        },
+        {
+          "id": "C",
+          "text": "import iris\ntest = iris.cls(\"User.Test\")\nresult = test.invokeMethod(\"bar\")"
+        },
+        {
+          "id": "D",
+          "text": "import iris\ntest = iris.cls(\"User.Test\")\nbyref = iris.ref(None)\ntest.bar(byref)\nresult = byref.value"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T3.1",
+      "explanation": "When calling ObjectScript methods with ByRef parameters from Embedded Python, you must use iris.ref() to create a reference object that can be modified by the method. The iris.ref(None) creates a reference initialized to None, which is passed to the method. After the method executes, byref.value contains the result. Options a and c don't properly handle the ByRef parameter, and option b incorrectly tries to call the method as if it were a module-level function. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata#GEPYTHON_sharedata_passbyref",
+      "revised": true
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "A system administrator attempts to execute Embedded Python code in an IRIS instance but receives an IRIS_ACCESSDENIED error. What is the most likely cause?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The Python runtime is not installed on the server"
+        },
+        {
+          "id": "B",
+          "text": "The %Service_CallIn service is not enabled"
+        },
+        {
+          "id": "C",
+          "text": "The user does not have %All role assigned"
+        },
+        {
+          "id": "D",
+          "text": "The iris module is not imported correctly"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "Embedded Python requires the %Service_CallIn service to be enabled in the Management Portal. If this service is disabled, attempts to execute Embedded Python code will fail with an IRIS_ACCESSDENIED error. While Python runtime installation and proper user permissions are important, the specific IRIS_ACCESSDENIED error in the context of Embedded Python typically indicates that %Service_CallIn is disabled. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_prereqs"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which of the following capabilities are available ONLY with Embedded Python and NOT with DB-API or pyODBC?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Creating SQL stored procedures and functions in Python"
+        },
+        {
+          "id": "B",
+          "text": "Connecting to IRIS from external Python applications"
+        },
+        {
+          "id": "C",
+          "text": "Augmenting existing IRIS classes with Python methods"
+        },
+        {
+          "id": "D",
+          "text": "Executing SQL SELECT statements"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "Embedded Python uniquely supports creating SQL stored procedures, functions, and triggers in Python, as well as augmenting existing IRIS classes with Python methods using the Language = python keyword. DB-API and pyODBC are designed for external client applications to connect to IRIS, which Embedded Python does not do (it runs in-process). All Python options support executing SQL statements. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AFL_epython"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Your team is building a Flask web application that will query IRIS patient data and display it in a dashboard. The application will run on a separate server from the IRIS instance. Which Python strategy is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Embedded Python - for highest performance"
+        },
+        {
+          "id": "B",
+          "text": "DB-API - for external SQL client access"
+        },
+        {
+          "id": "C",
+          "text": "Python Gateway (PEX) - for interoperability"
+        },
+        {
+          "id": "D",
+          "text": "Native API - for direct global access"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "DB-API is the appropriate choice for external Python applications like Flask, Django, or Streamlit that need SQL access to IRIS. It provides PEP 249-compliant database connectivity over TCP/IP, making it suitable for client applications running on separate servers. Embedded Python only works in-process within IRIS (not external applications). Python Gateway is for IRIS calling external Python, not the reverse. While Native API could work, DB-API is recommended for SQL-focused external applications. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GPYDEV_intro_sql"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "An IRIS interoperability production needs to integrate with an existing Python natural language processing service running as a separate process. IRIS must initiate calls to this Python code from business operations. Which Python integration strategy should you use?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Embedded Python - to run Python in the IRIS process"
+        },
+        {
+          "id": "B",
+          "text": "DB-API - to connect to Python from IRIS"
+        },
+        {
+          "id": "C",
+          "text": "Python Gateway (PEX) - for IRIS to call external Python"
+        },
+        {
+          "id": "D",
+          "text": "Native API - for direct global manipulation"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "Python Gateway (PEX framework) is designed specifically for scenarios where IRIS needs to call external Python code. It inverts the control flow compared to DB-API, allowing IRIS to initiate execution of Python business services, processes, and adapters running as separate external services. This is essential for interoperability productions where IRIS orchestrates Python components. Embedded Python runs in-process (not external), and DB-API is for Python calling IRIS, not the reverse. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BEXTSERV"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What is the primary performance advantage of Embedded Python compared to DB-API or Native API client-server approaches?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Embedded Python uses multithreading for parallel execution"
+        },
+        {
+          "id": "B",
+          "text": "Embedded Python eliminates network latency through in-process execution"
+        },
+        {
+          "id": "C",
+          "text": "Embedded Python compiles Python code to native machine code"
+        },
+        {
+          "id": "D",
+          "text": "Embedded Python caches query results more efficiently"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "Embedded Python's primary performance advantage is that it runs within the IRIS kernel process, eliminating network latency and serialization overhead associated with client-server approaches like DB-API and Native API. This in-process execution provides the lowest latency and tightest integration, enabling direct memory access to globals and seamless mixing of Python and ObjectScript. The performance benefit comes from eliminating inter-process communication, not from multithreading, compilation, or caching. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON"
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "A developer needs to access IRIS hierarchical data structures from an external Python analytics script running on the same server as IRIS. The data is stored in globals, not SQL tables. Which of the following Python options support direct global manipulation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "DB-API driver"
+        },
+        {
+          "id": "B",
+          "text": "Native API for Python"
+        },
+        {
+          "id": "C",
+          "text": "Embedded Python"
+        },
+        {
+          "id": "D",
+          "text": "pyODBC"
+        }
+      ],
+      "answer": [
+        "B",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "Native API and Embedded Python both support direct global manipulation. Native API provides client-server access to IRIS-specific features including global arrays from external Python processes, while Embedded Python accesses globals in-process using iris.gref(). DB-API and pyODBC only provide SQL access and cannot directly manipulate globals - they are limited to relational operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AFL_epython"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "You need to create a SQL function in IRIS that uses the pandas library to perform statistical calculations on table data. Which Python strategy allows you to create SQL stored procedures and functions?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "DB-API - by defining functions in external Python scripts"
+        },
+        {
+          "id": "B",
+          "text": "Embedded Python - by writing Python methods in IRIS classes"
+        },
+        {
+          "id": "C",
+          "text": "Python Gateway (PEX) - by registering Python functions"
+        },
+        {
+          "id": "D",
+          "text": "Native API - by using the iris module's SQL support"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "Only Embedded Python supports creating SQL stored procedures, functions, and triggers. This is done by writing Python methods in IRIS classes with the Language = python keyword and appropriate SQL declarations. The Python code executes in-process with access to the pandas library and other packages. DB-API, Python Gateway, and Native API cannot create SQL stored procedures - they are designed for different use cases (external client access or interoperability). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_createfunction"
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "In Embedded Python, you need to access the %Regex.Matcher class. What are the correct syntax options to reference this class? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "iris.Regex.Matcher"
+        },
+        {
+          "id": "B",
+          "text": "iris._Regex.Matcher"
+        },
+        {
+          "id": "C",
+          "text": "iris.cls('%Regex.Matcher')"
+        },
+        {
+          "id": "D",
+          "text": "iris.percent.Regex.Matcher"
+        }
+      ],
+      "answer": [
+        "B",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "There are two valid ways to access %Regex.Matcher in Embedded Python: (1) iris._Regex.Matcher - substitute underscores for percent signs since Python doesn't support % in identifiers; (2) iris.cls('%Regex.Matcher') - use the iris.cls() function with the full class name as a string. Options a and d use invalid syntax. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_calliris",
+      "revised": true
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "When passing a Python boolean True to an ObjectScript method from Python, what value will the ObjectScript method receive?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The string 'True'"
+        },
+        {
+          "id": "B",
+          "text": "The integer 1"
+        },
+        {
+          "id": "C",
+          "text": "A %Boolean object"
+        },
+        {
+          "id": "D",
+          "text": "A Python reference object"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "When Python booleans are passed to ObjectScript methods, they are automatically converted to integers: True becomes 1 and False becomes 0. Similarly, when ObjectScript returns boolean values to Python, they are converted to Python integers. If you need to explicitly pass Python boolean values, ObjectScript provides ##class(%SYS.Python).True() and ##class(%SYS.Python).False() methods. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata"
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "You need to execute an arbitrary ObjectScript command from Embedded Python to access the $ZVERSION special variable. Which code is correct?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "result = iris.$zversion"
+        },
+        {
+          "id": "B",
+          "text": "result = iris.execute('return $zversion')"
+        },
+        {
+          "id": "C",
+          "text": "result = iris.cmd('$zversion')"
+        },
+        {
+          "id": "D",
+          "text": "result = iris.objectscript.eval('$zversion')"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "The iris.execute() function allows you to run arbitrary ObjectScript code from Python. Use 'return expr' syntax to get a value back, or just the command for side effects. For example, iris.execute('return $zversion') returns the IRIS version string, while iris.execute('write $zversion, !') would output to the terminal. This is useful for accessing ObjectScript special variables and functions that have no Python equivalent. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_calliris"
+    },
+    {
+      "id": 14,
+      "type": "MR",
+      "question": "Which statements about exception handling between Python and ObjectScript are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Python exceptions automatically propagate to ObjectScript and can be caught in TRY-CATCH blocks"
+        },
+        {
+          "id": "B",
+          "text": "Python exceptions are wrapped as %Exception.PythonException in ObjectScript"
+        },
+        {
+          "id": "C",
+          "text": "ObjectScript $zerror is populated with the Python exception details"
+        },
+        {
+          "id": "D",
+          "text": "You must explicitly convert Python exceptions to IRIS status codes"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "Python exceptions automatically propagate to ObjectScript and are captured in TRY-CATCH blocks. The exceptions are wrapped as %Exception.PythonException objects with the original Python error details preserved. The $zerror special variable contains the exception information. Conversion to status codes is not required - the exception mechanism handles this automatically. From Python, you can use iris.check_status() to raise ObjectScript status errors as Python exceptions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "You are writing Embedded Python code that needs to execute a SQL query against an IRIS table. Which is the correct approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "import pyodbc\nconn = pyodbc.connect('DSN=IRIS')\ncursor = conn.cursor()"
+        },
+        {
+          "id": "B",
+          "text": "sql = iris.sql.prepare('SELECT * FROM Sample.Person')\nrs = sql.execute()"
+        },
+        {
+          "id": "C",
+          "text": "import intersystems_iris\\nrs = intersystems_iris.query('SELECT * FROM Sample.Person')"
+        },
+        {
+          "id": "D",
+          "text": "rs = iris.execute('SELECT * FROM Sample.Person')"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "In Embedded Python, use iris.sql.prepare() to create a prepared statement and execute() to run it. The result set is iterable and you can loop through rows directly. This approach uses the in-process connection and doesn't require external drivers like pyODBC or the DB-API driver. The iris.execute() function is for ObjectScript commands, not SQL queries. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_calliris",
+      "revised": true
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "When working with binary data in ObjectScript that must be passed to Python without UTF-8 encoding, which approach should you use?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Pass the data directly as a string"
+        },
+        {
+          "id": "B",
+          "text": "Use ##class(%SYS.Python).Bytes(data) to wrap the binary data"
+        },
+        {
+          "id": "C",
+          "text": "Convert the data to base64 first"
+        },
+        {
+          "id": "D",
+          "text": "Use $ZCONVERT with 'O' mode"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "InterSystems IRIS strings are automatically converted to UTF-8 when passed from ObjectScript to Python. For binary data that should not be converted (like image data or encrypted content), use ##class(%SYS.Python).Bytes(data) to wrap the data. This ensures the binary content is passed to Python as a bytes object without encoding conversion. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata"
+    },
+    {
+      "id": 17,
+      "type": "MR",
+      "question": "In an Embedded Python method within an IRIS class, which statements about accessing the current object are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use 'self' to access instance properties and methods"
+        },
+        {
+          "id": "B",
+          "text": "Use 'iris.cls(__name__)' or 'iris.ClassName' to access class methods"
+        },
+        {
+          "id": "C",
+          "text": "Instance properties are accessed as self.PropertyName"
+        },
+        {
+          "id": "D",
+          "text": "The 'this' keyword references the current object like in ObjectScript"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "In Python methods within IRIS classes, 'self' is used to access instance properties and methods, just like standard Python. Properties are accessed as self.PropertyName. For class methods and parameters, use iris.cls(__name__) or reference the class directly as iris.ClassName. The 'this' keyword doesn't exist in Python - ObjectScript uses implicit references to the current object, but Python always requires explicit 'self'. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_runpython"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "Where does Python's standard output (print statements) go when executing Embedded Python code in an IRIS terminal session?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To the IRIS messages.log file"
+        },
+        {
+          "id": "B",
+          "text": "To a Python-specific log file"
+        },
+        {
+          "id": "C",
+          "text": "To the Terminal (console) where IRIS is running"
+        },
+        {
+          "id": "D",
+          "text": "Output is discarded unless explicitly redirected"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.1",
+      "explanation": "When running Embedded Python in an IRIS terminal session, Python's standard output (from print() statements) goes directly to the Terminal. However, standard error output goes to the messages.log file. This is an important distinction for debugging - print statements appear in the terminal, but error messages and stack traces may appear in the log file. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "You need to create a persistent object in an IRIS class from Embedded Python and save it to the database. Given a class Sample.Person with Name property, what is the correct code?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "p = iris.Sample.Person()\\np.Name = 'Smith'\\np.save()"
+        },
+        {
+          "id": "B",
+          "text": "p = iris.Sample.Person._New()\\np.Name = 'Smith'\\np._Save()"
+        },
+        {
+          "id": "C",
+          "text": "p = iris.cls('Sample.Person').new()\\np.Name = 'Smith'\\np.commit()"
+        },
+        {
+          "id": "D",
+          "text": "p = iris.create('Sample.Person')\\np.Name = 'Smith'\\niris.save(p)"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "To create and save a persistent object from Embedded Python: use _New() to create an instance (the underscore prefix is used for IRIS methods that conflict with Python reserved words), set properties directly as attributes, and call _Save() to persist. The _Save() method returns 1 if successful. Properties behave like Python attributes, and list properties support standard operations like Insert(). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_calliris"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "An Embedded Python method needs to switch to a different namespace to access data. Which code correctly changes the namespace?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "iris.namespace = 'SAMPLES'"
+        },
+        {
+          "id": "B",
+          "text": "iris.system.Process.SetNamespace('SAMPLES')"
+        },
+        {
+          "id": "C",
+          "text": "iris.execute('znspace \\\"SAMPLES\\\"')"
+        },
+        {
+          "id": "D",
+          "text": "iris.SetNamespace('SAMPLES')"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.1",
+      "explanation": "To switch namespaces in Embedded Python, use iris.system.Process.SetNamespace('namespacename'). This calls the %SYSTEM.Process class method to change the current namespace context. Alternatively, you could use iris.execute('znspace \"SAMPLES\"') to run the ObjectScript command, but the Process.SetNamespace() method is the recommended approach. The namespace property and direct SetNamespace() function don't exist at the iris module level. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GEPYTHON_sharedata"
+    }
+  ]
+}

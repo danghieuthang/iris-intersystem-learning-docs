@@ -1,0 +1,715 @@
+{
+  "id": "ability-t4-1-q1",
+  "topic": "ability_t4_1",
+  "topicLabel": "T4.1 · Writes Defensive Code",
+  "title": "T4.1: Writes Defensive Code",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T4.1"
+  ],
+  "description": "Test your knowledge of defensive coding practices in InterSystems IRIS, including error handling strategies, system performance diagnosis, process memory management, and system limits",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T4_1.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MR",
+      "question": "Which <b>three</b> of the following statements about TRY-CATCH in InterSystems IRIS are true?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "If an exception is not handled within a <code>CATCH</code> block, it can propagate up the call stack and potentially terminate the process."
+        },
+        {
+          "id": "B",
+          "text": "The <code>TRY</code> block must always contain a <code>THROW</code> statement to generate an exception."
+        },
+        {
+          "id": "C",
+          "text": "A <code>QUIT</code> statement inside a <code>TRY</code> block only exits the <code>TRY</code> block, not the entire method containing it."
+        },
+        {
+          "id": "D",
+          "text": "<code>CATCH</code> blocks allow error details to be logged, such as in the <code>^ERRORS</code> global."
+        },
+        {
+          "id": "E",
+          "text": "Exceptions in InterSystems IRIS are represented as standard <code>%Status</code> values."
+        },
+        {
+          "id": "F",
+          "text": "A <code>CATCH</code> block must specify a variable to store the caught exception."
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T4.1",
+      "explanation": "Statement (a) is true: unhandled exceptions propagate up the call stack. Statement (c) is true: QUIT within TRY only exits the TRY block. Statement (d) is true: CATCH blocks can log error details. Statement (b) is false: TRY blocks don't require THROW statements. Statement (e) is false: exceptions are exception objects, not %Status values. Statement (f) is false: CATCH blocks can optionally specify a variable but it's not required. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch"
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "You are debugging an ObjectScript method that occasionally throws errors. You want to catch all exceptions, log them to a custom error table, and continue processing. Which error handling approach is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use $ZTRAP to handle all errors globally"
+        },
+        {
+          "id": "B",
+          "text": "Use TRY-CATCH with a generic exception handler that logs to a table and allows processing to continue"
+        },
+        {
+          "id": "C",
+          "text": "Use $ZERROR to check for errors after each statement"
+        },
+        {
+          "id": "D",
+          "text": "Wrap each statement in its own TRY-CATCH block"
+        },
+        {
+          "id": "E",
+          "text": "Use %Status return values instead of exception handling"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "TRY-CATCH is the modern, recommended approach for structured exception handling in ObjectScript. It allows you to catch exceptions, log them, and continue processing in a controlled manner. $ZTRAP is older and less flexible, $ZERROR doesn't prevent exceptions, wrapping each statement is inefficient, and %Status is for different error scenarios. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Consider the following ObjectScript code:<br><pre>TRY {\n    Set result = ..ProcessData(input)\n    If result = \"\" Quit\n    Do ..SaveResult(result)\n} CATCH ex {\n    Write \"Error: \", ex.DisplayString()\n}</pre><br>What happens if <code>result</code> equals an empty string?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The CATCH block executes and displays an error"
+        },
+        {
+          "id": "B",
+          "text": "The method exits and returns control to the caller without executing CATCH"
+        },
+        {
+          "id": "C",
+          "text": "The SaveResult method is still called with an empty string"
+        },
+        {
+          "id": "D",
+          "text": "The TRY block throws an exception automatically"
+        },
+        {
+          "id": "E",
+          "text": "A runtime error occurs because QUIT is not allowed in TRY blocks"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "When QUIT is executed inside a TRY block without throwing an exception, it exits the current method or code block normally, returning control to the caller. The CATCH block only executes if an exception is thrown. No exception is thrown by an empty string, so the code simply quits normally. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch#GCOS_trycatch_quit"
+    },
+    {
+      "id": 4,
+      "type": "MR",
+      "question": "Which <b>two</b> of the following are valid strategies for diagnosing system performance issues in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the System Monitor (^MONLBL) to track routine execution statistics"
+        },
+        {
+          "id": "B",
+          "text": "Disable journaling to improve performance during diagnosis"
+        },
+        {
+          "id": "C",
+          "text": "Review the Application Error Log for performance-related warnings"
+        },
+        {
+          "id": "D",
+          "text": "Use SQL Query Plans to identify inefficient queries"
+        },
+        {
+          "id": "E",
+          "text": "Reduce global buffer size to force more efficient memory usage"
+        },
+        {
+          "id": "F",
+          "text": "Disable all background tasks during performance testing"
+        }
+      ],
+      "answer": [
+        "A",
+        "D"
+      ],
+      "domain": "T4.1",
+      "explanation": "System Monitor (^MONLBL) is designed for tracking routine execution and identifying bottlenecks. SQL Query Plans help identify inefficient queries by showing execution paths and costs. Disabling journaling can affect recoverability and doesn't help diagnosis. The Application Error Log primarily contains errors, not performance data. Reducing global buffer size degrades performance rather than improving it. Disabling background tasks may mask real-world performance issues. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "A process in your InterSystems IRIS application is experiencing memory growth over time, eventually leading to &lt;STORE&gt; errors. Which diagnostic approach is most effective for identifying the root cause?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use $STORAGE to monitor available process memory and identify operations consuming excessive local variable space"
+        },
+        {
+          "id": "B",
+          "text": "Use the Memory and Startup page in the Management Portal to check system-wide memory"
+        },
+        {
+          "id": "C",
+          "text": "Monitor process private global usage with $SYSTEM.Process.PrivateGlobalList()"
+        },
+        {
+          "id": "D",
+          "text": "Review the messages.log file for memory-related warnings"
+        },
+        {
+          "id": "E",
+          "text": "Restart the process periodically to prevent memory accumulation"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.1",
+      "explanation": "$STORAGE returns the number of bytes available for local variable storage in the current process. When a process runs out of local variable memory, it generates a &lt;STORE&gt; error. Monitoring $STORAGE before and after operations helps identify which operations consume excessive memory. Note: Process private globals (option C) use IRISTEMP database space, not process memory, so they don't cause &lt;STORE&gt; errors. System-wide memory checks don't pinpoint process-specific issues. Restarting is a workaround, not diagnosis. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_vstorage",
+      "revised": true
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "When should you use <code>$ZTRAP</code> instead of <code>TRY-CATCH</code> for error handling in ObjectScript?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "When you need to handle errors in legacy code that doesn't support TRY-CATCH"
+        },
+        {
+          "id": "B",
+          "text": "When you want more structured, modern error handling"
+        },
+        {
+          "id": "C",
+          "text": "When you need to catch specific exception types"
+        },
+        {
+          "id": "D",
+          "text": "When you want to log detailed exception information"
+        },
+        {
+          "id": "E",
+          "text": "You should always prefer $ZTRAP over TRY-CATCH in new code"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.1",
+      "explanation": "$ZTRAP is a legacy error-handling mechanism that should only be used in legacy code or for compatibility reasons. TRY-CATCH is the modern, recommended approach for new code because it provides structured exception handling, allows catching specific exception types, and integrates better with object-oriented programming. $ZTRAP uses string-based error handling which is less flexible and harder to maintain. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS"
+    },
+    {
+      "id": 7,
+      "type": "MR",
+      "question": "Which <b>three</b> of the following are effective practices for managing process memory in InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Kill local variables when they are no longer needed using KILL"
+        },
+        {
+          "id": "B",
+          "text": "Use %New() and %OpenId() methods efficiently to avoid keeping unnecessary object references"
+        },
+        {
+          "id": "C",
+          "text": "Disable garbage collection to prevent automatic memory cleanup"
+        },
+        {
+          "id": "D",
+          "text": "Monitor and limit the use of private globals in processes"
+        },
+        {
+          "id": "E",
+          "text": "Always use global variables instead of local variables to save process memory"
+        },
+        {
+          "id": "F",
+          "text": "Keep all data in memory throughout the process lifetime for faster access"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T4.1",
+      "explanation": "Killing local variables when no longer needed frees process memory. Using %New() and %OpenId() efficiently prevents memory bloat from unnecessary object references. Monitoring private global usage helps identify memory leaks. Disabling garbage collection would prevent memory cleanup, not help it. Global variables consume shared memory, not process memory. Keeping all data in memory indefinitely leads to memory exhaustion. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What is the maximum string length in InterSystems IRIS ObjectScript?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "32,767 characters (32KB)"
+        },
+        {
+          "id": "B",
+          "text": "3,641,144 characters (approximately 3.6MB)"
+        },
+        {
+          "id": "C",
+          "text": "1,048,576 characters (1MB)"
+        },
+        {
+          "id": "D",
+          "text": "Unlimited, constrained only by available memory"
+        },
+        {
+          "id": "E",
+          "text": "2,147,483,647 characters (2GB"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "The maximum string length in InterSystems IRIS ObjectScript is 3,641,144 characters (approximately 3.6MB). This is a hard limit enforced by the system. Understanding system limits is critical for defensive coding to prevent runtime errors when processing large data. If you need to work with larger data, you must use streams or split the data into chunks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_variables#GCOS_variables_strings"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "You are writing a method that processes user input and performs database operations. Which defensive coding practice is most important to implement?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Validate and sanitize all input before processing to prevent SQL injection and data corruption"
+        },
+        {
+          "id": "B",
+          "text": "Wrap all code in a single large TRY-CATCH block"
+        },
+        {
+          "id": "C",
+          "text": "Use $ZTRAP to handle all errors globally"
+        },
+        {
+          "id": "D",
+          "text": "Disable transaction management for better performance"
+        },
+        {
+          "id": "E",
+          "text": "Always use dynamic SQL without parameter binding for flexibility"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.1",
+      "explanation": "Input validation and sanitization are fundamental defensive coding practices that prevent security vulnerabilities (like SQL injection) and data corruption. A single large TRY-CATCH may be too broad and hide specific issues. $ZTRAP is legacy and less structured. Disabling transaction management compromises data integrity. Dynamic SQL without parameter binding is vulnerable to SQL injection attacks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_prepare"
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which <b>two</b> of the following commands or system variables can be used to diagnose performance issues in ObjectScript routines?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "^PERFMON to enable performance monitoring"
+        },
+        {
+          "id": "B",
+          "text": "$HOROLOG to measure elapsed time between operations"
+        },
+        {
+          "id": "C",
+          "text": "$TLEVEL to check transaction nesting depth"
+        },
+        {
+          "id": "D",
+          "text": "$ZPI to get the process ID"
+        },
+        {
+          "id": "E",
+          "text": "VIEW to start and stop routine monitoring"
+        },
+        {
+          "id": "F",
+          "text": "$NAMESPACE to check the current namespace"
+        }
+      ],
+      "answer": [
+        "B",
+        "E"
+      ],
+      "domain": "T4.1",
+      "explanation": "$HOROLOG can be used to measure elapsed time by comparing values before and after operations, which is useful for performance diagnosis. The VIEW command can start and stop routine monitoring with VIEW \"M\"/VIEW \"-M\". ^PERFMON is not a standard IRIS command. $TLEVEL is for transaction management, not performance diagnosis. $ZPI provides process ID but doesn't help with performance analysis. $NAMESPACE is for namespace identification only. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fview"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "Consider the following code:<br><pre>TRY {\n    Set result = ##class(MyApp.Data).ProcessRecord(id)\n} CATCH ex {\n    Set ^ERRORS($INCREMENT(^ERRORS)) = ex.DisplayString()\n    THROW ex\n}</pre><br>What is the effect of the <code>THROW ex</code> statement in the CATCH block?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It creates a new exception and discards the original"
+        },
+        {
+          "id": "B",
+          "text": "It re-throws the caught exception to the caller, allowing further handling up the call stack"
+        },
+        {
+          "id": "C",
+          "text": "It causes a syntax error because THROW cannot be used in CATCH"
+        },
+        {
+          "id": "D",
+          "text": "It terminates the process immediately"
+        },
+        {
+          "id": "E",
+          "text": "It converts the exception to a %Status value"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "THROW ex in a CATCH block re-throws the caught exception, propagating it up the call stack to the calling code. This allows you to log the error locally while still passing it to higher-level error handlers for additional processing. This pattern is useful for implementing layered error handling where each layer can log or modify the error before passing it up. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch#GCOS_trycatch_throw"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What is the maximum number of subscripts (levels) allowed in a global reference in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "16 subscripts"
+        },
+        {
+          "id": "B",
+          "text": "32 subscripts"
+        },
+        {
+          "id": "C",
+          "text": "64 subscripts"
+        },
+        {
+          "id": "D",
+          "text": "128 subscripts"
+        },
+        {
+          "id": "E",
+          "text": "Unlimited subscripts"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "InterSystems IRIS allows a maximum of 32 subscripts in a global reference. Understanding this limit is important for defensive coding when designing data structures. Exceeding this limit will result in a runtime error. If you need deeper hierarchies, you must redesign your data structure to stay within this constraint. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 13,
+      "type": "MR",
+      "question": "Which <b>three</b> of the following are signs of potential memory management issues in a long-running InterSystems IRIS process?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Steadily increasing process private memory over time"
+        },
+        {
+          "id": "B",
+          "text": "Growing number of private globals associated with the process"
+        },
+        {
+          "id": "C",
+          "text": "Increasing number of lock table entries"
+        },
+        {
+          "id": "D",
+          "text": "<STORE> errors appearing in the application error log"
+        },
+        {
+          "id": "E",
+          "text": "High CPU utilization"
+        },
+        {
+          "id": "F",
+          "text": "Frequent database expansion"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T4.1",
+      "explanation": "Steadily increasing process private memory indicates a memory leak. Growing private globals suggest objects or data are being allocated but not released. <STORE> errors specifically indicate out-of-memory conditions. Lock table entries relate to concurrency, not memory management. High CPU utilization may indicate performance issues but not necessarily memory problems. Database expansion is related to persistent storage, not process memory. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "<b>Scenario:</b> You are developing a method that calls multiple external systems via REST APIs. Each call may fail independently. You want to ensure that if one call fails, the others are still attempted, and all failures are logged.<br><br><b>Question:</b> Which error handling pattern is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Wrap the entire method in a single TRY-CATCH block"
+        },
+        {
+          "id": "B",
+          "text": "Wrap each individual API call in its own TRY-CATCH block and collect errors in a list"
+        },
+        {
+          "id": "C",
+          "text": "Use $ZTRAP to handle all errors globally"
+        },
+        {
+          "id": "D",
+          "text": "Check the %Status value after each call and continue on failure"
+        },
+        {
+          "id": "E",
+          "text": "Disable error handling and let all errors propagate to the caller"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "Wrapping each API call in its own TRY-CATCH block allows independent error handling for each call. This ensures that a failure in one call doesn't prevent other calls from being attempted. You can collect all errors in a list or collection and process them at the end. A single TRY-CATCH would stop at the first error. $ZTRAP is less structured. %Status checking only works with methods that return %Status. Disabling error handling would crash the process on the first failure. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch#GCOS_trycatch_multiple"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "Which system limit should you be aware of when designing applications that create many concurrent processes in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Maximum of 100 concurrent processes per namespace"
+        },
+        {
+          "id": "B",
+          "text": "Maximum number of processes determined by license and system configuration"
+        },
+        {
+          "id": "C",
+          "text": "Maximum of 1,000 processes per database"
+        },
+        {
+          "id": "D",
+          "text": "Unlimited processes constrained only by CPU and memory"
+        },
+        {
+          "id": "E",
+          "text": "Maximum of 256 processes per instance"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "The maximum number of concurrent processes in InterSystems IRIS is determined by your license configuration and system settings (MaxServerConn parameter). There is no hard-coded limit like 100, 256, or 1,000. Understanding this limit is crucial for defensive coding in applications that spawn multiple processes, as exceeding the configured limit will prevent new processes from starting. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_maxserverconn"
+    },
+    {
+      "id": 16,
+      "type": "MR",
+      "question": "When implementing defensive coding practices for process management, which <b>two</b> of the following should you implement?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Always check if required resources are available before starting a new process"
+        },
+        {
+          "id": "B",
+          "text": "Use $SYSTEM.Process.TerminateAll() regularly to clean up processes"
+        },
+        {
+          "id": "C",
+          "text": "Implement proper cleanup in error handlers to release resources when a process fails"
+        },
+        {
+          "id": "D",
+          "text": "Disable lock timeout to prevent deadlocks"
+        },
+        {
+          "id": "E",
+          "text": "Always run processes with administrative privileges for maximum access"
+        },
+        {
+          "id": "F",
+          "text": "Keep processes running indefinitely to maintain state"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T4.1",
+      "explanation": "Checking resource availability before starting processes prevents resource exhaustion errors. Implementing cleanup in error handlers ensures resources are released even when failures occur, preventing resource leaks. TerminateAll() is too aggressive and disrupts normal operations. Disabling lock timeout can cause indefinite waits and system hangs. Running with administrative privileges violates the principle of least privilege. Keeping processes running indefinitely can lead to resource exhaustion and makes maintenance difficult. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "You are reviewing code that uses dynamic SQL. Which of the following is a defensive coding best practice to prevent SQL injection?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use %SQL.Statement with embedded parameter markers (?) and bind parameters"
+        },
+        {
+          "id": "B",
+          "text": "Concatenate user input directly into SQL strings for simplicity"
+        },
+        {
+          "id": "C",
+          "text": "Use dynamic SQL with EXECUTE IMMEDIATE for all queries"
+        },
+        {
+          "id": "D",
+          "text": "Disable SQL security to improve performance"
+        },
+        {
+          "id": "E",
+          "text": "Trust that user input is always safe and doesn't need validation"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.1",
+      "explanation": "Using %SQL.Statement with parameter markers (?) and binding parameters is the secure way to handle user input in SQL queries. This prevents SQL injection by treating user input as data rather than executable code. Concatenating user input directly is dangerous and the primary cause of SQL injection vulnerabilities. EXECUTE IMMEDIATE with unvalidated input is equally vulnerable. Disabling SQL security and trusting user input are both serious security risks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_prepare"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "What is the purpose of the <code>DisplayString()</code> method on exception objects in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To display the exception in a user-friendly format with stack trace and error details"
+        },
+        {
+          "id": "B",
+          "text": "To convert the exception to a %Status value"
+        },
+        {
+          "id": "C",
+          "text": "To log the exception to the system error log automatically"
+        },
+        {
+          "id": "D",
+          "text": "To suppress the exception and continue execution"
+        },
+        {
+          "id": "E",
+          "text": "To throw a new exception based on the current one"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.1",
+      "explanation": "The DisplayString() method returns a formatted string representation of the exception, including the error message, code location, and stack trace. This is useful for logging and debugging purposes as it provides comprehensive error information in a readable format. It doesn't convert to %Status, doesn't automatically log (you must log it explicitly), doesn't suppress the exception, and doesn't throw a new exception. Reference: https://docs.intersystems.com/iris20253/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25Exception.AbstractException"
+    },
+    {
+      "id": 19,
+      "type": "MR",
+      "question": "Which <b>two</b> of the following are valid approaches to diagnose why a process is consuming excessive CPU in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the System Monitor (^MONLBL) to identify hot spots in routine execution"
+        },
+        {
+          "id": "B",
+          "text": "Immediately terminate the process using $SYSTEM.Process.Terminate()"
+        },
+        {
+          "id": "C",
+          "text": "Use the Management Portal's System Performance view to identify CPU-intensive processes"
+        },
+        {
+          "id": "D",
+          "text": "Reduce the priority of all other processes to give more CPU to the problem process"
+        },
+        {
+          "id": "E",
+          "text": "Disable lock management to reduce CPU overhead"
+        },
+        {
+          "id": "F",
+          "text": "Increase the global buffer size to compensate for CPU usage"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T4.1",
+      "explanation": "System Monitor (^MONLBL) helps identify which routines or code sections are consuming the most CPU time. The Management Portal's System Performance view shows which processes are consuming CPU and provides diagnostic information. Terminating the process doesn't diagnose the issue. Reducing priority of other processes doesn't solve the root cause. Disabling lock management can cause data corruption. Increasing global buffer size addresses memory, not CPU issues. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "In a production environment, you notice that error messages are being logged to <code>^ERRORS</code> global but the application continues to run. Which of the following best describes this error handling strategy?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Fail-fast: the application terminates immediately on any error"
+        },
+        {
+          "id": "B",
+          "text": "Fail-safe: errors are logged and the application continues operation where possible"
+        },
+        {
+          "id": "C",
+          "text": "Fail-silent: errors are suppressed without logging"
+        },
+        {
+          "id": "D",
+          "text": "Fail-secure: the application locks down on any error"
+        },
+        {
+          "id": "E",
+          "text": "No error handling: errors propagate uncaught"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.1",
+      "explanation": "This is a fail-safe strategy where errors are caught, logged (to ^ERRORS), and the application continues operating. This is appropriate for non-critical errors in production systems where availability is important. Fail-fast would terminate immediately. Fail-silent would not log errors. Fail-secure would lock down the system. No error handling would crash the process. The choice of strategy depends on your application's requirements for availability, data integrity, and security. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_trycatch"
+    }
+  ]
+}

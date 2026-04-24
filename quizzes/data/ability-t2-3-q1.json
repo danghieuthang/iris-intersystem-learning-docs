@@ -1,0 +1,334 @@
+{
+  "id": "ability-t2-3-q1",
+  "topic": "ability_t2_3",
+  "topicLabel": "T2.3 · Uses Source Control with InterSystems IRIS",
+  "title": "T2.3: Uses Source Control with InterSystems IRIS",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T2.3"
+  ],
+  "description": "Test your knowledge of source control integration with InterSystems IRIS, including client-side and server-side options, REST API usage, and mitigation strategies for class/schema imports",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T2_3.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A development team is choosing between client-side and server-side source control integration for their InterSystems IRIS project. Which statement BEST describes the primary difference between these approaches?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Client-side integration uses Git repositories on developer workstations with REST API communication, while server-side integration uses %Studio.SourceControl hooks executing within IRIS"
+        },
+        {
+          "id": "B",
+          "text": "Client-side integration is only available in VS Code, while server-side integration works with all IDEs"
+        },
+        {
+          "id": "C",
+          "text": "Client-side integration requires manual compilation, while server-side integration compiles automatically"
+        },
+        {
+          "id": "D",
+          "text": "Client-side integration stores code in XML format, while server-side integration uses plain text files"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.3",
+      "explanation": "Client-side integration leverages modern development tools like VS Code with Git repositories maintained locally, using the Source Code File REST API for communication with IRIS. Server-side integration uses the %Studio.SourceControl class framework with hooks that execute within the IRIS server during development operations like save, compile, and delete. Both approaches serve different use cases and can be combined in hybrid workflows. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCF"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which REST API methods are provided by the Source Code File REST API for client-side source control integration?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "GetDoc - Retrieves source code content for a specified file"
+        },
+        {
+          "id": "B",
+          "text": "PutDoc - Updates or creates source code files remotely"
+        },
+        {
+          "id": "C",
+          "text": "GetModifiedDocNames - Returns file names with hash values for change detection"
+        },
+        {
+          "id": "D",
+          "text": "CompileAll - Compiles all classes in a namespace"
+        },
+        {
+          "id": "E",
+          "text": "Compile - Compiles specified source code files"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.3",
+      "explanation": "The Source Code File REST API provides GetDoc (retrieve source code), PutDoc (update/create files), GetDocNames (list files), GetModifiedDocNames (detect changes via hash values), and Compile (compile specified files). There is no CompileAll method in the REST API - compilation is done on individual files or lists of files. These methods enable IDEs like VS Code to interact with IRIS source code remotely. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCF"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Your team uses VS Code with the ObjectScript extension for development. A developer notices that when they save a class in VS Code, it is immediately updated on the IRIS server. Which component enables this synchronization?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The %Studio.SourceControl hooks"
+        },
+        {
+          "id": "B",
+          "text": "The Source Code File REST API"
+        },
+        {
+          "id": "C",
+          "text": "The IRIS Journal mechanism"
+        },
+        {
+          "id": "D",
+          "text": "The Export/Import XML utility"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.3",
+      "explanation": "The VS Code ObjectScript extension uses the Source Code File REST API to communicate with InterSystems IRIS. When a developer saves a file, VS Code calls the PutDoc REST API method to update the source code on the server. The REST API endpoint is typically accessed at https://server:port/api/atelier/ and provides methods for retrieving, updating, and compiling code remotely. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 4,
+      "type": "MR",
+      "question": "A development team wants to implement server-side source control hooks for their IRIS application. Which events can trigger %Studio.SourceControl hook methods?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Before save - allows validation before a class is saved"
+        },
+        {
+          "id": "B",
+          "text": "After compile - allows logging or integration after successful compilation"
+        },
+        {
+          "id": "C",
+          "text": "Before delete - allows prevention of unauthorized deletions"
+        },
+        {
+          "id": "D",
+          "text": "After login - triggers when a user logs into the Management Portal"
+        },
+        {
+          "id": "E",
+          "text": "Check-in/check-out operations - manages version control state"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.3",
+      "explanation": "The %Studio.SourceControl framework provides hooks for before/after save, before/after compile, before/after delete, and check-in/check-out operations. These hooks execute within the IRIS server during development operations, allowing custom code to perform validation, logging, or integration with external systems. There is no 'after login' hook in the source control framework - that would be a security event. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ASC"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "Your organization has both developers using VS Code with Git and legacy developers using Studio. Which source control approach would BEST accommodate this mixed environment?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use only client-side Git integration and require all developers to switch to VS Code"
+        },
+        {
+          "id": "B",
+          "text": "Use only server-side hooks and disable the REST API"
+        },
+        {
+          "id": "C",
+          "text": "Implement a hybrid approach with client-side Git for modern workflows and server-side hooks for validation and logging"
+        },
+        {
+          "id": "D",
+          "text": "Maintain separate IRIS instances for each development tool"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T2.3",
+      "explanation": "A hybrid approach combines both methods: developers can use Git and VS Code for their daily workflow while server-side hooks provide additional validation, logging, or integration with enterprise systems. For example, a team might use client-side Git for version control but implement a server-side hook that prevents deployment of classes without proper documentation. This approach accommodates different development styles while maintaining consistent policies. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCF"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "When importing updated persistent classes with schema changes, which InterSystems IRIS component determines the storage structures and creates SQL representations?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The Class Compiler"
+        },
+        {
+          "id": "B",
+          "text": "The Storage Compiler"
+        },
+        {
+          "id": "C",
+          "text": "The Schema Manager"
+        },
+        {
+          "id": "D",
+          "text": "The Import Directive Processor"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.3",
+      "explanation": "The storage compiler determines storage structures for persistent and serial classes and creates SQL representations (tables, columns, indices). When importing updated persistent classes, IRIS must reconcile existing storage definitions with new requirements. This can cause conflicts if changes modify property datatypes, add required properties to classes with existing data, or alter index definitions incompatibly. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_storage_evolution"
+    },
+    {
+      "id": 7,
+      "type": "MR",
+      "question": "A developer is importing an updated version of a class that references several other classes using short names (without package qualification). Which strategies will help resolve compilation dependencies?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the Import directive at the top of the class to specify search packages"
+        },
+        {
+          "id": "B",
+          "text": "Use the /compile flag to automatically compile modified dependencies"
+        },
+        {
+          "id": "C",
+          "text": "Delete all journal files before importing"
+        },
+        {
+          "id": "D",
+          "text": "Use fully qualified class names in all references"
+        },
+        {
+          "id": "E",
+          "text": "Use $SYSTEM.OBJ.CompileList() with the 'ck' flag to check compile"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T2.3",
+      "explanation": "To resolve compilation dependencies: use the Import directive (e.g., Import (Package1, Package2)) to specify packages for short name resolution; use the /compile flag for incremental compilation of changed dependencies; use fully qualified names to avoid ambiguity; and use compilation methods like CompileList() with flags such as 'ck' (compile with check). Deleting journal files is not related to compilation dependencies and would remove valuable recovery information. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_packages"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "You are deploying updated persistent classes to production, and some classes have modified property datatypes. What is the BEST practice to mitigate risks before importing?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Import directly to production and fix issues if they occur"
+        },
+        {
+          "id": "B",
+          "text": "Test the import in a non-production environment and validate using $SYSTEM.OBJ.Load() with compile flags"
+        },
+        {
+          "id": "C",
+          "text": "Disable all indices before importing and rebuild them afterward"
+        },
+        {
+          "id": "D",
+          "text": "Use the /force flag to override any validation errors"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.3",
+      "explanation": "Best practice is to test schema changes in non-production environments before deploying to production. Use $SYSTEM.OBJ.Load() to import and compile class definitions - this is the correct method for ObjectScript classes. Note: $SYSTEM.SQL.Schema.ImportDDL() is for SQL DDL statements, not ObjectScript class definitions. Importing directly to production without testing is risky, and using /force flags can cause data corruption or loss. Disabling indices is not a general solution for schema evolution challenges. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_storage_evolution",
+      "revised": true
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "When using $SYSTEM.OBJ.LoadDir() to import classes from a directory, which compilation flags are recommended for controlled deployments with detailed logging?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "/compile - Compile all loaded files"
+        },
+        {
+          "id": "B",
+          "text": "/displaylog - Display detailed compilation logs"
+        },
+        {
+          "id": "C",
+          "text": "/displayerror - Display compilation errors"
+        },
+        {
+          "id": "D",
+          "text": "/force - Override all validation checks"
+        },
+        {
+          "id": "E",
+          "text": "/nodelete - Prevent deletion of existing classes"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T2.3",
+      "explanation": "For controlled deployments, use /compile to compile imported files, /displaylog to show detailed results, and /displayerror to display errors. These flags provide visibility into the import process and allow deployment scripts to detect and halt on errors. The /force flag is dangerous as it bypasses validation, and /nodelete is not a standard flag for LoadDir(). The method returns status objects indicating success or failure. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes_compile"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "A deployment script imports updated classes, but the import fails with compilation errors. The team needs to rollback to the previous working version. Which mitigation strategy would have BEST prepared for this scenario?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Maintaining separate development and production environments only"
+        },
+        {
+          "id": "B",
+          "text": "Exporting classes to XML backup files before the import using $SYSTEM.OBJ.Export()"
+        },
+        {
+          "id": "C",
+          "text": "Using the GetModifiedDocNames API to detect changes"
+        },
+        {
+          "id": "D",
+          "text": "Implementing automated testing after imports"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.3",
+      "explanation": "Exporting classes to XML backup files using $SYSTEM.OBJ.Export() before major imports provides a recovery path if imports fail. While separate environments, change detection, and automated testing are all important practices, having a backup export is the most direct rollback mechanism. The XML export can be quickly re-imported to restore the previous state. Best practice includes maintaining version control tags/branches corresponding to deployed versions as well. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes_compile"
+    }
+  ]
+}

@@ -1,0 +1,957 @@
+{
+  "id": "ability-t3-3-q1",
+  "topic": "ability_t3_3",
+  "topicLabel": "T3.3 · Uses SQL with InterSystems IRIS",
+  "title": "T3.3: Uses SQL with InterSystems IRIS",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T3.3"
+  ],
+  "description": "Test your knowledge of SQL usage in InterSystems IRIS, including embedded vs dynamic SQL, IRIS-specific features, query optimization, and security",
+  "version": "1.0",
+  "publishedDate": "2025-12-29",
+  "importedFrom": "quiz_temp/T3_3.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A developer needs to execute a SQL query where the exact query structure depends on user-selected filter criteria that are only known at runtime. Which SQL execution approach is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Embedded SQL, because it provides better performance"
+        },
+        {
+          "id": "B",
+          "text": "Dynamic SQL, because queries can be constructed at runtime"
+        },
+        {
+          "id": "C",
+          "text": "Embedded SQL with conditional preprocessor macros"
+        },
+        {
+          "id": "D",
+          "text": "Dynamic SQL, because it does not enforce privilege checking"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Dynamic SQL is the appropriate choice when queries need to be constructed at runtime based on dynamic conditions. Dynamic SQL uses the %SQL.Statement class and allows applications to build specialized queries based on user input or runtime conditions. Embedded SQL requires queries to be known at compile time. Note that Dynamic SQL DOES enforce privilege checking, unlike Embedded SQL. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which of the following statements about Embedded SQL are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It is compiled at class compile time with in-line code generation"
+        },
+        {
+          "id": "B",
+          "text": "It enforces SQL privilege checking for all queries"
+        },
+        {
+          "id": "C",
+          "text": "It validates syntax and checks for table existence at compile time"
+        },
+        {
+          "id": "D",
+          "text": "It uses the &sql() syntax in ObjectScript code"
+        },
+        {
+          "id": "E",
+          "text": "It requires the %SQL.Statement class for execution"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T3.3",
+      "explanation": "Embedded SQL uses the &sql() syntax and is compiled at class compilation time, generating in-line ObjectScript code. The compiler validates syntax and checks for table existence at compile time. However, Embedded SQL does NOT perform privilege checking, assuming applications will handle authorization. It does not require %SQL.Statement - that class is used for Dynamic SQL. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "When using Dynamic SQL with parameterized queries, which syntax is valid for specifying input parameters?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the ? character for positional parameters"
+        },
+        {
+          "id": "B",
+          "text": "Only :varname for named host variables"
+        },
+        {
+          "id": "C",
+          "text": "Either ? for positional parameters or :varname for named host variables"
+        },
+        {
+          "id": "D",
+          "text": "The %param() function for all parameter types"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.3",
+      "explanation": "Dynamic SQL accepts literal input values through two mechanisms: input parameters specified with the ? character for positional parameters, and input host variables specified as :varname for named parameters. Both approaches are valid and can be used in Dynamic SQL queries. Embedded SQL uses only :var host variables. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "A developer writes the following SQL query:\n\nSELECT Name, Company->Name AS CompanyName FROM Sample.Employee\n\nWhat does this query demonstrate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "An explicit JOIN clause between Employee and Company tables"
+        },
+        {
+          "id": "B",
+          "text": "Arrow syntax for navigating object references without explicit JOINs"
+        },
+        {
+          "id": "C",
+          "text": "A stored procedure call using the -> operator"
+        },
+        {
+          "id": "D",
+          "text": "An invalid syntax that will generate a compile error"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "This query demonstrates IRIS arrow syntax (->), which enables implicit joins by navigating object references directly in SQL queries. The arrow syntax retrieves the employee name and the company name by following the Company relationship without writing an explicit JOIN clause. This is a powerful IRIS-specific SQL extension that leverages the object-oriented architecture. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_implicitjoins"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "When using arrow syntax in SQL queries, which privileges are required?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SELECT privilege on the source table"
+        },
+        {
+          "id": "B",
+          "text": "SELECT privilege on the ID field of referenced tables"
+        },
+        {
+          "id": "C",
+          "text": "UPDATE privilege on the referenced tables"
+        },
+        {
+          "id": "D",
+          "text": "SELECT privilege on the referenced columns in target tables"
+        },
+        {
+          "id": "E",
+          "text": "%ALTER_TABLE privilege on all tables"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T3.3",
+      "explanation": "When using arrow syntax, you must have SELECT privileges on referenced data in both tables, including column-level privileges on the ID field of referenced tables, plus SELECT privilege on the specific columns being accessed. UPDATE and %ALTER_TABLE privileges are not required for reading data via arrow syntax. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "What is the primary advantage of using the TOP clause with ORDER BY in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It limits the number of rows returned to save storage space"
+        },
+        {
+          "id": "B",
+          "text": "It changes optimization from 'fastest time to return all data' to 'fastest time to return first row'"
+        },
+        {
+          "id": "C",
+          "text": "It automatically creates indexes on the ORDER BY columns"
+        },
+        {
+          "id": "D",
+          "text": "It enforces security by preventing users from accessing too much data"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "When TOP is combined with ORDER BY, it changes the query optimization strategy from 'fastest time to return all data' to 'fastest time to return first row'. This makes TOP ideal for paginated displays and applications that need to show results quickly without retrieving the entire dataset. This optimization benefit is a key feature of the IRIS TOP clause. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_top"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "A developer wants to use TOP with a dynamic limit value that can change at runtime. Which of the following is valid syntax for Dynamic SQL?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SELECT TOP 100 Name FROM Sample.Person (only literal values allowed)"
+        },
+        {
+          "id": "B",
+          "text": "SELECT TOP ? Name FROM Sample.Person (using input parameter)"
+        },
+        {
+          "id": "C",
+          "text": "SELECT TOP :limit Name FROM Sample.Person (using host variable)"
+        },
+        {
+          "id": "D",
+          "text": "Both input parameters (?) and host variables (:var) are valid for TOP"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T3.3",
+      "explanation": "TOP accepts integer literals, Dynamic SQL input parameters (?), or Embedded SQL host variables (:var). This flexibility allows applications to specify row limits dynamically. Notably, TOP values without parentheses are cached as parameter variables, allowing query reuse with different limits without re-preparation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_top"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "In the Management Portal SQL interface, what is the purpose of the 'Show Plan' feature?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To execute the query and display performance statistics"
+        },
+        {
+          "id": "B",
+          "text": "To display the query execution strategy without actually running the query"
+        },
+        {
+          "id": "C",
+          "text": "To recompile all cached queries for the referenced tables"
+        },
+        {
+          "id": "D",
+          "text": "To gather table statistics automatically before query execution"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "The Show Plan feature displays the query execution strategy without actually running the query, making it invaluable for performance analysis. It validates syntax, checks entity existence, and shows the planned execution strategy including table access methods, index usage, and join strategies. This allows optimization without consuming resources on actual execution. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql#GSQL_embedded_showplan"
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "What information can you obtain from analyzing a query plan in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Table access methods (full table scan vs. index scan)"
+        },
+        {
+          "id": "B",
+          "text": "Which indexes are being used by the query"
+        },
+        {
+          "id": "C",
+          "text": "Join strategies (nested loop, hash join, merge join)"
+        },
+        {
+          "id": "D",
+          "text": "Selectivity values for predicates"
+        },
+        {
+          "id": "E",
+          "text": "The actual execution time of the query"
+        },
+        {
+          "id": "F",
+          "text": "Estimated row counts at each step"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "domain": "T3.3",
+      "explanation": "Query plans reveal table access methods, index selection decisions, join strategies, selectivity values for predicates, and estimated row counts. However, Show Plan does not execute the query, so it does not provide actual execution time - that requires running the query. The plan shows the optimizer's strategy and estimates based on table statistics. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql#GSQL_embedded_showplan"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "When interpreting query plans, what does a low selectivity value indicate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The predicate is not selective and will return most rows"
+        },
+        {
+          "id": "B",
+          "text": "The predicate is highly selective and will filter out most rows"
+        },
+        {
+          "id": "C",
+          "text": "The query will use a full table scan"
+        },
+        {
+          "id": "D",
+          "text": "The index is not being used effectively"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Selectivity values indicate the percentage of rows expected to satisfy each condition. Lower selectivity values indicate more selective conditions that filter more data, which is generally better for query performance. The optimizer uses these values (gathered by TUNE TABLE) to determine which indexes to use and which table to access first in joins. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql#GSQL_embedded_showplan"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "For Dynamic SQL, how can you prepare a query and view its execution plan without actually executing it?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the EXPLAIN command before the query"
+        },
+        {
+          "id": "B",
+          "text": "Set executemode=deferred, issue the query, then use SHOW STATEMENT"
+        },
+        {
+          "id": "C",
+          "text": "Use the %PrepareOnly() method on %SQL.Statement"
+        },
+        {
+          "id": "D",
+          "text": "Add the NOEXEC keyword to the SQL query"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "For Dynamic SQL, you can set executemode=deferred, issue the query to prepare it, then use SHOW STATEMENT to display the prepared statement and execution plan without consuming resources on actual execution. This is the standard approach in the SQL Shell and Management Portal for examining query plans without running queries. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_shell#GSQL_shell_metadata"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "What does the SHOW STATEMENT command display in the SQL Shell?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the SQL query text that was executed"
+        },
+        {
+          "id": "B",
+          "text": "Information about prepared SQL statements, including execution metadata and query plan"
+        },
+        {
+          "id": "C",
+          "text": "A list of all statements executed in the current session"
+        },
+        {
+          "id": "D",
+          "text": "The table statistics for all tables referenced in the query"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "SHOW STATEMENT displays information about prepared SQL statements, including the statement text, preparation status, execution metadata, and the query plan. This feature is valuable for identifying performance bottlenecks and understanding which queries consume the most resources without re-executing them. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_shell#GSQL_shell_showstatement"
+    },
+    {
+      "id": 13,
+      "type": "MR",
+      "question": "SQL Statement Index statistics can help identify which of the following?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Frequently-executed queries that might benefit from optimization"
+        },
+        {
+          "id": "B",
+          "text": "Which indexes are being utilized during query execution"
+        },
+        {
+          "id": "C",
+          "text": "Rarely-used queries that might be candidates for removal"
+        },
+        {
+          "id": "D",
+          "text": "Unused indexes that waste storage and maintenance overhead"
+        },
+        {
+          "id": "E",
+          "text": "Missing indexes that could improve query performance"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "domain": "T3.3",
+      "explanation": "Statement Index statistics track execution frequency, total and average execution time, row counts, and index usage. This comprehensive information helps identify frequently-executed queries needing optimization, rarely-used queries for removal, which indexes are actually being used, unused indexes wasting resources, and opportunities for new indexes to improve performance. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_shell#GSQL_shell_showstatement"
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "What is the primary purpose of the TUNE TABLE command?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To rebuild indexes and optimize storage allocation"
+        },
+        {
+          "id": "B",
+          "text": "To gather statistics on map size, extent size, and field selectivity for the query optimizer"
+        },
+        {
+          "id": "C",
+          "text": "To compress table data and reclaim unused space"
+        },
+        {
+          "id": "D",
+          "text": "To create new indexes automatically based on query patterns"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "TUNE TABLE gathers critical statistics based on current table data, calculating map size, extent size, and selectivity for each field. These statistics enable the query optimizer to estimate costs and choose optimal execution plans. Unlike traditional databases, IRIS does not require periodic table compression, and TUNE TABLE does not create indexes automatically. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_tunetable"
+    },
+    {
+      "id": 15,
+      "type": "MR",
+      "question": "When should you run TUNE TABLE in a production environment?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "After significant data loads that change data distribution"
+        },
+        {
+          "id": "B",
+          "text": "Every night as part of routine maintenance"
+        },
+        {
+          "id": "C",
+          "text": "When query performance degrades unexpectedly"
+        },
+        {
+          "id": "D",
+          "text": "After schema changes that affect data distribution"
+        },
+        {
+          "id": "E",
+          "text": "Before every query execution for optimal performance"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T3.3",
+      "explanation": "TUNE TABLE should be run after significant data loads, when query performance degrades unexpectedly, and after schema changes affecting data distribution. It does not need to be run routinely every night (only when data distribution changes meaningfully) and should definitely not be run before every query - that would be extremely inefficient. TUNE TABLE is a periodic maintenance task, not a per-query operation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "What happens to cached queries when TUNE TABLE executes and updates table statistics?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "All cached queries are always purged and must be re-prepared"
+        },
+        {
+          "id": "B",
+          "text": "Cached queries are automatically recompiled only if statistics values actually change"
+        },
+        {
+          "id": "C",
+          "text": "Cached queries continue using old statistics until manually cleared"
+        },
+        {
+          "id": "D",
+          "text": "TUNE TABLE does not affect cached queries"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "If statistics change, TUNE TABLE automatically recompiles all cached queries that reference the table, ensuring they use updated values. However, if running TUNE TABLE does not change any values (for example, when data distribution is unchanged), cached queries are not purged and classes are not flagged for recompilation, avoiding unnecessary overhead. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_tunetable"
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "What does the %SAMPLE_PERCENT option in TUNE TABLE control?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The percentage of queries that will use the gathered statistics"
+        },
+        {
+          "id": "B",
+          "text": "The percentage of table rows to sample when gathering statistics"
+        },
+        {
+          "id": "C",
+          "text": "The confidence level for statistical calculations"
+        },
+        {
+          "id": "D",
+          "text": "The percentage of indexes to analyze during the tuning process"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "The %SAMPLE_PERCENT option specifies what percentage of table rows to sample during statistics gathering. This is useful when outlier values are not evenly distributed. For tables with fewer than 1000 rows, TUNE TABLE always samples the entire extent regardless of this setting. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_tunetable"
+    },
+    {
+      "id": 18,
+      "type": "MR",
+      "question": "Which privileges are required to execute TUNE TABLE on a table?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%ALTER_TABLE administrative privilege"
+        },
+        {
+          "id": "B",
+          "text": "%ALTER privilege on the specific table"
+        },
+        {
+          "id": "C",
+          "text": "SELECT privilege on all columns"
+        },
+        {
+          "id": "D",
+          "text": "Owner privileges are sufficient without needing %ALTER_TABLE"
+        },
+        {
+          "id": "E",
+          "text": "UPDATE privilege on the table"
+        }
+      ],
+      "answer": [
+        "A",
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "TUNE TABLE requires both %ALTER_TABLE administrative privilege and %ALTER privilege on the specific table. Table owners automatically have %ALTER privilege on their tables. SELECT and UPDATE privileges are not sufficient for running TUNE TABLE, as it modifies table metadata rather than data. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_tunetable"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "Which SQL execution paths enforce SQL privilege checking?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Embedded SQL, Dynamic SQL, and ODBC connections"
+        },
+        {
+          "id": "B",
+          "text": "ODBC connections, JDBC connections, Dynamic SQL, and SQL Shell"
+        },
+        {
+          "id": "C",
+          "text": "All SQL execution paths enforce privilege checking"
+        },
+        {
+          "id": "D",
+          "text": "Only external connections (ODBC and JDBC) enforce privilege checking"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "SQL privilege checking is enforced for ODBC connections, JDBC connections, Dynamic SQL execution, and SQL Shell operations. However, Embedded SQL statements do not perform privilege checking under the assumption that applications using Embedded SQL implement their own authorization logic. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "Why does Embedded SQL not enforce privilege checking?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It is a security vulnerability that should not be used in production"
+        },
+        {
+          "id": "B",
+          "text": "It assumes applications using Embedded SQL implement their own authorization logic"
+        },
+        {
+          "id": "C",
+          "text": "Embedded SQL runs with system-level privileges that bypass security"
+        },
+        {
+          "id": "D",
+          "text": "Privilege checking is too slow for compiled code"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Embedded SQL does not perform privilege checking under the assumption that applications using Embedded SQL implement their own authorization logic before executing queries. This is by design, not a security flaw. Applications are responsible for implementing appropriate authorization when using Embedded SQL. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 21,
+      "type": "MR",
+      "question": "Which of the following are valid SQL table-level privileges in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SELECT"
+        },
+        {
+          "id": "B",
+          "text": "INSERT"
+        },
+        {
+          "id": "C",
+          "text": "UPDATE"
+        },
+        {
+          "id": "D",
+          "text": "DELETE"
+        },
+        {
+          "id": "E",
+          "text": "EXECUTE"
+        },
+        {
+          "id": "F",
+          "text": "REFERENCES"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "domain": "T3.3",
+      "explanation": "Table-level privileges in IRIS include SELECT, INSERT, UPDATE, DELETE, ALTER, and REFERENCES. These control operations on entire tables or views. EXECUTE is not a table-level privilege in IRIS SQL - it's used for stored procedures in some other database systems. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "What is the advantage of column-level privileges over table-level privileges?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Better query performance through reduced privilege checking overhead"
+        },
+        {
+          "id": "B",
+          "text": "Fine-grained control allowing SELECT privilege on specific columns rather than entire tables"
+        },
+        {
+          "id": "C",
+          "text": "Automatic encryption of sensitive column data"
+        },
+        {
+          "id": "D",
+          "text": "Simplified administration by grouping related columns"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Column-level privileges provide finer control, allowing SELECT privilege on specific columns rather than the entire table. This is particularly important for protecting sensitive data while allowing access to non-sensitive columns in the same table. Column-level privileges don't provide encryption or performance benefits - they provide security granularity. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "How can an application programmatically verify that a user has the necessary privileges before executing a SQL operation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use the SHOW PRIVILEGES command"
+        },
+        {
+          "id": "B",
+          "text": "Use the %CHECKPRIV command"
+        },
+        {
+          "id": "C",
+          "text": "Execute the query with a TRY/CATCH block and handle privilege errors"
+        },
+        {
+          "id": "D",
+          "text": "Check the %SQL_Privileges property of the user object"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "The %CHECKPRIV command allows programmatic verification of privileges before executing operations. This enables applications to provide appropriate feedback when users lack necessary permissions, rather than attempting the operation and handling errors after the fact. This is a best practice for user-friendly security implementation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "What is the relationship between SQL privileges and system-level privileges in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "They are completely independent with no relationship"
+        },
+        {
+          "id": "B",
+          "text": "SQL privileges implicitly grant related system privileges, but system privileges do not grant SQL privileges"
+        },
+        {
+          "id": "C",
+          "text": "System privileges implicitly grant related SQL privileges, but SQL privileges do not grant system privileges"
+        },
+        {
+          "id": "D",
+          "text": "SQL and system privileges are identical and fully interchangeable"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Holding an SQL privilege implicitly grants related system privileges required to perform the SQL action, but the reverse is not true: system-level privileges do not imply table-level privileges. This separation allows precise control over data access patterns while ensuring users have the necessary system privileges to execute their SQL operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 25,
+      "type": "MC",
+      "question": "A production application uses the following Embedded SQL query:\n\n&sql(SELECT Name, Salary INTO :name, :salary FROM Employee WHERE ID = :empId)\n\nWhich statement about privilege checking is TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The query will verify the user has SELECT privilege on Employee table"
+        },
+        {
+          "id": "B",
+          "text": "The query will verify column-level SELECT privilege on Name and Salary"
+        },
+        {
+          "id": "C",
+          "text": "No privilege checking is performed; the application must handle authorization"
+        },
+        {
+          "id": "D",
+          "text": "Privilege checking occurs only if the query is executed via %SQL.Statement"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.3",
+      "explanation": "Embedded SQL statements (using &sql() syntax) do not perform privilege checking. The application is responsible for implementing authorization logic before executing the query. This is true regardless of which columns are accessed. If this same query were executed via Dynamic SQL (%SQL.Statement), privilege checking would be enforced. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql"
+    },
+    {
+      "id": 26,
+      "type": "MR",
+      "question": "An administrator wants to grant SELECT privilege on the Patient table to a role called 'Billing', and allow that role to grant the same privilege to others. Which statements are correct?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use: GRANT SELECT ON Patient TO Billing"
+        },
+        {
+          "id": "B",
+          "text": "Use: GRANT SELECT ON Patient TO Billing WITH GRANT OPTION"
+        },
+        {
+          "id": "C",
+          "text": "The WITH GRANT OPTION allows Billing role members to grant SELECT to others"
+        },
+        {
+          "id": "D",
+          "text": "Roles cannot have the WITH GRANT OPTION, only individual users"
+        },
+        {
+          "id": "E",
+          "text": "The GRANT command requires %ALTER_TABLE privilege"
+        }
+      ],
+      "answer": [
+        "B",
+        "C"
+      ],
+      "domain": "T3.3",
+      "explanation": "To grant a privilege with the ability to re-grant it, use WITH GRANT OPTION: 'GRANT SELECT ON Patient TO Billing WITH GRANT OPTION'. This allows recipients (including roles) to grant those privileges to others. Without WITH GRANT OPTION, the first statement would grant SELECT but not the ability to re-grant. Roles can receive WITH GRANT OPTION. The GRANT command requires appropriate privileges but not necessarily %ALTER_TABLE for all operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_grant"
+    },
+    {
+      "id": 27,
+      "type": "MC",
+      "question": "In the context of the cached query mechanism, what does it mean that 'both Embedded SQL and Dynamic SQL support cached queries for improved re-execution performance'?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Query results are cached in memory to avoid re-executing the query"
+        },
+        {
+          "id": "B",
+          "text": "Prepared statements are cached and reused, avoiding re-preparation overhead"
+        },
+        {
+          "id": "C",
+          "text": "Table data is cached to improve disk I/O performance"
+        },
+        {
+          "id": "D",
+          "text": "Index structures are cached in global buffers"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "The cached query mechanism stores prepared statements for reuse, avoiding the overhead of re-preparing the same query. While Dynamic SQL's initial execution is slightly less efficient due to lack of in-line code generation, subsequent executions of the same query benefit from caching, making performance comparable to Embedded SQL for repeated queries. This caches the query plan, not the results. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql"
+    },
+    {
+      "id": 28,
+      "type": "MC",
+      "question": "A developer notices that a complex query with multiple table joins is performing poorly. They run SHOW PLAN and see 'Full table scan' for the largest table. What is the most likely cause?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The query syntax is incorrect and needs to be rewritten"
+        },
+        {
+          "id": "B",
+          "text": "No suitable index exists, or the optimizer determined scanning is more efficient than index lookups"
+        },
+        {
+          "id": "C",
+          "text": "The table is corrupted and needs to be rebuilt"
+        },
+        {
+          "id": "D",
+          "text": "TUNE TABLE has never been run on the table"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Full table scans appear when no suitable index exists for the query conditions, or when the optimizer determines scanning is more efficient than index lookups for high-selectivity conditions (where most rows match). Running TUNE TABLE to update statistics might help the optimizer make a better decision, but the fundamental issue is either missing indexes or conditions that aren't selective enough to benefit from indexes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql#GSQL_embedded_showplan"
+    },
+    {
+      "id": 29,
+      "type": "MR",
+      "question": "Which of the following are IRIS-specific SQL features that extend beyond SQL-92 standards?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Arrow syntax (->) for implicit joins"
+        },
+        {
+          "id": "B",
+          "text": "TOP clause with query optimization"
+        },
+        {
+          "id": "C",
+          "text": "Bitmap indexing for data warehousing"
+        },
+        {
+          "id": "D",
+          "text": "INNER JOIN and LEFT OUTER JOIN"
+        },
+        {
+          "id": "E",
+          "text": "SELECT, INSERT, UPDATE, DELETE statements"
+        },
+        {
+          "id": "F",
+          "text": "%CHECKPRIV for privilege verification"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "F"
+      ],
+      "domain": "T3.3",
+      "explanation": "IRIS-specific SQL extensions include arrow syntax for implicit joins, TOP clause with optimization features, bitmap indexing technology, and %CHECKPRIV for programmatic privilege verification. INNER JOIN, LEFT OUTER JOIN, and basic DML statements (SELECT, INSERT, UPDATE, DELETE) are standard SQL-92 features available in most database systems. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 30,
+      "type": "MC",
+      "question": "A developer needs to execute the following query and wants to validate the syntax and verify table existence without actually running it:\n\nSELECT TOP 100 p.Name, c.Name AS CompanyName \nFROM Sample.Person p \nJOIN Sample.Company c ON p.Company = c.ID\nORDER BY p.Name\n\nWhich approach should they use?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Execute the query with LIMIT 0 to return no results"
+        },
+        {
+          "id": "B",
+          "text": "Use Show Plan in the Management Portal SQL interface"
+        },
+        {
+          "id": "C",
+          "text": "Run EXPLAIN before the query in SQL Shell"
+        },
+        {
+          "id": "D",
+          "text": "Set the query timeout to 0 milliseconds"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.3",
+      "explanation": "Show Plan in the Management Portal SQL interface validates syntax and checks for entity existence without executing the query. It displays the planned execution strategy, allowing developers to verify the query is correct and understand how it will be executed. This is the standard approach for validating queries without consuming execution resources. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_esql#GSQL_embedded_showplan"
+    }
+  ]
+}

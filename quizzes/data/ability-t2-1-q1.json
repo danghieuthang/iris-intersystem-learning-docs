@@ -1,0 +1,944 @@
+{
+  "id": "ability-t2-1-q1",
+  "topic": "ability_t2_1",
+  "topicLabel": "T2.1 · Uses Recommended Development Tools and Workflows",
+  "title": "T2.1: Uses Recommended Development Tools and Workflows",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T2.1"
+  ],
+  "description": "Test your knowledge of InterSystems IRIS development tools, Visual Studio Code integration, debugging, Docker Compose, and background execution strategies",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T2_1.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which of the following should be considered when deciding whether to use client-side or server-side editing for InterSystems IRIS code development in Visual Studio (VS) Code?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The use of the InterSystems Server Manager extension to authenticate connections to the IRIS server"
+        },
+        {
+          "id": "B",
+          "text": "Whether developers need to work with source files stored locally on their workstations or directly on the IRIS server"
+        },
+        {
+          "id": "C",
+          "text": "The programming language being used (ObjectScript vs. Python)"
+        },
+        {
+          "id": "D",
+          "text": "The size of the IRIS database"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "Client-side editing involves working with source files stored locally on the developer's workstation and pushing them to the IRIS server, while server-side editing works directly with code stored on the IRIS server. This choice impacts source control integration, collaboration workflows, and development environment setup. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_INTRO"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which VS Code extensions are essential for InterSystems IRIS development?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "InterSystems ObjectScript"
+        },
+        {
+          "id": "B",
+          "text": "InterSystems Server Manager"
+        },
+        {
+          "id": "C",
+          "text": "Docker"
+        },
+        {
+          "id": "D",
+          "text": "Python"
+        },
+        {
+          "id": "E",
+          "text": "JavaScript Debugger"
+        }
+      ],
+      "answer": [
+        "A",
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The InterSystems ObjectScript extension provides language support, debugging, and code editing features for ObjectScript. The InterSystems Server Manager extension manages connections to IRIS servers and authentication. While Docker and Python extensions may be useful for containerized or Python development, they are not essential for basic IRIS ObjectScript development. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_INTRO"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "You are configuring a VS Code workspace for server-side editing. Which setting in the objectscript.conn configuration enables direct editing of code on the IRIS server?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "\"server\": true"
+        },
+        {
+          "id": "B",
+          "text": "\"active\": true"
+        },
+        {
+          "id": "C",
+          "text": "\"serverSideEditing\": true"
+        },
+        {
+          "id": "D",
+          "text": "\"ns\": \"USER\""
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The 'active' setting in objectscript.conn determines which server connection is currently active. For server-side editing, you configure the connection with host, port, username, password, and namespace, then set 'active': true to enable editing code directly on the IRIS server without local files. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "A developer wants to configure VS Code to connect to an IRIS instance running on a remote server at 192.168.1.100 on port 52773 in the MYAPP namespace. Which configuration is correct?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "{\"host\": \"192.168.1.100\", \"port\": 52773, \"username\": \"_SYSTEM\", \"password\": \"SYS\", \"ns\": \"MYAPP\", \"active\": true}"
+        },
+        {
+          "id": "B",
+          "text": "{\"server\": \"192.168.1.100:52773\", \"namespace\": \"MYAPP\", \"active\": true}"
+        },
+        {
+          "id": "C",
+          "text": "{\"host\": \"http://192.168.1.100:52773\", \"ns\": \"MYAPP\"}"
+        },
+        {
+          "id": "D",
+          "text": "{\"endpoint\": \"192.168.1.100\", \"port\": \"52773\", \"database\": \"MYAPP\"}"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "The correct configuration requires host (IP or hostname), port (web server port, typically 52773), username, password, ns (namespace), and active (true to make this connection active). The host should be just the IP/hostname without protocol or port. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "When using the VS Code debugger with InterSystems IRIS, what is the purpose of setting a breakpoint in your ObjectScript code?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To permanently stop execution at that line until the code is recompiled"
+        },
+        {
+          "id": "B",
+          "text": "To pause execution at that line, allowing you to inspect variable values and step through code"
+        },
+        {
+          "id": "C",
+          "text": "To log a message to the console when that line is reached"
+        },
+        {
+          "id": "D",
+          "text": "To mark the line for code coverage analysis"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "Breakpoints pause code execution at a specific line, allowing developers to inspect the current state of variables, evaluate expressions, and step through code line-by-line. This is essential for debugging complex logic and understanding program flow. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_DEBUG"
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "Which debugging features are available when using the VS Code debugger with InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Setting breakpoints on ObjectScript code lines"
+        },
+        {
+          "id": "B",
+          "text": "Viewing and modifying local variable values during execution"
+        },
+        {
+          "id": "C",
+          "text": "Stepping over, into, and out of method calls"
+        },
+        {
+          "id": "D",
+          "text": "Time-travel debugging to rewind execution"
+        },
+        {
+          "id": "E",
+          "text": "Watch expressions to monitor specific variables or expressions"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.1",
+      "explanation": "VS Code debugging with IRIS supports breakpoints, variable inspection and modification, step controls (over/into/out), and watch expressions. Time-travel debugging (rewinding execution) is not currently supported. These features enable effective troubleshooting of ObjectScript applications. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_DEBUG"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What is the primary purpose of the launch.json file in a VS Code workspace for IRIS development?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To define the IRIS server connection parameters"
+        },
+        {
+          "id": "B",
+          "text": "To configure debugging launch configurations and attach settings"
+        },
+        {
+          "id": "C",
+          "text": "To specify which files should be synchronized with the IRIS server"
+        },
+        {
+          "id": "D",
+          "text": "To list all ObjectScript classes in the project"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The launch.json file in .vscode/ directory defines debugging configurations, including how to launch or attach the debugger to IRIS processes. It specifies the program to debug, request type (launch/attach), and other debugging parameters. Server connections are configured separately in settings.json. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_DEBUG"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "A Docker Compose file for IRIS development includes the following service definition:\n\n```yaml\nservices:\n  iris:\n    image: intersystemsdc/iris-community:latest\n    ports:\n      - \"52773:52773\"\n      - \"1972:1972\"\n```\n\nWhat do the port mappings \"52773:52773\" and \"1972:1972\" represent?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The first number is the container port, the second is the host port"
+        },
+        {
+          "id": "B",
+          "text": "The first number is the host port, the second is the container port"
+        },
+        {
+          "id": "C",
+          "text": "Both numbers must always be identical for IRIS to function"
+        },
+        {
+          "id": "D",
+          "text": "The first is the HTTP port, the second is the HTTPS port"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "In Docker Compose port mappings, the format is 'host:container'. Port 52773 is the IRIS web server/management portal (HTTP), and 1972 is the superserver port for client connections. The host and container ports don't need to match, but using the same values simplifies configuration. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which Docker Compose file components are commonly used for InterSystems IRIS development environments?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "volumes: to persist database files and share source code"
+        },
+        {
+          "id": "B",
+          "text": "environment: to set IRIS configuration variables like passwords"
+        },
+        {
+          "id": "C",
+          "text": "networks: to enable communication between IRIS and other services"
+        },
+        {
+          "id": "D",
+          "text": "build: to compile IRIS from source code"
+        },
+        {
+          "id": "E",
+          "text": "command: to customize IRIS startup parameters"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.1",
+      "explanation": "Docker Compose for IRIS development typically uses volumes (for persistence and code sharing), environment variables (for configuration like ISC_DATA_DIRECTORY and passwords), networks (for multi-container communication), and command overrides (for startup customization). IRIS is not compiled from source; pre-built images are used. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "In a Docker Compose file for IRIS, you want to mount a local directory containing ObjectScript source code into the container. Which configuration accomplishes this?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "volumes:\n  - ./src:/home/irisowner/src"
+        },
+        {
+          "id": "B",
+          "text": "mount:\n  - type=bind,source=./src,target=/home/irisowner/src"
+        },
+        {
+          "id": "C",
+          "text": "copy:\n  - ./src:/home/irisowner/src"
+        },
+        {
+          "id": "D",
+          "text": "shared:\n  - ./src:/home/irisowner/src"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "The 'volumes' section in Docker Compose uses the format 'host_path:container_path' to mount local directories into containers. This enables sharing source code between your workstation and the IRIS container for development workflows. The 'mount' syntax shown is Docker CLI format, not Compose. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "You need to set the initial IRIS _SYSTEM account password in a Docker Compose file. Which environment variable should be used?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "IRIS_SYSTEM_PASSWORD"
+        },
+        {
+          "id": "B",
+          "text": "ISC_SYSTEM_PASSWORD"
+        },
+        {
+          "id": "C",
+          "text": "SYSTEM_PASSWORD"
+        },
+        {
+          "id": "D",
+          "text": "ISC_CPF_MERGE_FILE"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "ISC_SYSTEM_PASSWORD environment variable sets the _SYSTEM account password during IRIS container initialization. Other common variables include ISC_DATA_DIRECTORY for data location. ISC_CPF_MERGE_FILE is for configuration file merging, not password setting. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Which InterSystems tool provides a web-based interface for developing and managing InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Studio"
+        },
+        {
+          "id": "B",
+          "text": "Management Portal"
+        },
+        {
+          "id": "C",
+          "text": "Atelier"
+        },
+        {
+          "id": "D",
+          "text": "System Console"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The Management Portal is the primary web-based interface for IRIS administration and development. It provides access to system configuration, class editing, SQL query tools, monitoring, and more. Studio is a legacy Windows IDE (deprecated), Atelier was an Eclipse-based IDE (also deprecated), and VS Code is now the recommended development environment. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA"
+    },
+    {
+      "id": 13,
+      "type": "MR",
+      "question": "Which development tools and features are available in the InterSystems IRIS Management Portal?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SQL query execution and routine viewer"
+        },
+        {
+          "id": "B",
+          "text": "SQL query execution and schema browser"
+        },
+        {
+          "id": "C",
+          "text": "System configuration and monitoring"
+        },
+        {
+          "id": "D",
+          "text": "Server-side source control hooks"
+        },
+        {
+          "id": "E",
+          "text": "REST API testing interface"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T2.1",
+      "explanation": "The Management Portal includes SQL query tools, routine viewing capabilities, comprehensive system management, and configuration for server-side source control hooks. Note that the Portal does NOT include a full class editor for ObjectScript development - that functionality is provided by IDE tools like VS Code or the legacy Studio. REST API testing is typically done with external tools like Postman or curl. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA",
+      "revised": true
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "What is the primary advantage of using the Terminal in the Management Portal?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It provides faster performance than local terminal emulators"
+        },
+        {
+          "id": "B",
+          "text": "It allows executing ObjectScript commands and routines directly in the IRIS environment"
+        },
+        {
+          "id": "C",
+          "text": "It replaces the need for SSH access to the server"
+        },
+        {
+          "id": "D",
+          "text": "It automatically logs all commands for audit purposes"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The Management Portal Terminal provides direct access to the ObjectScript command line within the IRIS environment, allowing developers to execute commands, call routines, inspect globals, and perform interactive debugging. It's a web-based interface to the IRIS process, not a system shell. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "Which InterSystems IRIS utility class provides methods for generating comprehensive code documentation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Compiler.DocGen"
+        },
+        {
+          "id": "B",
+          "text": "%Studio.SourceControl.Documentation"
+        },
+        {
+          "id": "C",
+          "text": "%Library.Documentation"
+        },
+        {
+          "id": "D",
+          "text": "%SYSTEM.OBJ.Documentation"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "%Compiler.DocGen provides methods to generate HTML documentation from ObjectScript classes, including class descriptions, method signatures, parameters, and embedded documentation. This enables automated documentation generation as part of the development workflow. Reference: https://docs.intersystems.com/iris20253/csp/documatic/%25CSP.Documatic.cls?PAGE=CLASS&LIBRARY=%25SYS&CLASSNAME=%25Compiler.DocGen"
+    },
+    {
+      "id": 16,
+      "type": "MR",
+      "question": "Which documentation approaches are recommended for InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Inline comments in ObjectScript code using //"
+        },
+        {
+          "id": "B",
+          "text": "Class descriptions using the Description parameter"
+        },
+        {
+          "id": "C",
+          "text": "Method documentation using /// comments"
+        },
+        {
+          "id": "D",
+          "text": "Separate README files in the repository"
+        },
+        {
+          "id": "E",
+          "text": "Documenting parameter purposes and default values"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "domain": "T2.1",
+      "explanation": "Comprehensive documentation includes inline comments (//), class-level Description parameters, method documentation with /// comments (which appear in generated docs), README files for project overview, and parameter documentation. This multi-layered approach ensures code maintainability and knowledge transfer. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes"
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "What is the correct syntax for adding documentation comments to a class method that will be included in generated documentation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "// This method calculates the total\nClassMethod CalculateTotal() As %Numeric"
+        },
+        {
+          "id": "B",
+          "text": "/* This method calculates the total */\nClassMethod CalculateTotal() As %Numeric"
+        },
+        {
+          "id": "C",
+          "text": "/// This method calculates the total\nClassMethod CalculateTotal() As %Numeric"
+        },
+        {
+          "id": "D",
+          "text": "# This method calculates the total\nClassMethod CalculateTotal() As %Numeric"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T2.1",
+      "explanation": "Triple-slash comments (///) are special documentation comments that are extracted by documentation generation tools like %Compiler.DocGen. Regular comments (//) are not included in generated documentation. This syntax is similar to XML documentation comments in C# or JavaDoc in Java. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "Which ObjectScript command is used to execute code in a background process?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SPAWN"
+        },
+        {
+          "id": "B",
+          "text": "JOB"
+        },
+        {
+          "id": "C",
+          "text": "FORK"
+        },
+        {
+          "id": "D",
+          "text": "BACKGROUND"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "The JOB command spawns a new background process that runs independently of the calling process. This is essential for long-running tasks, parallel processing, or operations that should not block the user interface. The syntax is: JOB routine^package(parameters). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "You need to run a long-running data import process in the background. Which code correctly implements this using the JOB command?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "JOB ImportData^DataLoader(filename)"
+        },
+        {
+          "id": "B",
+          "text": "SET job = ##class(DataLoader).ImportData(filename)\nDO job.Start()"
+        },
+        {
+          "id": "C",
+          "text": "DO &JOB ImportData^DataLoader(filename)"
+        },
+        {
+          "id": "D",
+          "text": "SPAWN ImportData^DataLoader(filename"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "The JOB command syntax is: JOB entrypoint^routine(parameters). This starts a new process that executes the specified routine or method independently. The job runs asynchronously, and control returns immediately to the calling code. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    },
+    {
+      "id": 20,
+      "type": "MR",
+      "question": "What considerations should be taken into account when using the JOB command for background execution?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The background job runs in a separate process with its own memory space"
+        },
+        {
+          "id": "B",
+          "text": "You must use globals or other persistent storage for inter-process communication"
+        },
+        {
+          "id": "C",
+          "text": "The background job automatically shares all local variables with the parent process"
+        },
+        {
+          "id": "D",
+          "text": "You can specify job parameters like namespace and process priority"
+        },
+        {
+          "id": "E",
+          "text": "Error handling in the background job should be implemented within the job itself"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T2.1",
+      "explanation": "Background jobs run in separate processes with isolated memory, so local variables are NOT shared. Communication requires globals, files, or other persistent mechanisms. Job parameters can control namespace, timeout, and other settings. Each job must implement its own error handling as exceptions don't propagate to the parent. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "Which special variable is used to check if a JOB command successfully started a background process?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "$JOB"
+        },
+        {
+          "id": "B",
+          "text": "$TEST"
+        },
+        {
+          "id": "C",
+          "text": "$SYSTEM"
+        },
+        {
+          "id": "D",
+          "text": "$ZJOB"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "After a JOB command, the $TEST special variable is set to 1 (true) if the job was successfully started, or 0 (false) if it failed. This allows proper error handling: JOB routine^package IF '$TEST WRITE \"Job failed to start\". Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "A background job needs to update a global to report its progress. Which code pattern correctly implements this?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "In the job: SET ^JobStatus($JOB) = \"Processing record \" _ recordNum"
+        },
+        {
+          "id": "B",
+          "text": "In the job: RETURN \"Processing record \" _ recordNum"
+        },
+        {
+          "id": "C",
+          "text": "In the job: WRITE \"Processing record \" _ recordNum (output automatically shared)"
+        },
+        {
+          "id": "D",
+          "text": "In the job: SET $JOB.Status = \"Processing record \" _ recordNum"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "Background jobs must use persistent storage like globals to communicate state back to the parent process or other processes. Setting a global (^JobStatus) with $JOB as the subscript is the correct approach - $JOB contains the current process ID. RETURN only returns to the local job context, WRITE output is not shared, and $JOB.Status is not a valid syntax. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob",
+      "revised": true
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "You want to run a background job in a specific namespace different from the current one. Which JOB command parameter accomplishes this?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "JOB routine^package(params):NAMESPACE=\"MYAPP\""
+        },
+        {
+          "id": "B",
+          "text": "JOB routine^package(params):NS=\"MYAPP\""
+        },
+        {
+          "id": "C",
+          "text": "JOB routine^package(params):(:NAMESPACE=\"MYAPP\")"
+        },
+        {
+          "id": "D",
+          "text": "JOB routine^package(params):(::NAMESPACE=\"MYAPP\")"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T2.1",
+      "explanation": "The JOB command uses the syntax: JOB entrypoint:(timeout:parameters) where parameters can include NAMESPACE=\"name\". The format is JOB routine:(:(NAMESPACE=\"MYAPP\")). The first colon is timeout, second colon precedes parameters. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob",
+      "revised": true
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "Scenario: Your team is developing a multi-container IRIS application with a web frontend, IRIS database, and Mosquitto MQTT broker for messaging. How should the Docker Compose file be structured?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use a single service with IRIS and install Mosquitto inside the IRIS container"
+        },
+        {
+          "id": "B",
+          "text": "Define separate services for each component and use networks to connect them"
+        },
+        {
+          "id": "C",
+          "text": "Use only IRIS since external message brokers are not recommended with IRIS"
+        },
+        {
+          "id": "D",
+          "text": "Create separate docker-compose.yml files for each service"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "Docker Compose best practices recommend defining separate services for each component (iris, web, mosquitto) in a single docker-compose.yml file. Use the 'networks' section to enable inter-container communication. This follows microservices principles and makes each component independently scalable and maintainable. Note: Redis is not recommended with IRIS as IRIS has its own built-in caching mechanisms. External services like MQTT brokers (Mosquitto), Kafka, or other messaging systems are appropriate integration targets. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK",
+      "revised": true
+    },
+    {
+      "id": 25,
+      "type": "MR",
+      "question": "Which VS Code workspace settings are specific to InterSystems IRIS development?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "objectscript.conn - defines server connections"
+        },
+        {
+          "id": "B",
+          "text": "objectscript.export - configures code export settings"
+        },
+        {
+          "id": "C",
+          "text": "objectscript.format - controls code formatting preferences"
+        },
+        {
+          "id": "D",
+          "text": "intersystems.language.diagnostics - enables real-time syntax checking"
+        },
+        {
+          "id": "E",
+          "text": "git.enableSmartCommit - enables Git integration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T2.1",
+      "explanation": "IRIS-specific settings include objectscript.conn (server connections), objectscript.export (export configuration), and objectscript.format (formatting). The diagnostics setting mentioned is not a standard IRIS extension setting, and git.enableSmartCommit is a general VS Code Git setting, not IRIS-specific. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 26,
+      "type": "MC",
+      "question": "When debugging a web service request in VS Code, which launch configuration type should be used to attach the debugger to an already-running IRIS process?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "{\"type\": \"objectscript\", \"request\": \"launch\"}"
+        },
+        {
+          "id": "B",
+          "text": "{\"type\": \"objectscript\", \"request\": \"attach\"}"
+        },
+        {
+          "id": "C",
+          "text": "{\"type\": \"iris\", \"request\": \"debug\"}"
+        },
+        {
+          "id": "D",
+          "text": "{\"type\": \"web\", \"request\": \"attach\"}"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "For debugging already-running processes like web service requests, use 'request': 'attach' in the launch.json configuration. This attaches the debugger to an active IRIS process when it hits a breakpoint. 'launch' is for starting a new debug session from the beginning. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO_DEBUG"
+    },
+    {
+      "id": 27,
+      "type": "MC",
+      "question": "You need to pass parameters to a background job for processing. Which syntax correctly passes multiple parameters?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "JOB ProcessData^DataHandler(param1, param2, param3)"
+        },
+        {
+          "id": "B",
+          "text": "JOB ProcessData^DataHandler:PARAMS(param1, param2, param3)"
+        },
+        {
+          "id": "C",
+          "text": "JOB ProcessData^DataHandler WITH param1, param2, param3"
+        },
+        {
+          "id": "D",
+          "text": "JOB ProcessData^DataHandler[param1, param2, param3]"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T2.1",
+      "explanation": "Parameters are passed to background jobs using standard parameter syntax in parentheses after the routine name: JOB routine(param1, param2, param3). These parameters are passed by value to the background process. The parameters must match the routine's parameter list. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    },
+    {
+      "id": 28,
+      "type": "MR",
+      "question": "Scenario: You're setting up a development environment for a team using VS Code with both client-side and server-side editing workflows. What configuration considerations are important?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Configure .vscode/settings.json with separate connection profiles for different servers"
+        },
+        {
+          "id": "B",
+          "text": "Use workspace-level settings to share team configurations while keeping credentials in user settings"
+        },
+        {
+          "id": "C",
+          "text": "Set up .gitignore to exclude sensitive connection information"
+        },
+        {
+          "id": "D",
+          "text": "All developers must use identical VS Code versions"
+        },
+        {
+          "id": "E",
+          "text": "Configure isfs:// URI scheme for server-side file browsing"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.1",
+      "explanation": "Best practices include: multiple connection profiles for different environments, workspace settings for shared configuration (with credentials in user settings), .gitignore for sensitive data, and isfs:// scheme for server-side browsing. Identical VS Code versions are not required, though using compatible extension versions is recommended. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 29,
+      "type": "MC",
+      "question": "What is the purpose of the ISC_CPF_MERGE_FILE environment variable in a Docker Compose configuration for IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To specify a custom iris.cpf file that will completely replace the default configuration"
+        },
+        {
+          "id": "B",
+          "text": "To specify a CPF file containing configuration changes that will be merged with the default configuration"
+        },
+        {
+          "id": "C",
+          "text": "To enable automatic backup of the iris.cpf file"
+        },
+        {
+          "id": "D",
+          "text": "To specify the location where IRIS should write configuration changes"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "ISC_CPF_MERGE_FILE specifies a CPF file containing configuration settings that will be merged into the default iris.cpf during container startup. This allows customizing specific settings (like memory, security, or namespaces) without maintaining a complete CPF file. The merge preserves default settings while applying your customizations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 30,
+      "type": "MC",
+      "question": "Which approach is recommended for monitoring the status and results of long-running background jobs started with the JOB command?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use WAIT command to pause execution until the job completes"
+        },
+        {
+          "id": "B",
+          "text": "Implement a polling mechanism that checks a global or file for job status updates"
+        },
+        {
+          "id": "C",
+          "text": "Use RETURN values from the JOB command"
+        },
+        {
+          "id": "D",
+          "text": "Background jobs automatically send completion messages to the parent process"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.1",
+      "explanation": "Since background jobs run independently in separate processes, monitoring requires implementing a polling mechanism that checks persistent storage (globals, files, or database tables) for status updates. The background job writes status/progress to these locations, and monitoring code periodically checks them. There's no automatic notification mechanism. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_cjob"
+    }
+  ]
+}

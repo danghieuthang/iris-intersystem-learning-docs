@@ -1,0 +1,1171 @@
+{
+  "id": "ability-t1-1-q1",
+  "topic": "ability_t1_1",
+  "topicLabel": "T1.1 · Determines Database Storage Strategy",
+  "title": "T1.1: Determines Database Storage Strategy",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T1.1"
+  ],
+  "description": "Test your knowledge of database storage strategies in InterSystems IRIS, including namespace design, architecture recommendations, global mappings, mirroring, scaling, upgrades, security, interoperability, and business intelligence integration",
+  "version": "1.2",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T1_1.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A development team needs to deploy a multi-tenant SaaS application where each customer's data must be logically isolated. Which database inclusion strategy is MOST appropriate for namespace design?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Create a single database and use a single namespace with tenant-discriminator fields in all tables"
+        },
+        {
+          "id": "B",
+          "text": "Create separate databases for each tenant and map each to a dedicated namespace"
+        },
+        {
+          "id": "C",
+          "text": "Use the %SYS namespace with role-based access control to separate tenant data"
+        },
+        {
+          "id": "D",
+          "text": "Create one database with multiple schemas and share it across all tenant namespaces"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Creating separate databases for each tenant mapped to dedicated namespaces provides the strongest logical and physical isolation. This approach enables independent backup/restore, security policies, and resource allocation per tenant. Single-database approaches with discriminators lack this level of isolation and can complicate operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which databases should you manually configure when creating a custom application namespace mapping? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "IRISSYS (for system classes)"
+        },
+        {
+          "id": "B",
+          "text": "IRISLIB (for utility classes)"
+        },
+        {
+          "id": "C",
+          "text": "A custom database for application code"
+        },
+        {
+          "id": "D",
+          "text": "A custom database for application data"
+        },
+        {
+          "id": "E",
+          "text": "IRISAUDIT (for audit trail"
+        }
+      ],
+      "answer": [
+        "C",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "When creating a custom namespace, IRISSYS and IRISLIB are automatically mapped by default and don't require manual configuration. You need to manually configure custom databases for application code and application data. IRISAUDIT is a system database used specifically for audit logging and is not typically mapped to application namespaces. The correct answers are the custom databases that require explicit configuration. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU",
+      "revised": true
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "An application uses shared lookup tables (countries, states, product categories) that must be accessible from multiple application namespaces. What is the BEST approach to include these in the namespace design?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Duplicate the lookup tables in each application namespace database"
+        },
+        {
+          "id": "B",
+          "text": "Create a shared reference database and map it as a routine database in all namespaces"
+        },
+        {
+          "id": "C",
+          "text": "Store lookup data in IRISSYS so it's automatically available everywhere"
+        },
+        {
+          "id": "D",
+          "text": "Use global mappings to map specific lookup globals from a shared database into each namespace"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Using global mappings to map specific lookup globals from a shared reference database into multiple namespaces is the most efficient approach. This provides a single source of truth, eliminates data duplication, and allows independent versioning while maintaining namespace isolation. Duplicating data creates maintenance issues, and storing in IRISSYS is inappropriate for application data. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "You need to configure a read-only reporting application that accesses production data with minimal latency. Which database architecture strategy minimizes risk to production data while maintaining near-real-time access?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Map the production database as the default database and disable write access at the user level"
+        },
+        {
+          "id": "B",
+          "text": "Use a Mirror Async Reporting member to query production data"
+        },
+        {
+          "id": "C",
+          "text": "Use SQL views to restrict access and map the production database normally"
+        },
+        {
+          "id": "D",
+          "text": "Clone the production data nightly to a separate database and map that database"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Using a Mirror Async Reporting member provides complete isolation from production while maintaining near-real-time data access (typically 1-2 minute lag). The reporting queries run on a separate instance, eliminating resource contention with production. Note: You cannot mount the same database twice on a single IRIS instance - databases can only be mounted once. User-level controls and SQL views can be circumvented. Nightly cloning introduces significant data latency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set#GHA_mirror_async_reporting"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "An organization is planning database architecture for a high-growth application expected to scale from 100GB to 10TB over three years. Which architectural recommendations should be considered? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use multiple smaller databases instead of one large monolithic database"
+        },
+        {
+          "id": "B",
+          "text": "Plan for horizontal sharding of data across databases based on access patterns"
+        },
+        {
+          "id": "C",
+          "text": "Configure database growth limits to prevent uncontrolled expansion"
+        },
+        {
+          "id": "D",
+          "text": "Implement data archival strategies to move historical data to separate databases"
+        },
+        {
+          "id": "E",
+          "text": "Keep all data in a single database for simplicity"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "For high-growth scenarios, use multiple databases to enable distributed I/O, implement horizontal sharding for scalability, and plan archival strategies to manage data lifecycle. Database growth limits should be set appropriately but not restrictively. Keeping all data in a single database creates bottlenecks and limits scalability options. Multiple databases enable better performance tuning, backup/restore parallelization, and storage tiering. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "A financial application expects transaction volume to grow 500% annually. The current database experiences 10,000 IOPS during peak hours. Which storage architecture recommendation is MOST appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Plan for SSD-based storage with enterprise-grade NVMe drives to handle increased IOPS"
+        },
+        {
+          "id": "B",
+          "text": "Increase database cache (global buffers) to reduce disk I/O requirements"
+        },
+        {
+          "id": "C",
+          "text": "Use RAID 5 with larger spindle drives to maximize capacity at lower cost"
+        },
+        {
+          "id": "D",
+          "text": "Implement write cache journaling to a separate SAN volume"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "For applications with high growth in transaction volume and IOPS requirements, SSD-based storage (especially NVMe) provides the I/O capacity needed for sustained performance. While increasing cache helps, it cannot eliminate I/O for durable writes. RAID 5 with spinning disks cannot deliver the IOPS required. Journal performance is critical but secondary to database I/O capacity. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI#GCDI_db_create_recommendations"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "An application's primary database is projected to grow from 500GB to 5TB. Which database configuration parameter should be adjusted to accommodate this growth?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Maximum database size (on database properties)"
+        },
+        {
+          "id": "B",
+          "text": "Database block size"
+        },
+        {
+          "id": "C",
+          "text": "Global buffer pool size"
+        },
+        {
+          "id": "D",
+          "text": "Journal file size"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "The maximum database size setting limits how large a database can grow. This should be set to accommodate expected growth (or set to 0 for unlimited). Database block size cannot be changed after creation. While buffer pool size affects performance, it doesn't limit database growth. Journal size is separate from database size. Planning for adequate maximum size prevents production outages when databases reach configured limits. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI#GCDI_db_manage_size"
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which factors should influence the decision to partition application data across multiple databases? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Different data retention and archival requirements for different data types"
+        },
+        {
+          "id": "B",
+          "text": "Distinct backup/restore schedules based on data criticality"
+        },
+        {
+          "id": "C",
+          "text": "Independent scalability requirements for different functional areas"
+        },
+        {
+          "id": "D",
+          "text": "Security requirements mandating physical separation of sensitive data"
+        },
+        {
+          "id": "E",
+          "text": "Simplifying the namespace configuration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Multiple databases enable independent retention policies, backup schedules, scalability strategies, and security controls. This is essential for compliance (e.g., HIPAA, PCI-DSS) and operational flexibility. While multiple databases add namespace complexity, the operational and compliance benefits outweigh this. Single-database architectures limit operational flexibility and can create security and performance bottlenecks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "You are designing global mappings for a namespace that needs access to reference data from a shared database. The global ^ProductCatalog contains 50,000 nodes and is updated nightly. Which mapping configuration is MOST efficient?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Map the entire shared database as a routine database to the namespace"
+        },
+        {
+          "id": "B",
+          "text": "Map only the specific global ^ProductCatalog from the shared database"
+        },
+        {
+          "id": "C",
+          "text": "Copy the ^ProductCatalog data to the local namespace database nightly"
+        },
+        {
+          "id": "D",
+          "text": "Create a view in SQL that queries across databases"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Mapping only the specific global needed (^ProductCatalog) provides precise control, minimizes namespace pollution, and clearly documents dependencies. Mapping the entire database exposes unnecessary globals. Copying data creates synchronization issues and doubles storage. SQL views add query overhead and don't address ObjectScript access. Specific global mappings are the most efficient and maintainable approach. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "An application uses global mappings to share common utility code stored in ^Utils across multiple namespaces. Which of the following statements about this configuration are TRUE? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "All namespaces will see the same data in ^Utils regardless of which namespace updates it"
+        },
+        {
+          "id": "B",
+          "text": "Each namespace maintains its own copy of ^Utils synchronized automatically"
+        },
+        {
+          "id": "C",
+          "text": "The mapping allows read-only access to ^Utils from mapped namespaces"
+        },
+        {
+          "id": "D",
+          "text": "Updates to ^Utils from any mapped namespace affect all namespaces"
+        },
+        {
+          "id": "E",
+          "text": "Global mappings can map specific subscript ranges like ^Utils(1:1000"
+        }
+      ],
+      "answer": [
+        "A",
+        "D",
+        "E"
+      ],
+      "domain": "T1.1",
+      "explanation": "Global mappings create a shared reference - all namespaces see the same physical data and updates from any namespace are visible to all. Mappings do not create copies or enforce read-only access (that requires database-level read-only mounting). Global mappings support subscript range mapping for fine-grained control. This enables efficient sharing while managing namespace scope. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "A global ^OrderHistory contains historical order data with subscript structure ^OrderHistory(year,orderID). To optimize storage, you want to archive orders older than 5 years to a separate database. What is the BEST mapping approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Map ^OrderHistory entirely to the archive database and copy recent data back"
+        },
+        {
+          "id": "B",
+          "text": "Create subscript-range mappings: ^OrderHistory(2020:9999) to active DB, ^OrderHistory(1900:2019) to archive DB"
+        },
+        {
+          "id": "C",
+          "text": "Use two different global names and update application code to check both"
+        },
+        {
+          "id": "D",
+          "text": "Store all data in the active database and use SQL views to separate old data"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Subscript-range mappings allow you to physically partition data within a single global name across multiple databases based on subscript values. This maintains application transparency (code references ^OrderHistory uniformly) while achieving storage optimization. The ranges ^OrderHistory(2020:9999) and ^OrderHistory(1900:2019) partition by year without code changes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU#GSTU_ns_global_map_subrange"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "When structuring data for optimal global mapping performance, which global structure provides the BEST balance of mapping flexibility and query efficiency?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "^Data(\"CustomerID\",recordID) - entity type as first subscript"
+        },
+        {
+          "id": "B",
+          "text": "^Data(recordID,\"metadata\") - single record ID with nested properties"
+        },
+        {
+          "id": "C",
+          "text": "^Customer(customerID,attribute) - entity-specific globals with natural keys"
+        },
+        {
+          "id": "D",
+          "text": "^DataStore(hash) - single-level hash-based storage"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "Entity-specific globals with natural keys (^Customer, ^Order, ^Product) provide the best mapping flexibility - you can map entire entities to different databases or use subscript ranges on meaningful keys. Type-as-first-subscript makes cross-database queries complex. Single-level structures limit mapping options. Well-structured globals enable efficient range mappings, archival strategies, and database partitioning. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GGBL_structure"
+    },
+    {
+      "id": 13,
+      "type": "MR",
+      "question": "You are configuring a mirrored database architecture. Which of the following databases should typically be mirrored in a production environment? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Application data databases containing transactional data"
+        },
+        {
+          "id": "B",
+          "text": "Application code databases containing class definitions"
+        },
+        {
+          "id": "C",
+          "text": "IRISTEMP temporary database"
+        },
+        {
+          "id": "D",
+          "text": "Audit database (if audit logging is enabled)"
+        },
+        {
+          "id": "E",
+          "text": "IRISLOCALDATA database"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Mirror application data and code databases to ensure business continuity and avoid code/data version mismatches during failover. Mirror the audit database if compliance requires audit trail preservation. Do NOT mirror IRISTEMP (temporary storage) or IRISLOCALDATA (instance-specific data like licenses). Mirroring these system databases causes conflicts and failover issues. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set_config#GHA_mirror_db_add"
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "A mirrored database design requires an asynchronous mirror member for disaster recovery in a geographically distant datacenter. Which database design consideration is MOST critical?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Ensuring database block sizes match across all mirror members"
+        },
+        {
+          "id": "B",
+          "text": "Configuring identical storage I/O performance on all members"
+        },
+        {
+          "id": "C",
+          "text": "Planning for potential data loss up to the async member's journal lag"
+        },
+        {
+          "id": "D",
+          "text": "Using the same database encryption keys on all mirror members"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "Asynchronous mirror members receive journal data with latency, meaning there is potential for data loss during failover equal to the replication lag. This must be factored into disaster recovery planning and RTO/RPO requirements. Block sizes must match (true for all mirroring), but identical I/O performance is not required for async members. Encryption keys are managed separately from mirroring. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "An application has separate databases for CustomerData (high write volume) and ReferenceData (low write volume, high read volume). Both require high availability. What is the BEST mirroring strategy?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Mirror both databases in the same mirror set for consistent failover"
+        },
+        {
+          "id": "B",
+          "text": "Create separate mirror sets for each database with different configurations"
+        },
+        {
+          "id": "C",
+          "text": "Do not mirror either database; rely on backups for disaster recovery"
+        },
+        {
+          "id": "D",
+          "text": "Mirror only CustomerData since it has higher write volume"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "When high availability is required, all application databases should be included in the same mirror set. This ensures consistent failover - when the primary fails, all databases failover together to the backup. In IRIS mirroring, sync replication is between failover members (for HA), while async members (DR/reporting) receive data with some lag. You cannot mix sync and async for different databases within a failover pair. Both critical databases should be mirrored together for operational consistency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set_config"
+    },
+    {
+      "id": 16,
+      "type": "MR",
+      "question": "Which mirroring implications should influence initial database architecture design decisions? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Mirror journal directories should be on separate physical storage from database files"
+        },
+        {
+          "id": "B",
+          "text": "Database files must use specific block sizes to enable mirroring"
+        },
+        {
+          "id": "C",
+          "text": "Each mirrored database increases network bandwidth requirements between mirror members"
+        },
+        {
+          "id": "D",
+          "text": "Database creation directory paths must be identical on all mirror members"
+        },
+        {
+          "id": "E",
+          "text": "Mirrored databases cannot use database encryption"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "Mirroring recommends journal directories on separate storage for I/O performance and failure isolation - this is a best practice ('should'), not a strict requirement ('must'). Each mirrored database increases network traffic for journal shipping. Database block size and paths do not have to be identical (though paths are often standardized). Mirroring fully supports database encryption. Planning for network capacity and storage I/O is critical in mirrored architectures. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set",
+      "revised": true
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "An organization plans to scale an application horizontally using ECP (Enterprise Cache Protocol) with application servers accessing a shared database server. Which database configuration setting is MOST critical for scaling?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Database block size on the data server"
+        },
+        {
+          "id": "B",
+          "text": "Global buffer cache size on application servers"
+        },
+        {
+          "id": "C",
+          "text": "Database maximum size limit"
+        },
+        {
+          "id": "D",
+          "text": "Journal file directory location"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "In ECP architectures, application server global buffer cache size is critical for performance. Application servers cache global data from the data server, and adequate cache size reduces network traffic and ECP latency. Block size is fixed at database creation. Maximum size affects capacity, not scaling performance. Journals are typically disabled on ECP application servers. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE"
+    },
+    {
+      "id": 18,
+      "type": "MR",
+      "question": "Which configuration settings should be evaluated when planning for application scaling? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Maximum number of concurrent database processes (License units)"
+        },
+        {
+          "id": "B",
+          "text": "Global buffer pool size relative to working set size"
+        },
+        {
+          "id": "C",
+          "text": "ECP network MTU size and latency for distributed architectures"
+        },
+        {
+          "id": "D",
+          "text": "Lock table size for concurrent transaction workloads"
+        },
+        {
+          "id": "E",
+          "text": "System timezone configuration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Scaling requires evaluating license capacity (concurrent processes), memory configuration (global buffers), network performance (ECP MTU/latency), and lock table sizing for transaction concurrency. Timezone is not a scaling factor. Inadequate settings in any of these areas creates bottlenecks that prevent horizontal or vertical scaling. Proper sizing ensures applications can scale to meet demand. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "A web application currently runs on a single IRIS instance with 100 concurrent users. Growth projections indicate 1,000 concurrent users within 12 months. Which scaling approach is MOST cost-effective while maintaining performance?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Vertically scale the existing server by adding CPU, memory, and storage"
+        },
+        {
+          "id": "B",
+          "text": "Implement ECP with multiple application servers and a shared database server"
+        },
+        {
+          "id": "C",
+          "text": "Deploy multiple independent IRIS instances with database replication"
+        },
+        {
+          "id": "D",
+          "text": "Migrate to a containerized microservices architecture"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "ECP horizontal scaling with application servers sharing a database server is the most cost-effective approach for 10x user growth. It provides linear application tier scaling without database replication complexity. Vertical scaling has limits and single-point bottlenecks. Independent instances with replication is complex and costly. Containerization doesn't inherently solve scaling. ECP is designed specifically for this scaling pattern. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "When configuring database architecture to support auto-scaling in cloud environments, which design pattern provides the MOST flexibility?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Stateful application servers with local databases"
+        },
+        {
+          "id": "B",
+          "text": "Stateless application servers using ECP to access shared database servers"
+        },
+        {
+          "id": "C",
+          "text": "Each application server with its own database replica"
+        },
+        {
+          "id": "D",
+          "text": "Monolithic instances with vertical auto-scaling"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Stateless application servers using ECP enable true horizontal auto-scaling - instances can be added/removed dynamically without data migration or replication. The shared database server maintains state while application servers are ephemeral. Stateful servers and local databases complicate scaling and failover. Database replication adds complexity and eventual consistency issues. This is the cloud-native pattern for IRIS. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "Your organization is planning to upgrade from IRIS 2023.1 to 2024.1. The current architecture uses separate databases for each application module. What is the PRIMARY upgrade impact consideration for this database architecture?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "All databases must be upgraded simultaneously during a single maintenance window"
+        },
+        {
+          "id": "B",
+          "text": "Database block size may need to change, requiring database rebuilds"
+        },
+        {
+          "id": "C",
+          "text": "Global structure changes may require application code modifications"
+        },
+        {
+          "id": "D",
+          "text": "Database encryption algorithms are incompatible between versions"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "During an IRIS upgrade, all databases in the instance are upgraded together - you cannot have mixed-version databases. Multiple databases require coordinated downtime planning. Block size typically does not change between minor versions. Global structures are backward compatible. Encryption is forward compatible. The key impact is upgrade coordination and testing across all databases. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCI"
+    },
+    {
+      "id": 22,
+      "type": "MR",
+      "question": "Which database architecture decisions help minimize upgrade impacts and complexity? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Separating application code databases from data databases"
+        },
+        {
+          "id": "B",
+          "text": "Using global mappings instead of hard-coded cross-namespace references"
+        },
+        {
+          "id": "C",
+          "text": "Maintaining detailed documentation of database dependencies and mappings"
+        },
+        {
+          "id": "D",
+          "text": "Storing all configuration in the CPF file rather than in databases"
+        },
+        {
+          "id": "E",
+          "text": "Keeping IRIS system databases (IRISSYS, IRISLIB) without custom modifications"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T1.1",
+      "explanation": "Separating code from data enables independent upgrade strategies for application components. Global mappings provide upgrade flexibility by decoupling namespaces. Documentation is critical for upgrade planning and testing. Keeping system databases unmodified simplifies upgrades - InterSystems upgrades these databases and custom modifications may conflict or be lost. Configuration is stored in both CPF and databases (e.g., security settings), not exclusively in CPF, so that option is misleading. Good architectural practices reduce upgrade risk and downtime. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCI"
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "An upgrade from IRIS 2022.1 to 2024.1 requires database format conversion for improved performance. Your architecture has 15 databases totaling 8TB. Which approach minimizes production downtime?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Perform in-place upgrade of all databases during a scheduled maintenance window"
+        },
+        {
+          "id": "B",
+          "text": "Set up a mirror failover member with the new version and perform a planned failover"
+        },
+        {
+          "id": "C",
+          "text": "Export all data, reinstall, and import to new-format databases"
+        },
+        {
+          "id": "D",
+          "text": "Upgrade databases one at a time over several weeks"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Using a mirror member with the new version allows you to upgrade the backup member offline, test thoroughly, then perform a rapid planned failover to minimize downtime. In-place upgrades of 8TB require significant downtime. Export/import is extremely time-consuming. You cannot run mixed database versions in a single instance. Mirror-based upgrades are the industry best practice for large databases. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCI"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "After an upgrade, you discover that an application query performs poorly and you need to investigate. What database architecture feature helps mitigate upgrade risks and enables faster recovery?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Global collation settings can be adjusted post-upgrade to fix issues"
+        },
+        {
+          "id": "B",
+          "text": "You can selectively roll back individual databases to the previous version independently"
+        },
+        {
+          "id": "C",
+          "text": "Database block size can be increased post-creation to improve performance"
+        },
+        {
+          "id": "D",
+          "text": "Having separate databases allows isolated testing and restore from backup if issues arise"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Having data in separate databases provides isolation for testing and recovery strategies. You cannot selectively roll back individual databases after upgrade (the entire instance version is coupled), but you can restore specific databases from backup if issues arise while preserving other data. Block size cannot be changed post-creation. Collation settings are typically not the cause of performance issues. Architectural separation provides operational flexibility and risk mitigation during upgrades. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI"
+    },
+    {
+      "id": 25,
+      "type": "MR",
+      "question": "Which security requirements should influence database storage design decisions? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Regulatory requirements for data encryption at rest (e.g., HIPAA, PCI-DSS)"
+        },
+        {
+          "id": "B",
+          "text": "Need for field-level encryption of sensitive data (e.g., SSN, credit cards)"
+        },
+        {
+          "id": "C",
+          "text": "Requirements for physical separation of sensitive data for access control"
+        },
+        {
+          "id": "D",
+          "text": "Audit logging requirements for all data access operations"
+        },
+        {
+          "id": "E",
+          "text": "User authentication mechanisms (LDAP vs. local accounts"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Database design must address encryption at rest (database-level encryption), physical separation of sensitive data (separate databases with distinct access controls), and audit logging (potentially requiring separate audit databases). Field-level encryption is application-layer, not storage design. Authentication mechanisms affect security infrastructure but not database architecture. Compliance-driven design is critical for regulated industries. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI"
+    },
+    {
+      "id": 26,
+      "type": "MC",
+      "question": "A healthcare application must store PHI (Protected Health Information) in compliance with HIPAA encryption requirements. Which database storage design BEST addresses this requirement?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use IRIS database encryption with AES-256 for databases containing PHI"
+        },
+        {
+          "id": "B",
+          "text": "Encrypt individual fields containing PHI using application-level encryption"
+        },
+        {
+          "id": "C",
+          "text": "Store PHI databases on hardware-encrypted SAN volumes"
+        },
+        {
+          "id": "D",
+          "text": "Use operating system file-level encryption (BitLocker, LUKS"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "IRIS database encryption provides purpose-built encryption at rest with AES-256, integrated key management, and minimal performance overhead. This is the recommended approach for HIPAA compliance. Application-level encryption increases complexity and performance overhead. Storage-level encryption (SAN, OS) provides encryption but lacks database-aware features like block-level encryption and key rotation. IRIS encryption is designed for compliance requirements. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI"
+    },
+    {
+      "id": 27,
+      "type": "MC",
+      "question": "An organization has security requirements mandating that only specific database administrators can access patient financial data, while clinical staff can access medical records. What is the MOST effective database architecture to enforce this separation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use SQL GRANT/REVOKE permissions on tables within a single database"
+        },
+        {
+          "id": "B",
+          "text": "Create separate databases for financial and medical data with resource-level security"
+        },
+        {
+          "id": "C",
+          "text": "Implement row-level security policies in SQL"
+        },
+        {
+          "id": "D",
+          "text": "Use application-level access control with a shared database"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Separate databases with resource-level (database-level) security provide the strongest access control enforcement. Database resources can be assigned to specific roles, and users without appropriate roles cannot access the database at all - even from Terminal or SQL. SQL permissions and row-level security can be bypassed by users with %All role. Application-level controls don't prevent direct database access. Physical separation is strongest. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCAS_resource"
+    },
+    {
+      "id": 28,
+      "type": "MR",
+      "question": "A financial services application requires audit trails of all database modifications for compliance. Which database architecture considerations support comprehensive auditing? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Enabling database journaling to ensure all transactions are logged"
+        },
+        {
+          "id": "B",
+          "text": "Configuring a separate audit database to store audit records"
+        },
+        {
+          "id": "C",
+          "text": "Using triggers or code to write audit records for critical operations"
+        },
+        {
+          "id": "D",
+          "text": "Enabling system-wide audit logging in IRIS"
+        },
+        {
+          "id": "E",
+          "text": "Implementing database-level encryption"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "Comprehensive auditing requires journaling (transaction-level logging), a separate audit database (segregated audit storage), application audit triggers (business logic auditing), and system audit logging (login/logout, privilege use). Encryption addresses confidentiality, not auditing. Multi-layered audit architecture ensures regulatory compliance and forensic capability. Different audit mechanisms serve different purposes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI"
+    },
+    {
+      "id": 29,
+      "type": "MC",
+      "question": "When designing database storage for an interoperability production with multiple interfaces processing HL7, FHIR, and X12 messages, which database architecture provides the BEST balance of functionality and performance?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Store all message data, productions, and application data in a single database"
+        },
+        {
+          "id": "B",
+          "text": "Use separate databases for message storage, production configuration, and application data"
+        },
+        {
+          "id": "C",
+          "text": "Use IRISTEMP for message storage to maximize performance"
+        },
+        {
+          "id": "D",
+          "text": "Store messages in global mappings from a shared message archive database"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Separating message storage, production configuration, and application data provides operational flexibility - different backup schedules, independent scaling, message purging without affecting application data. A single database creates coupling and management complexity. IRISTEMP is non-persistent and inappropriate for messages. Global mappings add complexity without benefits. Interoperability best practices recommend database separation for manageability. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG_production"
+    },
+    {
+      "id": 30,
+      "type": "MR",
+      "question": "An interoperability production processes 1 million HL7 messages daily with a 30-day retention requirement. Which database storage design considerations are MOST important? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Implementing automated message purging after the retention period"
+        },
+        {
+          "id": "B",
+          "text": "Using high-performance storage (SSD) for the message database due to write volume"
+        },
+        {
+          "id": "C",
+          "text": "Ensuring adequate disk volume capacity for 30 days of message storage"
+        },
+        {
+          "id": "D",
+          "text": "Using database compression to reduce storage costs"
+        },
+        {
+          "id": "E",
+          "text": "Storing messages in JSON format for better interoperability"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "High message volume requires automated purging (prevents unbounded growth), high-performance storage (handles write IOPS), and ensuring adequate disk volume capacity (IRIS databases grow dynamically up to the OS volume size by default - database max size is unlimited unless explicitly configured). IRIS doesn't have native database compression - this is handled by storage systems. Message format is determined by requirements, not storage design. Interoperability database design must address volume, retention, and I/O performance. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG"
+    },
+    {
+      "id": 31,
+      "type": "MC",
+      "question": "An interoperability production uses persistent message queues and experiences high queue depths during peak hours. What database configuration optimization provides the MOST benefit?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Increase database block size for queue storage"
+        },
+        {
+          "id": "B",
+          "text": "Increase global buffer cache to reduce queue read/write latency"
+        },
+        {
+          "id": "C",
+          "text": "Enable database mirroring for queue high availability"
+        },
+        {
+          "id": "D",
+          "text": "Use RAM disk for queue storage"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "Message queues involve intensive small reads/writes that benefit significantly from memory caching. Increasing global buffers reduces disk I/O for queue operations, directly improving throughput. Block size is fixed at creation and doesn't significantly affect queues. Mirroring addresses availability, not performance. RAM disks are risky (non-persistent) and unnecessary with proper cache configuration. Queue performance is cache-dependent. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG_production"
+    },
+    {
+      "id": 32,
+      "type": "MC",
+      "question": "Your interoperability production configuration includes business hosts, transformations, and routing rules. From a storage cost/benefit perspective, what is the PRIMARY advantage of storing production configuration in a dedicated database?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Production configuration can be backed up independently and frequently"
+        },
+        {
+          "id": "B",
+          "text": "Configuration changes do not impact application data database growth"
+        },
+        {
+          "id": "C",
+          "text": "Production database can be deployed to multiple environments easily"
+        },
+        {
+          "id": "D",
+          "text": "Configuration database requires less storage than message databases"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "The primary benefit of a separate production configuration database is deployment portability - the entire production can be exported/imported across environments (dev/test/prod) independently. While independent backup, isolation from data, and smaller size are true, the key value is environment promotion and version control. This is critical for CI/CD pipelines and change management in enterprise environments. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG_production"
+    },
+    {
+      "id": 33,
+      "type": "MC",
+      "question": "An organization wants to implement Business Intelligence (BI) reporting against an IRIS production database. The BI tool will execute complex analytical queries. What is the PRIMARY storage architecture tradeoff to consider?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "BI queries may consume significant CPU and memory, impacting transaction processing"
+        },
+        {
+          "id": "B",
+          "text": "BI tools require SQL access, which limits global structure flexibility"
+        },
+        {
+          "id": "C",
+          "text": "BI reporting databases must use different block sizes than transactional databases"
+        },
+        {
+          "id": "D",
+          "text": "BI tools cannot access IRIS databases directly and require ETL to a data warehouse"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "The primary tradeoff is resource contention - BI analytical queries can be resource-intensive (CPU, I/O, memory) and impact transactional performance if run against production databases. This often drives decisions to use read-only replicas, database copies, or scheduled extracts. SQL access is fully supported and doesn't limit design. Block sizes are independent. IRIS BI tools can query IRIS directly. Resource isolation is the key consideration. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW"
+    },
+    {
+      "id": 34,
+      "type": "MR",
+      "question": "Which database architecture patterns effectively integrate BI functionality while protecting transactional system performance? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Copy or restore the production database to a separate IRIS instance for BI queries"
+        },
+        {
+          "id": "B",
+          "text": "Use database mirroring with BI queries directed to the async mirror member"
+        },
+        {
+          "id": "C",
+          "text": "Schedule BI ETL jobs during off-peak hours to a separate analytics database"
+        },
+        {
+          "id": "D",
+          "text": "Increase global buffer pool size to accommodate both transactional and analytical workloads"
+        },
+        {
+          "id": "E",
+          "text": "Use ECP to distribute BI queries across multiple application servers"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.1",
+      "explanation": "Effective BI integration uses resource isolation: copying databases to a separate instance (physical isolation), async mirror members (logical isolation on a reporting member), or scheduled ETL (temporal isolation). Note that IRIS databases can only be mounted once per instance - you cannot mount a database read-only while it's already mounted elsewhere. Increasing buffers doesn't eliminate resource contention. ECP distributes application load but doesn't isolate BI from transactional workloads. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW"
+    },
+    {
+      "id": 35,
+      "type": "MC",
+      "question": "A BI reporting system requires near-real-time access to transactional data (< 5 minute latency) for executive dashboards. What database architecture provides the BEST balance of freshness and performance isolation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Direct BI queries against the production database with query governor limits"
+        },
+        {
+          "id": "B",
+          "text": "Asynchronous mirror member dedicated to BI workloads with typical 1-2 minute lag"
+        },
+        {
+          "id": "C",
+          "text": "Hourly database backup/restore to a separate BI instance"
+        },
+        {
+          "id": "D",
+          "text": "ECP application server with BI-optimized global buffer configuration"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.1",
+      "explanation": "An async mirror member provides near-real-time data (typically 1-2 minute lag meets the < 5 minute requirement) with complete performance isolation from production. Direct queries against production risk contention even with governor limits. Hourly backup doesn't meet latency requirements. ECP doesn't provide isolation for analytical queries. Async mirror members are purpose-built for this use case - fresh data without production impact. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set#GHA_mirror_async_reporting"
+    },
+    {
+      "id": 36,
+      "type": "MC",
+      "question": "When evaluating the costs and benefits of native IRIS BI capabilities (SQL, ODBC, iKnow) versus ETL to an external data warehouse (Snowflake, Redshift), which factor represents the PRIMARY benefit of the IRIS-native approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Eliminates data latency from ETL processes, providing real-time analytics"
+        },
+        {
+          "id": "B",
+          "text": "IRIS SQL is more performant than external data warehouse SQL"
+        },
+        {
+          "id": "C",
+          "text": "Reduces infrastructure costs by eliminating separate BI platforms"
+        },
+        {
+          "id": "D",
+          "text": "IRIS analytics capabilities are more feature-rich than external BI tools"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.1",
+      "explanation": "The primary benefit of IRIS-native BI is data freshness - no ETL delay means real-time or near-real-time analytics on live data. External warehouses may have better analytical SQL performance and features, but require ETL with inherent latency. Infrastructure cost savings are real but secondary to the business value of real-time insight. The latency vs. features tradeoff is the core evaluation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW_intro"
+    },
+    {
+      "id": 37,
+      "type": "MR",
+      "question": "An analytics team wants to use IRIS iKnow for natural language processing on clinical notes stored in IRIS databases. Which database architecture considerations affect this implementation? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "iKnow domain storage requires additional database space for indexed text"
+        },
+        {
+          "id": "B",
+          "text": "iKnow processing is CPU-intensive and may require dedicated application servers"
+        },
+        {
+          "id": "C",
+          "text": "iKnow domains must be stored in separate databases from source text data"
+        },
+        {
+          "id": "D",
+          "text": "iKnow indexing can generate significant journal data during initial builds"
+        },
+        {
+          "id": "E",
+          "text": "iKnow requires SQL-accessible tables; global-based data cannot be processed"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T1.1",
+      "explanation": "iKnow domains require significant storage for indexed data (indices, entity dictionaries), are CPU/memory intensive during indexing, and generate journal data during builds. iKnow domains can be in the same or different databases as source data - separation is optional, not required. iKnow can process both SQL and global-based data. Understanding resource requirements is critical for architecture planning. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIKNOW"
+    }
+  ]
+}

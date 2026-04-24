@@ -1,0 +1,342 @@
+{
+  "id": "ability-t3-2-q1",
+  "topic": "ability_t3_2",
+  "topicLabel": "T3.2 · Connects to InterSystems IRIS",
+  "title": "T3.2: Connects to InterSystems IRIS",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T3.2"
+  ],
+  "description": "Test your knowledge of JDBC and ODBC connections to InterSystems IRIS",
+  "version": "1.0",
+  "publishedDate": "2025-12-29",
+  "importedFrom": "quiz_temp/T3_2.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "You are attempting to connect to an InterSystems IRIS instance using the following JDBC connection string:\n\njdbc:IRIS://db.example.com:1972/MYAPP?connectionSecurityLevel=10&sslServerName=iris-prod\n\nUpon executing the connection, you receive the following error:\n\n\"Error: SSLHandshakeException: Could not verify the server's certificate.\"\n\nWhich of the following is the most likely cause of this error?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The connectionSecurityLevel should be set to 1 for SSL/TLS connections"
+        },
+        {
+          "id": "B",
+          "text": "The certificate in the client's trust store does not match the server's identity"
+        },
+        {
+          "id": "C",
+          "text": "The MYAPP namespace does not exist on the InterSystems IRIS instance"
+        },
+        {
+          "id": "D",
+          "text": "The connection string is missing the encryption=true parameter"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.2",
+      "explanation": "When connectionSecurityLevel=10 (TLS/SSL), the client validates the server's certificate against the certificates in the client's trust store. An SSLHandshakeException with \"Could not verify the server's certificate\" indicates a certificate validation failure - either the server's certificate is not in the trust store, has expired, is self-signed without being trusted, or the certificate's subject name doesn't match the server identity. Security level 10 is correct for TLS, and encryption=true is not a valid JDBC parameter. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BJAVA"
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "Which connection security level value should be used in a JDBC connection to enable TLS/SSL encryption for the entire connection to InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "0"
+        },
+        {
+          "id": "B",
+          "text": "3"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "10"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T3.2",
+      "explanation": "Connection security level 10 enables TLS/SSL encryption for the entire JDBC connection. The security levels are: 0 = Password authentication only, 1 = Kerberos authentication, 2 = Kerberos with packet integrity, 3 = Kerberos with encryption, and 10 = TLS/SSL encryption. Level 10 is the only option that provides full TLS/SSL encryption for the connection. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BJAVA"
+    },
+    {
+      "id": 3,
+      "type": "MR",
+      "question": "When configuring a secure JDBC connection using com.intersystems.jdbc.IRISDataSource, which of the following methods must be called to establish a TLS-encrypted connection to an InterSystems IRIS instance?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "setServerName(String host)"
+        },
+        {
+          "id": "B",
+          "text": "setConnectionSecurityLevel(10)"
+        },
+        {
+          "id": "C",
+          "text": "setPortNumber(int port)"
+        },
+        {
+          "id": "D",
+          "text": "setSSL(true)"
+        },
+        {
+          "id": "E",
+          "text": "setDatabaseName(String namespace)"
+        },
+        {
+          "id": "F",
+          "text": "setEncryption(\"TLS\""
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T3.2",
+      "explanation": "To establish a TLS-encrypted JDBC connection using IRISDataSource, you must call setServerName() to specify the host, setPortNumber() to specify the SuperServer port, setDatabaseName() to specify the namespace, and setConnectionSecurityLevel(10) to enable TLS/SSL encryption. The methods setSSL() and setEncryption() are not valid IRISDataSource methods. The connectionSecurityLevel property is the correct way to enable TLS. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BJAVA"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "On a Windows system, where are ODBC Data Source Names (DSNs) for InterSystems IRIS typically stored?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "In the %PROGRAMFILES%\\InterSystems\\IRIS\\odbc.ini file"
+        },
+        {
+          "id": "B",
+          "text": "In the Windows Registry under HKLM\\SOFTWARE\\ODBC"
+        },
+        {
+          "id": "C",
+          "text": "In the user's home directory as .odbc.ini"
+        },
+        {
+          "id": "D",
+          "text": "In the C:\\ProgramData\\InterSystems\\ODBC directory"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.2",
+      "explanation": "On Windows systems, ODBC DSNs are stored in the Windows Registry under HKLM\\SOFTWARE\\ODBC\\ODBC.INI for system DSNs and HKCU\\SOFTWARE\\ODBC\\ODBC.INI for user DSNs. They are created and managed using the ODBC Data Source Administrator utility. UNIX systems use odbc.ini files, but Windows uses the Registry. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "An administrator is configuring a TLS-enabled ODBC connection on a UNIX system. Which of the following parameters are REQUIRED in the odbc.ini file for the DSN to establish a secure connection?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Authentication Method = 2"
+        },
+        {
+          "id": "B",
+          "text": "Security Level = 10"
+        },
+        {
+          "id": "C",
+          "text": "SSL Server Name = <configuration-name>"
+        },
+        {
+          "id": "D",
+          "text": "Protocol = TCP"
+        },
+        {
+          "id": "E",
+          "text": "Encrypt = Yes"
+        },
+        {
+          "id": "F",
+          "text": "Certificate File = /path/to/cert.pem"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T3.2",
+      "explanation": "For TLS-enabled ODBC connections on UNIX, three critical parameters must be configured in the odbc.ini DSN entry: Authentication Method must be set to 2 (Password with SSL/TLS), Security Level must be set to 10 (TLS/SSL), and SSL Server Name must reference a named TLS configuration in the odbcssl.ini file. The parameters Protocol, Encrypt, and Certificate File are not valid ODBC DSN parameters - certificate configuration is done in the odbcssl.ini file referenced by SSL Server Name. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Which UNIX command-line utility is used to register an ODBC DSN from an initialization file for InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "odbcadmin"
+        },
+        {
+          "id": "B",
+          "text": "odbcinst"
+        },
+        {
+          "id": "C",
+          "text": "irisodbc"
+        },
+        {
+          "id": "D",
+          "text": "isql"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.2",
+      "explanation": "The odbcinst utility is the command-line tool used on UNIX systems to register ODBC DSNs from initialization files. It can install and uninstall drivers and data sources. The isql utility is used for testing ODBC connections, not for registering DSNs. The other options (odbcadmin and irisodbc) are not valid ODBC utilities. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "A Java application needs to use Kerberos authentication with packet integrity protection when connecting to InterSystems IRIS via JDBC. Which connectionSecurityLevel value should be specified?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "0"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "3"
+        },
+        {
+          "id": "E",
+          "text": "10"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T3.2",
+      "explanation": "Connection security level 2 enables Kerberos authentication with packet integrity protection. The security levels are: 0 = Password authentication only, 1 = Kerberos authentication only, 2 = Kerberos with packet integrity, 3 = Kerberos with full encryption, and 10 = TLS/SSL encryption. For Kerberos with integrity protection, level 2 is the correct choice. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BJAVA"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "On a UNIX system with TLS-enabled ODBC connections, which environment variable must be set to specify the path to the TLS configuration file?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "ISC_ODBCSSL_CONFIG"
+        },
+        {
+          "id": "B",
+          "text": "ISC_SSLconfigurations"
+        },
+        {
+          "id": "C",
+          "text": "ODBC_TLS_CONFIG"
+        },
+        {
+          "id": "D",
+          "text": "ISC_TLSCONFIG"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.2",
+      "explanation": "The ISC_SSLconfigurations environment variable must be set to specify the path to the odbcssl.ini file, which contains TLS configuration details including certificate files, private keys, protocols, and cipher suites. This environment variable tells the ODBC driver where to find the TLS configuration referenced by the SSL Server Name parameter in the DSN. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "Which of the following statements about ODBC connection methods for InterSystems IRIS are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Registry DSNs are stored in the Windows Registry or UNIX initialization files"
+        },
+        {
+          "id": "B",
+          "text": "File DSNs are stored as text files with a .dsn extension"
+        },
+        {
+          "id": "C",
+          "text": "DSN-less connections embed all parameters in the SQLDriverConnect call"
+        },
+        {
+          "id": "D",
+          "text": "File DSNs can only be created on Windows systems"
+        },
+        {
+          "id": "E",
+          "text": "DSN-less connections require the ODBC Data Source Administrator"
+        },
+        {
+          "id": "F",
+          "text": "Registry DSNs can be shared across multiple users on Windows"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "F"
+      ],
+      "domain": "T3.2",
+      "explanation": "Registry DSNs are stored in the Windows Registry (Windows) or initialization files like odbc.ini (UNIX). File DSNs are stored as separate text files with .dsn extension and can be created on both Windows and UNIX. DSN-less connections provide all connection parameters directly in the SQLDriverConnect call without requiring a pre-configured DSN. System DSNs (registry-based) can be shared across users on Windows, while user DSNs are user-specific. DSN-less connections specifically avoid the need for the ODBC Administrator. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "A developer wants to use OAuth access tokens for authentication in an ODBC connection string instead of username and password. Which connection string parameter should be used?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "OAUTHTOKEN=<token>"
+        },
+        {
+          "id": "B",
+          "text": "ACCESSTOKEN=<token>"
+        },
+        {
+          "id": "C",
+          "text": "BEARER=<token>"
+        },
+        {
+          "id": "D",
+          "text": "AUTHTOKEN=<token>"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T3.2",
+      "explanation": "The ACCESSTOKEN parameter is used in ODBC connection strings to provide OAuth access tokens for authentication as an alternative to username and password. This allows applications to authenticate using OAuth 2.0 tokens obtained from an authorization server. The parameter format in a connection string is ACCESSTOKEN=<token>. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=BNETODBC"
+    }
+  ]
+}

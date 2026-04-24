@@ -1,0 +1,394 @@
+{
+  "id": "ability-t1-3-q1",
+  "topic": "ability_t1_3",
+  "topicLabel": "T1.3 · Plans Data Lifecycle",
+  "title": "T1.3: Plans Data Lifecycle",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T1.3"
+  ],
+  "description": "Test your knowledge of data lifecycle planning in InterSystems IRIS, including storage/retrieval strategies, CRUD operations, and performance prediction",
+  "version": "1.0",
+  "publishedDate": "2025-12-29",
+  "importedFrom": "quiz_temp/T1_3.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "A healthcare application needs to display a dashboard showing patient admission trends across multiple hospitals, grouped by month, region, and diagnosis. Which data access strategy is MOST appropriate for this scenario?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Object access using %OpenId() to iterate through patient records"
+        },
+        {
+          "id": "B",
+          "text": "SQL SELECT with GROUP BY clauses for aggregations"
+        },
+        {
+          "id": "C",
+          "text": "MDX queries against a Business Intelligence cube"
+        },
+        {
+          "id": "D",
+          "text": "Dynamic SQL with embedded cursors"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.3",
+      "explanation": "MDX (Multidimensional Expressions) is specifically designed for analytical queries involving dimensions, hierarchies, and aggregations across groups. This dashboard requires multidimensional analysis (time, geography, diagnosis) with automatic aggregation - exactly what MDX cubes provide. While SQL can perform aggregations, MDX is optimized for OLAP/BI scenarios with complex pivot table displays. Object access would be extremely inefficient for aggregating across many records. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=D2GMDX_intro_mdx"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which of the following statements correctly describe when to use SQL access versus object access in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Object access is preferred for single-record transactional operations with business logic"
+        },
+        {
+          "id": "B",
+          "text": "SQL is optimal for set-based operations across multiple records"
+        },
+        {
+          "id": "C",
+          "text": "Object access automatically handles swizzling for lazy loading of related objects"
+        },
+        {
+          "id": "D",
+          "text": "SQL should always be used instead of object access for better performance"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.3",
+      "explanation": "Object access is ideal for single-record operations with business logic encapsulation and provides automatic swizzling for related objects. SQL excels at set-based operations for querying, filtering, and aggregating multiple records. The choice depends on use case - object access for transactional operations, SQL for reporting and batch operations. The statement that SQL should always be used is incorrect; object access provides better performance for single-record CRUD operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "An application performs frequent updates to individual customer records based on user interactions. Which access pattern offers the BEST combination of performance and maintainability?\n\n```objectscript\nSet customer = ##class(MyApp.Customer).%OpenId(customerId)\nIf $IsObject(customer) {\n    Set customer.LastContactDate = $HOROLOG\n    Set customer.ContactCount = customer.ContactCount + 1\n    Set sc = customer.%Save()\n}\n```",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "MDX queries for analytical performance"
+        },
+        {
+          "id": "B",
+          "text": "Object access as shown above for transactional operations"
+        },
+        {
+          "id": "C",
+          "text": "Dynamic SQL UPDATE statements for better concurrency"
+        },
+        {
+          "id": "D",
+          "text": "Embedded SQL with cursors for row-by-row processing"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.3",
+      "explanation": "Object access is optimal for single-record transactional operations. It provides strong typing, automatic property validation, business logic encapsulation through methods, and swizzling for related objects. The %Save() method handles all persistence atomically with transaction support. SQL would add unnecessary overhead for single-record updates, and MDX is for analytical queries, not transactional updates. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "A reporting system needs to generate monthly sales summaries for 50,000+ transactions. The report aggregates data by product category, region, and sales representative. What is the MOST efficient data access approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use %OpenId() to iterate through all transaction objects and calculate totals in ObjectScript"
+        },
+        {
+          "id": "B",
+          "text": "Execute a SQL SELECT with GROUP BY clauses for aggregations"
+        },
+        {
+          "id": "C",
+          "text": "Load all objects into a local array and use $ORDER to calculate totals"
+        },
+        {
+          "id": "D",
+          "text": "Use MDX only if a Business Intelligence cube has been pre-defined"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.3",
+      "explanation": "SQL is specifically optimized for set-based operations like aggregations across large datasets. The query optimizer will use appropriate indexes and generate efficient execution plans for GROUP BY operations. Object iteration would be extremely inefficient, requiring 50,000+ object loads and manual aggregation logic. While MDX could be used if a cube exists, SQL provides excellent performance for standard aggregations without requiring pre-built cubes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What is the correct sequence of operations to create and persist a new object in InterSystems IRIS?\n\n```objectscript\n// Option A\nSet obj = ##class(MyApp.Order).%New()\nSet obj.OrderDate = $HOROLOG\nSet obj.CustomerId = 12345\nSet sc = obj.%Save()\nIf $$$ISERR(sc) Do $System.Status.DisplayError(sc)\n```",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The code above is correct - %New(), set properties, %Save(), check status"
+        },
+        {
+          "id": "B",
+          "text": "%New() should be called with parameters: %New(OrderDate, CustomerId)"
+        },
+        {
+          "id": "C",
+          "text": "%Save() should be called before setting properties"
+        },
+        {
+          "id": "D",
+          "text": "%Insert() should be used instead of %Save() for new objects"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.3",
+      "explanation": "The correct create sequence is: (1) instantiate with %New(), (2) set property values, (3) call %Save() to persist, (4) check the returned %Status value. %Save() automatically determines if this is a new object (insert) or existing object (update). While constructors can accept parameters if defined, the shown pattern is the standard approach. %Insert() is not a standard persistence API method. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "Which statements about the %Save() method in InterSystems IRIS are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Save() returns a %Status value indicating success or failure"
+        },
+        {
+          "id": "B",
+          "text": "%Save() automatically saves embedded objects, collections, and streams"
+        },
+        {
+          "id": "C",
+          "text": "%Save() executes atomically - it either saves everything or rolls back completely"
+        },
+        {
+          "id": "D",
+          "text": "%Save() always creates a new object ID using $Increment"
+        },
+        {
+          "id": "E",
+          "text": "%Save() calls %OnBeforeSave() and %OnAfterSave() callback methods"
+        },
+        {
+          "id": "F",
+          "text": "Failed %Save() operations leave partial data in the database"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T1.3",
+      "explanation": "%Save() returns a %Status value for error checking, automatically saves all related objects (embedded, collections, streams), executes atomically with automatic rollback on failure, and calls callback hooks for business logic. However, object IDs are only auto-generated if not specified by an IDKEY index, and failed saves do NOT leave partial data - the atomic nature ensures complete rollback. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "An application needs to read a Customer object and its related Company information. Which code snippet demonstrates proper object opening with swizzling?\n\n```objectscript\n// Option 1\nSet customer = ##class(MyApp.Customer).%OpenId(123, , .sc)\nIf $$$ISERR(sc) Quit\nSet companyName = customer.Company.Name\n```",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The code is correct - swizzling automatically loads the Company object when accessed"
+        },
+        {
+          "id": "B",
+          "text": "The Company object must be explicitly opened: Set company = ##class(MyApp.Company).%OpenId(customer.CompanyId)"
+        },
+        {
+          "id": "C",
+          "text": "Swizzling only works if concurrency level is set to 4"
+        },
+        {
+          "id": "D",
+          "text": "The Company relationship must be defined as LAZY = 0 for swizzling to work"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.3",
+      "explanation": "The code correctly demonstrates swizzling. When customer.Company.Name is accessed, IRIS automatically opens (swizzles) the related Company object if not already in memory. This lazy loading happens transparently when traversing object relationships via dot syntax. No explicit %OpenId() call is needed for related objects. Swizzling works at all concurrency levels and doesn't require specific LAZY settings. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "What is the purpose of the concurrency parameter in %OpenId(id, concurrency, .sc) and what does a value of 0 indicate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Concurrency 0 means no locking - maximum performance but no atomic write guarantees"
+        },
+        {
+          "id": "B",
+          "text": "Concurrency 0 means exclusive locks are held until transaction commit"
+        },
+        {
+          "id": "C",
+          "text": "Concurrency 0 is invalid and will cause an error"
+        },
+        {
+          "id": "D",
+          "text": "Concurrency 0 is the default and provides maximum data integrity"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.3",
+      "explanation": "Concurrency 0 means no locking is performed, providing maximum performance for read-only or single-user scenarios. However, it offers no atomic write guarantees since no locks prevent concurrent modifications. Concurrency 1 (atomic read) is the default for most operations. Concurrency levels range from 0 (no locking) to 4 (exclusive/retained locks), with higher values providing stronger isolation at the cost of performance and concurrency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 9,
+      "type": "MR",
+      "question": "A production application will have 100+ concurrent users performing frequent updates to order records. Which concurrency considerations are MOST important?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use concurrency level 4 (exclusive/retained) for all operations to ensure data integrity"
+        },
+        {
+          "id": "B",
+          "text": "Keep transactions short with narrow scope to minimize lock duration"
+        },
+        {
+          "id": "C",
+          "text": "Higher concurrency levels provide stronger isolation but increase lock contention"
+        },
+        {
+          "id": "D",
+          "text": "Swizzling can trigger cascading lock acquisitions on related objects"
+        },
+        {
+          "id": "E",
+          "text": "Concurrency level 0 should be used for maximum performance with many users"
+        }
+      ],
+      "answer": [
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T1.3",
+      "explanation": "For high-concurrency applications, short transactions minimize lock contention. Higher concurrency levels (2-4) provide stronger isolation but increase contention - use the minimum level needed. Swizzling does trigger locks based on default concurrency settings. However, concurrency 4 for all operations would create excessive contention, and concurrency 0 would cause data corruption with concurrent writers. Balance is key. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "You execute a SQL query in the SQL Shell and observe these performance metrics:\n\n```\nPrepare Time: 0.05s\nExecute Time: 12.3s\nGlobal References: 2,450,000\nDisk I/O: 125,000\n```\n\nThe query scans a table with 500,000 rows. What is the MOST likely performance issue?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "High prepare time indicates query compilation issues"
+        },
+        {
+          "id": "B",
+          "text": "High global references and disk I/O suggest a full table scan without index usage"
+        },
+        {
+          "id": "C",
+          "text": "The execute time is normal for this data volume"
+        },
+        {
+          "id": "D",
+          "text": "Disk I/O is too low, indicating insufficient cache utilization"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.3",
+      "explanation": "The very high global references (2.45 million) and disk I/O (125,000) relative to execute time strongly suggest a full table scan. For 500,000 rows, an indexed query should require far fewer global references. Prepare time is low (good), but execute time is excessive. Using EXPLAIN/SHOW PLAN would confirm missing indexes. This pattern indicates the need for index creation on frequently queried columns. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "An application performs well with 1,000 customer records but slows significantly at 100,000 records. This query is used frequently:\n\n```sql\nSELECT * FROM MyApp.Customer \nWHERE LastName = 'Smith' AND State = 'CA'\n```\n\nWhat is the BEST approach to predict and resolve performance degradation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Switch from SQL to object access for better performance"
+        },
+        {
+          "id": "B",
+          "text": "Use EXPLAIN to analyze the query plan and create appropriate indexes"
+        },
+        {
+          "id": "C",
+          "text": "Increase the global buffer pool size to cache more data"
+        },
+        {
+          "id": "D",
+          "text": "Reduce data volume by archiving old customer records"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.3",
+      "explanation": "The performance degradation with increasing data volume strongly suggests missing indexes. Use EXPLAIN/SHOW PLAN to analyze the query execution plan and identify table scan operations. Creating indexes on LastName and/or State (or a composite index on both) would dramatically improve performance. Object access would be slower for filtered queries. While buffer pool size helps, it doesn't address the root cause. Data archival doesn't solve the indexing issue. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 12,
+      "type": "MR",
+      "question": "Which factors should be considered when predicting application performance for a multi-user transactional system?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Data volume impacts query performance through index selection and table scan costs"
+        },
+        {
+          "id": "B",
+          "text": "Concurrent user counts affect lock contention and transaction throughput"
+        },
+        {
+          "id": "C",
+          "text": "Query execution plans remain constant regardless of data volume"
+        },
+        {
+          "id": "D",
+          "text": "Performance metrics (prepare/execute time, globals, disk I/O) enable capacity planning"
+        },
+        {
+          "id": "E",
+          "text": "Long-running transactions with broad scope reduce lock contention"
+        },
+        {
+          "id": "F",
+          "text": "The SQL query optimizer generates plans based on table statistics"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "F"
+      ],
+      "domain": "T1.3",
+      "explanation": "Performance prediction requires analyzing data volume (affecting index usage), concurrent users (affecting lock contention), and monitoring performance metrics for capacity planning. The query optimizer uses table statistics to generate plans. However, query plans DO change with data volume - small tables may use table scans while large tables require indexes. Long-running transactions INCREASE contention, not reduce it; short transactions with narrow scope minimize contention. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    }
+  ]
+}

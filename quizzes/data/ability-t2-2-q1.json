@@ -1,0 +1,1024 @@
+{
+  "id": "ability-t2-2-q1",
+  "topic": "ability_t2_2",
+  "topicLabel": "T2.2 · Integrates InterSystems IRIS with CI/CD Pipelines",
+  "title": "T2.2: Integrates InterSystems IRIS with CI/CD Pipelines",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T2.2"
+  ],
+  "description": "Test your knowledge of CI/CD integration with InterSystems IRIS including deployment options, CPF management, unit testing, integration testing, non-functional testing, and change promotion strategies",
+  "version": "1.2",
+  "publishedDate": "2026-03-18",
+  "importedFrom": "quiz_temp/T2_2.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Your team is deploying an InterSystems IRIS application to multiple cloud environments. Which deployment option allows you to package the application code and dependencies as a single, portable artifact?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Export application code to XML and load via ^%SYS.OBJ.Load()"
+        },
+        {
+          "id": "B",
+          "text": "Use InterSystems Package Manager (IPM) to create a distributable module"
+        },
+        {
+          "id": "C",
+          "text": "Manually copy .CLS files to each environment's source directory"
+        },
+        {
+          "id": "D",
+          "text": "Deploy via Atelier workspace synchronization"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "InterSystems Package Manager (IPM) is the recommended approach for packaging applications as distributable modules with versioning, dependency management, and automated deployment capabilities. While XML export works, IPM provides better dependency resolution and version control. Manual file copying doesn't handle compiled code properly, and Atelier is for development, not production deployment. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "When implementing a containerized deployment strategy for InterSystems IRIS applications, which of the following are recommended practices?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Build application code into the container image during the Docker build process"
+        },
+        {
+          "id": "B",
+          "text": "Mount the iris.cpf file from the host system into the container"
+        },
+        {
+          "id": "C",
+          "text": "Use CPF merge files to apply environment-specific configurations at runtime"
+        },
+        {
+          "id": "D",
+          "text": "Store database files directly in the container image layer"
+        },
+        {
+          "id": "E",
+          "text": "Use environment variables to override configuration parameters"
+        },
+        {
+          "id": "F",
+          "text": "Include production data in the container image for faster startup"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Best practices for containerized IRIS deployments include: building application code into the image for immutability, using CPF merge files for environment-specific configuration, and using environment variables for runtime customization. The iris.cpf should not be mounted from the host (creates coupling), database files should use volumes (not image layers), and production data should never be in the image (violates immutability and security principles). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Your CI/CD pipeline needs to deploy an IRIS application to Kubernetes with different resource allocations per environment. Which deployment approach provides the most flexibility for managing environment-specific settings?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Hard-code all settings in the iris.cpf file included in the container image"
+        },
+        {
+          "id": "B",
+          "text": "Use Kubernetes ConfigMaps and CPF merge files to apply environment-specific settings"
+        },
+        {
+          "id": "C",
+          "text": "Create separate container images for each environment with different configurations"
+        },
+        {
+          "id": "D",
+          "text": "Manually update the iris.cpf after container deployment using kubectl exec"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Using Kubernetes ConfigMaps with CPF merge files provides the ideal separation of code and configuration. This allows the same container image to be deployed across environments with different configurations applied at deployment time. Hard-coding settings violates the twelve-factor app principle, creating separate images per environment creates maintenance overhead, and manual updates are not suitable for automated CI/CD. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_cpf#RACS_cpf_edit_merge"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "In a continuous deployment pipeline, you are using the CPF merge feature to apply configuration changes to a containerized InterSystems IRIS instance. Which TWO categories would be appropriate to include in your merge files to ensure proper environment-specific configuration?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Collation/National language settings"
+        },
+        {
+          "id": "B",
+          "text": "Database encryption keys"
+        },
+        {
+          "id": "C",
+          "text": "Memory settings such as gmheap and global buffers"
+        },
+        {
+          "id": "D",
+          "text": "Application-specific namespace and database architecture"
+        },
+        {
+          "id": "E",
+          "text": "User settings such as username and password"
+        }
+      ],
+      "answer": [
+        "C",
+        "D"
+      ],
+      "domain": "T2.2",
+      "explanation": "CPF merge files should include environment-specific settings like memory allocation (which varies by environment size) and namespace/database architecture (which may differ between dev/test/prod). Collation settings are typically static across environments. Encryption keys should never be in version control or merge files (use secrets management). User credentials should be managed through secure deployment mechanisms, not CPF files. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_cpf#RACS_cpf_edit_merge"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What is the correct syntax to merge a CPF configuration file during IRIS container startup?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "iris start IRIS --merge /config/merge.cpf"
+        },
+        {
+          "id": "B",
+          "text": "iris merge /config/merge.cpf quietly"
+        },
+        {
+          "id": "C",
+          "text": "iris session iris -U%SYS '##class(Config.CPF).Merge(\"/config/merge.cpf\")'"
+        },
+        {
+          "id": "D",
+          "text": "cpfmerge --file=/config/merge.cpf --instance=IRIS"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "The correct syntax is 'iris merge <filepath> quietly' which merges the specified CPF file into the current configuration without interactive prompts. The 'quietly' parameter is important for automation in CI/CD pipelines. Option A uses incorrect syntax, option C is valid ObjectScript but more complex than needed for startup scripts, and option D uses a non-existent command. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_cpf#RACS_cpf_edit_merge"
+    },
+    {
+      "id": 6,
+      "type": "MR",
+      "question": "Which CPF sections should typically be included in merge files for production deployments? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "[config] section for system-wide settings"
+        },
+        {
+          "id": "B",
+          "text": "[Databases] section for database file locations"
+        },
+        {
+          "id": "C",
+          "text": "[Namespaces] section for application namespace configuration"
+        },
+        {
+          "id": "D",
+          "text": "[Startup] section for system startup routines"
+        },
+        {
+          "id": "E",
+          "text": "[ECPServers] section for distributed cache configuration"
+        },
+        {
+          "id": "F",
+          "text": "[Users] section for user account definitions"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Production CPF merge files should include: [config] for system settings (memory, etc.), [Databases] for database paths (which vary by environment), [Namespaces] for namespace mappings, and [ECPServers] for distributed configurations. The [Startup] section is typically static and part of the base configuration. The [Users] section should not be in merge files - users should be managed through security APIs or external authentication to avoid credential exposure. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_cpf"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "Consider the following %UnitTest test class:\n\nClass MyApp.Tests.CustomerTest Extends %UnitTest.TestCase\n{\n    Method TestCreateCustomer()\n    {\n        Set customer = ##class(MyApp.Customer).%New()\n        Set customer.Name = \"John Doe\"\n        Set customer.Email = \"john@example.com\"\n        Set sc = customer.%Save()\n        Do $$$AssertStatusOK(sc, \"Customer save failed\")\n    }\n}\n\nWhat is wrong with this test implementation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The test class should extend %RegisteredObject, not %UnitTest.TestCase"
+        },
+        {
+          "id": "B",
+          "text": "The test does not clean up created data, potentially affecting other tests"
+        },
+        {
+          "id": "C",
+          "text": "The AssertSuccess method does not exist in %UnitTest.TestCase"
+        },
+        {
+          "id": "D",
+          "text": "Test methods must be declared as ClassMethod, not Method"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "The test creates a persistent object but does not clean it up, which can cause test pollution and failures in subsequent test runs. Best practice is to use OnBeforeAllTests/OnAfterAllTests or OnBeforeOneTest/OnAfterOneTest methods to set up and tear down test data. The test class correctly extends %UnitTest.TestCase, $$$AssertStatusOK is a valid assertion macro for checking status values, and test methods should be instance methods, not class methods. Reference: https://docs.intersystems.com/iris20231/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_Part2",
+      "revised": true
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which methods in the %UnitTest.TestCase class are used for test fixture setup and teardown?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "OnBeforeAllTests() - runs once before all tests in the class"
+        },
+        {
+          "id": "B",
+          "text": "OnAfterAllTests() - runs once after all tests in the class"
+        },
+        {
+          "id": "C",
+          "text": "OnBeforeOneTest() - runs before each individual test method"
+        },
+        {
+          "id": "D",
+          "text": "OnAfterOneTest() - runs after each individual test method"
+        },
+        {
+          "id": "E",
+          "text": "setUp() - runs before each test"
+        },
+        {
+          "id": "F",
+          "text": "tearDown() - runs after each test"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T2.2",
+      "explanation": "The %UnitTest framework provides four fixture methods: OnBeforeAllTests() runs once before all tests in the class, OnAfterAllTests() runs once after all tests complete, OnBeforeOneTest() runs before each individual test, and OnAfterOneTest() runs after each test. These are the InterSystems IRIS naming conventions; setUp() and tearDown() are from other testing frameworks (like JUnit/Python unittest) and are not used in %UnitTest. Reference: https://docs.intersystems.com/iris20231/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_Part2#TUNT_writing_fixture"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Your CI/CD pipeline needs to run unit tests and fail the build if any tests fail. Which command should be used to execute unit tests from a script?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "iris session IRIS -U%SYS '^%UnitTest.Manager.RunTest()'"
+        },
+        {
+          "id": "B",
+          "text": "iris session IRIS '##class(%UnitTest.Manager).RunTest(\"/tests\",,,1)'"
+        },
+        {
+          "id": "C",
+          "text": "unittest run --suite=/tests --fail-on-error"
+        },
+        {
+          "id": "D",
+          "text": "iris test --path=/tests --exit-code"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "The correct command is 'iris session IRIS' followed by ObjectScript that calls %UnitTest.Manager.RunTest() with appropriate parameters. The fourth parameter (1) enables the return of a non-zero exit code on test failure, which is critical for CI/CD pipeline integration. Options A uses incorrect syntax, and options C and D reference non-existent commands. Reference: https://docs.intersystems.com/iris20231/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_Examples"
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "Which assertion methods are available in the %UnitTest.TestCase class? Select all that apply.",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "AssertEquals(expected, actual, message)"
+        },
+        {
+          "id": "B",
+          "text": "AssertSuccess(status, message)"
+        },
+        {
+          "id": "C",
+          "text": "AssertStatusOK(status, message)"
+        },
+        {
+          "id": "D",
+          "text": "AssertTrue(condition, message)"
+        },
+        {
+          "id": "E",
+          "text": "AssertNotNull(object, message)"
+        },
+        {
+          "id": "F",
+          "text": "AssertFileExists(filename, message"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T2.2",
+      "explanation": "%UnitTest.TestCase provides these assertion macros (defined in %outUnitTest.inc): $$$AssertEquals() for value comparison, $$$AssertSuccess() for marking a test as successful, $$$AssertStatusOK() for checking %Status values, and $$$AssertTrue() for boolean conditions. AssertNotNull() does not exist in %UnitTest.TestCase, and AssertFileExists() is not a built-in assertion (the framework provides $$$AssertFilesSame instead). Reference: https://docs.intersystems.com/iris20231/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_Part2#TUNT_writing_assertions",
+      "revised": true
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "What is the purpose of the Debug parameter in %UnitTest.Manager.RunTest()?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Enables verbose logging of all test execution steps"
+        },
+        {
+          "id": "B",
+          "text": "Allows you to set breakpoints in test methods"
+        },
+        {
+          "id": "C",
+          "text": "Loads test classes without executing them for debugging"
+        },
+        {
+          "id": "D",
+          "text": "Prevents the deletion of test data after test completion for inspection"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T2.2",
+      "explanation": "The Debug parameter in RunTest() causes test classes to be loaded and compiled but not executed. This allows developers to set breakpoints in the test code and step through it using the debugger. It does not control logging verbosity, breakpoint functionality (which is IDE-dependent), or test data cleanup (which is controlled by test fixture methods). Reference: https://docs.intersystems.com/iris20231/csp/docbook/DocBook.UI.Page.cls?KEY=TUNT_Examples"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "In an integration testing strategy for a REST API built on InterSystems IRIS, you need to verify that the complete workflow from HTTP request to database persistence works correctly. Which approach best represents an integration test?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Testing individual business logic methods in isolation using mocked dependencies"
+        },
+        {
+          "id": "B",
+          "text": "Sending HTTP requests to the REST service and verifying the database state changes"
+        },
+        {
+          "id": "C",
+          "text": "Unit testing the data model classes to ensure validation rules work correctly"
+        },
+        {
+          "id": "D",
+          "text": "Performance testing the API under high concurrent load"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Integration testing verifies that multiple components work together correctly. Sending HTTP requests and verifying database changes tests the integration of the web service layer, business logic, and data persistence layer. Option A describes unit testing, option C is also unit testing (at the model layer), and option D describes performance testing, not integration testing. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GUNITTEST_about"
+    },
+    {
+      "id": 13,
+      "type": "MR",
+      "question": "Your team is implementing integration tests for an InterSystems IRIS application that integrates with external systems. Which strategies would improve test reliability and speed?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use test doubles (mocks/stubs) for external service dependencies"
+        },
+        {
+          "id": "B",
+          "text": "Always test against production external systems to ensure accuracy"
+        },
+        {
+          "id": "C",
+          "text": "Create dedicated test databases that are reset before each test run"
+        },
+        {
+          "id": "D",
+          "text": "Use WireMock or similar tools to simulate external HTTP services"
+        },
+        {
+          "id": "E",
+          "text": "Share database state across test runs to improve execution speed"
+        },
+        {
+          "id": "F",
+          "text": "Implement test data builders to create consistent test scenarios"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D",
+        "F"
+      ],
+      "domain": "T2.2",
+      "explanation": "Effective integration testing strategies include: using test doubles for external dependencies (reliability and speed), dedicated test databases with clean state (isolation), tools like WireMock for HTTP service simulation (control and determinism), and test data builders for consistent setup. Testing against production systems risks data corruption and creates dependencies on system availability. Sharing database state between tests creates coupling and non-deterministic failures. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GUNITTEST_about"
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "When implementing integration tests for an Interoperability production, which %UnitTest feature should you use to test message routing and transformation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%UnitTest.TestCase with manual message creation and routing"
+        },
+        {
+          "id": "B",
+          "text": "%UnitTest.TestProduction for production testing with trace analysis"
+        },
+        {
+          "id": "C",
+          "text": "%UnitTest.Portal for web-based testing"
+        },
+        {
+          "id": "D",
+          "text": "Standard %UnitTest.TestCase is sufficient; no special features needed"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "%UnitTest.TestProduction is specifically designed for testing Interoperability productions. It provides methods for starting productions, sending messages, verifying message routing, and analyzing production traces. Using standard TestCase (options A and D) requires manual setup and lacks production-specific assertions. %UnitTest.Portal (option C) is for testing CSP pages, not productions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EGDV_testing"
+    },
+    {
+      "id": 15,
+      "type": "MR",
+      "question": "Which of the following are valid approaches for implementing integration tests in a CI/CD pipeline?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Run integration tests against a temporary IRIS instance created per build"
+        },
+        {
+          "id": "B",
+          "text": "Use Docker Compose to spin up IRIS and dependent services for testing"
+        },
+        {
+          "id": "C",
+          "text": "Skip integration tests in CI and run them manually before releases"
+        },
+        {
+          "id": "D",
+          "text": "Execute integration tests in parallel to reduce pipeline duration"
+        },
+        {
+          "id": "E",
+          "text": "Use the same test data for every integration test run"
+        },
+        {
+          "id": "F",
+          "text": "Implement integration tests as part of the deployment verification process"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "F"
+      ],
+      "domain": "T2.2",
+      "explanation": "Best practices for integration testing in CI/CD include: using ephemeral IRIS instances per build (isolation), Docker Compose for multi-service scenarios (reproducibility), parallel execution (speed), and deployment verification (production confidence). Skipping automated integration tests defeats the purpose of CI/CD. Using the same test data can be acceptable if tests are idempotent and properly isolated, but fresh data is generally preferred to avoid state coupling. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "Your application has a requirement that the user registration API must respond within 500ms for 95% of requests. Which testing approach should you implement in your CI/CD pipeline?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Unit tests with timing assertions using $ZUtil for each method"
+        },
+        {
+          "id": "B",
+          "text": "Integration tests that verify the complete workflow works correctly"
+        },
+        {
+          "id": "C",
+          "text": "Performance tests using tools like Apache JMeter or Gatling with percentile assertions"
+        },
+        {
+          "id": "D",
+          "text": "Manual testing in production to gather real-world performance metrics"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T2.2",
+      "explanation": "Performance requirements (like 95th percentile response time) require dedicated performance testing tools that can generate load, measure response times, and calculate percentile distributions. JMeter and Gatling are industry-standard tools for this. Unit tests (option A) can't measure realistic end-to-end performance. Integration tests (option B) verify functionality, not performance. Manual production testing (option D) is too late and risky for performance validation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 17,
+      "type": "MR",
+      "question": "Which non-functional requirements can be validated through automated testing in a CI/CD pipeline for an InterSystems IRIS application?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Security - SQL injection vulnerability scanning using static analysis"
+        },
+        {
+          "id": "B",
+          "text": "Performance - database query response time under concurrent load"
+        },
+        {
+          "id": "C",
+          "text": "Availability - system uptime monitoring in production"
+        },
+        {
+          "id": "D",
+          "text": "Maintainability - code complexity metrics and technical debt analysis"
+        },
+        {
+          "id": "E",
+          "text": "Scalability - testing horizontal scaling with load balancers"
+        },
+        {
+          "id": "F",
+          "text": "Usability - user interface design aesthetics"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Automated testing can validate: security (static analysis tools, OWASP ZAP scans), performance (load testing tools), maintainability (SonarQube, code metrics), and scalability (load testing across instances). Availability (option C) is monitored in production, not in a pipeline. Usability aesthetics (option F) require human evaluation, though accessibility can be automated. Reference: https://docs.intersystems.com/iris20253/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "You need to implement security testing for your IRIS application to detect SQL injection vulnerabilities. Which approach should be integrated into your CI/CD pipeline?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Manual penetration testing by security experts before each release"
+        },
+        {
+          "id": "B",
+          "text": "Static code analysis to detect unsafe dynamic SQL construction patterns"
+        },
+        {
+          "id": "C",
+          "text": "Relying on InterSystems IRIS built-in security features without additional testing"
+        },
+        {
+          "id": "D",
+          "text": "Testing only in production to avoid security tool false positives"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Static code analysis can automatically detect security anti-patterns like unsafe SQL construction, XSS vulnerabilities, and other code-level security issues in the CI pipeline. Manual penetration testing (option A) is valuable but not suitable for every build. Relying solely on platform security (option C) ignores application-level vulnerabilities. Production-only testing (option D) is far too late and risky. Reference: https://docs.intersystems.com/iris20253/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "Your organization requires that all database queries complete within 2 seconds under a load of 100 concurrent users. How should you validate this non-functional requirement?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Add AssertTrue($ZUtil timing checks) in unit tests"
+        },
+        {
+          "id": "B",
+          "text": "Implement load testing with 100 concurrent users and assert query response times"
+        },
+        {
+          "id": "C",
+          "text": "Review query execution plans manually in the Management Portal"
+        },
+        {
+          "id": "D",
+          "text": "Monitor query performance in production and rollback if requirements are not met"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Performance requirements under load require dedicated load testing with the specified concurrency level and assertions on response times. This can be implemented using tools like JMeter or custom test harness. Unit test timing checks (option A) don't simulate concurrent load. Manual query plan review (option C) provides insights but doesn't validate the requirement. Production monitoring (option D) is reactive and risks user impact. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 20,
+      "type": "MR",
+      "question": "Which of the following are important considerations when testing application security as part of CI/CD?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Validate that Role-Based Access Control (RBAC) is enforced correctly"
+        },
+        {
+          "id": "B",
+          "text": "Test that audit logging captures security-relevant events"
+        },
+        {
+          "id": "C",
+          "text": "Verify that encryption is properly configured for sensitive data at rest"
+        },
+        {
+          "id": "D",
+          "text": "Store production encryption keys in the CI/CD configuration for testing"
+        },
+        {
+          "id": "E",
+          "text": "Test authentication mechanisms against common attack vectors"
+        },
+        {
+          "id": "F",
+          "text": "Disable security features during testing to improve test execution speed"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Security testing should validate: RBAC enforcement (authorization), audit logging (compliance), encryption configuration (data protection), and authentication resilience (security). Production encryption keys should NEVER be in CI/CD configurations (option D) - use test keys or key management services. Disabling security during testing (option F) defeats the purpose and can allow security bugs to reach production. Reference: https://docs.intersystems.com/iris20253/csp/docbook/DocBook.UI.Page.cls?KEY=PAGE_security"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "In a multi-environment deployment strategy (Dev → QA → Staging → Production), your team discovers a critical bug in Production. What is the recommended change promotion strategy?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Apply the hotfix directly to Production, then backport to lower environments later"
+        },
+        {
+          "id": "B",
+          "text": "Apply the fix to Dev, then promote through QA and Staging to Production"
+        },
+        {
+          "id": "C",
+          "text": "Apply the fix to all environments simultaneously to maintain consistency"
+        },
+        {
+          "id": "D",
+          "text": "Create a hotfix branch, test in Staging, deploy to Production, then merge back to main branch"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T2.2",
+      "explanation": "For production hotfixes, the recommended strategy is to create a hotfix branch, test in a production-like environment (Staging), deploy to Production with proper validation, then merge back to the main development branch. This balances urgency with risk management. Skipping testing environments (option A) is too risky. Following the full pipeline (option B) may be too slow for critical issues. Simultaneous deployment (option C) bypasses testing and validation. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 22,
+      "type": "MR",
+      "question": "Which factors should influence your change promotion strategy across environments?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The criticality and risk level of the change being deployed"
+        },
+        {
+          "id": "B",
+          "text": "The time of day and business operating hours"
+        },
+        {
+          "id": "C",
+          "text": "The availability of rollback mechanisms (backups, blue-green deployment)"
+        },
+        {
+          "id": "D",
+          "text": "The number of developers on the team"
+        },
+        {
+          "id": "E",
+          "text": "The testing coverage and pass rate in lower environments"
+        },
+        {
+          "id": "F",
+          "text": "The personal preference of the deployment manager"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Change promotion should consider: change risk (determines testing rigor), deployment timing (minimize business impact), rollback capability (risk mitigation), and test coverage (quality assurance). Team size (option D) affects development velocity but not promotion strategy. Personal preference (option F) should not drive technical decisions - promotion should follow documented processes based on risk and quality metrics. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "Your team uses separate CPF merge files for each environment. During promotion from QA to Staging, you notice that database paths in the merge file are environment-specific. What is the best practice?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Hard-code all database paths in the application code for consistency"
+        },
+        {
+          "id": "B",
+          "text": "Use environment variables in CPF merge files to parameterize database paths"
+        },
+        {
+          "id": "C",
+          "text": "Manually edit the CPF file in each environment after deployment"
+        },
+        {
+          "id": "D",
+          "text": "Store all databases in the same path across all environments"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Using environment variables in CPF merge files allows the same deployment artifact to work across environments while adapting to environment-specific paths, resource allocations, etc. Hard-coding paths (option A) creates environment coupling. Manual editing (option C) is error-prone and not suitable for automation. Forcing the same paths (option D) may not be feasible or optimal for different environments. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RACS_cpf#RACS_cpf_edit_merge"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "When promoting changes that include database schema modifications (new properties, indices), what is a critical consideration?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Schema changes can be deployed without any special consideration"
+        },
+        {
+          "id": "B",
+          "text": "Data migration scripts must be tested and may require downtime or blue-green deployment"
+        },
+        {
+          "id": "C",
+          "text": "Schema changes should always be applied directly in production first"
+        },
+        {
+          "id": "D",
+          "text": "Indices should be created after data migration for better performance"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Database schema changes often require data migration, which must be carefully tested and may require deployment strategies like maintenance windows or blue-green deployments to avoid downtime. Schema changes are not trivial (option A) and can cause significant issues if not properly managed. Applying schema changes in production first (option C) bypasses testing and is extremely risky. While creating indices after large data loads can be a performance optimization, option D oversimplifies the complex topic of schema migration. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 25,
+      "type": "MR",
+      "question": "Which deployment strategies help minimize risk when promoting changes to production?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Blue-green deployment - switch traffic between two identical environments"
+        },
+        {
+          "id": "B",
+          "text": "Canary deployment - gradually roll out to a subset of users first"
+        },
+        {
+          "id": "C",
+          "text": "Feature flags - enable/disable features without redeployment"
+        },
+        {
+          "id": "D",
+          "text": "Big bang deployment - deploy all changes at once during maintenance window"
+        },
+        {
+          "id": "E",
+          "text": "Rolling deployment - gradually update instances one at a time"
+        },
+        {
+          "id": "F",
+          "text": "Cowboy deployment - deploy changes directly to production without testing"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Risk-minimizing strategies include: blue-green deployment (instant rollback), canary deployment (limited blast radius), feature flags (runtime control), and rolling deployment (gradual rollout). Big bang deployment (option D) is high-risk though sometimes necessary. Cowboy deployment (option F) bypasses all safety mechanisms and should never be used. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 26,
+      "type": "MC",
+      "question": "Your application uses InterSystems IRIS Interoperability productions. When promoting production configuration changes across environments, what is a key consideration?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Production configurations are stored in globals and automatically promoted with code"
+        },
+        {
+          "id": "B",
+          "text": "Production configurations should be exported as XML and version-controlled separately"
+        },
+        {
+          "id": "C",
+          "text": "Production configurations cannot be automated and must be manually recreated in each environment"
+        },
+        {
+          "id": "D",
+          "text": "Production configurations are stored in CPF files and merged during deployment"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Interoperability production configurations should be exported as XML (using the Export feature or ##class(Ens.Util.ProductionModifier)) and version-controlled separately from code. This allows configurations to be promoted across environments systematically. While production settings are stored in globals, they don't automatically promote (option A). Production configurations can and should be automated (option C is incorrect). Production configurations are not in CPF files (option D) - they have their own XML format. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=EGDV_deploying"
+    },
+    {
+      "id": 27,
+      "type": "MR",
+      "question": "Which of the following should be version-controlled as part of your CI/CD pipeline for InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Application source code (.cls, .mac, .int files)"
+        },
+        {
+          "id": "B",
+          "text": "CPF merge files for environment-specific configuration"
+        },
+        {
+          "id": "C",
+          "text": "Database files (.DAT)"
+        },
+        {
+          "id": "D",
+          "text": "Unit and integration test code"
+        },
+        {
+          "id": "E",
+          "text": "Deployment automation scripts and Dockerfiles"
+        },
+        {
+          "id": "F",
+          "text": "Production iris.cpf with all passwords and keys"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Version control should include: application source code (the application itself), CPF merge files (infrastructure as code), test code (quality assurance), and deployment scripts (reproducibility). Database files (option C) contain runtime data and should not be in version control. The production iris.cpf with passwords (option F) should never be in version control due to security concerns - use merge files and secrets management instead. Reference: https://docs.intersystems.com/components/csp/docbook/DocBook.UI.Page.cls?KEY=GVSCO"
+    },
+    {
+      "id": 28,
+      "type": "MC",
+      "question": "After promoting a change to production, you need to verify the deployment was successful. Which approach provides the most comprehensive validation?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Check that the IRIS instance is running with 'iris qlist'"
+        },
+        {
+          "id": "B",
+          "text": "Run a suite of smoke tests that verify critical functionality"
+        },
+        {
+          "id": "C",
+          "text": "Review the deployment logs for error messages"
+        },
+        {
+          "id": "D",
+          "text": "Compare the deployed code version number with the expected version"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Smoke tests provide functional validation that critical application features work correctly after deployment. This catches not just deployment failures but also configuration issues, integration problems, and environment-specific bugs. Checking if IRIS is running (option A) only validates the service is up. Log review (option C) is important but may miss issues not logged. Version comparison (option D) validates the correct code was deployed but not that it works correctly in the environment. Best practice is to combine all these approaches, but smoke tests provide the most value. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GUNITTEST_about"
+    },
+    {
+      "id": 29,
+      "type": "MC",
+      "question": "You are implementing a CI/CD pipeline that builds a Docker container with embedded IRIS application code. Which approach ensures that the application code is properly compiled and available when the container starts?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Copy source code to /opt/irisapp and rely on dynamic compilation at runtime"
+        },
+        {
+          "id": "B",
+          "text": "Load and compile code during the Docker build using iris session commands"
+        },
+        {
+          "id": "C",
+          "text": "Mount application source code as a volume and compile on first request"
+        },
+        {
+          "id": "D",
+          "text": "Include pre-compiled .OBJ files in the container image"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T2.2",
+      "explanation": "Application code should be loaded and compiled during the Docker build process using 'iris session' commands in the Dockerfile. This creates an immutable container image with compiled code ready to run. Runtime compilation (option A) introduces startup delays and potential failures. Volume mounting (option C) couples the container to the host. Pre-compiled .OBJ files (option D) are platform-specific and can have compatibility issues across IRIS versions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    },
+    {
+      "id": 30,
+      "type": "MR",
+      "question": "When implementing continuous deployment for an InterSystems IRIS application, which practices improve deployment reliability and enable rapid rollback?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Implement database backup before each production deployment"
+        },
+        {
+          "id": "B",
+          "text": "Use immutable infrastructure (containers) rather than in-place updates"
+        },
+        {
+          "id": "C",
+          "text": "Deploy during business hours to enable immediate issue detection"
+        },
+        {
+          "id": "D",
+          "text": "Maintain detailed deployment runbooks and automation scripts"
+        },
+        {
+          "id": "E",
+          "text": "Test rollback procedures regularly in lower environments"
+        },
+        {
+          "id": "F",
+          "text": "Allow developers to deploy directly to production for faster iteration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T2.2",
+      "explanation": "Deployment reliability requires: database backups (recovery capability), immutable infrastructure (consistent, rollback-friendly), runbooks/automation (repeatability), and tested rollback procedures (confidence). Deploying during business hours (option C) increases impact if issues occur - off-hours or gradual rollouts are preferred. Direct developer access to production (option F) bypasses quality controls and increases risk - deployments should be automated and controlled. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK"
+    }
+  ]
+}

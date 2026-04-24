@@ -1,17 +1,420 @@
 [
-  {"id":"01-objectscript-basics-q1","file":"01-objectscript-basics-q1.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T4.1","T4.3","T1.2"],"totalQuestions":11},
-  {"id":"01-objectscript-basics-q2","file":"01-objectscript-basics-q2.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 02","difficulty":"Intermediate","examDomains":["T4.1","T4.3","T1.2"],"totalQuestions":12},
-  {"id":"01-objectscript-basics-q3","file":"01-objectscript-basics-q3.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 03","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
-  {"id":"01-objectscript-basics-q4","file":"01-objectscript-basics-q4.json","topic":"01_objectscript-basics","topicLabel":"ObjectScript Basics","title":"Quiz 04","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
-  {"id":"02-classes-objects-q1","file":"02-classes-objects-q1.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
-  {"id":"02-classes-objects-q2","file":"02-classes-objects-q2.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 02 — Class Categories","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":10},
-  {"id":"02-classes-objects-q3","file":"02-classes-objects-q3.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 03 — Class Members","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":10},
-  {"id":"02-classes-objects-q4","file":"02-classes-objects-q4.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 04 — Indices","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":10},
-  {"id":"02-classes-objects-q5","file":"02-classes-objects-q5.json","topic":"02_classes-objects","topicLabel":"Classes & Objects","title":"Quiz 05 — Streams","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":10},
-  {"id":"03-globals-q1","file":"03-globals-q1.json","topic":"03_globals","topicLabel":"Globals","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.2"],"totalQuestions":12},
-  {"id":"04-sql-q1","file":"04-sql-q1.json","topic":"04_sql","topicLabel":"SQL in IRIS","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T3.1","T3.2","T3.3"],"totalQuestions":12},
-  {"id":"05-rest-api-q1","file":"05-rest-api-q1.json","topic":"05_rest-api","topicLabel":"REST API","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T3.4","T1.2"],"totalQuestions":12},
-  {"id":"06-interoperability-q1","file":"06-interoperability-q1.json","topic":"06_interoperability","topicLabel":"Interoperability","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.2","T4.1"],"totalQuestions":12},
-  {"id":"10-architecture-q1","file":"10-architecture-q1.json","topic":"10_architecture","topicLabel":"Architecture & Database Design","title":"Quiz 01","difficulty":"Beginner → Intermediate","examDomains":["T1.1","T1.2"],"totalQuestions":12},
-  {"id":"mixed-rest-error-q1","file":"mixed-rest-error-q1.json","topic":"mixed-rest-error","topicLabel":"REST API + Error Handling","title":"Quiz 01","difficulty":"Intermediate","examDomains":["T3.4","T4.1","T1.2"],"totalQuestions":10}
+  {
+    "id": "01-objectscript-basics-q1",
+    "file": "01-objectscript-basics-q1.json",
+    "topic": "01_objectscript-basics",
+    "topicLabel": "ObjectScript Basics",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T4.1",
+      "T4.3",
+      "T1.2"
+    ],
+    "totalQuestions": 11
+  },
+  {
+    "id": "01-objectscript-basics-q2",
+    "file": "01-objectscript-basics-q2.json",
+    "topic": "01_objectscript-basics",
+    "topicLabel": "ObjectScript Basics",
+    "title": "Quiz 02",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.1",
+      "T4.3",
+      "T1.2"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "01-objectscript-basics-q3",
+    "file": "01-objectscript-basics-q3.json",
+    "topic": "01_objectscript-basics",
+    "topicLabel": "ObjectScript Basics",
+    "title": "Quiz 03",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2",
+      "T4.1"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "01-objectscript-basics-q4",
+    "file": "01-objectscript-basics-q4.json",
+    "topic": "01_objectscript-basics",
+    "topicLabel": "ObjectScript Basics",
+    "title": "Quiz 04",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2",
+      "T4.1"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "02-classes-objects-q1",
+    "file": "02-classes-objects-q1.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2",
+      "T4.1"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "02-classes-objects-q2",
+    "file": "02-classes-objects-q2.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 02 — Class Categories",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 10
+  },
+  {
+    "id": "02-classes-objects-q3",
+    "file": "02-classes-objects-q3.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 03 — Class Members",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 10
+  },
+  {
+    "id": "02-classes-objects-q4",
+    "file": "02-classes-objects-q4.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 04 — Indices",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 10
+  },
+  {
+    "id": "02-classes-objects-q5",
+    "file": "02-classes-objects-q5.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 05 — Streams",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 10
+  },
+  {
+    "id": "03-globals-q1",
+    "file": "03-globals-q1.json",
+    "topic": "03_globals",
+    "topicLabel": "Globals",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "04-sql-q1",
+    "file": "04-sql-q1.json",
+    "topic": "04_sql",
+    "topicLabel": "SQL in IRIS",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T3.1",
+      "T3.2",
+      "T3.3"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "05-rest-api-q1",
+    "file": "05-rest-api-q1.json",
+    "topic": "05_rest-api",
+    "topicLabel": "REST API",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T3.4",
+      "T1.2"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "06-interoperability-q1",
+    "file": "06-interoperability-q1.json",
+    "topic": "06_interoperability",
+    "topicLabel": "Interoperability",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.2",
+      "T4.1"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "10-architecture-q1",
+    "file": "10-architecture-q1.json",
+    "topic": "10_architecture",
+    "topicLabel": "Architecture & Database Design",
+    "title": "Quiz 01",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T1.1",
+      "T1.2"
+    ],
+    "totalQuestions": 12
+  },
+  {
+    "id": "mixed-rest-error-q1",
+    "file": "mixed-rest-error-q1.json",
+    "topic": "mixed-rest-error",
+    "topicLabel": "REST API + Error Handling",
+    "title": "Quiz 01",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T3.4",
+      "T4.1",
+      "T1.2"
+    ],
+    "totalQuestions": 10
+  },
+  {
+    "id": "ability-t1-1-q1",
+    "file": "ability-t1-1-q1.json",
+    "topic": "ability_t1_1",
+    "topicLabel": "T1.1 · Determines Database Storage Strategy",
+    "title": "T1.1: Determines Database Storage Strategy",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T1.1"
+    ],
+    "totalQuestions": 37,
+    "description": "Test your knowledge of database storage strategies in InterSystems IRIS, including namespace design, architecture recommendations, global mappings, mirroring, scaling, upgrades, security, interoperability, and business intelligence integration",
+    "version": "1.2",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T1_1.json"
+  },
+  {
+    "id": "ability-t1-2-q1",
+    "file": "ability-t1-2-q1.json",
+    "topic": "ability_t1_2",
+    "topicLabel": "T1.2 · Determines Data Structures",
+    "title": "T1.2: Determines Data Structures",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 25,
+    "description": "Test your knowledge of data structures in InterSystems IRIS including object types, indexes, globals, streams, and JSON support",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T1_2.json"
+  },
+  {
+    "id": "ability-t1-3-q1",
+    "file": "ability-t1-3-q1.json",
+    "topic": "ability_t1_3",
+    "topicLabel": "T1.3 · Plans Data Lifecycle",
+    "title": "T1.3: Plans Data Lifecycle",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T1.3"
+    ],
+    "totalQuestions": 12,
+    "description": "Test your knowledge of data lifecycle planning in InterSystems IRIS, including storage/retrieval strategies, CRUD operations, and performance prediction",
+    "version": "1.0",
+    "publishedDate": "2025-12-29",
+    "importedFrom": "quiz_temp/T1_3.json"
+  },
+  {
+    "id": "ability-t2-1-q1",
+    "file": "ability-t2-1-q1.json",
+    "topic": "ability_t2_1",
+    "topicLabel": "T2.1 · Uses Recommended Development Tools and Workflows",
+    "title": "T2.1: Uses Recommended Development Tools and Workflows",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T2.1"
+    ],
+    "totalQuestions": 30,
+    "description": "Test your knowledge of InterSystems IRIS development tools, Visual Studio Code integration, debugging, Docker Compose, and background execution strategies",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T2_1.json"
+  },
+  {
+    "id": "ability-t2-2-q1",
+    "file": "ability-t2-2-q1.json",
+    "topic": "ability_t2_2",
+    "topicLabel": "T2.2 · Integrates InterSystems IRIS with CI/CD Pipelines",
+    "title": "T2.2: Integrates InterSystems IRIS with CI/CD Pipelines",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T2.2"
+    ],
+    "totalQuestions": 30,
+    "description": "Test your knowledge of CI/CD integration with InterSystems IRIS including deployment options, CPF management, unit testing, integration testing, non-functional testing, and change promotion strategies",
+    "version": "1.2",
+    "publishedDate": "2026-03-18",
+    "importedFrom": "quiz_temp/T2_2.json"
+  },
+  {
+    "id": "ability-t2-3-q1",
+    "file": "ability-t2-3-q1.json",
+    "topic": "ability_t2_3",
+    "topicLabel": "T2.3 · Uses Source Control with InterSystems IRIS",
+    "title": "T2.3: Uses Source Control with InterSystems IRIS",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T2.3"
+    ],
+    "totalQuestions": 10,
+    "description": "Test your knowledge of source control integration with InterSystems IRIS, including client-side and server-side options, REST API usage, and mitigation strategies for class/schema imports",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T2_3.json"
+  },
+  {
+    "id": "ability-t3-1-q1",
+    "file": "ability-t3-1-q1.json",
+    "topic": "ability_t3_1",
+    "topicLabel": "T3.1 · Uses Python with InterSystems IRIS",
+    "title": "T3.1: Uses Python with InterSystems IRIS",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T3.1"
+    ],
+    "totalQuestions": 20,
+    "description": "Test your knowledge of Python integration with InterSystems IRIS, including Embedded Python capabilities and selecting appropriate Python strategies for different use cases",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T3_1.json"
+  },
+  {
+    "id": "ability-t3-2-q1",
+    "file": "ability-t3-2-q1.json",
+    "topic": "ability_t3_2",
+    "topicLabel": "T3.2 · Connects to InterSystems IRIS",
+    "title": "T3.2: Connects to InterSystems IRIS",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T3.2"
+    ],
+    "totalQuestions": 10,
+    "description": "Test your knowledge of JDBC and ODBC connections to InterSystems IRIS",
+    "version": "1.0",
+    "publishedDate": "2025-12-29",
+    "importedFrom": "quiz_temp/T3_2.json"
+  },
+  {
+    "id": "ability-t3-3-q1",
+    "file": "ability-t3-3-q1.json",
+    "topic": "ability_t3_3",
+    "topicLabel": "T3.3 · Uses SQL with InterSystems IRIS",
+    "title": "T3.3: Uses SQL with InterSystems IRIS",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T3.3"
+    ],
+    "totalQuestions": 30,
+    "description": "Test your knowledge of SQL usage in InterSystems IRIS, including embedded vs dynamic SQL, IRIS-specific features, query optimization, and security",
+    "version": "1.0",
+    "publishedDate": "2025-12-29",
+    "importedFrom": "quiz_temp/T3_3.json"
+  },
+  {
+    "id": "ability-t3-4-q1",
+    "file": "ability-t3-4-q1.json",
+    "topic": "ability_t3_4",
+    "topicLabel": "T3.4 · Creates REST Services",
+    "title": "T3.4: Creates REST Services",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T3.4"
+    ],
+    "totalQuestions": 25,
+    "description": "Test your knowledge of REST service development in InterSystems IRIS",
+    "version": "1.0",
+    "publishedDate": "2025-12-29",
+    "importedFrom": "quiz_temp/T3_4.json"
+  },
+  {
+    "id": "ability-t4-1-q1",
+    "file": "ability-t4-1-q1.json",
+    "topic": "ability_t4_1",
+    "topicLabel": "T4.1 · Writes Defensive Code",
+    "title": "T4.1: Writes Defensive Code",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.1"
+    ],
+    "totalQuestions": 20,
+    "description": "Test your knowledge of defensive coding practices in InterSystems IRIS, including error handling strategies, system performance diagnosis, process memory management, and system limits",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T4_1.json"
+  },
+  {
+    "id": "ability-t4-2-q1",
+    "file": "ability-t4-2-q1.json",
+    "topic": "ability_t4_2",
+    "topicLabel": "T4.2 · Writes Secure Code",
+    "title": "T4.2: Writes Secure Code",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.2"
+    ],
+    "totalQuestions": 25,
+    "description": "Test your knowledge of secure coding practices in InterSystems IRIS, including encryption, secure connections, SQL injection prevention, and security models",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T4_2.json"
+  },
+  {
+    "id": "ability-t4-3-q1",
+    "file": "ability-t4-3-q1.json",
+    "topic": "ability_t4_3",
+    "topicLabel": "T4.3 · Ensures Data Integrity",
+    "title": "T4.3: Ensures Data Integrity",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.3"
+    ],
+    "totalQuestions": 22,
+    "description": "Test your knowledge of data integrity in InterSystems IRIS including journaling, transaction management, and automatic rollback mechanisms",
+    "version": "1.1",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T4_3.json"
+  },
+  {
+    "id": "ability-t4-4-q1",
+    "file": "ability-t4-4-q1.json",
+    "topic": "ability_t4_4",
+    "topicLabel": "T4.4 · Implements Concurrency Controls",
+    "title": "T4.4: Implements Concurrency Controls",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.4"
+    ],
+    "totalQuestions": 30,
+    "description": "Test your knowledge of concurrency control mechanisms in InterSystems IRIS, including locking, best practices, and choosing between row-level and table-level locks",
+    "version": "1.2",
+    "publishedDate": "2026-01-24",
+    "importedFrom": "quiz_temp/T4_4.json"
+  }
 ]

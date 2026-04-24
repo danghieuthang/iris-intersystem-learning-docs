@@ -1,0 +1,759 @@
+{
+  "id": "ability-t1-2-q1",
+  "topic": "ability_t1_2",
+  "topicLabel": "T1.2 · Determines Data Structures",
+  "title": "T1.2: Determines Data Structures",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T1.2"
+  ],
+  "description": "Test your knowledge of data structures in InterSystems IRIS including object types, indexes, globals, streams, and JSON support",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T1_2.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MR",
+      "question": "Which of the following statements about %RegisteredObject, %SerialObject, and %Persistent classes are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%RegisteredObject classes exist only in memory and are not stored in the database"
+        },
+        {
+          "id": "B",
+          "text": "%SerialObject data is stored within the same database record as its parent class"
+        },
+        {
+          "id": "C",
+          "text": "%Persistent classes automatically generate SQL tables when compiled"
+        },
+        {
+          "id": "D",
+          "text": "%RegisteredObject classes can have properties but cannot have methods"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "%RegisteredObject classes exist only in memory and have no database storage. %SerialObject instances are embedded within their parent object's database record. %Persistent classes automatically generate SQL table projections when compiled, allowing SQL access without explicit CREATE TABLE commands. All object types can have both properties and methods. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_persobj_intro"
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "You are designing a Patient class that needs to store a mailing address. The address should not exist independently and should be stored with the patient record. Which approach is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Create Address as a %Persistent class with a one-to-one relationship"
+        },
+        {
+          "id": "B",
+          "text": "Create Address as a %SerialObject class embedded in the Patient class"
+        },
+        {
+          "id": "C",
+          "text": "Create Address as a %RegisteredObject class referenced by the Patient"
+        },
+        {
+          "id": "D",
+          "text": "Store address fields directly as individual properties in the Patient class"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "%SerialObject is the correct choice for embedded data that has no independent existence. The address data will be stored within the same database record as the Patient, avoiding the overhead of a separate table and relationship. This is more efficient than using a %Persistent class with a relationship, and more maintainable than individual properties. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Consider the following class definition:\n\nClass Sample.Person Extends %Persistent\n{\n    Property Name As %String;\n    Property SSN As %String;  // Social Security Number - a unique government-issued ID\n    Property Email As %String;\n}\n\nThe SSN property stores a unique identifier assigned to each person (similar to national ID numbers in other countries). You need to optimize queries that frequently search by SSN. Which index type should you add?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Index SSNIdx On SSN [ Type = bitmap ];"
+        },
+        {
+          "id": "B",
+          "text": "Index SSNIdx On SSN [ Type = index ];"
+        },
+        {
+          "id": "C",
+          "text": "Index SSNIdx On SSN [ Unique ];"
+        },
+        {
+          "id": "D",
+          "text": "Index SSNIdx On SSN [ Type = extent ];"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "A unique index is most appropriate for SSN since it is a unique identifier per person (like national ID numbers). The Unique keyword creates a standard index that enforces uniqueness and optimizes equality searches. Bitmap indexes are for low-cardinality data (few distinct values) - SSN has millions of unique values so bitmap would be inefficient. 'Type = index' is not valid syntax. 'Type = extent' is for class extent indexes, not property indexes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 4,
+      "type": "MR",
+      "question": "Which of the following scenarios are appropriate use cases for bitmap indexes?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "A Status property with values 'Active', 'Inactive', 'Pending' (3 distinct values)"
+        },
+        {
+          "id": "B",
+          "text": "A CustomerID property with hundreds of thousands of unique values"
+        },
+        {
+          "id": "C",
+          "text": "A Gender property with values 'M', 'F', 'Other' (3 distinct values)"
+        },
+        {
+          "id": "D",
+          "text": "An EmailAddress property with unique values for each record"
+        }
+      ],
+      "answer": [
+        "A",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "Bitmap indexes are optimal for low-cardinality data (properties with few distinct values, generally up to about 10,000 distinct values). Status and Gender are excellent candidates because they have very few distinct values but appear in many records. CustomerID with hundreds of thousands of unique values and EmailAddress with unique values per record have high cardinality, making bitmap indexes inefficient and causing excessive storage overhead. Use standard indexes for high-cardinality properties. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 5,
+      "type": "MC",
+      "question": "What index type should you use to optimize queries with WHERE clauses that filter on multiple properties together, such as 'WHERE LastName = ? AND FirstName = ?'?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Create separate indexes on LastName and FirstName"
+        },
+        {
+          "id": "B",
+          "text": "Create a bitmap index on both properties"
+        },
+        {
+          "id": "C",
+          "text": "Create a compound index on (LastName, FirstName)"
+        },
+        {
+          "id": "D",
+          "text": "Create a full-text index on both properties"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "A compound (multi-property) index optimizes queries that filter on multiple properties together. The index should list properties in the order they appear in the WHERE clause. While separate indexes might be used, a compound index is more efficient for multi-property queries. Bitmap indexes are for low-cardinality data, and full-text indexes are for text search operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "When you compile a %Persistent class in InterSystems IRIS, what happens to the underlying global storage?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Data is stored in a global with the same name as the class"
+        },
+        {
+          "id": "B",
+          "text": "Data is stored in a global named ^Package.ClassD (e.g., ^Sample.PersonD)"
+        },
+        {
+          "id": "C",
+          "text": "Data is stored in multiple globals based on property types"
+        },
+        {
+          "id": "D",
+          "text": "Data is stored directly in SQL tables without using globals"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "By default, persistent class data is stored in globals named ^Package.ClassD (or ^ClassD for classes without a package). For example, Sample.Person stores data in ^Sample.PersonD. The .D suffix indicates 'Data'. Indexes use .I suffix. Note: In newer versions, when ManagedExtent or certain storage parameters are specified, global names may be shortened or auto-generated. InterSystems IRIS provides a unified data model where SQL tables are projections of the underlying global storage. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_persobj"
+    },
+    {
+      "id": 7,
+      "type": "MR",
+      "question": "Which statements correctly describe the relationship between globals, objects, and SQL in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "SQL tables are projections of persistent class definitions"
+        },
+        {
+          "id": "B",
+          "text": "Direct global access provides the fastest data retrieval method"
+        },
+        {
+          "id": "C",
+          "text": "Object property values are stored in global nodes (as $List data)"
+        },
+        {
+          "id": "D",
+          "text": "SQL and object access cannot be used on the same data simultaneously"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "SQL tables are automatic projections of %Persistent class definitions - no CREATE TABLE needed. Direct global access is fastest but bypasses object/SQL business logic. Object properties map to global nodes (subscripts). SQL, object, and direct global access can all work with the same underlying data simultaneously - this is InterSystems IRIS's unified data architecture. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_intro",
+      "revised": true
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "You need to find where a persistent class Sample.Patient stores its data (the underlying global location). Which command retrieves this information?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Do ##class(Sample.Patient).%ShowGlobal()"
+        },
+        {
+          "id": "B",
+          "text": "Write ##class(Sample.Patient).%GetParameter(\"DEFAULTGLOBAL\")"
+        },
+        {
+          "id": "C",
+          "text": "Do $SYSTEM.SQL.Schema.ShowGlobal(\"Sample.Patient\")"
+        },
+        {
+          "id": "D",
+          "text": "Set global = ##class(%Dictionary.CompiledClass).%OpenId(\"Sample.Patient\").StorageStrategy"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "The DEFAULTGLOBAL parameter contains the global name where a persistent class stores its data. You can retrieve it using %GetParameter(\"DEFAULTGLOBAL\"). For example, this would return ^Sample.PatientD for the data global. Alternatively, examine the Storage definition in the class definition or use the Class Reference documentation. The other options show invalid or non-existent methods. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_persobj"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Which stream class should you use to store large binary documents (such as PDF files) that must be included in database backups and transactions?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Stream.GlobalCharacter"
+        },
+        {
+          "id": "B",
+          "text": "%Stream.GlobalBinary"
+        },
+        {
+          "id": "C",
+          "text": "%Stream.FileCharacter"
+        },
+        {
+          "id": "D",
+          "text": "%Stream.FileBinary"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "%Stream.GlobalBinary stores binary data in database globals, making it included in database backups and participating in transactions. %Stream.GlobalCharacter is for character/text data. %Stream.FileBinary and %Stream.FileCharacter store data in external files, which are not included in database backups and do not participate in transactions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_propstream",
+      "revised": true
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "When should you use stream data types instead of standard string properties?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "When storing data larger than the maximum string length (3.6MB)"
+        },
+        {
+          "id": "B",
+          "text": "When storing very large text or binary data that benefits from chunked access"
+        },
+        {
+          "id": "C",
+          "text": "When storing data that needs to be accessed via SQL BLOB/CLOB operations"
+        },
+        {
+          "id": "D",
+          "text": "For all string data to optimize performance"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "Streams should be used for very large data: data exceeding the maximum string length of 3.6MB (long strings are always enabled in modern IRIS), data that benefits from chunked/streaming access, or when SQL BLOB/CLOB operations are required. Note: The old 32KB limit no longer applies as long strings are enabled by default. Streams have overhead and should not be used for small strings. Standard %String properties (up to 3.6MB) are more efficient for typical string data. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_propstream"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "Consider this class definition:\n\nClass Medical.Report Extends %Persistent\n{\n    Property ReportText As %Stream.GlobalCharacter;\n    Property ReportPDF As %Stream.GlobalBinary;\n}\n\nWhat is the primary difference between these two stream properties?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "ReportText is stored in globals; ReportPDF is stored in files"
+        },
+        {
+          "id": "B",
+          "text": "ReportText handles character encoding and translation; ReportPDF stores raw binary data"
+        },
+        {
+          "id": "C",
+          "text": "ReportText is limited to 32KB; ReportPDF is unlimited"
+        },
+        {
+          "id": "D",
+          "text": "ReportText can be queried with SQL; ReportPDF cannot"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "The key difference is that %Stream.GlobalCharacter handles character encoding, translation, and normalization (important for international text), while %Stream.GlobalBinary stores raw binary data without any conversion. Both are stored in globals, both can be queried via SQL (as CLOB and BLOB respectively), and both support very large data sizes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_propstream"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "You are designing a document management system where documents may be very large (up to 2GB) and some documents require transactional integrity (rollback on failure). Which storage approach is most appropriate?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Stream.GlobalBinary for all documents"
+        },
+        {
+          "id": "B",
+          "text": "%Stream.FileBinary for all documents"
+        },
+        {
+          "id": "C",
+          "text": "%Stream.GlobalBinary for transactional documents, %Stream.FileBinary for non-transactional large files"
+        },
+        {
+          "id": "D",
+          "text": "%String with MAXLEN=2147483647"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "The choice between GlobalBinary and FileBinary depends primarily on transactional requirements, not just size. Use %Stream.GlobalBinary when documents must participate in transactions (rollback support, included in backups, consistent with database state). Use %Stream.FileBinary when documents don't need transactional control, when external applications need direct file system access, or for extremely large files where database bloat is a concern. FileBinary streams are not managed by the IRIS transaction engine and are not included in database backups. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_propstream"
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "Which class provides native dynamic object support for JSON in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Library.JSON"
+        },
+        {
+          "id": "B",
+          "text": "%JSON.Object"
+        },
+        {
+          "id": "C",
+          "text": "%DynamicObject"
+        },
+        {
+          "id": "D",
+          "text": "%Stream.JSON"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "%DynamicObject (and %DynamicArray) provide native support for working with JSON data in InterSystems IRIS. These classes offer dynamic property access, JSON parsing, and serialization. %Library.JSON is not a class. %JSON.Object is not the standard class for this purpose. %Stream.JSON is not a valid stream type. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON_create"
+    },
+    {
+      "id": 14,
+      "type": "MR",
+      "question": "Which methods can be used to create a dynamic object from JSON text in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "{}.%FromJSON(jsonString)"
+        },
+        {
+          "id": "B",
+          "text": "##class(%DynamicObject).%FromJSON(jsonString)"
+        },
+        {
+          "id": "C",
+          "text": "##class(%Library.DynamicObject).%New(jsonString)"
+        },
+        {
+          "id": "D",
+          "text": "Set obj = {}.%FromJSON(stream"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T1.2",
+      "explanation": "You can create dynamic objects using {}.%FromJSON(jsonString) shorthand syntax, ##class(%DynamicObject).%FromJSON(jsonString) explicit class method, or from a stream with {}.%FromJSON(stream). %Library.DynamicObject is the full class name, but %New() does not accept JSON strings directly - use %FromJSON() instead. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "You have the following ObjectScript code:\n\nSet json = {\"name\":\"John\",\"age\":30,\"city\":\"Boston\"}\nSet name = json.name\n\nWhat is the value and data type of the 'name' variable?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "\"John\" as a string"
+        },
+        {
+          "id": "B",
+          "text": "John as a %DynamicObject property reference"
+        },
+        {
+          "id": "C",
+          "text": "null because json is not a valid object"
+        },
+        {
+          "id": "D",
+          "text": "An error occurs because properties must be accessed using %Get("
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T1.2",
+      "explanation": "The shorthand JSON syntax {...} creates a %DynamicObject, and properties can be accessed using dot notation (json.name) or %Get() method. The value returned is \"John\" as a string. Dynamic objects support both dot notation and method-based access for convenience. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "Which data type should you use to store typical JSON documents (under 3.6MB) in a persistent class property with full SQL JSON function support?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%Library.String with JSON validation"
+        },
+        {
+          "id": "B",
+          "text": "%Library.JSON"
+        },
+        {
+          "id": "C",
+          "text": "%Library.DynamicObject"
+        },
+        {
+          "id": "D",
+          "text": "%Stream.GlobalCharacter"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "%Library.DynamicObject (or its alias %DynamicObject) is the proper data type for storing JSON in persistent classes when you need SQL JSON functions (JSON_VALUE, JSON_QUERY, JSON_TABLE). It provides native JSON support with validation and indexing capabilities. %Library.JSON is not a valid property type. Note: For very large JSON documents exceeding the string limit (3.6MB), consider using %Stream.GlobalCharacter, though you lose some SQL JSON function support. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON"
+    },
+    {
+      "id": 17,
+      "type": "MR",
+      "question": "You have a persistent class with a %DynamicObject property storing JSON patient data. Which SQL JSON functions can you use to query this data?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "JSON_VALUE() to extract scalar values from JSON"
+        },
+        {
+          "id": "B",
+          "text": "JSON_QUERY() to extract objects or arrays from JSON"
+        },
+        {
+          "id": "C",
+          "text": "JSON_TABLE() to convert JSON data to tabular format"
+        },
+        {
+          "id": "D",
+          "text": "JSON_PARSE() to validate JSON syntax"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "InterSystems IRIS SQL supports JSON_VALUE() for extracting scalar values, JSON_QUERY() for extracting objects/arrays, and JSON_TABLE() for converting JSON to rows and columns. JSON_PARSE() is not a standard InterSystems IRIS function - JSON validation happens automatically with %DynamicObject properties. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "Consider this class definition:\n\nClass App.Customer Extends %Persistent\n{\n    Property Name As %String;\n    Property Email As %String;\n    Index EmailIdx On Email;\n}\n\nA query frequently searches with 'WHERE Email LIKE 'john%''. How can you optimize this pattern-based search?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Change Index EmailIdx On Email [ Type = bitmap ];"
+        },
+        {
+          "id": "B",
+          "text": "Change Index EmailIdx On Email [ Unique ];"
+        },
+        {
+          "id": "C",
+          "text": "Create a full-text index on Email"
+        },
+        {
+          "id": "D",
+          "text": "The existing index already optimizes LIKE 'john%' queries"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T1.2",
+      "explanation": "A standard index on Email already optimizes leading-pattern searches like LIKE 'john%' (patterns that start with specific characters). The index can efficiently locate all values starting with 'john'. Bitmap indexes are for low-cardinality data. Unique constraints are for uniqueness enforcement. Full-text indexes are for word-based searching within large text, not email addresses. Note: LIKE '%john' (trailing pattern) cannot use indexes efficiently. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "You need to store audit log entries that are never modified after creation, only inserted and queried. Records accumulate to millions per year. What object type should you use?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%RegisteredObject - lightweight and fast"
+        },
+        {
+          "id": "B",
+          "text": "%SerialObject - efficient storage"
+        },
+        {
+          "id": "C",
+          "text": "%Persistent - standard database storage"
+        },
+        {
+          "id": "D",
+          "text": "%Stream.Object - optimized for write-once data"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "%Persistent is correct because audit logs need permanent database storage, SQL query capability, and transactional integrity. %RegisteredObject exists only in memory. %SerialObject requires a parent object. %Stream.Object is not a valid class and streams are for large unstructured data, not structured records. Consider adding appropriate indexes and potentially using %Library.PersistentAppendOnly if available for write-optimized workloads. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_defpersobj"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "What happens when you execute this ObjectScript code?\n\nSet json = [\"apple\",\"banana\",\"cherry\"]\nWrite json.%Get(1)\n",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Outputs: apple"
+        },
+        {
+          "id": "B",
+          "text": "Outputs: banana"
+        },
+        {
+          "id": "C",
+          "text": "Outputs: cherry"
+        },
+        {
+          "id": "D",
+          "text": "Error: arrays cannot be created with [...] syntax"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "The shorthand [...] syntax creates a %DynamicArray. Arrays are 0-indexed, so %Get(1) returns the second element: \"banana\". json.%Get(0) would return \"apple\", and json.%Get(2) would return \"cherry\". The %Get() method is used to access array elements by index. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON_create"
+    },
+    {
+      "id": 21,
+      "type": "MR",
+      "question": "You are designing an e-commerce system. Which index strategies are appropriate for the following Order class?\n\nClass Store.Order Extends %Persistent\n{\n    Property OrderDate As %Date;\n    Property Status As %String; // 'Pending','Shipped','Delivered'\n    Property CustomerID As %Integer;\n    Property TotalAmount As %Numeric;\n}",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Bitmap index on Status (low cardinality)"
+        },
+        {
+          "id": "B",
+          "text": "Standard index on CustomerID (frequently queried)"
+        },
+        {
+          "id": "C",
+          "text": "Bitmap index on CustomerID (for better compression)"
+        },
+        {
+          "id": "D",
+          "text": "Compound index on (OrderDate, Status) for date-range queries with status filter"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T1.2",
+      "explanation": "Status is perfect for bitmap index (only 3 values). CustomerID should use a standard index (high cardinality, frequent queries). A compound index on (OrderDate, Status) optimizes queries like 'WHERE OrderDate BETWEEN ? AND ? AND Status = ?'. CustomerID should NOT use bitmap - it has many unique values, making bitmap inefficient. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "You need to modify a JSON property value in a stored %DynamicObject. Which approach is correct?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Set patient.address.city = \"Boston\" (direct assignment)"
+        },
+        {
+          "id": "B",
+          "text": "Do patient.%Set(\"address.city\",\"Boston\") (method call)"
+        },
+        {
+          "id": "C",
+          "text": "Do patient.address.%Set(\"city\",\"Boston\") (nested access)"
+        },
+        {
+          "id": "D",
+          "text": "All of these approaches are valid"
+        }
+      ],
+      "answer": [
+        "D"
+      ],
+      "domain": "T1.2",
+      "explanation": "All three approaches are valid for modifying JSON properties in dynamic objects. Direct assignment (patient.address.city = \"Boston\") is concise. The %Set() method with dot notation (%Set(\"address.city\",\"Boston\")) works for nested properties. Accessing the nested object first (patient.address.%Set(\"city\",\"Boston\")) is also valid. Choose based on code style and whether you need to handle dynamic property names. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON",
+      "revised": true
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "A table has 1 million rows. A Status column contains 5 distinct values distributed evenly (200K rows each). A standard index on Status consumes 500MB. Approximately how much space would a bitmap index consume?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Approximately the same (500MB)"
+        },
+        {
+          "id": "B",
+          "text": "Significantly less (50-100MB)"
+        },
+        {
+          "id": "C",
+          "text": "Significantly more (1000MB)"
+        },
+        {
+          "id": "D",
+          "text": "Cannot determine without knowing row size"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "Bitmap indexes are highly compressed for low-cardinality data, typically 10x or more space-efficient than standard indexes. For 5 distinct values, a bitmap index stores one bit per row per value, compressed, versus a full index entry per row in a standard index. Space savings are most dramatic when cardinality is very low (under 100 distinct values). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "Which statement correctly describes the relationship between %SerialObject and its parent class?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%SerialObject data is stored in a separate global with a foreign key reference"
+        },
+        {
+          "id": "B",
+          "text": "%SerialObject data is embedded in the parent object's global structure"
+        },
+        {
+          "id": "C",
+          "text": "%SerialObject data is stored in memory only and reconstructed on retrieval"
+        },
+        {
+          "id": "D",
+          "text": "%SerialObject data is stored in the same global but different subscript tree"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T1.2",
+      "explanation": "%SerialObject data is embedded directly within the parent object's database record (global structure). This means there is no separate table, no joins, and no separate ID. The serial object is part of the parent's storage, making it efficient but dependent on the parent. This is ideal for composite data like addresses, phone numbers, or measurements that have no independent existence. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_classes"
+    },
+    {
+      "id": 25,
+      "type": "MR",
+      "question": "You are importing JSON data from a REST API into InterSystems IRIS. Which approaches are valid for working with the JSON response?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Parse JSON string into %DynamicObject and map properties to persistent class instances"
+        },
+        {
+          "id": "B",
+          "text": "Store the entire JSON response in a %DynamicObject property for flexible schema"
+        },
+        {
+          "id": "C",
+          "text": "Use %JSON.Adaptor to automatically serialize/deserialize persistent objects to/from JSON"
+        },
+        {
+          "id": "D",
+          "text": "Store JSON as plain text in %String property and parse on demand"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
+      "domain": "T1.2",
+      "explanation": "All three structured approaches are valid: (1) Parse JSON and map to strongly-typed persistent objects for structured data with fixed schema; (2) Store JSON in %DynamicObject properties for flexible/evolving schemas; (3) Use %JSON.Adaptor to automatically handle JSON serialization/deserialization of persistent objects. Storing JSON as plain %String is possible but loses all JSON-specific functionality, validation, and querying capabilities. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON_adaptor"
+    }
+  ]
+}

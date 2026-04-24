@@ -1,0 +1,703 @@
+{
+  "id": "ability-t4-3-q1",
+  "topic": "ability_t4_3",
+  "topicLabel": "T4.3 · Ensures Data Integrity",
+  "title": "T4.3: Ensures Data Integrity",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T4.3"
+  ],
+  "description": "Test your knowledge of data integrity in InterSystems IRIS including journaling, transaction management, and automatic rollback mechanisms",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T4_3.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "When a global SET operation is executed outside of an explicit transaction, what is the default journaling behavior?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The change is not journaled until TCOMMIT is called"
+        },
+        {
+          "id": "B",
+          "text": "The change is immediately journaled and becomes durable"
+        },
+        {
+          "id": "C",
+          "text": "The change is buffered in memory and journaled at process termination"
+        },
+        {
+          "id": "D",
+          "text": "The change requires manual WRITE ^$JOURNAL to be journaled"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "Outside of transactions, each global SET operation is immediately journaled (auto-commit behavior). This ensures data durability - the change becomes permanent even if the system crashes. In contrast, changes within transactions are journaled but not committed until TCOMMIT executes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which statements correctly describe journaling behavior within explicit transactions (between TSTART and TCOMMIT)?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Individual operations are journaled as they execute"
+        },
+        {
+          "id": "B",
+          "text": "Journal entries are marked as part of a transaction"
+        },
+        {
+          "id": "C",
+          "text": "Changes become durable immediately when journaled"
+        },
+        {
+          "id": "D",
+          "text": "All changes are committed atomically at TCOMMIT"
+        },
+        {
+          "id": "E",
+          "text": "Large transactions can span multiple journal files"
+        }
+      ],
+      "answer": [
+        "B",
+        "D",
+        "E"
+      ],
+      "domain": "T4.3",
+      "explanation": "Within transactions, operations are journaled immediately but marked as part of a transaction. Changes do NOT become durable until TCOMMIT executes - they can be rolled back until then. The entire transaction commits atomically. Large transactions can span multiple journal files (individual journal entries stay within one file, but a transaction's entries may be distributed across files). Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance",
+      "revised": true
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "Consider the following code:\n\n```\nTSTART\nSET ^Customer(123,\"Name\")=\"Smith\"\nSET ^Customer(123,\"Balance\")=1000\nSET ^Order(456,\"Customer\")=123\nTCOMMIT\n```\n\nWhat happens if the system crashes after the third SET but before TCOMMIT?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the first two SET operations persist"
+        },
+        {
+          "id": "B",
+          "text": "All three SET operations persist"
+        },
+        {
+          "id": "C",
+          "text": "None of the SET operations persist - automatic rollback occurs"
+        },
+        {
+          "id": "D",
+          "text": "The ^Order update persists but ^Customer updates are lost"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.3",
+      "explanation": "If the system crashes before TCOMMIT, an automatic rollback occurs during database recovery. All operations within the incomplete transaction are rolled back, ensuring the database returns to its state before TSTART. This maintains atomicity - either all changes commit or none do. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Which technique most effectively minimizes journal volume when updating multiple related globals?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Disable journaling temporarily with SET ^$GLOBAL(...,\"NOJOURNAL\")"
+        },
+        {
+          "id": "B",
+          "text": "Use SET ^Global(key)=$INCREMENT(^Global(key)) instead of separate reads and writes"
+        },
+        {
+          "id": "C",
+          "text": "Wrap all updates in TSTART/TCOMMIT to batch journal entries"
+        },
+        {
+          "id": "D",
+          "text": "Use KILL commands instead of SET to reduce journal entry size"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "Using $INCREMENT avoids separate read and write operations, reducing journal entries. Transactions don't reduce journal volume (all operations are still journaled). Disabling journaling compromises data integrity and should never be done on production databases. KILL vs SET doesn't significantly affect journal volume. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which practices help minimize the performance impact of journaling in a high-volume OLTP system?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Place journal files on fast dedicated storage (SSD)"
+        },
+        {
+          "id": "B",
+          "text": "Increase journal file size to reduce file switching overhead"
+        },
+        {
+          "id": "C",
+          "text": "Disable journal encryption when not required by compliance"
+        },
+        {
+          "id": "D",
+          "text": "Use alternate journal files on the same spindle for redundancy"
+        },
+        {
+          "id": "E",
+          "text": "Set journal buffer size appropriate to workload"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.3",
+      "explanation": "Best practices include: fast dedicated storage for journals (SSDs recommended), larger journal files to reduce switching overhead, disabling encryption if not needed (it has CPU overhead), and properly sized journal buffers. Alternate journals should be on SEPARATE storage for true redundancy, not the same spindle. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "An application needs to update customer balance and create an audit record. Both operations must complete together or not at all. What is the correct approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use two separate transactions for independence\n```\nTSTART\nSET ^Customer(id,\"Balance\")=newBalance\nTCOMMIT\nTSTART\nSET ^AuditLog($INCREMENT(^AuditLog))=...\nTCOMMIT\n```"
+        },
+        {
+          "id": "B",
+          "text": "Wrap both operations in a single transaction\n```\nTSTART\nSET ^Customer(id,\"Balance\")=newBalance\nSET ^AuditLog($INCREMENT(^AuditLog))=...\nTCOMMIT\n```"
+        },
+        {
+          "id": "C",
+          "text": "Use no transaction - automatic journaling provides consistency\n```\nSET ^Customer(id,\"Balance\")=newBalance\nSET ^AuditLog($INCREMENT(^AuditLog))=...\n```"
+        },
+        {
+          "id": "D",
+          "text": "Use nested transactions with separate commits\n```\nTSTART\nSET ^Customer(id,\"Balance\")=newBalance\nTSTART\nSET ^AuditLog($INCREMENT(^AuditLog))=...\nTCOMMIT\nTCOMMIT\n```"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "A single transaction ensures both operations commit atomically. Option A creates a window where balance updates without audit. Option C provides no atomicity - operations could be interrupted. Option D appears to use nested transactions, but IRIS transactions don't nest by default - the inner TSTART would be ignored unless transaction modes are explicitly set. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What is the maximum duration recommended for keeping a transaction open in a multi-user OLTP environment?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "As long as needed - there is no practical limit"
+        },
+        {
+          "id": "B",
+          "text": "A few seconds - long transactions cause lock contention and delay journal purging"
+        },
+        {
+          "id": "C",
+          "text": "Several minutes - IRIS can handle long transactions efficiently"
+        },
+        {
+          "id": "D",
+          "text": "Until the user session ends - IRIS will auto-commit on disconnect"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "Transactions should be kept as short as possible (a few seconds maximum) in OLTP systems. Long transactions hold locks causing contention, prevent journal purging (journals can't be deleted while transactions reference them), increase rollback cost if failures occur, and can cause TSTART/TCOMMIT nesting errors. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_guidelines"
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which of the following will cause an automatic transaction rollback in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "System crash or power failure before TCOMMIT"
+        },
+        {
+          "id": "B",
+          "text": "Process termination (halt, crash, or kill) during a transaction"
+        },
+        {
+          "id": "C",
+          "text": "Explicit TROLLBACK command"
+        },
+        {
+          "id": "D",
+          "text": "READ command timeout within a transaction"
+        },
+        {
+          "id": "E",
+          "text": "A &lt;STORE&gt; error when process runs out of local variable memory"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.3",
+      "explanation": "Automatic rollback occurs on: system crash, process termination, explicit TROLLBACK, and certain errors like &lt;STORE&gt; (process out of memory). Note: &lt;STORE&gt; errors occur when a process exhausts its local variable memory allocation, not when a database is full (database full would cause a different error). READ timeout alone does NOT cause rollback - the transaction remains open. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_rollback",
+      "revised": true
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "An application experiences frequent automatic rollbacks. Code review reveals:\n\n```\nTSTART\nSET ^TxnLog($I(^TxnLog))=\"Started: \"_$H\nREAD \"Enter customer ID: \",custID\nSET ^Customer(custID,\"LastAccess\")=$HOROLOG\nSET ^Customer(custID,\"AccessCount\")=$INCREMENT(^Customer(custID,\"AccessCount\"))\nTCOMMIT\n```\n\nWhat is the PRIMARY problem?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The transaction updates the same global node twice"
+        },
+        {
+          "id": "B",
+          "text": "User input (READ) occurs within the transaction, keeping it open indefinitely while holding uncommitted changes"
+        },
+        {
+          "id": "C",
+          "text": "The $INCREMENT function is not transaction-safe"
+        },
+        {
+          "id": "D",
+          "text": "Missing error handling for the TCOMMIT"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "The critical flaw is the READ command within the transaction. User input can take seconds, minutes, or indefinitely, keeping the transaction open with uncommitted changes. If the user never responds, the process may be killed, causing rollback. Best practice: gather all user input BEFORE TSTART, then perform database operations quickly. The other options are not problems. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_guidelines",
+      "revised": true
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "Which code pattern correctly handles errors and performs proper transaction cleanup?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "```\nTSTART\nTRY {\n  SET ^Data(key)=value\n  TCOMMIT\n} CATCH ex {\n  TROLLBACK\n  WRITE \"Error: Database full\"\n}\n```"
+        },
+        {
+          "id": "B",
+          "text": "```\nTRY {\n  TSTART\n  SET ^Data(key)=value\n  TCOMMIT\n} CATCH ex {\n  IF $TLEVEL TROLLBACK\n  WRITE \"Error: \",ex.DisplayString()\n}\n```"
+        },
+        {
+          "id": "C",
+          "text": "```\nTSTART\nSET ^Data(key)=value\nIF $SYSTEM.Status.IsError($STATUS) TROLLBACK\nELSE  TCOMMIT\n```"
+        },
+        {
+          "id": "D",
+          "text": "```\nLOCK +^Data(key):5\nIF $TEST {\n  TSTART\n  SET ^Data(key)=value\n  TCOMMIT\n}\n```"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "The correct pattern has TRY/CATCH wrapping the entire transaction (TSTART through TCOMMIT), and the CATCH checks $TLEVEL before TROLLBACK. This handles errors at any point and ensures cleanup. The pattern with TSTART before TRY fails because if SET throws an error, TCOMMIT never executes, leaving an open transaction. The pattern using $STATUS doesn't catch runtime exceptions. The locking pattern addresses concurrency, not error handling. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_errorhandling",
+      "revised": true
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "What happens to journal entries when a transaction is rolled back?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The journal entries for rolled-back operations are deleted from the journal file"
+        },
+        {
+          "id": "B",
+          "text": "The journal entries remain, and a ROLLBACK marker is written to the journal"
+        },
+        {
+          "id": "C",
+          "text": "The journal file is truncated to remove uncommitted transaction entries"
+        },
+        {
+          "id": "D",
+          "text": "Journal entries are moved to a separate rollback log file"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "When a transaction rolls back, the original journal entries remain in the journal file (they cannot be removed from an append-only log), and a ROLLBACK marker is written. During recovery, IRIS reads the journal and skips operations between TSTART and ROLLBACK. This maintains a complete audit trail. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 12,
+      "type": "MR",
+      "question": "An application performs the following operations. Which global SET operations will be written to the journal file? (Assume default journaling settings)\n\n```\nSET ^Config(\"Setting1\")=\"Value1\"  // Line 1\nTSTART\nSET ^Data(1)=\"Test\"              // Line 2\nSET localVar=\"Temp\"              // Line 3\nSET ^Data(2)=\"Test2\"             // Line 4\nTROLLBACK\nSET ^Config(\"Setting2\")=\"Value2\"  // Line 5\n```",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Line 1: SET ^Config(\"Setting1\")=\"Value1\""
+        },
+        {
+          "id": "B",
+          "text": "Line 2: SET ^Data(1)=\"Test\""
+        },
+        {
+          "id": "C",
+          "text": "Line 4: SET ^Data(2)=\"Test2\""
+        },
+        {
+          "id": "D",
+          "text": "Line 5: SET ^Config(\"Setting2\")=\"Value2\""
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "domain": "T4.3",
+      "explanation": "ALL global SET operations (lines 1, 2, 4, and 5) are written to the journal file. Line 3 (local variable) is never journaled. Lines 2 and 4 are journaled with transaction markers, and when TROLLBACK executes, a rollback marker is written. During recovery or journal restore, lines 2 and 4 would be skipped due to the rollback. However, the question asks what is journaled, not what persists - all four global operations appear in the journal. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance",
+      "revised": true
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "During journal recovery after a system crash, IRIS encounters a transaction that has TSTART but no TCOMMIT or TROLLBACK marker. What action does the recovery process take?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Automatically commits the transaction to preserve partial work"
+        },
+        {
+          "id": "B",
+          "text": "Prompts the administrator to decide whether to commit or rollback"
+        },
+        {
+          "id": "C",
+          "text": "Automatically rolls back the incomplete transaction"
+        },
+        {
+          "id": "D",
+          "text": "Leaves the transaction in a pending state for application resolution"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.3",
+      "explanation": "During journal recovery, any transaction without a TCOMMIT is automatically rolled back. This ensures atomicity - incomplete transactions cannot be partially committed. There is no manual intervention or pending state. The database is restored to a consistent state containing only completed transactions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 14,
+      "type": "MC",
+      "question": "A developer needs to update multiple database nodes but wants to continue processing if the transaction fails, logging the error. What is the correct pattern?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "```\nTSTART\nSET ^Data(1)=\"A\"\nSET ^Data(2)=\"B\"\nTCOMMIT:$TLEVEL\nIF '$DATA(^Data(1)) WRITE \"Transaction failed\"\n```"
+        },
+        {
+          "id": "B",
+          "text": "```\nTRY {\n  TSTART\n  SET ^Data(1)=\"A\"\n  SET ^Data(2)=\"B\" \n  TCOMMIT\n} CATCH ex {\n  IF $TLEVEL TROLLBACK\n  DO LogError(ex.DisplayString())\n}\n```"
+        },
+        {
+          "id": "C",
+          "text": "```\nTSTART\nSET status=1\nTRY {\n  SET ^Data(1)=\"A\"\n  SET ^Data(2)=\"B\"\n} CATCH ex {\n  SET status=0\n}\nIF status TCOMMIT\nELSE  TROLLBACK\n```"
+        },
+        {
+          "id": "D",
+          "text": "```\nTSTART:($TLEVEL=0)\nSET ^Data(1)=\"A\"\nSET ^Data(2)=\"B\"\nTCOMMIT\nWRITE:($SYSTEM.Status.IsError($STATUS)) \"Error occurred\"\n```"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "Option B is the correct pattern: TRY/CATCH surrounds the entire transaction, the CATCH checks $TLEVEL before rolling back, logs the error, and execution continues after the CATCH block. Option A doesn't catch errors. Option C has TCOMMIT/TROLLBACK after the TRY block which can mask errors. Option D doesn't properly handle errors that occur during the transaction. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_errorhandling",
+      "revised": true
+    },
+    {
+      "id": 15,
+      "type": "MR",
+      "question": "Which scenarios correctly describe differences between journaling behavior outside vs within transactions?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Lock acquisition - locks outside transactions are released immediately; locks in transactions are held until TCOMMIT"
+        },
+        {
+          "id": "B",
+          "text": "Rollback capability - changes outside transactions cannot be rolled back; changes within transactions can be rolled back until TCOMMIT"
+        },
+        {
+          "id": "C",
+          "text": "Visibility - changes outside transactions are visible to other processes immediately; changes in transactions use read-committed isolation"
+        },
+        {
+          "id": "D",
+          "text": "Journal markers - operations outside transactions have no transaction markers; operations within transactions have TSTART/TCOMMIT markers"
+        },
+        {
+          "id": "E",
+          "text": "Performance - operations outside transactions are faster due to no transaction overhead"
+        }
+      ],
+      "answer": [
+        "B",
+        "D"
+      ],
+      "domain": "T4.3",
+      "explanation": "Key differences: Rollback capability (option B) - changes outside transactions are immediately committed and cannot be undone; changes within transactions can be rolled back until TCOMMIT. Journal markers (option D) - transaction markers (TSTART/TCOMMIT) are added for transactional operations. Note: In both cases, changes are visible to other processes immediately (IRIS uses read-uncommitted by default) and journal entries are written to disk based on sync settings, not transaction boundaries. Option A is incorrect - locks follow LOCK commands. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp",
+      "revised": true
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "Consider this scenario: An application issues TSTART, updates 50 global nodes, then the network connection to the client is lost. What happens?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The transaction remains open indefinitely waiting for the client to reconnect"
+        },
+        {
+          "id": "B",
+          "text": "IRIS automatically commits the transaction after a timeout period"
+        },
+        {
+          "id": "C",
+          "text": "The server process is terminated and the transaction is automatically rolled back"
+        },
+        {
+          "id": "D",
+          "text": "The transaction is suspended and can be resumed if the client reconnects within 5 minutes"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.3",
+      "explanation": "When a client connection is lost, the server process is typically terminated (depending on the client protocol and timeout settings). Process termination causes automatic rollback of any open transaction. IRIS does not support suspended transactions or automatic commits of incomplete transactions - this would violate atomicity. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_rollback"
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "What is the effect of this code on journal volume and transaction management?\n\n```\nFOR i=1:1:1000 {\n  TSTART\n  SET ^Data(i)=\"Value\"_i\n  TCOMMIT\n}\n```",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Optimal - each update is atomic and journal volume is minimized"
+        },
+        {
+          "id": "B",
+          "text": "Suboptimal - creates 1000 small transactions increasing journal overhead with transaction markers"
+        },
+        {
+          "id": "C",
+          "text": "Incorrect - nested transactions will cause an error"
+        },
+        {
+          "id": "D",
+          "text": "Optimal - prevents lock contention by committing frequently"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "This creates 1000 tiny transactions, each adding TSTART/TCOMMIT journal markers and transaction overhead. Better approach: single transaction around the loop, or no transactions (since each SET is already atomic and journaled). This pattern increases journal volume, file switching frequency, and processing overhead. It doesn't cause nesting errors (each iteration is complete). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_guidelines"
+    },
+    {
+      "id": 18,
+      "type": "MR",
+      "question": "Which statements about preventing automatic rollback are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep transactions short (a few seconds maximum) to reduce rollback risk"
+        },
+        {
+          "id": "B",
+          "text": "Never perform user interaction (READ commands) within transactions"
+        },
+        {
+          "id": "C",
+          "text": "Always use TRY/CATCH to handle errors and explicitly TROLLBACK when needed"
+        },
+        {
+          "id": "D",
+          "text": "Disable automatic rollback with SET ^$SYSTEM.Transaction.AutoRollback=0"
+        },
+        {
+          "id": "E",
+          "text": "Monitor $TLEVEL to ensure transactions are properly closed"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.3",
+      "explanation": "Best practices include: short transactions (reduces risk of interruption), no user input within transactions (prevents indefinite open transactions), TRY/CATCH for error handling with explicit TROLLBACK, and monitoring $TLEVEL. There is NO setting to disable automatic rollback - this is a fundamental ACID property that ensures database consistency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_guidelines"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "An application written in ObjectScript needs to coordinate with an external system via HTTP. If the HTTP call fails, the database changes must be rolled back. What is the correct approach?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "```\nTSTART\nSET ^Order(id)=\"Pending\"\nDO ##class(%Net.HttpRequest).Post(url)\nTCOMMIT\n```"
+        },
+        {
+          "id": "B",
+          "text": "```\nSET ^Order(id)=\"Pending\"\nDO ##class(%Net.HttpRequest).Post(url)\nIF $SYSTEM.Status.IsOK($STATUS) {\n  SET ^Order(id)=\"Confirmed\"\n}\n```"
+        },
+        {
+          "id": "C",
+          "text": "```\nTRY {\n  TSTART\n  SET ^Order(id)=\"Pending\"\n  SET sc=##class(%Net.HttpRequest).Post(url)\n  IF $SYSTEM.Status.IsError(sc) $$$ThrowStatus(sc)\n  SET ^Order(id)=\"Confirmed\"\n  TCOMMIT\n} CATCH ex {\n  IF $TLEVEL TROLLBACK\n}\n```"
+        },
+        {
+          "id": "D",
+          "text": "```\nTSTART\nSET ^Order(id)=\"Pending\"\nTCOMMIT\nDO ##class(%Net.HttpRequest).Post(url)\nIF $SYSTEM.Status.IsError($STATUS) TROLLBACK\n```"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.3",
+      "explanation": "Option C correctly wraps the transaction with TRY/CATCH, checks the HTTP result status, throws an error if it fails (triggering rollback), and only commits if everything succeeds. Option A doesn't check HTTP result. Option B has no transaction. Option D commits before the HTTP call (can't rollback after TCOMMIT). This demonstrates coordinating distributed operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_errorhandling"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "After a system crash, an administrator reviews journal files and sees a transaction started at 10:15:30 AM with 500 operations but no TCOMMIT marker. The crash occurred at 10:15:45 AM. What is the state of these 500 operations after journal recovery?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "All 500 operations are committed - crash implies intent to commit"
+        },
+        {
+          "id": "B",
+          "text": "The first 250 operations are committed, the rest rolled back (50% rule)"
+        },
+        {
+          "id": "C",
+          "text": "All 500 operations are rolled back - no TCOMMIT means no commit"
+        },
+        {
+          "id": "D",
+          "text": "The operations are marked as 'uncommitted' and require manual resolution"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.3",
+      "explanation": "All 500 operations are completely rolled back. IRIS uses strict ACID semantics - a transaction commits ONLY if a TCOMMIT marker exists in the journal. Without it, the entire transaction is rolled back during recovery, regardless of how many operations were performed or how close it was to completion. This ensures atomicity and consistency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal_special#GCDI_journal_performance"
+    },
+    {
+      "id": 21,
+      "type": "MR",
+      "question": "Which coding practices effectively manage transactions in a high-concurrency environment?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Always acquire locks in a consistent order across all processes to prevent deadlocks"
+        },
+        {
+          "id": "B",
+          "text": "Use optimistic concurrency - read data, start transaction, verify data unchanged, update, commit"
+        },
+        {
+          "id": "C",
+          "text": "Keep transaction scope minimal - only include operations that must be atomic"
+        },
+        {
+          "id": "D",
+          "text": "Use TSTART with transaction modes to control isolation level and lock behavior"
+        },
+        {
+          "id": "E",
+          "text": "Always use nested transactions to isolate independent operations within a larger process"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T4.3",
+      "explanation": "Best practices: acquire locks in a consistent order (prevents deadlocks by avoiding circular wait conditions), minimize transaction scope (only atomic operations), and use TSTART modes when needed. Option B (optimistic concurrency) can work but is risky in high-contention scenarios. Option E is incorrect - nested transactions add complexity and aren't generally recommended. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp#GCOS_transactions_guidelines",
+      "revised": true
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "What system variable indicates the current transaction nesting level and should be checked before executing TROLLBACK in error handlers?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "$TRANSACTION"
+        },
+        {
+          "id": "B",
+          "text": "$TLEVEL"
+        },
+        {
+          "id": "C",
+          "text": "$TNEST"
+        },
+        {
+          "id": "D",
+          "text": "$INTR"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.3",
+      "explanation": "$TLEVEL indicates the current transaction nesting level. $TLEVEL=0 means no transaction is active; >0 means inside a transaction. Error handlers should check 'IF $TLEVEL TROLLBACK' to avoid errors when TROLLBACK is called outside a transaction. The other variables don't exist or serve different purposes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_variables#RCOS_variables_tlevel"
+    }
+  ]
+}

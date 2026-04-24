@@ -1,0 +1,803 @@
+{
+  "id": "ability-t4-2-q1",
+  "topic": "ability_t4_2",
+  "topicLabel": "T4.2 · Writes Secure Code",
+  "title": "T4.2: Writes Secure Code",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T4.2"
+  ],
+  "description": "Test your knowledge of secure coding practices in InterSystems IRIS, including encryption, secure connections, SQL injection prevention, and security models",
+  "version": "1.1",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T4_2.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which method should be used to encrypt a data element value at the application level in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "$SYSTEM.Encryption.Base64Encode()"
+        },
+        {
+          "id": "B",
+          "text": "$SYSTEM.Encryption.AESCBCManagedKeyEncrypt()"
+        },
+        {
+          "id": "C",
+          "text": "$SYSTEM.Security.Encrypt()"
+        },
+        {
+          "id": "D",
+          "text": "$SYSTEM.Util.Crypt("
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "$SYSTEM.Encryption.AESCBCManagedKeyEncrypt(plaintext, keyID) is the correct method for encrypting data elements. It uses AES in CBC mode with a managed key, and embeds the key ID in the ciphertext for automatic key selection during decryption. Base64Encode() is encoding, not encryption. $SYSTEM.Security.Encrypt() does not exist. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt_dee"
+    },
+    {
+      "id": 2,
+      "type": "MR",
+      "question": "Which of the following are required steps to enable database encryption in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Create an encryption key file via Management Portal or externally"
+        },
+        {
+          "id": "B",
+          "text": "Activate the encryption key through the Database Encryption page"
+        },
+        {
+          "id": "C",
+          "text": "Restart the IRIS instance for encryption to take effect"
+        },
+        {
+          "id": "D",
+          "text": "Create a new database with 'Encrypt database' set to Yes"
+        },
+        {
+          "id": "E",
+          "text": "Enable FIPS mode in the CPF configuration"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T4.2",
+      "explanation": "To enable database encryption: (1) Create an encryption key file via Management Portal's 'Create New Encryption Key File' page (specifying key length, file location, and admin credentials), (2) Activate the key through the Database Encryption page, and (3) Create a new encrypted database (existing databases cannot be encrypted in place). IRIS restart is not required. FIPS mode is optional and separate from basic encryption. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "When implementing field-level encryption for a property storing credit card numbers, which approach is correct?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Parameter SECURE = 1;"
+        },
+        {
+          "id": "B",
+          "text": "Parameter ENCRYPTED = \"AES256\";"
+        },
+        {
+          "id": "C",
+          "text": "Use $SYSTEM.Encryption.AESCBCManagedKeyEncrypt() in a method that stores the encrypted value"
+        },
+        {
+          "id": "D",
+          "text": "Property CreditCard As %Library.Encrypted(MAXLEN=20);"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "Field-level (data-element) encryption is implemented by calling $SYSTEM.Encryption.AESCBCManagedKeyEncrypt(plaintext, keyID) to encrypt the value before storing, and $SYSTEM.Encryption.AESCBCManagedKeyDecrypt(ciphertext) to decrypt when retrieving. There is no built-in SECURE parameter, ENCRYPTED parameter, or %Library.Encrypted datatype. The developer must implement the encryption logic explicitly using the %SYSTEM.Encryption class methods. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt_dee"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "What is stored in the encryption key file created via the Management Portal?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the administrator password for key access"
+        },
+        {
+          "id": "B",
+          "text": "An encrypted copy of the encryption key with a unique key ID"
+        },
+        {
+          "id": "C",
+          "text": "Plain text encryption keys for easy access"
+        },
+        {
+          "id": "D",
+          "text": "Configuration settings for FIPS 140-2 mode"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "The encryption key file (e.g., testkeys.key) stores an encrypted copy of the encryption key along with a unique key ID (approximately 30 characters). The key is protected using multiple layers of the AES key wrap algorithm with PBKDF2-derived keys from the administrator credentials. The key file must be activated through the Database Encryption page before use. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which elements can be encrypted using InterSystems IRIS <b>database encryption</b> features (managed encryption keys)?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Database files (IRIS.DAT)"
+        },
+        {
+          "id": "B",
+          "text": "Journal files"
+        },
+        {
+          "id": "C",
+          "text": "Network traffic between client and server"
+        },
+        {
+          "id": "D",
+          "text": "Backup files"
+        },
+        {
+          "id": "E",
+          "text": "Audit log files"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T4.2",
+      "explanation": "IRIS database encryption (using managed encryption keys) can encrypt database files (IRIS.DAT), journal files, and backup files using AES encryption. Network traffic encryption uses SSL/TLS, which is a separate feature from database encryption. Audit logs stored in an encrypted database are encrypted at the database level, but the audit subsystem itself doesn't have a separate encryption option. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt",
+      "revised": true
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "To establish a secure TLS connection to an external REST service, which class method should be used to configure the SSL/TLS configuration?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Set the SSLConfiguration property of the HTTP request object"
+        },
+        {
+          "id": "B",
+          "text": "Call ##class(%Net.SSL).EnableTLS()"
+        },
+        {
+          "id": "C",
+          "text": "Use the SECURE protocol in the URL (https://)"
+        },
+        {
+          "id": "D",
+          "text": "Configure the CPF file with SSL parameters"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.2",
+      "explanation": "To use TLS with external REST services, set the SSLConfiguration property of the %Net.HttpRequest object to reference a configured SSL/TLS configuration name. Simply using https:// is not sufficient; the SSL configuration must be explicitly specified. There is no EnableTLS() method. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST#GREST_client_send_https"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "When creating an SSL/TLS configuration for outbound connections to external systems, following security best practices, which certificate must be imported?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The external server's private key"
+        },
+        {
+          "id": "B",
+          "text": "A self-signed certificate generated by IRIS"
+        },
+        {
+          "id": "C",
+          "text": "The Certificate Authority (CA) certificate that signed the external server's certificate"
+        },
+        {
+          "id": "D",
+          "text": "The IRIS instance's X.509 certificate"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "For secure outbound TLS connections following best practices, you must import the CA certificate (or certificate chain) that signed the external server's certificate into the SSL/TLS configuration's Trusted Certificate Authority list. This enables certificate validation. While IRIS allows disabling certificate verification, doing so is insecure and not recommended for production. The server's private key is never shared. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_config_tls",
+      "revised": true
+    },
+    {
+      "id": 8,
+      "type": "MR",
+      "question": "Which of the following are best practices for establishing secure database connections to external SQL databases?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use encrypted connection strings with embedded credentials"
+        },
+        {
+          "id": "B",
+          "text": "Store connection credentials in code files for easy access"
+        },
+        {
+          "id": "C",
+          "text": "Use SSL/TLS for the database connection when supported"
+        },
+        {
+          "id": "D",
+          "text": "Leverage IRIS Credential Manager to store database passwords"
+        },
+        {
+          "id": "E",
+          "text": "Use parameterized queries for all dynamic SQL operations"
+        }
+      ],
+      "answer": [
+        "C",
+        "D",
+        "E"
+      ],
+      "domain": "T4.2",
+      "explanation": "Best practices include: using SSL/TLS for connections, storing credentials in IRIS Credential Manager (not in code), and using parameterized queries. Embedding credentials in connection strings or code files creates security vulnerabilities. Credential Manager provides centralized, encrypted credential storage. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "Which of the following code examples is VULNERABLE to SQL injection attacks?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Set sql = \"SELECT Name FROM Person WHERE ID = ?\"\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql,patientId)"
+        },
+        {
+          "id": "B",
+          "text": "Set sql = \"SELECT Name FROM Person WHERE ID = \" _ patientId\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql)"
+        },
+        {
+          "id": "C",
+          "text": "Set stmt = ##class(%SQL.Statement).%New()\nSet stmt.%SelectMode = 2\nSet sql = \"SELECT Name FROM Person WHERE ID = :id\"\nSet rs = stmt.%Execute(patientId)"
+        },
+        {
+          "id": "D",
+          "text": "Set query = ##class(%DynamicQuery).%New()\nSet rs = query.%Execute(\"SELECT Name FROM Person WHERE ID = ?\", patientId"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "Option B is vulnerable because it uses string concatenation (_) to build the SQL statement, allowing malicious input in patientId to modify the query. Options A and C use parameterized queries (? and :id) which safely escape inputs. The key vulnerability is direct string concatenation rather than parameter binding. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_parameterized"
+    },
+    {
+      "id": 10,
+      "type": "MC",
+      "question": "A web application accepts a search term from users and queries the database. Which approach prevents SQL injection?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Set sql = \"SELECT * FROM Products WHERE Name LIKE '%\" _ %request.Get(\"search\") _ \"%'\"\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql)"
+        },
+        {
+          "id": "B",
+          "text": "Set searchTerm = %request.Get(\"search\")\nSet sql = \"SELECT * FROM Products WHERE Name LIKE ?\"\nSet pattern = \"%\" _ searchTerm _ \"%\"\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql,pattern)"
+        },
+        {
+          "id": "C",
+          "text": "Set searchTerm = $REPLACE(%request.Get(\"search\"),\"'\",\"''\")\nSet sql = \"SELECT * FROM Products WHERE Name LIKE '%\" _ searchTerm _ \"%'\"\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql)"
+        },
+        {
+          "id": "D",
+          "text": "Set sql = \"SELECT * FROM Products WHERE Name LIKE '%?%'\"\nSet rs = ##class(%SQL.Statement).%ExecDirect(,sql,%request.Get(\"search\")"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "Option B correctly uses a parameterized query where the placeholder (?) is bound to the user input. The pattern construction with % wildcards is done in code, not in SQL string concatenation. Option A concatenates user input directly. Option C attempts escaping but is still vulnerable. Option D places the ? inside quotes, making it literal, not a parameter. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_parameterized"
+    },
+    {
+      "id": 11,
+      "type": "MR",
+      "question": "Which of the following practices help prevent SQL injection vulnerabilities in InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Always use parameterized queries with placeholders (? or :name)"
+        },
+        {
+          "id": "B",
+          "text": "Validate and sanitize all user inputs before use"
+        },
+        {
+          "id": "C",
+          "text": "Use $ZSTRIP() to remove special characters from inputs"
+        },
+        {
+          "id": "D",
+          "text": "Grant only necessary SQL privileges to application database users"
+        },
+        {
+          "id": "E",
+          "text": "Disable dynamic SQL and use only embedded SQL"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "domain": "T4.2",
+      "explanation": "Best practices include: using parameterized queries (essential), validating/sanitizing inputs, and following least-privilege principles for database access. $ZSTRIP() alone is insufficient defense. Disabling dynamic SQL is impractical and doesn't address the root issue - string concatenation is the vulnerability, not dynamic SQL itself. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_parameterized"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Which ObjectScript code pattern is VULNERABLE to remote code execution via the $XECUTE command?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Set cmd = \"Write !,\\\"Hello, \\\" _ userName\"\nXECUTE cmd"
+        },
+        {
+          "id": "B",
+          "text": "Set action = %request.Get(\"action\")\nIf action=\"display\" { Do Display() } ElseIf action=\"update\" { Do Update() }"
+        },
+        {
+          "id": "C",
+          "text": "Set code = \"Set x = \" _ %request.Get(\"value\")\nXECUTE code"
+        },
+        {
+          "id": "D",
+          "text": "Set methodName = \"Display\" _ %request.Get(\"type\")\nDo $METHOD($THIS,methodName"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "Option C is vulnerable because it uses XECUTE with a string that includes unsanitized user input (%request.Get), allowing arbitrary code execution. Option A uses a static string. Option B uses conditional logic with fixed methods. Option D uses $METHOD which validates method names and is safer than XECUTE, though still requires validation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS"
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "To safely execute dynamic method calls based on user input, which approach should be used?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "XECUTE \"Do \" _ methodName _ \"()\""
+        },
+        {
+          "id": "B",
+          "text": "Validate methodName against a whitelist, then use Do $METHOD($THIS,methodName)"
+        },
+        {
+          "id": "C",
+          "text": "Use ##class(%Library.DynamicAbstractObject).%FromJSON(methodName) to sanitize input"
+        },
+        {
+          "id": "D",
+          "text": "Replace special characters in methodName using $TRANSLATE(), then execute"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "The safest approach is to validate the method name against a whitelist of allowed values, then use $METHOD() for invocation. $METHOD() provides some validation but whitelist checking is essential. XECUTE with concatenation is always dangerous. JSON parsing doesn't help with method validation. Character replacement is insufficient protection. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_fmethod"
+    },
+    {
+      "id": 14,
+      "type": "MR",
+      "question": "Which commands in ObjectScript can potentially execute arbitrary code and should be used with extreme caution when handling user input?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "XECUTE"
+        },
+        {
+          "id": "B",
+          "text": "$XECUTE()"
+        },
+        {
+          "id": "C",
+          "text": "WRITE"
+        },
+        {
+          "id": "D",
+          "text": "##class(%Library.RoutineMgr).StdOut()"
+        },
+        {
+          "id": "E",
+          "text": "$CLASSMETHOD("
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "E"
+      ],
+      "domain": "T4.2",
+      "explanation": "XECUTE, $XECUTE(), and $CLASSMETHOD() can all execute arbitrary code and are dangerous with unsanitized user input. WRITE and StdOut() only output data and cannot execute code (though WRITE could enable XSS in web contexts). Any command that evaluates strings as code requires strict input validation. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "When developing a CSP page that displays user-generated content, which approach prevents Cross-Site Scripting (XSS) attacks?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Write #(%request.Get(\"comment\"))#"
+        },
+        {
+          "id": "B",
+          "text": "Write $ZCVT(%request.Get(\"comment\"),\"O\",\"HTML\")"
+        },
+        {
+          "id": "C",
+          "text": "&html<<p>#(%request.Get(\"comment\"))#</p>>"
+        },
+        {
+          "id": "D",
+          "text": "Write \"<p>\" _ %request.Get(\"comment\") _ \"</p>\""
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "$ZCVT(string,\"O\",\"HTML\") converts special HTML characters to entities, preventing script injection. Option A and C use #()# which evaluates expressions without escaping. Option D directly writes user input without sanitization. For CSP, #($ZCVT(...))# or server-side objects with HTML escaping should be used. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCSP_security#GCSP_security_xss"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "In the InterSystems IRIS security model, which resource type controls access to specific database files?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%DB resources"
+        },
+        {
+          "id": "B",
+          "text": "%Service resources"
+        },
+        {
+          "id": "C",
+          "text": "%Admin resources"
+        },
+        {
+          "id": "D",
+          "text": "%Development resources"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.2",
+      "explanation": "%DB resources control access to specific databases. Each database has a corresponding %DB resource (e.g., %DB_USER for the USER database). Users must have READ and/or WRITE privileges on the %DB resource to access that database. %Service controls service access, %Admin controls administrative functions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql#GSECURE_resource_db"
+    },
+    {
+      "id": 17,
+      "type": "MR",
+      "question": "Which of the following are valid resource types in the InterSystems IRIS security model?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "%DB (Database resources)"
+        },
+        {
+          "id": "B",
+          "text": "%Service (Service access resources)"
+        },
+        {
+          "id": "C",
+          "text": "%Admin (Administrative resources)"
+        },
+        {
+          "id": "D",
+          "text": "%Development (Development tool resources)"
+        },
+        {
+          "id": "E",
+          "text": "%SQL (SQL query resources)"
+        },
+        {
+          "id": "F",
+          "text": "%Application (Application-defined resources"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "domain": "T4.2",
+      "explanation": "Valid resource types include: %DB (databases), %Service (services like %Service_CallIn), %Admin (administrative functions), %Development (development tools), and %Application (custom application resources). There is no built-in %SQL resource type - SQL access is controlled via %DB resources and SQL privileges. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "To programmatically check if the current user has WRITE permission on the USER database, which code should be used?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "If $SYSTEM.Security.Check(\"%DB_USER\",\"WRITE\") { ... }"
+        },
+        {
+          "id": "B",
+          "text": "If $SYSTEM.Security.HasPermission(\"%DB_USER:WRITE\") { ... }"
+        },
+        {
+          "id": "C",
+          "text": "If ##class(%SYSTEM.Security).Authorize(\"%DB_USER\",\"W\") { ... }"
+        },
+        {
+          "id": "D",
+          "text": "If $ROLES[\"%DB_USER:WRITE\" { ... }"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.2",
+      "explanation": "$SYSTEM.Security.Check(resource,permission) is the correct method to check permissions programmatically. The resource is \"%DB_USER\" and permission is \"WRITE\" (or \"READ\", \"USE\"). HasPermission() and Authorize() are not the correct methods. $ROLES contains role names, not resource permissions. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql#GSECURE_resource_check"
+    },
+    {
+      "id": 19,
+      "type": "MC",
+      "question": "What is the purpose of application-defined resources (resources starting with %Application)?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "They are predefined system resources for all applications"
+        },
+        {
+          "id": "B",
+          "text": "They allow developers to create custom resources for application-specific authorization"
+        },
+        {
+          "id": "C",
+          "text": "They automatically grant access to all application code"
+        },
+        {
+          "id": "D",
+          "text": "They replace database resources for web applications"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "Application-defined resources (e.g., %Application_MyApp) allow developers to create custom resources for fine-grained authorization within applications. They are not predefined - developers create them as needed. They complement, not replace, database and service resources. They enable business-logic-level access control. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql#GSECURE_resource_application"
+    },
+    {
+      "id": 20,
+      "type": "MR",
+      "question": "When implementing role-based access control (RBAC) in an IRIS application, which best practices should be followed?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Assign resources to roles, then assign roles to users"
+        },
+        {
+          "id": "B",
+          "text": "Grant users direct access to resources without using roles"
+        },
+        {
+          "id": "C",
+          "text": "Create roles that match business functions (e.g., Physician, Nurse, Billing)"
+        },
+        {
+          "id": "D",
+          "text": "Use the %All role for all administrative tasks"
+        },
+        {
+          "id": "E",
+          "text": "Regularly audit role assignments and resource permissions"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "E"
+      ],
+      "domain": "T4.2",
+      "explanation": "RBAC best practices: assign resources to roles, assign roles to users (not direct resource assignment); create roles matching business functions; regularly audit permissions. The %All role should be used sparingly and only for true administrators - it grants all permissions and represents a security risk if overused. Reference: https://docs.intersystems.com/iris20253/csp/docbook/Doc.View.cls?KEY=GSA_config_roles#GSA_config_roles_predefined"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "Which method should be called at the beginning of a secured method to enforce that only users with specific privileges can execute it?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "If '$SYSTEM.Security.Login() { Return 0 }"
+        },
+        {
+          "id": "B",
+          "text": "If '$SYSTEM.Security.Check(\"%Application_MyApp\",\"USE\") { Throw ##class(%Exception.Security).%New() }"
+        },
+        {
+          "id": "C",
+          "text": "Do ##class(%SYSTEM.Security).EnforcePermission(\"%Application_MyApp\")"
+        },
+        {
+          "id": "D",
+          "text": "Set authorized = $ROLES[\"%Application_MyApp\""
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.2",
+      "explanation": "The pattern is to check permissions using $SYSTEM.Security.Check() and throw a %Exception.Security exception if unauthorized. Login() is for authentication, not authorization. There is no EnforcePermission() method. Checking $ROLES directly is not recommended - use Check() which evaluates all user roles properly. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql#GSECURE_resource_check"
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "In a healthcare application, patient records should only be accessible to users with appropriate credentials. Which security layer provides the MOST fine-grained control?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Database-level encryption"
+        },
+        {
+          "id": "B",
+          "text": "Row-level security using SQL GRANT statements"
+        },
+        {
+          "id": "C",
+          "text": "Application-level authorization checking specific patient-provider relationships"
+        },
+        {
+          "id": "D",
+          "text": "Namespace-level access control"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "Application-level authorization provides the finest control, allowing checks like \"Does this provider have a relationship with this patient?\" Database encryption protects at rest but doesn't control access. SQL GRANT provides table/view level control. Row-level security helps but application logic can implement complex business rules beyond SQL capabilities. Reference: https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=PAGE_security_sql#GSECURE_resource_application"
+    },
+    {
+      "id": 23,
+      "type": "MR",
+      "question": "Which of the following are components of a defense-in-depth security strategy for InterSystems IRIS applications?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Database encryption for data at rest"
+        },
+        {
+          "id": "B",
+          "text": "TLS/SSL for data in transit"
+        },
+        {
+          "id": "C",
+          "text": "Input validation and parameterized queries"
+        },
+        {
+          "id": "D",
+          "text": "Role-based access control (RBAC)"
+        },
+        {
+          "id": "E",
+          "text": "Audit logging of security events"
+        },
+        {
+          "id": "F",
+          "text": "Disabling all authentication to improve performance"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "domain": "T4.2",
+      "explanation": "Defense-in-depth includes multiple security layers: encryption (at rest and in transit), input validation, RBAC, and audit logging. Each layer provides protection if another is breached. Disabling authentication is never acceptable - it eliminates a critical security layer. Security and performance must be balanced appropriately. Reference: https://docs.intersystems.com/iris20253/csp/docbook/DocBook.UI.Page.cls?KEY=ASECURING"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "When storing sensitive data like Social Security Numbers, which approach provides the BEST security?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Store in plain text but in an encrypted database"
+        },
+        {
+          "id": "B",
+          "text": "Hash the values using $SYSTEM.Encryption.SHA256()"
+        },
+        {
+          "id": "C",
+          "text": "Use data-element encryption with $SYSTEM.Encryption.AESCBCManagedKeyEncrypt()"
+        },
+        {
+          "id": "D",
+          "text": "Store as base64-encoded strings"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "Data-element encryption with $SYSTEM.Encryption.AESCBCManagedKeyEncrypt() provides the best security for retrievable sensitive data - it encrypts specific fields using AES in CBC mode with managed keys. Database encryption alone leaves data accessible in memory. Hashing is irreversible (good for passwords, bad for SSNs that must be retrieved). Base64 is encoding, not encryption. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ROARS_encrypt_dee"
+    },
+    {
+      "id": 25,
+      "type": "MC",
+      "question": "An application needs to call an external API that requires API key authentication. Where should the API key be stored?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "As a parameter in the class definition"
+        },
+        {
+          "id": "B",
+          "text": "In a global variable ^APIConfig"
+        },
+        {
+          "id": "C",
+          "text": "Using the InterSystems IRIS Credential Manager"
+        },
+        {
+          "id": "D",
+          "text": "In a CSP session variable"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.2",
+      "explanation": "Credential Manager ($SYSTEM.Security.Credentials) provides secure, encrypted storage for credentials like API keys, passwords, and tokens. Storing in class parameters or globals exposes credentials in code/exports. Session variables are temporary and less secure. Credential Manager is the recommended approach for all external credentials. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ECONFIG_reusable#ECONFIG_reusable_credentials"
+    }
+  ]
+}

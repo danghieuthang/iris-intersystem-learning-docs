@@ -1,0 +1,921 @@
+{
+  "id": "ability-t4-4-q1",
+  "topic": "ability_t4_4",
+  "topicLabel": "T4.4 · Implements Concurrency Controls",
+  "title": "T4.4: Implements Concurrency Controls",
+  "difficulty": "Intermediate",
+  "examDomains": [
+    "T4.4"
+  ],
+  "description": "Test your knowledge of concurrency control mechanisms in InterSystems IRIS, including locking, best practices, and choosing between row-level and table-level locks",
+  "version": "1.2",
+  "publishedDate": "2026-01-24",
+  "importedFrom": "quiz_temp/T4_4.json",
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "What is the purpose of the LOCK command in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To prevent all database access during critical operations"
+        },
+        {
+          "id": "B",
+          "text": "To create an exclusive reference to a specific global node for synchronization"
+        },
+        {
+          "id": "C",
+          "text": "To automatically commit pending transactions"
+        },
+        {
+          "id": "D",
+          "text": "To disable concurrent SQL queries on a table"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The LOCK command creates an exclusive reference to a specific global node, allowing processes to synchronize access to shared resources. When a process executes LOCK ^GlobalName(subscript), it attempts to acquire an exclusive lock on that reference. Other processes attempting to lock the same reference will wait until the lock is released. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "After executing a LOCK command, which special variable should you check to determine if the lock was successfully acquired?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "$HOROLOG"
+        },
+        {
+          "id": "B",
+          "text": "$TEST"
+        },
+        {
+          "id": "C",
+          "text": "$LOCK"
+        },
+        {
+          "id": "D",
+          "text": "$STATUS"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The $TEST special variable is set to 1 (true) if the LOCK command successfully acquired the lock, or 0 (false) if it failed (when using a timeout). After executing LOCK with a timeout, you should check IF $TEST to determine whether the lock was acquired before proceeding with critical operations. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "What happens when you execute a LOCK command without any arguments?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It throws an error"
+        },
+        {
+          "id": "B",
+          "text": "It releases all locks held by the current process"
+        },
+        {
+          "id": "C",
+          "text": "It acquires a global database lock"
+        },
+        {
+          "id": "D",
+          "text": "It displays currently held locks"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "Executing LOCK with no arguments releases all locks currently held by the process. This is a common pattern at the end of a critical section or before process termination to ensure locks are not inadvertently held. LOCK without arguments is equivalent to 'unlock all'. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 4,
+      "type": "MC",
+      "question": "Which LOCK syntax adds a new lock while preserving existing locks held by the process?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "LOCK ^NewLock"
+        },
+        {
+          "id": "B",
+          "text": "LOCK +^NewLock"
+        },
+        {
+          "id": "C",
+          "text": "LOCK &^NewLock"
+        },
+        {
+          "id": "D",
+          "text": "LOCK *^NewLock"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The LOCK + (incremental lock) syntax adds a new lock while preserving existing locks. LOCK +^NewLock acquires a lock on ^NewLock without releasing previously held locks. In contrast, LOCK ^NewLock releases all existing locks before acquiring the new one. The + operator is essential for acquiring multiple locks simultaneously. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 5,
+      "type": "MR",
+      "question": "Which of the following are best practices for using LOCK commands in InterSystems IRIS?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Always specify a timeout value to prevent indefinite waits"
+        },
+        {
+          "id": "B",
+          "text": "Use the same lock reference names consistently across all processes"
+        },
+        {
+          "id": "C",
+          "text": "Hold locks for the minimum time necessary to complete the critical operation"
+        },
+        {
+          "id": "D",
+          "text": "Lock entire globals rather than specific subscripted nodes for better performance"
+        },
+        {
+          "id": "E",
+          "text": "Check $TEST after LOCK with timeout to verify acquisition"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.4",
+      "explanation": "Best practices include: (1) Always use timeout values to prevent processes from waiting indefinitely; (2) Use consistent lock naming conventions across the application; (3) Hold locks for the shortest time possible to minimize contention; (4) Check $TEST after timeout-based locks. Locking entire globals is NOT recommended as it creates unnecessary contention - lock only the specific nodes needed. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 6,
+      "type": "MC",
+      "question": "Scenario: Two users access the same record in a stateless web application. Both users edit the data independently and attempt to save their changes. The application must ensure that changes made by one user are not overwritten by the other without detection.\n\nQuestion: Which approach is most appropriate for managing concurrency in this scenario?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use optimistic concurrency with a version counter to detect and reject conflicting updates"
+        },
+        {
+          "id": "B",
+          "text": "Use pessimistic concurrency to lock the record for the first user, preventing the second user from editing"
+        },
+        {
+          "id": "C",
+          "text": "Allow both users to make updates, and the last save overwrites any earlier changes"
+        },
+        {
+          "id": "D",
+          "text": "Use a SQL table to implement pessimistic concurrency with long-duration locks"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.4",
+      "explanation": "Optimistic concurrency with a version counter is the most appropriate approach for stateless web applications. Each record includes a version field that is incremented with each update. When saving, the application checks if the version matches the original; if not, another user has modified the record. This approach works well in stateless environments where holding locks across HTTP requests is impractical. Pessimistic locking is unsuitable for stateless applications as locks cannot be maintained between requests. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_concurrency"
+    },
+    {
+      "id": 7,
+      "type": "MC",
+      "question": "What is the primary difference between row-level locks and table-level locks in SQL?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Row-level locks are faster but use more memory"
+        },
+        {
+          "id": "B",
+          "text": "Row-level locks allow concurrent access to different rows, while table-level locks prevent all concurrent access to the table"
+        },
+        {
+          "id": "C",
+          "text": "Table-level locks are only available in embedded SQL"
+        },
+        {
+          "id": "D",
+          "text": "Row-level locks require manual LOCK commands, while table-level locks are automatic"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "Row-level locks allow multiple processes to access different rows in the same table concurrently, maximizing concurrency. Table-level locks prevent all concurrent access to the entire table during the lock duration, which can significantly reduce concurrency but may be appropriate for operations affecting many rows. The choice depends on the operation scope and concurrency requirements. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_locktable"
+    },
+    {
+      "id": 8,
+      "type": "MC",
+      "question": "Which SQL isolation level provides the highest degree of concurrency by allowing dirty reads?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "READ UNCOMMITTED"
+        },
+        {
+          "id": "B",
+          "text": "READ COMMITTED"
+        },
+        {
+          "id": "C",
+          "text": "REPEATABLE READ"
+        },
+        {
+          "id": "D",
+          "text": "SERIALIZABLE"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.4",
+      "explanation": "READ UNCOMMITTED provides the highest concurrency by allowing dirty reads (reading uncommitted changes from other transactions). This isolation level sacrifices data consistency for performance and concurrency. It's appropriate for reporting or analytics where approximate data is acceptable. Higher isolation levels (READ COMMITTED, REPEATABLE READ, SERIALIZABLE) provide stronger consistency guarantees but reduce concurrency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_set#RSQL_set_transaction"
+    },
+    {
+      "id": 9,
+      "type": "MC",
+      "question": "In ObjectScript, what is the correct syntax to acquire an incremental lock with a 5-second timeout, preserving existing locks?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "LOCK ^MyLock TIMEOUT 5"
+        },
+        {
+          "id": "B",
+          "text": "LOCK +^MyLock:5"
+        },
+        {
+          "id": "C",
+          "text": "LOCK ^MyLock(5)"
+        },
+        {
+          "id": "D",
+          "text": "LOCK ^MyLock WAIT 5"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The correct syntax for an incremental lock with timeout is LOCK +lockref:timeout. LOCK +^MyLock:5 attempts to acquire the lock while preserving any existing locks, waiting up to 5 seconds. The + is important: without it (LOCK ^MyLock:5), all existing locks would be released first. If the lock cannot be acquired within 5 seconds, $TEST is set to 0 and execution continues. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock",
+      "revised": true
+    },
+    {
+      "id": 10,
+      "type": "MR",
+      "question": "When should you consider using table-level locks instead of row-level locks?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "When performing bulk operations affecting most or all rows in a table"
+        },
+        {
+          "id": "B",
+          "text": "When you need to prevent all concurrent modifications during a complex transaction"
+        },
+        {
+          "id": "C",
+          "text": "When performing a single-row SELECT query"
+        },
+        {
+          "id": "D",
+          "text": "When you need to maintain referential integrity across multiple tables"
+        },
+        {
+          "id": "E",
+          "text": "When rebuilding indexes or performing table maintenance"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "E"
+      ],
+      "domain": "T4.4",
+      "explanation": "Table-level locks are appropriate for: (1) Bulk operations affecting many/all rows where row-level locks would be inefficient; (2) Complex transactions requiring table-wide consistency; (3) Maintenance operations like index rebuilds. Single-row queries should use row-level locks for better concurrency. Referential integrity is typically managed through constraints, not table locks. Table-level locks reduce concurrency significantly, so use them only when necessary. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_locktable"
+    },
+    {
+      "id": 11,
+      "type": "MC",
+      "question": "What happens if a process terminates abnormally while holding locks?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The locks remain indefinitely, requiring manual intervention"
+        },
+        {
+          "id": "B",
+          "text": "Other processes waiting for those locks will receive an error"
+        },
+        {
+          "id": "C",
+          "text": "InterSystems IRIS automatically releases all locks held by the terminated process"
+        },
+        {
+          "id": "D",
+          "text": "The database becomes corrupted and must be restored"
+        }
+      ],
+      "answer": [
+        "C"
+      ],
+      "domain": "T4.4",
+      "explanation": "InterSystems IRIS automatically releases all locks held by a process when that process terminates, whether normally or abnormally. This prevents deadlock situations where locks would be held indefinitely. Processes waiting for those locks will then be able to acquire them. This automatic cleanup is a critical safety feature of the locking mechanism. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 12,
+      "type": "MC",
+      "question": "Which SQL command explicitly acquires a table-level lock?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "LOCK TABLE table_name"
+        },
+        {
+          "id": "B",
+          "text": "SET LOCK TABLE table_name"
+        },
+        {
+          "id": "C",
+          "text": "ACQUIRE LOCK ON table_name"
+        },
+        {
+          "id": "D",
+          "text": "BEGIN TRANSACTION WITH LOCK"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.4",
+      "explanation": "The LOCK TABLE statement explicitly acquires a table-level lock in SQL. Syntax: LOCK TABLE table_name IN {SHARE|EXCLUSIVE} MODE. SHARE mode allows concurrent reads but prevents writes. EXCLUSIVE mode prevents all concurrent access. Table locks are held until the transaction ends (COMMIT or ROLLBACK). Use table locks sparingly as they significantly reduce concurrency. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_locktable"
+    },
+    {
+      "id": 13,
+      "type": "MC",
+      "question": "What is the effect of executing LOCK -^MyLock in ObjectScript?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It acquires an exclusive lock on ^MyLock"
+        },
+        {
+          "id": "B",
+          "text": "It releases the lock on ^MyLock while maintaining other locks"
+        },
+        {
+          "id": "C",
+          "text": "It acquires a shared (read-only) lock on ^MyLock"
+        },
+        {
+          "id": "D",
+          "text": "It throws a syntax error"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The LOCK - (decremental unlock) syntax releases a specific lock while preserving other locks held by the process. LOCK -^MyLock releases only the lock on ^MyLock; any other locks remain active. This is useful when you need to release locks selectively. In contrast, LOCK without arguments releases all locks. The + and - operators allow fine-grained lock management. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 14,
+      "type": "MR",
+      "question": "Which statements about optimistic concurrency control are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It assumes conflicts are rare and detects them at save time"
+        },
+        {
+          "id": "B",
+          "text": "It requires holding locks throughout the edit session"
+        },
+        {
+          "id": "C",
+          "text": "It typically uses version numbers or timestamps to detect conflicts"
+        },
+        {
+          "id": "D",
+          "text": "It is well-suited for stateless web applications"
+        },
+        {
+          "id": "E",
+          "text": "It prevents conflicts by blocking concurrent access"
+        }
+      ],
+      "answer": [
+        "A",
+        "C",
+        "D"
+      ],
+      "domain": "T4.4",
+      "explanation": "Optimistic concurrency: (1) Assumes conflicts are rare and checks for them only when saving; (2) Does NOT hold locks during editing - data is read without locks; (3) Uses version counters, timestamps, or checksums to detect if data changed since it was read; (4) Works well in stateless environments like web apps where maintaining locks across requests is impractical. Pessimistic concurrency, not optimistic, prevents conflicts by blocking concurrent access with locks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_concurrency"
+    },
+    {
+      "id": 15,
+      "type": "MC",
+      "question": "In a high-concurrency OLTP system, you need to update individual customer records. Which approach provides the best balance of data integrity and concurrency?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use table-level exclusive locks for all customer updates"
+        },
+        {
+          "id": "B",
+          "text": "Use row-level locks with appropriate isolation levels"
+        },
+        {
+          "id": "C",
+          "text": "Disable all locking for maximum performance"
+        },
+        {
+          "id": "D",
+          "text": "Use optimistic concurrency without any locks"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "Row-level locks with appropriate isolation levels provide the best balance for high-concurrency OLTP systems updating individual records. They ensure data integrity while allowing maximum concurrency - multiple processes can update different customer records simultaneously. Table-level locks would serialize all updates, severely limiting throughput. Disabling locks risks data corruption. Optimistic concurrency works for stateless apps but may not be suitable for all OLTP scenarios, especially where conflicts are common. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_locktable"
+    },
+    {
+      "id": 16,
+      "type": "MC",
+      "question": "What is the correct syntax to acquire a shared lock on a global node in ObjectScript?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "LOCK +^Data(id) SHARED"
+        },
+        {
+          "id": "B",
+          "text": "LOCK +^Data(id)#\"S\""
+        },
+        {
+          "id": "C",
+          "text": "LOCK +^Data(id):\"shared\""
+        },
+        {
+          "id": "D",
+          "text": "LOCK SHARED +^Data(id)"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "To acquire a shared lock, use the #\"S\" lock type modifier. The syntax LOCK +^Data(id)#\"S\" acquires a shared lock on the specified node. Multiple processes can hold the same shared lock simultaneously, but a shared lock prevents exclusive locks and vice versa. Shared locks are useful when multiple processes need to read data while preventing other processes from modifying it. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 17,
+      "type": "MC",
+      "question": "Within a transaction, you execute LOCK -^Data(1) to release a lock. When is the lock actually released by default?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Immediately when LOCK -^Data(1) executes"
+        },
+        {
+          "id": "B",
+          "text": "At the end of the transaction (TCOMMIT or TROLLBACK)"
+        },
+        {
+          "id": "C",
+          "text": "When the process terminates"
+        },
+        {
+          "id": "D",
+          "text": "After a 30-second delay"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "By default, when you unlock a non-incremented lock within a transaction, InterSystems IRIS maintains that lock in a 'delock state' until the end of the transaction. This ensures transactional integrity - if the transaction rolls back, the lock protection was maintained throughout. To immediately release a lock within a transaction, use the #\"I\" (immediate) modifier: LOCK -^Data(1)#\"I\". Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 18,
+      "type": "MC",
+      "question": "Within a transaction, what does the #\"I\" lock type modifier do when releasing a lock?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "It acquires an incremental lock"
+        },
+        {
+          "id": "B",
+          "text": "It immediately releases the lock, bypassing the default deferred-until-TCOMMIT behavior"
+        },
+        {
+          "id": "C",
+          "text": "It converts the lock to an implicit lock"
+        },
+        {
+          "id": "D",
+          "text": "It makes the lock invisible to other processes"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The #\"I\" (immediate) modifier forces immediate release of a lock within a transaction. By default, when you unlock within a transaction, the lock enters a 'delock state' and is not actually released until TCOMMIT or TROLLBACK. Using LOCK -^Data(id)#\"I\" immediately releases the lock regardless of transaction state. Use this when you need to release a lock before transaction completion, but be aware this may affect transactional integrity. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock",
+      "revised": true
+    },
+    {
+      "id": 19,
+      "type": "MR",
+      "question": "Which statements about shared locks (#\"S\") in InterSystems IRIS are TRUE?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Multiple processes can hold the same shared lock simultaneously"
+        },
+        {
+          "id": "B",
+          "text": "A shared lock prevents exclusive locks on the same resource"
+        },
+        {
+          "id": "C",
+          "text": "An exclusive lock prevents shared locks on the same resource"
+        },
+        {
+          "id": "D",
+          "text": "Shared locks are automatically upgraded to exclusive locks when needed"
+        },
+        {
+          "id": "E",
+          "text": "Shared locks are useful for read-only access while preventing writes"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.4",
+      "explanation": "Shared locks allow multiple readers while preventing writers: (1) Multiple processes can hold the same shared lock; (2) A shared lock blocks exclusive locks; (3) An exclusive lock blocks shared locks; (4) They're ideal for viewing data while preventing edits. Shared locks are NOT automatically upgraded - you must explicitly release the shared lock and acquire an exclusive one. This is a common pattern: acquire shared lock to read, release it, acquire exclusive lock to write. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 20,
+      "type": "MC",
+      "question": "Consider this code:\n\n```\nTSTART\nLOCK +^Customer(id):5\nIF '$TEST { TROLLBACK  QUIT 0 }\nSET ^Customer(id,\"Balance\")=newBalance\nLOCK -^Customer(id)\nDO AuditLog(id, newBalance)\nTCOMMIT\nQUIT 1\n```\n\nWhat is the problem with this lock management?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The lock timeout is too short"
+        },
+        {
+          "id": "B",
+          "text": "The lock is released before TCOMMIT but remains in delock state, which is correct"
+        },
+        {
+          "id": "C",
+          "text": "The lock should use #\"S\" for shared access"
+        },
+        {
+          "id": "D",
+          "text": "LOCK -^Customer(id) should come after TCOMMIT"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The code is actually correct! When LOCK -^Customer(id) executes within the transaction, the lock enters a 'delock state' and is not actually released until TCOMMIT. This is the default behavior that ensures transactional integrity - the lock protection is maintained throughout the transaction. If the AuditLog call fails and causes TROLLBACK, the lock was still held during the entire critical section. This is intentional design, not a problem. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 21,
+      "type": "MC",
+      "question": "Two processes are experiencing deadlock. Process A holds lock ^Data(1) and waits for ^Data(2). Process B holds lock ^Data(2) and waits for ^Data(1). What is the best practice to prevent this?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Use shorter timeout values on all locks"
+        },
+        {
+          "id": "B",
+          "text": "Always acquire multiple locks in a consistent, predetermined order"
+        },
+        {
+          "id": "C",
+          "text": "Use shared locks instead of exclusive locks"
+        },
+        {
+          "id": "D",
+          "text": "Disable locking for one of the processes"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The best practice for deadlock prevention is to acquire locks in a consistent order across all processes. If both processes always lock ^Data(1) before ^Data(2), deadlock cannot occur. This is a fundamental principle of concurrent programming. Shorter timeouts don't prevent deadlock (they just make detection faster). Shared locks don't help if both need exclusive access. Disabling locking risks data corruption. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 22,
+      "type": "MC",
+      "question": "What is the purpose of the ^$LOCK structured system variable?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To acquire locks on multiple globals simultaneously"
+        },
+        {
+          "id": "B",
+          "text": "To query information about locks currently held by processes"
+        },
+        {
+          "id": "C",
+          "text": "To configure global lock timeout settings"
+        },
+        {
+          "id": "D",
+          "text": "To release all locks in the system"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The ^$LOCK structured system variable allows you to query information about locks currently held by processes in the system. You can iterate through ^$LOCK to see which locks exist, which process holds each lock, the lock type (shared/exclusive), and the lock count. This is invaluable for debugging concurrency issues and monitoring lock contention. Syntax examples: $DATA(^$LOCK(lockref)) checks if a lock exists; $ORDER(^$LOCK(prev)) iterates through locks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_slock"
+    },
+    {
+      "id": 23,
+      "type": "MC",
+      "question": "What does the CONCURRENCY class parameter control in a persistent class?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "The maximum number of concurrent users who can access the class"
+        },
+        {
+          "id": "B",
+          "text": "The default locking behavior when objects of the class are accessed"
+        },
+        {
+          "id": "C",
+          "text": "Whether the class supports multi-threading"
+        },
+        {
+          "id": "D",
+          "text": "The transaction isolation level for SQL queries"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The CONCURRENCY class parameter (also known as DEFAULTCONCURRENCY) specifies the default locking behavior for persistent objects. Values include: 0 (no locking), 1 (atomic - lock during save only), 2 (shared lock while object is open), 3 (shared lock retained after close), 4 (exclusive lock while open). This setting applies when methods like %Open() or %Save() don't specify a concurrency argument. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_concurrency"
+    },
+    {
+      "id": 24,
+      "type": "MC",
+      "question": "What is the purpose of the #\"E\" (escalating) lock type?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To automatically elevate user privileges when acquiring locks"
+        },
+        {
+          "id": "B",
+          "text": "To allow the lock to be automatically promoted from row-level to table-level based on lock count"
+        },
+        {
+          "id": "C",
+          "text": "To enable emergency lock acquisition bypassing normal wait times"
+        },
+        {
+          "id": "D",
+          "text": "To create an encrypted lock reference"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The #\"E\" escalating lock type enables automatic lock escalation. When many individual row-level locks are acquired (exceeding a threshold), they can be automatically promoted to a single table-level lock. This reduces lock table overhead when a transaction affects many rows. Use LOCK +^Table(row)#\"E\" for escalating locks. The escalation threshold is configurable. This is useful for operations that may touch many rows but shouldn't hold thousands of individual locks. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock"
+    },
+    {
+      "id": 25,
+      "type": "MC",
+      "question": "Consider this pattern for implementing read-then-update with proper locking:\n\n```\n; Step 1: Read with shared lock\nLOCK +^Data(id)#\"S\":5\nIF '$TEST QUIT \"Lock failed\"\nSET value = ^Data(id)\nLOCK -^Data(id)#\"S\"\n\n; Step 2: Modify value...\nSET newValue = value + 100\n\n; Step 3: Write with exclusive lock\nLOCK +^Data(id):5\nIF '$TEST QUIT \"Lock failed\"\n; Verify value unchanged\nIF ^Data(id)'=value {\n    LOCK -^Data(id)\n    QUIT \"Concurrency conflict\"\n}\nSET ^Data(id) = newValue\nLOCK -^Data(id)\nQUIT \"Success\"\n```\n\nWhat concurrency pattern does this implement?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Pessimistic locking with shared-to-exclusive upgrade"
+        },
+        {
+          "id": "B",
+          "text": "Optimistic concurrency control with version verification"
+        },
+        {
+          "id": "C",
+          "text": "Two-phase locking protocol"
+        },
+        {
+          "id": "D",
+          "text": "Lock-free concurrent programming"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "This implements optimistic concurrency control. The pattern: (1) Read with shared lock to get current value, (2) Release lock and do processing, (3) Acquire exclusive lock and verify value hasn't changed before updating. If the value changed (another process modified it), the update is rejected. This allows high concurrency during the read/process phase while still detecting conflicts at write time. The verification step (IF ^Data(id)'=value) is the optimistic check. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_concurrency"
+    },
+    {
+      "id": 26,
+      "type": "MC",
+      "question": "What is the primary purpose of the InterSystems IRIS Work Queue Manager?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "To acquire exclusive locks on database globals for concurrent safety"
+        },
+        {
+          "id": "B",
+          "text": "To distribute independent work units across multiple background worker jobs for parallel execution"
+        },
+        {
+          "id": "C",
+          "text": "To serialize all write operations through a single background job"
+        },
+        {
+          "id": "D",
+          "text": "To replace the use of LOCK commands in multi-process applications"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The Work Queue Manager (%SYSTEM.WorkMgr) is designed to parallelize work by distributing independent units across a pool of worker jobs. It is not a locking or serialization mechanism — those are provided by the LOCK command and transactions. WQM is intended for CPU-bound or I/O-bound batch work that can be decomposed into independent units. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro"
+    },
+    {
+      "id": 27,
+      "type": "MC",
+      "question": "What is the correct basic workflow for using the Work Queue Manager?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Call Queue() multiple times, then call Initialize() once at the end"
+        },
+        {
+          "id": "B",
+          "text": "Call Initialize() to get a queue handle, call Queue() for each work unit, then call Sync() to wait for completion"
+        },
+        {
+          "id": "C",
+          "text": "Call Sync() first to reserve workers, then call Queue() for each work item"
+        },
+        {
+          "id": "D",
+          "text": "Call $SYSTEM.WorkMgr.Run() with an array of work items as the single argument"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "The standard workflow is: (1) obtain a queue handle with Set queue = $SYSTEM.WorkMgr.Initialize(,.sc); (2) submit work items repeatedly with queue.Queue(\"ClassName.Method\", args...); (3) wait for all work to complete with queue.Sync() or queue.WaitForComplete(timeout). Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro"
+    },
+    {
+      "id": 28,
+      "type": "MC",
+      "question": "What is the difference between Sync() and WaitForComplete() on a Work Queue Manager queue?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Sync() waits for all queued work to complete; WaitForComplete() does the same but accepts a timeout parameter"
+        },
+        {
+          "id": "B",
+          "text": "Sync() runs work serially; WaitForComplete() runs work in parallel"
+        },
+        {
+          "id": "C",
+          "text": "Sync() commits a transaction; WaitForComplete() does not touch transactions"
+        },
+        {
+          "id": "D",
+          "text": "They are identical — WaitForComplete() is an alias for Sync()"
+        }
+      ],
+      "answer": [
+        "A"
+      ],
+      "domain": "T4.4",
+      "explanation": "Both methods block until all queued work items complete and return the overall status. The key difference is that WaitForComplete(timeout) accepts a timeout parameter, whereas Sync() waits indefinitely. Use WaitForComplete when you need to bound the total wait time. A related method, WaitOne(timeout), returns as soon as any single item finishes. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro"
+    },
+    {
+      "id": 29,
+      "type": "MC",
+      "question": "When do Setup and Teardown callbacks run on a Work Queue Manager queue?",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Before and after each individual work item, inside the same worker job"
+        },
+        {
+          "id": "B",
+          "text": "Once per worker job — Setup runs before the first item, Teardown after the last item that worker processes"
+        },
+        {
+          "id": "C",
+          "text": "Only on the calling process, never on the worker jobs"
+        },
+        {
+          "id": "D",
+          "text": "Setup runs on the master, Teardown runs when Sync() returns"
+        }
+      ],
+      "answer": [
+        "B"
+      ],
+      "domain": "T4.4",
+      "explanation": "Setup and Teardown callbacks are per-worker, not per-work-item. A worker runs Setup once before processing its first item, then processes all items assigned to it, then runs Teardown once after the last item. This lets you amortize expensive per-worker initialization such as opening database connections or loading configuration. Running them per item would defeat the performance purpose. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_setup_teardown"
+    },
+    {
+      "id": 30,
+      "type": "MR",
+      "question": "Which of the following are best practices when using the Work Queue Manager? (Select all that apply)",
+      "code": null,
+      "options": [
+        {
+          "id": "A",
+          "text": "Make each work unit fully self-contained with no shared mutable state between units"
+        },
+        {
+          "id": "B",
+          "text": "Pass all needed data as arguments to Queue() rather than relying on variables from the calling process"
+        },
+        {
+          "id": "C",
+          "text": "Always check the status returned by Sync() to detect errors in work items"
+        },
+        {
+          "id": "D",
+          "text": "Use Work Queue Manager for every request, including interactive sub-second operations, to maximize parallelism"
+        },
+        {
+          "id": "E",
+          "text": "Keep work unit size large enough to amortize the per-job startup overhead"
+        }
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C",
+        "E"
+      ],
+      "domain": "T4.4",
+      "explanation": "Valid best practices: work units must be independent (no shared mutable state); data must be passed as Queue() arguments since worker jobs don't inherit caller variables; always check the Sync() return status for work-item errors; unit work should be large enough that the cost of starting a worker job is amortized. WQM is NOT appropriate for sub-second interactive requests — the job-creation overhead outweighs any parallelism gain. Reference: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro"
+    }
+  ]
+}
