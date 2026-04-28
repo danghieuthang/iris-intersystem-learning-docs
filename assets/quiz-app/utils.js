@@ -42,7 +42,34 @@ export function esc(value) {
 }
 
 export function renderText(text) {
+  const value = String(text);
+  const fencePattern = /```([A-Za-z0-9_-]+)?\r?\n([\s\S]*?)```/g;
+  let html = '';
+  let lastIndex = 0;
+  let match;
+
+  while ((match = fencePattern.exec(value)) !== null) {
+    html += renderInlineText(value.slice(lastIndex, match.index));
+    html += renderCodeBlock(match[1], match[2]);
+    lastIndex = fencePattern.lastIndex;
+  }
+
+  html += renderInlineText(value.slice(lastIndex));
+  return html;
+}
+
+function renderInlineText(text) {
   return esc(text).replace(/`([^`]+)`/g, '<code class="ic">$1</code>');
+}
+
+function renderCodeBlock(language, code) {
+  const normalizedLanguage = String(language || 'text').toLowerCase();
+  const label = normalizedLanguage === 'objectscript' ? 'ObjectScript' : normalizedLanguage;
+  const html = normalizedLanguage === 'objectscript'
+    ? colorizeObjectScript(code.replace(/\r\n/g, '\n'))
+    : escapeCodeHtml(code.replace(/\r\n/g, '\n'));
+
+  return `<div class="code-wrapper"><div class="code-lang-bar">${esc(label)}</div><pre><code class="nohighlight">${html}</code></pre></div>`;
 }
 
 export function formatTime(totalSeconds) {

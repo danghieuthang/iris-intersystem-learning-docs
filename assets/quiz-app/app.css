@@ -443,7 +443,9 @@ body {
   line-height: 1.65 !important;
   font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
   background: transparent !important;
-  white-space: pre !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   tab-size: 4;
 }
 
