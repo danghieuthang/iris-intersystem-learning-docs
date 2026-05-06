@@ -4543,12 +4543,18 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — mirroring, async reporting, DR implications, upgrade strategy, và security-driven physical separation</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Hai khái niệm nền tảng cần nắm rõ trước:</p>
+<ul>
+<li><strong>HA (High Availability)</strong> — đảm bảo hệ thống tiếp tục hoạt động khi một node bị lỗi; đo bằng <em>uptime</em> và <em>failover time</em>. IRIS thực hiện HA qua <strong>mirroring</strong> với một failover pair (Primary + Backup).</li>
+<li><strong>DR (Disaster Recovery)</strong> — khả năng phục hồi sau thảm họa (mất cả site, thiên tai, ransomware); đo bằng <strong>RTO</strong> <em>(Recovery Time Objective — thời gian tối đa có thể chịu downtime)</em> và <strong>RPO</strong> <em>(Recovery Point Objective — lượng dữ liệu tối đa có thể mất)</em>. IRIS thực hiện DR qua <strong>async mirror member</strong> ở site thứ hai hoặc qua backup/restore.</li>
+</ul>
 <p>Khi kiến trúc bước vào production thật, câu hỏi không chỉ là "data để ở đâu" mà còn là:</p>
 <ul>
-<li>failover như thế nào?</li>
+<li>failover như thế nào? <em>(HA)</em></li>
 <li>reporting có ảnh hưởng production không?</li>
 <li>security/compliance có yêu cầu tách vật lý không?</li>
 <li>upgrade sẽ tác động ra sao?</li>
+<li>mất site toàn bộ thì phục hồi thế nào? <em>(DR)</em></li>
 </ul>
 <p>Subtopic này gom các quyết định kiến trúc xoay quanh <strong>HA, DR, security separation, và upgrade planning</strong>. Nó được đặt ở module runtime để người học tiếp cận sau khi đã hiểu data model, workload, và deployment basics.</p>
 <hr />
