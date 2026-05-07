@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#scaling-patterns" class="md-skip">
+        <a href="#production-scaling-patterns" class="md-skip">
           Bỏ qua
         </a>
       
@@ -2318,6 +2318,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#choosing-between-ecp-sharding-and-async-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Between ECP, Sharding, and Async Reporting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#storage-and-iops" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4491,6 +4502,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#choosing-between-ecp-sharding-and-async-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Between ECP, Sharding, and Async Reporting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#storage-and-iops" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4582,12 +4604,13 @@
   
 
 
-<h1 id="scaling-patterns">Scaling Patterns<a class="headerlink" href="#scaling-patterns" title="Permanent link">&para;</a></h1>
+<h1 id="production-scaling-patterns">Production Scaling Patterns<a class="headerlink" href="#production-scaling-patterns" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — growth planning, global mappings, sharding, ECP, storage IOPS, và workload isolation</p>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — growth planning, global mappings, sharding, ECP, storage IOPS, and workload isolation</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Kiến trúc dữ liệu tốt không chỉ đúng ở hiện tại mà còn phải chịu được tăng trưởng về <strong>data volume</strong>, <strong>transaction rate</strong>, và <strong>workload diversity</strong>. Đây là phần advanced của topic 10, học sau foundations để người đọc đã có đủ ngữ cảnh về globals, SQL, và runtime behavior trước khi đi vào scale decisions.</p>
+<p>Nếu cần refresh namespace/database/mapping basics, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Sau khi nắm scaling choices, đọc tiếp <a href="../02-ha-security-architecture/">HA, DR &amp; Security Architecture</a> để hoàn thiện bức tranh production topology.</p>
 <hr />
 <h2 id="scale-up-vs-scale-out">Scale-up vs Scale-out<a class="headerlink" href="#scale-up-vs-scale-out" title="Permanent link">&para;</a></h2>
 <table>
@@ -4613,7 +4636,7 @@
 </table>
 <p>Trong IRIS:</p>
 <ul>
-<li><strong>buffer tuning / SSD / DB split</strong> thường là scale-up hoặc scale-within-instance</li>
+<li><strong>buffer tuning / SSD / database split</strong> thường là scale-up hoặc scale-within-instance</li>
 <li><strong>sharding</strong> là scale-out cho data</li>
 <li><strong>ECP</strong> giúp phân tách app servers và data server</li>
 </ul>
@@ -4665,7 +4688,7 @@
 <ul>
 <li>share lookup data</li>
 <li>tách archive khỏi hot data</li>
-<li>giữ code trong namespace logic quen thuộc nhưng data ở DB phù hợp hơn</li>
+<li>giữ code trong namespace logic quen thuộc nhưng data ở database phù hợp hơn</li>
 </ul>
 <h3 id="specific-mapping-beats-broad-mapping">Specific Mapping Beats Broad Mapping<a class="headerlink" href="#specific-mapping-beats-broad-mapping" title="Permanent link">&para;</a></h3>
 <p>Nếu chỉ cần <code>^ProductCatalog</code>, thường tốt hơn:</p>
@@ -4752,6 +4775,34 @@
 <li>không tự giải quyết analytical contention giống async mirror member</li>
 </ul>
 <hr />
+<h2 id="choosing-between-ecp-sharding-and-async-reporting">Choosing Between ECP, Sharding, and Async Reporting<a class="headerlink" href="#choosing-between-ecp-sharding-and-async-reporting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Better fit</th>
+<th>Why not the others</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user/process volume tăng nhưng vẫn dùng chung data server</td>
+<td>ECP</td>
+<td>sharding giải bài toán data volume; async reporting không scale transaction workload</td>
+</tr>
+<tr>
+<td>data volume và query ingestion vượt khả năng một node</td>
+<td>sharding</td>
+<td>ECP không partition data; async reporting chỉ tạo read replica</td>
+</tr>
+<tr>
+<td>BI/reporting cần near-real-time mà không chạm production</td>
+<td>async reporting member</td>
+<td>ECP không cô lập analytical contention; sharding không tự thay thế read isolation</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="storage-and-iops">Storage and IOPS<a class="headerlink" href="#storage-and-iops" title="Permanent link">&para;</a></h2>
 <p>Khi workload tăng mạnh, storage choice trở thành quyết định kiến trúc.</p>
 <table>
@@ -4775,7 +4826,7 @@
 <td>cân nhắc split DB + archival strategy</td>
 </tr>
 <tr>
-<td>DB sắp chạm size limit</td>
+<td>database sắp chạm size limit</td>
 <td>review maximum database size setting</td>
 </tr>
 </tbody>
@@ -4828,9 +4879,10 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<pre class="objectscript"><code class="language-objectscript">// --- Check which database a mapped global uses (run in %SYS) ---
+<pre class="objectscript"><code class="language-objectscript">// --- Check which database a mapped global uses (replace placeholders; run in %SYS) ---
 ZNSPACE &quot;%SYS&quot;
-SET sc = ##class(Config.MapGlobals).Get(&quot;MYAPP&quot;, &quot;SharedData&quot;, .props)
+SET sc = ##class(Config.MapGlobals).Get(&quot;&lt;NAMESPACE&gt;&quot;, &quot;&lt;GLOBAL_NAME&gt;&quot;, .props)
+WRITE sc, !
 ZWRITE props
 
 // --- Check process memory limit ---
@@ -4841,9 +4893,9 @@ WRITE ##class(%SYSTEM.Lock).GetLockTableUsed(), !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSTU">Namespaces and Global Mappings</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_config_namespace_addmap">Configuring Namespaces and Global Mappings</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_sharding">Horizontal Scaling with Sharding</a></li>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_ecp">ECP Overview</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_scalability#GSCALE_scalability_oview_horizontal_user">Distributed Caching with ECP</a></li>
 </ul>
 
 

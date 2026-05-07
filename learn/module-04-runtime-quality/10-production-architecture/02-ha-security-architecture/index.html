@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ha-security-architecture" class="md-skip">
+        <a href="#ha-dr-security-architecture" class="md-skip">
           Bỏ qua
         </a>
       
@@ -4538,14 +4538,14 @@
   
 
 
-<h1 id="ha-security-architecture">HA &amp; Security Architecture<a class="headerlink" href="#ha-security-architecture" title="Permanent link">&para;</a></h1>
+<h1 id="ha-dr-security-architecture">HA, DR &amp; Security Architecture<a class="headerlink" href="#ha-dr-security-architecture" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — mirroring, async reporting, DR implications, upgrade strategy, và security-driven physical separation</p>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — mirroring, async reporting, DR implications, upgrade strategy, and security-driven physical separation</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Hai khái niệm nền tảng cần nắm rõ trước:</p>
 <ul>
-<li><strong>HA (High Availability)</strong> — đảm bảo hệ thống tiếp tục hoạt động khi một node bị lỗi; đo bằng <em>uptime</em> và <em>failover time</em>. IRIS thực hiện HA qua <strong>mirroring</strong> với một failover pair (Primary + Backup).</li>
+<li><strong>HA (High Availability)</strong> — đảm bảo hệ thống tiếp tục hoạt động khi một node bị lỗi; đo bằng <em>uptime</em> và <em>failover time</em>. IRIS thực hiện HA qua <strong>mirroring</strong> với một failover pair (primary + backup).</li>
 <li><strong>DR (Disaster Recovery)</strong> — khả năng phục hồi sau thảm họa (mất cả site, thiên tai, ransomware); đo bằng <strong>RTO</strong> <em>(Recovery Time Objective — thời gian tối đa có thể chịu downtime)</em> và <strong>RPO</strong> <em>(Recovery Point Objective — lượng dữ liệu tối đa có thể mất)</em>. IRIS thực hiện DR qua <strong>async mirror member</strong> ở site thứ hai hoặc qua backup/restore.</li>
 </ul>
 <p>Khi kiến trúc bước vào production thật, câu hỏi không chỉ là "data để ở đâu" mà còn là:</p>
@@ -4557,6 +4557,7 @@
 <li>mất site toàn bộ thì phục hồi thế nào? <em>(DR)</em></li>
 </ul>
 <p>Subtopic này gom các quyết định kiến trúc xoay quanh <strong>HA, DR, security separation, và upgrade planning</strong>. Nó được đặt ở module runtime để người học tiếp cận sau khi đã hiểu data model, workload, và deployment basics.</p>
+<p>Nếu cần refresh namespace/database separation trước, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Nếu cần phân biệt rõ ECP, sharding, và reporting isolation, đọc song song với <a href="../01-scaling-patterns/">Production Scaling Patterns</a>.</p>
 <hr />
 <h2 id="mirroring-basics">Mirroring Basics<a class="headerlink" href="#mirroring-basics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4648,8 +4649,8 @@
 <p>Nếu nhiều database cùng thuộc một ứng dụng HA-critical, thường tốt hơn khi chúng nằm trong <strong>cùng mirror set</strong> để failover nhất quán.</p>
 <p>Điều này giảm rủi ro:</p>
 <ul>
-<li>app data đã failover nhưng reference/code DB chưa đồng bộ</li>
-<li>operational behavior khác nhau giữa các DB cùng một app boundary</li>
+<li>app data đã failover nhưng reference/code database chưa đồng bộ</li>
+<li>operational behavior khác nhau giữa các database cùng một app boundary</li>
 </ul>
 <hr />
 <h2 id="security-driven-physical-separation">Security-driven Physical Separation<a class="headerlink" href="#security-driven-physical-separation" title="Permanent link">&para;</a></h2>
@@ -4740,7 +4741,7 @@
 <li>✅ Mirroring là core HA pattern của IRIS</li>
 <li>✅ Async mirror member rất hợp cho reporting và DR</li>
 <li>✅ Dùng Virtual IP giúp client không phải đổi connection string khi failover</li>
-<li>✅ Mirror cả code và data DBs để tránh mismatch</li>
+<li>✅ Mirror cả code và data databases để tránh mismatch</li>
 <li>✅ Security requirements có thể dẫn tới physical database separation</li>
 <li>⚠️ Async member có lag, nên DR plan phải tính RPO thực tế</li>
 <li>⚠️ Không mirror <code>IRISTEMP</code> hay <code>IRISLOCALDATA</code></li>
@@ -4753,12 +4754,13 @@ WRITE $SYSTEM.Mirror.GetMemberStatus(), !
 WRITE $SYSTEM.Mirror.IsPrimary(), !
 WRITE $SYSTEM.Mirror.GetMemberType(), !</code></pre>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># --- Example CPF merge in deployment/upgrade workflows ---</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\myapp-delta.cpf&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Replace &lt;environment&gt; with dev, test, or prod before running.</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\&lt;environment&gt;-delta.cpf&quot;</span>
 </span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHACM_mirroring">Mirroring for High Availability</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror">Mirroring for High Availability</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set">Mirror Sets and Async Reporting</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCI">Upgrade Planning</a></li>
 </ul>

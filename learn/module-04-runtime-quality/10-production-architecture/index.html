@@ -4172,7 +4172,7 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Sau khi đã nắm namespace, database, globals, SQL, và runtime concerns cơ bản, topic 10 cần được học lại ở góc nhìn production. Lúc này các câu hỏi không còn là "data nằm ở đâu" mà là "hệ thống tăng trưởng thế nào", "reporting có ảnh hưởng primary không", và "failover hay upgrade sẽ tác động ra sao".</p>
-<p>Trang này gom phần advanced architecture để học sau, khi người học đã có đủ ngữ cảnh về data model và vận hành.</p>
+<p>Trang này gom phần advanced architecture để học sau, khi người học đã có đủ ngữ cảnh về data model và vận hành. Nếu cần ôn lại mental model nền tảng trước khi đọc, quay lại <a href="../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4241,19 +4241,17 @@
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<pre class="objectscript"><code class="language-objectscript">// --- Check mirror status ---
+<pre class="objectscript"><code class="language-objectscript">// --- Check current namespace ---
+WRITE $NAMESPACE, !</code></pre>
+<pre class="objectscript"><code class="language-objectscript">// --- Check mirror role on the current instance ---
 WRITE $SYSTEM.Mirror.GetMemberStatus(), !
-WRITE $SYSTEM.Mirror.IsPrimary(), !
 WRITE $SYSTEM.Mirror.GetMemberType(), !</code></pre>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># --- Example CPF merge in deployment and upgrade workflows ---</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\myapp-delta.cpf&quot;</span>
-</span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHACM_mirroring">Mirroring for High Availability</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror">Mirroring for High Availability</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_sharding">Horizontal Scaling with Sharding</a></li>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_ecp">ECP Overview</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_scalability#GSCALE_scalability_oview_horizontal_user">Distributed Caching with ECP</a></li>
 </ul>
 
 
