@@ -5010,7 +5010,7 @@ SET combined = $SYSTEM.Status.AppendStatus(sc1, sc2)</code></pre>
 <li>✅ Dynamic entity parse bằng <code>%FromJSON()</code> cần nghĩ theo <strong>exception handling</strong>, không chỉ <code>%Status</code></li>
 <li>✅ Method nên <code>RETURN %Status</code>, không phải void</li>
 <li>💡 Dùng <code>$$$ThrowOnError(sc)</code> trong TRY block để code gọn hơn</li>
-<li>⚠ <code>DO person.%Save()</code> không kiểm tra lỗi — lỗi thầm lặng!</li>
+<li>⚠️ <code>DO person.%Save()</code> không kiểm tra lỗi — lỗi thầm lặng!</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>

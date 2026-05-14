@@ -4677,8 +4677,8 @@ Method SendEmail(pRequest As MyApp.Msg.EmailRequest) As %Status
 <li>✅ <code>OnMessage()</code> là entry point duy nhất — IRIS gọi method này khi có message mới</li>
 <li>✅ Tách helper methods để dễ test và tái sử dụng</li>
 <li>✅ <code>..Adapter</code> là reference đến adapter instance — dùng để gọi downstream system</li>
-<li>⚠ Nếu <code>OnMessage()</code> trả về lỗi (<code>$$$ISERR</code>), IRIS sẽ <strong>retry</strong> theo cấu hình — tránh side effect trùng lặp</li>
-<li>⚠ Response (<code>pResponse</code>) là <code>Output</code> parameter — phải <code>SET</code> chứ không phải <code>RETURN</code></li>
+<li>⚠️ Nếu <code>OnMessage()</code> trả về lỗi (<code>$$$ISERR</code>), IRIS sẽ <strong>retry</strong> theo cấu hình — tránh side effect trùng lặp</li>
+<li>⚠️ Response (<code>pResponse</code>) là <code>Output</code> parameter — phải <code>SET</code> chứ không phải <code>RETURN</code></li>
 <li>💡 Dùng <code>EnsLib.HL7.Operation.TCPOperation</code> thay vì tự viết cho HL7 — đã handle framing và retry</li>
 </ul>
 <hr />

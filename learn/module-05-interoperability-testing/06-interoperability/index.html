@@ -4688,8 +4688,8 @@ Method OnMessage(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Pe
 <li>✅ Production là container — start/stop toàn bộ component cùng lúc</li>
 <li>✅ Mọi component giao tiếp qua Message (không call trực tiếp)</li>
 <li>✅ Message được lưu vào DB — hỗ trợ retry tự động khi lỗi</li>
-<li>⚠ Component name trong <code>SendRequestSync</code> phải khớp <strong>chính xác</strong> với config name trong Production, không phải class name</li>
-<li>⚠ <code>Ens.Request</code> và <code>Ens.Response</code> là hai base class khác nhau — dùng đúng loại</li>
+<li>⚠️ Component name trong <code>SendRequestSync</code> phải khớp <strong>chính xác</strong> với config name trong Production, không phải class name</li>
+<li>⚠️ <code>Ens.Request</code> và <code>Ens.Response</code> là hai base class khác nhau — dùng đúng loại</li>
 <li>💡 Dùng <strong>Event Log</strong> trong Management Portal → Interoperability để debug message flow</li>
 </ul>
 <hr />

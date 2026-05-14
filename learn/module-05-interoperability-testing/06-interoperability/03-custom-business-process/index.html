@@ -4699,10 +4699,10 @@ RETURN ..SendRequestSync(&quot;MyApp.BO.OrderProcessor&quot;, transformed, .pRes
 <li>✅ BP là stateful — có thể lưu context giữa các async call bằng properties</li>
 <li>✅ <code>SendRequestSync</code> blocks cho đến khi BO xử lý xong</li>
 <li>✅ <code>SendRequestAsync</code> trả về ngay — response được nhận qua <code>OnResponse()</code></li>
-<li>⚠ Target name trong <code>SendRequestSync/Async</code> phải khớp với <strong>config name</strong> trong Production (không phải class name)</li>
-<li>⚠ <code>OnRequest</code> signature bắt buộc dùng <code>%Library.Persistent</code> cho cả hai tham số — dùng <code>%RegisteredObject</code> sẽ báo lỗi compile <code>#5478</code></li>
-<li>⚠ <code>MessageMap</code> XData <strong>không dùng cho hand-coded BP</strong> — chỉ dùng trong BPL hoặc Routing Engine. Hand-coded BP luôn override <code>OnRequest</code> trực tiếp</li>
-<li>⚠ Đừng để BP làm quá nhiều việc — BP là router/orchestrator, không phải worker</li>
+<li>⚠️ Target name trong <code>SendRequestSync/Async</code> phải khớp với <strong>config name</strong> trong Production (không phải class name)</li>
+<li>⚠️ <code>OnRequest</code> signature bắt buộc dùng <code>%Library.Persistent</code> cho cả hai tham số — dùng <code>%RegisteredObject</code> sẽ báo lỗi compile <code>#5478</code></li>
+<li>⚠️ <code>MessageMap</code> XData <strong>không dùng cho hand-coded BP</strong> — chỉ dùng trong BPL hoặc Routing Engine. Hand-coded BP luôn override <code>OnRequest</code> trực tiếp</li>
+<li>⚠️ Đừng để BP làm quá nhiều việc — BP là router/orchestrator, không phải worker</li>
 <li>💡 Dùng <strong>Visual Trace</strong> trong Management Portal để xem message đi qua BP như thế nào</li>
 <li>💡 Dùng BPL khi logic đơn giản — xem 📄 <a href="../04-bpl-business-process/">04-bpl-business-process.md</a></li>
 </ul>

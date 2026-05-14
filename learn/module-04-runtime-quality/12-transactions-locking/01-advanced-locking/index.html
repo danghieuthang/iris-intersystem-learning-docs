@@ -4840,8 +4840,8 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <li>✅ Row-level locking thường tốt hơn table-level locking</li>
 <li>✅ <code>LOCK +resource:timeout</code> là pattern an toàn hơn chờ vô hạn</li>
 <li>✅ Consistent ordering là một trong các cách tránh deadlock hiệu quả nhất</li>
-<li>⚠ Transaction không thay thế locking</li>
-<li>⚠ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp</li>
+<li>⚠️ Transaction không thay thế locking</li>
+<li>⚠️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp</li>
 <li>💡 Khi câu hỏi nhấn mạnh throughput hoặc concurrent users, broad lock thường là đáp án xấu hơn</li>
 </ul>
 <hr />

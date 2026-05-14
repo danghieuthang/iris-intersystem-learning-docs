@@ -4768,7 +4768,7 @@ SET sc = queue.WaitForComplete()</code></pre>
 </tr>
 <tr>
 <td>Shared mutable state không khóa cẩn thận</td>
-<td>⚠</td>
+<td>⚠️</td>
 </tr>
 </tbody>
 </table>
@@ -4834,8 +4834,8 @@ SET sc = queue.TearDown(&quot;##class(MyApp.Batch).WorkerTearDown&quot;)</code><
 <li>✅ Flow cơ bản là <code>Initialize -&gt; Queue -&gt; WaitForComplete</code></li>
 <li>✅ <code>Setup()</code> và <code>TearDown()</code> dùng cho worker context lifecycle</li>
 <li>✅ <code>QueueCallback()</code> + <code>Wait()</code> hợp khi cần callback-driven control</li>
-<li>⚠ Work items nên độc lập; đừng phụ thuộc order xử lý</li>
-<li>⚠ Nếu workers chạm shared state, bạn vẫn phải thiết kế locking đúng</li>
+<li>⚠️ Work items nên độc lập; đừng phụ thuộc order xử lý</li>
+<li>⚠️ Nếu workers chạm shared state, bạn vẫn phải thiết kế locking đúng</li>
 <li>💡 Khi câu hỏi hỏi "parallelize many independent tasks", Work Queue Manager thường là hướng đúng hơn tự spawn thủ công quá nhiều process</li>
 </ul>
 <hr />

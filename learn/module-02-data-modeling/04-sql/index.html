@@ -4624,8 +4624,8 @@ IF SQLCODE = 0 { WRITE name, &quot; - &quot;, age, ! }</code></pre>
 <li>✅ Embedded SQL dùng <code>:var</code>, Dynamic SQL dùng <code>?</code></li>
 <li>✅ <code>SQLCODE</code> và <code>%msg</code> tự động được set sau mỗi <code>&amp;sql(...)</code></li>
 <li>✅ Phần optimize và security/operations đã tách thành subtopics riêng</li>
-<li>⚠ Không nối string trực tiếp vào Dynamic SQL query</li>
-<li>⚠ Embedded SQL cursor phải <code>OPEN</code> -&gt; <code>FETCH</code> -&gt; <code>CLOSE</code> đúng thứ tự</li>
+<li>⚠️ Không nối string trực tiếp vào Dynamic SQL query</li>
+<li>⚠️ Embedded SQL cursor phải <code>OPEN</code> -&gt; <code>FETCH</code> -&gt; <code>CLOSE</code> đúng thứ tự</li>
 <li>💡 Class Query tự sinh method <code>&lt;QueryName&gt;Func()</code> để tái sử dụng query</li>
 </ul>
 <hr />

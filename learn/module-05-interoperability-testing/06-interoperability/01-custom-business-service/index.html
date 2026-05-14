@@ -4705,8 +4705,8 @@ IF $$$ISOK(tSC) {
 <li>✅ BS là "cửa vào" — mọi data từ ngoài phải đi qua BS để vào Production</li>
 <li>✅ <code>OnProcessInput()</code> được adapter gọi tự động khi có data mới</li>
 <li>✅ <code>..Adapter</code> là reference đến adapter instance — có thể đọc metadata (filename, headers...)</li>
-<li>⚠ BS không được gọi BO trực tiếp — phải gửi qua BP hoặc gửi thẳng đến BO qua <code>SendRequestSync</code></li>
-<li>⚠ Nếu <code>OnProcessInput()</code> trả về lỗi, adapter sẽ <strong>không xóa/acknowledge</strong> source data — file sẽ được đọc lại</li>
+<li>⚠️ BS không được gọi BO trực tiếp — phải gửi qua BP hoặc gửi thẳng đến BO qua <code>SendRequestSync</code></li>
+<li>⚠️ Nếu <code>OnProcessInput()</code> trả về lỗi, adapter sẽ <strong>không xóa/acknowledge</strong> source data — file sẽ được đọc lại</li>
 <li>💡 Dùng <code>..Adapter.FileName</code> (File adapter) để lấy tên file gốc khi cần log hoặc đặt tên output</li>
 </ul>
 <hr />

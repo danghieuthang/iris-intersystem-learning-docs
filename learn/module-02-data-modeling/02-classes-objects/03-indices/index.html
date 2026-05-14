@@ -4904,8 +4904,8 @@ DO ##class(MyApp.Person).%BuildIndices()</code></pre>
 <li>✅ Unique index tự sinh method <code>&lt;IndexName&gt;Open(value)</code> để lookup theo giá trị đó</li>
 <li>✅ Bitmap index chỉ hiệu quả với <strong>low-cardinality</strong> fields (&lt; ~100 giá trị phân biệt)</li>
 <li>✅ Bitslice index tối ưu cho <code>SUM</code>, <code>AVG</code>, <code>MAX</code>, và range query trên số</li>
-<li>⚠ Sau khi import dữ liệu hàng loạt: phải chạy <code>%BuildIndices()</code> để rebuild</li>
-<li>⚠ IDKEY/Key index không thể thay đổi sau khi đã có data</li>
+<li>⚠️ Sau khi import dữ liệu hàng loạt: phải chạy <code>%BuildIndices()</code> để rebuild</li>
+<li>⚠️ IDKEY/Key index không thể thay đổi sau khi đã có data</li>
 <li>💡 Chạy <code>EXPLAIN SELECT...</code> trong SQL Explorer để xác nhận index được sử dụng</li>
 </ul>
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>

@@ -4940,8 +4940,8 @@ WRITE {&quot;error&quot;:&quot;Not found&quot;}.%ToJSON()</code></pre>
 <li>✅ <code>%response.Status</code> mới quyết định 200/201/404/500...</li>
 <li>✅ <code>%request</code> chứa body, query params, headers, và request data</li>
 <li>✅ <code>201 Created</code> phù hợp cho create; <code>204 No Content</code> hợp với delete/no body</li>
-<li>⚠ REST code đúng business logic nhưng sai status code vẫn là thiết kế API chưa tốt</li>
-<li>⚠ Đừng trộn responsibilities giữa <code>%request</code> và <code>%response</code></li>
+<li>⚠️ REST code đúng business logic nhưng sai status code vẫn là thiết kế API chưa tốt</li>
+<li>⚠️ Đừng trộn responsibilities giữa <code>%request</code> và <code>%response</code></li>
 <li>💡 Với exam, nếu câu hỏi hỏi "what should the endpoint return when a resource is created?" hãy nghĩ tới <strong>201 Created</strong></li>
 </ul>
 <hr />

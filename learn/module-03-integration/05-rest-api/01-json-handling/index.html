@@ -4961,7 +4961,7 @@ SET sc = person.%Save()</code></pre>
 <li>✅ Request body đọc từ <code>%request.Content</code></li>
 <li>✅ Parse JSON lỗi phải xử lý bằng <code>TRY/CATCH</code></li>
 <li>✅ <code>%JSON.Adaptor</code> phù hợp khi payload map tốt vào class model</li>
-<li>⚠ <code>RETURN $$$OK</code> là status của method, <strong>không phải</strong> HTTP status</li>
+<li>⚠️ <code>RETURN $$$OK</code> là status của method, <strong>không phải</strong> HTTP status</li>
 <li>💡 Dùng dynamic object cho error payload rất tiện: <code>{"error":"..."}.%ToJSON()</code></li>
 </ul>
 <hr />

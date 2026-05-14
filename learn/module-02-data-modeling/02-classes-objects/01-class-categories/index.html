@@ -4899,8 +4899,8 @@ Class MyApp.Person Extends (%Persistent, %JSON.Adaptor, %Populate)</code></pre>
 <li>✅ <code>%Persistent</code> có <code>%ID</code> riêng, lưu xuống database với <code>%Save()</code></li>
 <li>✅ <code>%SerialObject</code> lưu inline trong parent — không cần và không có <code>%Save()</code> riêng</li>
 <li>✅ <code>%Registered</code> chỉ trong memory — dùng cho validator, DTO, helper object</li>
-<li>⚠ Abstract class không thể <code>%New()</code> — chỉ dùng để subclass</li>
-<li>⚠ <code>%SerialObject</code> không có ID — không thể truy xuất độc lập</li>
+<li>⚠️ Abstract class không thể <code>%New()</code> — chỉ dùng để subclass</li>
+<li>⚠️ <code>%SerialObject</code> không có ID — không thể truy xuất độc lập</li>
 <li>💡 <code>%JSON.Adaptor</code> là mixin phổ biến nhất — thêm tự do vào bất kỳ class nào</li>
 </ul>
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>

@@ -149,11 +149,11 @@ export function renderHome(state, summary) {
 
   return `
     ${buildHeader({
-      title: '🧠 IRIS Quiz',
-      subtitle: 'InterSystems IRIS Development Professional',
-      docsHref: './',
-      theme: state.settings.theme,
-    })}
+    title: '🧠 IRIS Quiz',
+    subtitle: 'InterSystems IRIS Development Professional',
+    docsHref: './',
+    theme: state.settings.theme,
+  })}
     <main class="main-content">
       <div class="stats-bar">
         <div class="stat">📋 ${state.quizList.length} quizzes available</div>
@@ -206,7 +206,7 @@ export function renderHome(state, summary) {
 
       ${mistakesHtml ? `
         <div class="mistakes-panel">
-          <div class="section-title" style="margin-bottom:12px">⚠️ Most Missed Questions</div>
+          <div class="section-title" style="margin-bottom:12px">⚠️️ Most Missed Questions</div>
           ${mistakesHtml}
         </div>` : ''}
 
@@ -311,8 +311,8 @@ export function renderQuiz(state, bookmarks) {
         </div>` : ''}
       <div class="action-bar">
         ${isChecked
-          ? `<button class="btn-primary" data-action="next-question">${isLast ? '🏁 See Results' : 'Next Question →'}</button>`
-          : `<button class="btn-primary" data-action="check-answer" id="check-btn" ${hasSelection ? '' : 'disabled'}>Check Answer</button>`}
+      ? `<button class="btn-primary" data-action="next-question">${isLast ? '🏁 See Results' : 'Next Question →'}</button>`
+      : `<button class="btn-primary" data-action="check-answer" id="check-btn" ${hasSelection ? '' : 'disabled'}>Check Answer</button>`}
       </div>
     </main>`;
 }

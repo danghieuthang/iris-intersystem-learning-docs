@@ -4584,7 +4584,7 @@
 <ul>
 <li>✅ <strong>Lưu trữ hiệu quả:</strong> Tránh các thao tác JOIN trong SQL bằng cách gộp dữ liệu thành một chuỗi duy nhất trên đĩa, đồng thời vẫn giữ được tính chất hướng đối tượng (object-oriented) trong ObjectScript.</li>
 <li>✅ <strong>SQL Projection:</strong> Khi bạn truy vấn SQL, thuộc tính Serial sẽ được bung ra thành các cột riêng rẽ mang tiền tố. Ví dụ: <code>HomeAddress_Street</code>, <code>HomeAddress_City</code>.</li>
-<li>⚠ <strong>Không thể khởi tạo độc lập:</strong> Dù bạn có thể gọi <code>##class(MyApp.Address).%New()</code>, nhưng bạn không thể lưu nó trừ khi gán nó vào một thuộc tính của class Persistent.</li>
+<li>⚠️ <strong>Không thể khởi tạo độc lập:</strong> Dù bạn có thể gọi <code>##class(MyApp.Address).%New()</code>, nhưng bạn không thể lưu nó trừ khi gán nó vào một thuộc tính của class Persistent.</li>
 <li>💡 <strong>Streams limitations:</strong> Không nên nhầm lẫn Serial với Stream. Stream dùng để lưu text/binary dung lượng lớn (quá giới hạn chuỗi), trong khi Serial dùng để nhóm các thuộc tính có cấu trúc thành một khối dữ liệu logic.</li>
 </ul>
 <hr />

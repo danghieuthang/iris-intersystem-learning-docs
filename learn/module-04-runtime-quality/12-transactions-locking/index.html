@@ -4794,9 +4794,9 @@ WRITE $ZSTORAGE, !</code></pre>
 <li>✅ Journaling trong transaction: thay đổi được ghi nhưng có thể đảo ngược cho đến khi TCOMMIT</li>
 <li>✅ Locking deep dive đã tách sang <a href="01-advanced-locking/">01-advanced-locking.md</a></li>
 <li>✅ Parallel work queue pattern đã tách sang <a href="02-work-queue-manager/">02-work-queue-manager.md</a></li>
-<li>⚠ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — phải gọi tường minh</li>
-<li>⚠ <code>LOCK</code> (không <code>+</code>) thay thế toàn bộ locks hiện tại — hầu như luôn dùng <code>LOCK +</code></li>
-<li>⚠ Process death tự động rollback transaction đang mở VÀ giải phóng tất cả locks</li>
+<li>⚠️ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — phải gọi tường minh</li>
+<li>⚠️ <code>LOCK</code> (không <code>+</code>) thay thế toàn bộ locks hiện tại — hầu như luôn dùng <code>LOCK +</code></li>
+<li>⚠️ Process death tự động rollback transaction đang mở VÀ giải phóng tất cả locks</li>
 <li>💡 Luôn ghép <code>LOCK +</code> với <code>LOCK -</code> và bọc trong TRY/CATCH</li>
 <li>💡 Dùng prefix <code>^CacheTemp</code> hoặc <code>TSTART:NoLog</code> cho global tạm không cần journaling</li>
 </ul>

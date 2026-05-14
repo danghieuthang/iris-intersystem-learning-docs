@@ -4858,8 +4858,8 @@ WRITE doc.Content.IsEmpty(), !</code></pre>
 <li>✅ Stream không giới hạn kích thước; <code>%String</code> giới hạn ~3.6MB</li>
 <li>✅ <code>%Stream.GlobalCharacter</code> cho văn bản, <code>%Stream.GlobalBinary</code> cho nhị phân</li>
 <li>✅ <code>%request.Content</code> trong REST endpoint đã là stream — dùng <code>.Read()</code> để lấy content</li>
-<li>⚠ Sau khi <code>Write()</code>, phải <code>Rewind()</code> trước khi <code>Read()</code> — stream position không tự reset</li>
-<li>⚠ <code>stream.Read()</code> không có argument đọc toàn bộ một lần — có thể tốn memory với file lớn</li>
+<li>⚠️ Sau khi <code>Write()</code>, phải <code>Rewind()</code> trước khi <code>Read()</code> — stream position không tự reset</li>
+<li>⚠️ <code>stream.Read()</code> không có argument đọc toàn bộ một lần — có thể tốn memory với file lớn</li>
 <li>💡 Dùng <code>WHILE 'stream.AtEnd { SET chunk = stream.Read(32000) }</code> cho nội dung rất lớn</li>
 </ul>
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>

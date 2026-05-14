@@ -5070,8 +5070,8 @@ WHILE rs.%Next() {
 <li>✅ <code>Required</code> keyword trên Property: <code>%Save()</code> thất bại nếu chưa set</li>
 <li>✅ <code>Calculated</code> + <code>Transient</code> = không lưu trữ; <code>Calculated</code> có getter/setter, <code>Transient</code> không</li>
 <li>✅ Parameter truy cập bằng <code>..#PARAM_NAME</code> (trong class) hoặc <code>##class(X).#PARAM_NAME</code> (ngoài)</li>
-<li>⚠ Method <code>..Method()</code> — instance method; <code>##class(X).Method()</code> — class method. Không thể dùng <code>..</code> trong ClassMethod</li>
-<li>⚠ <code>%OnBeforeSave</code> trả về error sẽ ngăn <code>%Save()</code> — đây là cách validate trước khi lưu</li>
+<li>⚠️ Method <code>..Method()</code> — instance method; <code>##class(X).Method()</code> — class method. Không thể dùng <code>..</code> trong ClassMethod</li>
+<li>⚠️ <code>%OnBeforeSave</code> trả về error sẽ ngăn <code>%Save()</code> — đây là cách validate trước khi lưu</li>
 <li>💡 Class Query tự sinh method <code>&lt;QueryName&gt;Func()</code> — gọi như ClassMethod bình thường</li>
 </ul>
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>

@@ -4807,9 +4807,9 @@ WRITE builtins.len(&quot;hello&quot;), !   // 5</code></pre>
 <li>✅ <code>Language = python</code> trên một Method nghĩa là toàn bộ body phải viết bằng Python syntax</li>
 <li>✅ <code>import iris</code> bên trong Embedded Python cho phép truy cập class methods, objects, globals, và SQL của IRIS</li>
 <li>✅ Native SDK và DB-API hiện dùng chung package <strong><code>intersystems-irispython</code></strong></li>
-<li>⚠ Embedded Python xuất hiện từ <strong>IRIS 2021.2+</strong>, nhưng version Python tương thích phụ thuộc bản IRIS và platform; nên kiểm tra docs/PyPI thay vì giả định "mọi Python 3.x đều dùng được"</li>
-<li>⚠ Python method phải tuân theo <strong>Python indentation rules</strong> (dùng spaces, không dùng TAB của ObjectScript)</li>
-<li>⚠ Tên method bắt đầu bằng <code>%</code> trong ObjectScript phải được gọi là <code>_</code> trong Python (ví dụ: <code>%OpenId</code> → <code>_OpenId</code>)</li>
+<li>⚠️ Embedded Python xuất hiện từ <strong>IRIS 2021.2+</strong>, nhưng version Python tương thích phụ thuộc bản IRIS và platform; nên kiểm tra docs/PyPI thay vì giả định "mọi Python 3.x đều dùng được"</li>
+<li>⚠️ Python method phải tuân theo <strong>Python indentation rules</strong> (dùng spaces, không dùng TAB của ObjectScript)</li>
+<li>⚠️ Tên method bắt đầu bằng <code>%</code> trong ObjectScript phải được gọi là <code>_</code> trong Python (ví dụ: <code>%OpenId</code> → <code>_OpenId</code>)</li>
 <li>💡 Cho kỳ thi: nắm rõ <strong>4 chiến lược</strong> và khi nào dùng từng loại (T3.1 ability 2)</li>
 <li>💡 <code>##class(%SYS.Python).Import("moduleName")</code> tương đương với <code>import moduleName</code> trong Python</li>
 </ul>

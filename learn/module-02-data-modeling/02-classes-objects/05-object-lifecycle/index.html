@@ -5161,8 +5161,8 @@ WRITE emp.Company.Name, !</code></pre>
 <li>✅ <code>%Save()</code> dùng SaveSet và save toàn bộ graph như một transaction</li>
 <li>✅ Callback lifecycle quan trọng gồm <code>%OnValidateObject()</code>, <code>%OnBeforeSave()</code>, <code>%OnAfterSave()</code>, <code>%OnSaveFinally()</code></li>
 <li>✅ Swizzling = lazy loading của referenced persistent object</li>
-<li>⚠ Trong cùng process, <code>%OpenId()</code> cùng ID thường trả cùng object instance đang ở memory</li>
-<li>⚠ Swizzling tiện nhưng có thể tạo I/O bất ngờ trong loop lớn</li>
+<li>⚠️ Trong cùng process, <code>%OpenId()</code> cùng ID thường trả cùng object instance đang ở memory</li>
+<li>⚠️ Swizzling tiện nhưng có thể tạo I/O bất ngờ trong loop lớn</li>
 <li>💡 Nếu cần "quay về trạng thái trên disk", nghĩ tới <code>%Reload()</code> thay vì open lại rồi mong có object mới</li>
 </ul>
 <hr />
