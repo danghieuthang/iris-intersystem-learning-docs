@@ -1,0 +1,55 @@
+{
+  "id": "09-python-q1",
+  "topic": "09_python",
+  "topicLabel": "Python with IRIS",
+  "title": "Quiz 01 — Python Integration Modes",
+  "difficulty": "Beginner → Intermediate",
+  "examDomains": ["T3.1"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which Python integration method runs in the same memory space as the InterSystems IRIS process and involves zero network latency?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Native API for Python" },
+        { "id": "B", "text": "Python DB-API (PyODBC)" },
+        { "id": "C", "text": "Embedded Python" },
+        { "id": "D", "text": "InterSystems API Manager (IAM)" }
+      ],
+      "answer": ["C"],
+      "domain": "T3.1",
+      "explanation": "T3.1 — Embedded Python loads the Python runtime directly into the IRIS process, allowing ObjectScript and Python to share memory and execute without network latency."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "You have a standalone Python application running on a separate server. It needs to read data directly from InterSystems IRIS globals (e.g., ^MyData) without using SQL. Which technology should you use?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Python DB-API" },
+        { "id": "B", "text": "Native API for Python" },
+        { "id": "C", "text": "Embedded Python" },
+        { "id": "D", "text": "%CSP.REST" }
+      ],
+      "answer": ["B"],
+      "domain": "T3.1",
+      "explanation": "T3.1 — The Native API for Python allows external applications to interact directly with ObjectScript objects, routines, and globals over a TCP/IP connection."
+    },
+    {
+      "id": 3,
+      "type": "MR",
+      "question": "In Embedded Python, which of the following statements are correct regarding the interaction with InterSystems IRIS?",
+      "code": "import iris\n\n# ... code here ...",
+      "options": [
+        { "id": "A", "text": "You must use 'import irisnative' to interact with classes." },
+        { "id": "B", "text": "You use 'iris.cls(\"Package.ClassName\")' to reference an ObjectScript class." },
+        { "id": "C", "text": "You use 'iris.system' to access the $SYSTEM special object." },
+        { "id": "D", "text": "Embedded Python cannot modify the value of ObjectScript variables in the same process." }
+      ],
+      "answer": ["B", "C"],
+      "domain": "T3.1",
+      "explanation": "T3.1 — In Embedded Python, the built-in 'iris' module is used. You instantiate classes with iris.cls() and access $SYSTEM via iris.system. The Native API uses 'irisnative'."
+    }
+  ]
+}

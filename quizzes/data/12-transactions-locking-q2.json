@@ -1,0 +1,55 @@
+{
+  "id": "12-transactions-locking-q2",
+  "topic": "12_transactions-locking",
+  "topicLabel": "Transactions & Locking",
+  "title": "Quiz 02 — Data Integrity & Journaling",
+  "difficulty": "Intermediate",
+  "examDomains": ["T4.3"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which InterSystems IRIS mechanism is responsible for preventing database corruption if a system crash occurs while modified database blocks are being written to disk?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Transaction Journaling" },
+        { "id": "B", "text": "Write Image Journal (WIJ)" },
+        { "id": "C", "text": "Asynchronous Mirroring" },
+        { "id": "D", "text": "Global Buffers" }
+      ],
+      "answer": ["B"],
+      "domain": "T4.3",
+      "explanation": "T4.3 — The Write Image Journal (WIJ) stores a copy of modified database blocks before they are written to the actual database file, ensuring structural integrity upon crash recovery."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "You initiate a transaction using TSTART. During the transaction, you update a global that resides in a database where Journaling is explicitly set to 'No'. You then issue a TROLLBACK command. What happens to the global?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "The global is rolled back to its state prior to TSTART." },
+        { "id": "B", "text": "The TROLLBACK command throws an exception." },
+        { "id": "C", "text": "The global is NOT rolled back; the changes remain." },
+        { "id": "D", "text": "The entire database is marked as read-only." }
+      ],
+      "answer": ["C"],
+      "domain": "T4.3",
+      "explanation": "T4.3 — Rollback operations rely entirely on Transaction Journaling. If journaling is disabled for a database, changes to its globals cannot be rolled back."
+    },
+    {
+      "id": 3,
+      "type": "MC",
+      "question": "After a hardware failure destroys your primary database disk, you restore a backup from yesterday. Which mechanism allows you to recover the transactions made between the backup time and the crash?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "Applying the WIJ" },
+        { "id": "B", "text": "Restoring Transaction Journal files" },
+        { "id": "C", "text": "Clearing the Lock Table" },
+        { "id": "D", "text": "Using %SYS.ProcessQuery" }
+      ],
+      "answer": ["B"],
+      "domain": "T4.3",
+      "explanation": "T4.3 — Transaction Journal files record the logical changes made to data over time, allowing you to replay them forward against a restored backup."
+    }
+  ]
+}

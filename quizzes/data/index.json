@@ -416,5 +416,41 @@
     "version": "1.2",
     "publishedDate": "2026-01-24",
     "importedFrom": "quiz_temp/T4_4.json"
+  },
+  {
+    "id": "02-classes-objects-q6",
+    "file": "02-classes-objects-q6.json",
+    "topic": "02_classes-objects",
+    "topicLabel": "Classes & Objects",
+    "title": "Quiz 06 — Serial Classes",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T1.2"
+    ],
+    "totalQuestions": 3
+  },
+  {
+    "id": "09-python-q1",
+    "file": "09-python-q1.json",
+    "topic": "09_python",
+    "topicLabel": "Python with IRIS",
+    "title": "Quiz 01 — Python Integration Modes",
+    "difficulty": "Beginner → Intermediate",
+    "examDomains": [
+      "T3.1"
+    ],
+    "totalQuestions": 3
+  },
+  {
+    "id": "12-transactions-locking-q2",
+    "file": "12-transactions-locking-q2.json",
+    "topic": "12_transactions-locking",
+    "topicLabel": "Transactions & Locking",
+    "title": "Quiz 02 — Data Integrity & Journaling",
+    "difficulty": "Intermediate",
+    "examDomains": [
+      "T4.3"
+    ],
+    "totalQuestions": 3
   }
 ]

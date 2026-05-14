@@ -1,0 +1,55 @@
+{
+  "id": "02-classes-objects-q6",
+  "topic": "02_classes-objects",
+  "topicLabel": "Classes & Objects",
+  "title": "Quiz 06 — Serial Classes",
+  "difficulty": "Intermediate",
+  "examDomains": ["T1.2"],
+  "questions": [
+    {
+      "id": 1,
+      "type": "MC",
+      "question": "Which of the following statements about Serial classes is true?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "They have an independent Object ID (OID) in the database." },
+        { "id": "B", "text": "They can be saved independently using the %Save() method." },
+        { "id": "C", "text": "Their data is serialized into a string and stored as a property of a %Persistent class." },
+        { "id": "D", "text": "They are only used for in-memory processing and disappear when the process terminates." }
+      ],
+      "answer": ["C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — Serial objects do not have an independent OID and cannot be saved independently. They are designed to be embedded within Persistent objects."
+    },
+    {
+      "id": 2,
+      "type": "MC",
+      "question": "How are properties of a %SerialObject mapped to SQL tables when embedded in a %Persistent class?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "They are stored in a separate table, requiring a JOIN." },
+        { "id": "B", "text": "They are mapped as separate columns in the parent's table, typically prefixed with the property name." },
+        { "id": "C", "text": "They cannot be accessed via SQL." },
+        { "id": "D", "text": "They are exposed as a single JSON string column." }
+      ],
+      "answer": ["B"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — The SQL projection automatically creates individual columns for each property of the Serial object within the parent's table."
+    },
+    {
+      "id": 3,
+      "type": "MR",
+      "question": "If you need to store a very large document (e.g. 5MB of text) as a property in a persistent class, which data types/classes should you avoid using?",
+      "code": null,
+      "options": [
+        { "id": "A", "text": "%String" },
+        { "id": "B", "text": "%Stream.GlobalCharacter" },
+        { "id": "C", "text": "%SerialObject" },
+        { "id": "D", "text": "%Stream.GlobalBinary" }
+      ],
+      "answer": ["A", "C"],
+      "domain": "T1.2",
+      "explanation": "T1.2 — Both %String and %SerialObject are subject to string length limits (usually 32KB unless Long Strings are enabled). Streams must be used for large data."
+    }
+  ]
+}
