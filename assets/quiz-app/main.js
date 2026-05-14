@@ -336,9 +336,15 @@ function setDomainFilter(domain) {
   render();
 }
 
+function setCategoryFilter(category) {
+  state.filterCategory = state.filterCategory === category ? null : category;
+  render();
+}
+
 function clearFilters() {
   state.filterTopic = null;
   state.filterDomain = null;
+  state.filterCategory = null;
   render();
 }
 
@@ -454,6 +460,9 @@ async function handleAction(action, element) {
       break;
     case 'set-domain-filter':
       setDomainFilter(element.dataset.domain);
+      break;
+    case 'set-category-filter':
+      setCategoryFilter(element.dataset.category);
       break;
     case 'clear-filters':
       clearFilters();

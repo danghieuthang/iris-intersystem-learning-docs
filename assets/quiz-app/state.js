@@ -10,6 +10,7 @@ export function createInitialState(settings) {
     timerHandle: null,
     filterTopic: null,
     filterDomain: null,
+    filterCategory: null,
     settings,
     results: null,
     error: null,

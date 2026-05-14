@@ -60,8 +60,19 @@ export function renderHome(state, summary) {
   const visibleQuizzes = state.quizList.filter((quiz) => {
     if (state.filterTopic && quiz.topic !== state.filterTopic) return false;
     if (state.filterDomain && !quiz.examDomains.some((domain) => domain.startsWith(state.filterDomain))) return false;
+    if (state.filterCategory && quiz.category !== state.filterCategory) return false;
     return true;
   });
+
+  const categoryKeys = [
+    { id: 'exam_prep', label: '🎓 Exam Prep' },
+    { id: 'module_check', label: '📖 Module Check' }
+  ];
+
+  const categoryPills = categoryKeys.map((cat) => {
+    const active = state.filterCategory === cat.id ? 'active' : '';
+    return `<button class="filter-pill ${active}" data-action="set-category-filter" data-category="${esc(cat.id)}">${esc(cat.label)}</button>`;
+  }).join('');
 
   const topicPills = topicKeys.map((topic) => {
     const icon = TOPIC_ICONS[topic] || '📚';
@@ -213,6 +224,10 @@ export function renderHome(state, summary) {
 
       <div class="filter-bar">
         <div class="filter-row">
+          <span class="filter-label">📂 Type</span>
+          <div class="filter-pills">${categoryPills}</div>
+        </div>
+        <div class="filter-row">
           <span class="filter-label">📚 Topic</span>
           <div class="filter-pills">${topicPills}</div>
         </div>
@@ -220,7 +235,7 @@ export function renderHome(state, summary) {
           <span class="filter-label">🏷 Domain</span>
           <div class="filter-pills">
             ${domainPills}
-            ${state.filterTopic || state.filterDomain ? '<button class="filter-pill" data-action="clear-filters" style="margin-left:4px">✕ Clear</button>' : ''}
+            ${state.filterTopic || state.filterDomain || state.filterCategory ? '<button class="filter-pill" data-action="clear-filters" style="margin-left:4px">✕ Clear</button>' : ''}
           </div>
         </div>
       </div>
