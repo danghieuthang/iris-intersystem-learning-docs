@@ -1421,7 +1421,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4725,7 +4725,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4812,9 +4812,10 @@ Index IsActiveIdx On IsActive [ Type = bitmap ];</code></pre>
 <h2 id="idkey-index">IDKEY Index<a class="headerlink" href="#idkey-index" title="Permanent link">&para;</a></h2>
 <p>Biến một property (hoặc tổ hợp) thành <strong>primary key</strong> của object thay vì ID tự sinh.</p>
 <pre class="objectscript"><code class="language-objectscript">Index PatientIdx On PatientCode [ Type = key ];</code></pre>
-<blockquote>
-<p>⚠️ Một khi đã set, không thể thay đổi sau khi đã có dữ liệu. Dùng cẩn thận.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Một khi đã set, không thể thay đổi sau khi đã có dữ liệu. Dùng cẩn thận.</p>
+</div>
 <hr />
 <h2 id="expression-index">Expression Index<a class="headerlink" href="#expression-index" title="Permanent link">&para;</a></h2>
 <p>Index trên giá trị đã biến đổi — hữu ích cho tìm kiếm không phân biệt hoa thường.</p>
@@ -4903,11 +4904,11 @@ DO ##class(MyApp.Person).%BuildIndices()</code></pre>
 <li>✅ Unique index tự sinh method <code>&lt;IndexName&gt;Open(value)</code> để lookup theo giá trị đó</li>
 <li>✅ Bitmap index chỉ hiệu quả với <strong>low-cardinality</strong> fields (&lt; ~100 giá trị phân biệt)</li>
 <li>✅ Bitslice index tối ưu cho <code>SUM</code>, <code>AVG</code>, <code>MAX</code>, và range query trên số</li>
-<li>⚠️ Sau khi import dữ liệu hàng loạt: phải chạy <code>%BuildIndices()</code> để rebuild</li>
-<li>⚠️ IDKEY/Key index không thể thay đổi sau khi đã có data</li>
+<li>⚠ Sau khi import dữ liệu hàng loạt: phải chạy <code>%BuildIndices()</code> để rebuild</li>
+<li>⚠ IDKEY/Key index không thể thay đổi sau khi đã có data</li>
 <li>💡 Chạy <code>EXPLAIN SELECT...</code> trong SQL Explorer để xác nhận index được sử dụng</li>
 </ul>
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">; Kiểm tra các index hiện có trên một class
 SET classDef = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;)
 FOR i=1:1:classDef.Indices.Count() {

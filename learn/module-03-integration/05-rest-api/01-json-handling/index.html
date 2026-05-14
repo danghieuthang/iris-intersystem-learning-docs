@@ -1938,7 +1938,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4751,7 +4751,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4856,9 +4856,10 @@ SET obj = {}.%FromJSON(jsonString)</code></pre>
 <li><code>.%Read()</code> cho bạn raw JSON text để parse</li>
 <li>Invalid JSON có thể <strong>throw exception</strong>, nên phải bọc bằng <code>TRY/CATCH</code></li>
 </ul>
-<blockquote>
-<p>⚠️ Không giả định <code>%FromJSON()</code> chỉ trả <code>%Status</code>. Parse lỗi thường đi theo <strong>exception path</strong>.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Parse <code>%FromJSON()</code> lỗi thường quăng exception thay vì chỉ trả <code>%Status</code>. Xem cách xử lý tại <a href="../../../module-01-foundations/01-objectscript-basics/04-error-handling/">Error Handling Pattern</a>.</p>
+</div>
 <hr />
 <h2 id="jsonadaptor-for-class-models"><code>%JSON.Adaptor</code> for Class Models<a class="headerlink" href="#jsonadaptor-for-class-models" title="Permanent link">&para;</a></h2>
 <p>Nếu payload khớp với domain model rõ ràng, <code>%JSON.Adaptor</code> thường là lựa chọn sạch hơn.</p>
@@ -4928,17 +4929,20 @@ SET sc = person.%Save()</code></pre>
 </table>
 <hr />
 <h2 id="response-patterns">Response Patterns<a class="headerlink" href="#response-patterns" title="Permanent link">&para;</a></h2>
-<p>REST methods vẫn <code>RETURN $$$OK</code>; HTTP status được set qua <code>%response.Status</code>.</p>
+<blockquote>
+<p><strong>Lưu ý:</strong> Để hiểu rõ cách trả về HTTP Status Code chuẩn xác (như <code>201 Created</code> hay <code>404 Not Found</code>) và sự khác biệt với <code>RETURN $$$OK</code>, vui lòng xem <a href="../02-http-semantics/">HTTP Semantics</a>.</p>
+</blockquote>
+<p>Về mặt xử lý JSON, bạn có thể linh hoạt dùng <code>%ToJSON()</code> cho các báo cáo tĩnh (như thông báo lỗi), hoặc <code>%JSONExport()</code> để đẩy thẳng cấu trúc class ra response:</p>
 <pre class="objectscript"><code class="language-objectscript">ClassMethod GetOne(id As %String) As %Status
 {
     SET person = ##class(MyApp.Person).%OpenId(id)
     IF person = &quot;&quot; {
         SET %response.Status = &quot;404 Not Found&quot;
-        WRITE {&quot;error&quot;:&quot;Not found&quot;}.%ToJSON()
+        WRITE {&quot;error&quot;:&quot;Not found&quot;}.%ToJSON()  // Export dynamic error JSON
         RETURN $$$OK
     }
 
-    DO person.%JSONExport()
+    DO person.%JSONExport()  // Export domain model JSON
     RETURN $$$OK
 }</code></pre>
 <h3 id="practical-pattern">Practical Pattern<a class="headerlink" href="#practical-pattern" title="Permanent link">&para;</a></h3>
@@ -4946,8 +4950,8 @@ SET sc = person.%Save()</code></pre>
 <li>Parse request body with <code>TRY/CATCH</code></li>
 <li>Validate required fields</li>
 <li>Save or query data</li>
-<li>Set <code>%response.Status</code> if needed</li>
-<li>Return JSON payload</li>
+<li>Set <code>%response.Status</code> theo trạng thái kết quả</li>
+<li>Dùng <code>%ToJSON()</code> hoặc <code>%JSONExport()</code> để xuất payload</li>
 <li>Finish with <code>RETURN $$$OK</code></li>
 </ol>
 <hr />
@@ -4957,11 +4961,11 @@ SET sc = person.%Save()</code></pre>
 <li>✅ Request body đọc từ <code>%request.Content</code></li>
 <li>✅ Parse JSON lỗi phải xử lý bằng <code>TRY/CATCH</code></li>
 <li>✅ <code>%JSON.Adaptor</code> phù hợp khi payload map tốt vào class model</li>
-<li>⚠️ <code>RETURN $$$OK</code> là status của method, <strong>không phải</strong> HTTP status</li>
+<li>⚠ <code>RETURN $$$OK</code> là status của method, <strong>không phải</strong> HTTP status</li>
 <li>💡 Dùng dynamic object cho error payload rất tiện: <code>{"error":"..."}.%ToJSON()</code></li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Parse JSON string ---
 SET json = &quot;{&quot;&quot;name&quot;&quot;:&quot;&quot;Alice&quot;&quot;,&quot;&quot;age&quot;&quot;:30}&quot;
 SET obj = {}.%FromJSON(json)

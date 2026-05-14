@@ -2717,7 +2717,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4773,7 +4773,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4858,9 +4858,10 @@
 </tbody>
 </table>
 <p>Các fixture này đặc biệt quan trọng khi test tạo persistent data.</p>
-<blockquote>
-<p>⚠️ Nếu test tạo data mà không cleanup, các test sau rất dễ fail kiểu nondeterministic.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Nếu test tạo data mà không cleanup, các test sau rất dễ fail kiểu nondeterministic.</p>
+</div>
 <hr />
 <h2 id="running-tests-in-automation">Running Tests in Automation<a class="headerlink" href="#running-tests-in-automation" title="Permanent link">&para;</a></h2>
 <p>Trong CI/CD, test runner phải trả tín hiệu rõ để pipeline fail nếu tests fail.</p>
@@ -4975,12 +4976,12 @@
 <li>✅ <code>OnBeforeAllTests</code>, <code>OnAfterAllTests</code>, <code>OnBeforeOneTest</code>, <code>OnAfterOneTest</code> là fixture methods quan trọng</li>
 <li>✅ <code>%UnitTest.TestProduction</code> phù hợp hơn cho Interoperability production testing</li>
 <li>✅ Integration tests nên kiểm tra full workflow, không chỉ isolated method</li>
-<li>⚠️ <code>%UnitTest</code> không thay thế load/stress/security testing</li>
-<li>⚠️ Test data phải cleanup để tránh test pollution</li>
+<li>⚠ <code>%UnitTest</code> không thay thế load/stress/security testing</li>
+<li>⚠ Test data phải cleanup để tránh test pollution</li>
 <li>💡 Pipeline tốt nên fail sớm ở compile/test stage trước khi promote xa hơn</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Run all tests in a package ---
 DO ##class(%UnitTest.Manager).RunTest(&quot;MyApp.Test&quot;, &quot;/recursive&quot;)
 

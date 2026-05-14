@@ -4478,7 +4478,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4521,7 +4521,7 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — configuring secure JDBC/ODBC connections to InterSystems IRIS</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS hỗ trợ kết nối từ ứng dụng bên ngoài qua <strong>JDBC</strong> và <strong>ODBC</strong> để truy vấn SQL hoặc tích hợp với hệ sinh thái ngoài IRIS. Phần exam thường không dừng ở connection string cơ bản, mà đi sâu vào <strong>security levels, TLS/Kerberos choices, DSN vs DSN-less</strong>, và khác biệt cấu hình giữa Windows với UNIX.</p>
+<p>Ứng dụng ngoài kết nối vào IRIS qua <strong>JDBC/ODBC</strong>. Đề thi thường đi sâu vào <strong>security levels, TLS/Kerberos, DSN vs DSN-less</strong>, và khác biệt cấu hình giữa Windows và UNIX.</p>
 <p>Landing page này giữ phần kiến trúc tổng quan; các chi tiết exam-oriented đã được tách thành subtopics riêng.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
@@ -4688,12 +4688,12 @@
 <li>✅ ODBC và JDBC đều sử dụng SuperServer port <strong>1972</strong></li>
 <li>✅ Security levels và TLS/Kerberos details đã tách sang <a href="01-security-levels/">01-security-levels.md</a></li>
 <li>✅ Windows vs UNIX DSN setup đã tách sang <a href="02-platform-configuration/">02-platform-configuration.md</a></li>
-<li>⚠️ Cổng 1972 phải được mở trên firewall — nếu bị block, JDBC/ODBC sẽ không kết nối được</li>
-<li>⚠️ Không dùng <code>_SYSTEM</code> account cho production application connections — tạo dedicated user</li>
+<li>⚠ Cổng 1972 phải được mở trên firewall — nếu bị block, JDBC/ODBC sẽ không kết nối được</li>
+<li>⚠ Không dùng <code>_SYSTEM</code> account cho production application connections — tạo dedicated user</li>
 <li>💡 Cho exam, hãy phân biệt: connection architecture, security level, và platform config là ba lớp kiến thức khác nhau</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check SuperServer port (run in %SYS namespace) ---
 ZNSPACE &quot;%SYS&quot;
 WRITE ##class(Security.System).Get(&quot;SuperServerPort&quot;), !</code></pre>

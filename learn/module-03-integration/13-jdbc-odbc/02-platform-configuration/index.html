@@ -2284,7 +2284,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4739,7 +4739,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4841,9 +4841,10 @@
 <p>Trên UNIX, biến môi trường này cho driver biết nơi tìm file <code>odbcssl.ini</code>.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ISC_SSLconfigurations</span><span class="o">=</span>/opt/iris/odbc/odbcssl.ini
 </span></code></pre></div>
-<blockquote>
-<p>⚠️ Nếu TLS config name đúng nhưng biến môi trường không trỏ tới file chứa cấu hình đó, connection vẫn fail.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Nếu TLS config name đúng nhưng biến môi trường không trỏ tới file chứa cấu hình đó, connection vẫn fail.</p>
+</div>
 <hr />
 <h2 id="odbcinst"><code>odbcinst</code><a class="headerlink" href="#odbcinst" title="Permanent link">&para;</a></h2>
 <p><code>odbcinst</code> là utility command-line phổ biến để register driver hoặc DSN từ init file trên UNIX.</p>
@@ -4870,9 +4871,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>✅ <code>isql</code> thường dùng để test, không phải tool chính để cài DSN.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Fact</p>
+<p><code>isql</code> thường dùng để test, không phải tool chính để cài DSN.</p>
+</div>
 <hr />
 <h2 id="dsn-file-dsn-and-dsn-less">DSN, File DSN, and DSN-less<a class="headerlink" href="#dsn-file-dsn-and-dsn-less" title="Permanent link">&para;</a></h2>
 <table>
@@ -4945,12 +4947,12 @@
 <li>✅ UNIX thường dùng <code>odbc.ini</code>, <code>odbcinst.ini</code>, và <code>odbcssl.ini</code></li>
 <li>✅ <code>ISC_SSLconfigurations</code> trỏ tới file TLS config của ODBC trên UNIX</li>
 <li>✅ <code>odbcinst</code> là tool quan trọng để register driver/data source trên UNIX</li>
-<li>⚠️ Đừng trộn lẫn vị trí config của Windows với UNIX</li>
-<li>⚠️ DSN-less không cần ODBC Administrator, nhưng app phải tự mang đủ connection parameters</li>
+<li>⚠ Đừng trộn lẫn vị trí config của Windows với UNIX</li>
+<li>⚠ DSN-less không cần ODBC Administrator, nhưng app phải tự mang đủ connection parameters</li>
 <li>💡 Nếu câu hỏi nhắc Registry, gần như chắc đang nói về Windows ODBC</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># --- Point to the ODBC SSL configuration file on UNIX ---</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ISC_SSLconfigurations</span><span class="o">=</span>/opt/iris/odbc/odbcssl.ini
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>

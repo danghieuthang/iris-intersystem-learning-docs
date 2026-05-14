@@ -1943,7 +1943,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4705,7 +4705,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4779,9 +4779,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ Đừng return <code>"404 Not Found"</code> hay <code>201</code> từ method như thể đó là HTTP response.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Đừng return <code>"404 Not Found"</code> hay <code>201</code> từ method như thể đó là HTTP response.</p>
+</div>
 <hr />
 <h2 id="common-http-methods">Common HTTP Methods<a class="headerlink" href="#common-http-methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -4900,9 +4901,10 @@ RETURN $$$OK</code></pre>
 </table>
 <pre class="objectscript"><code class="language-objectscript">SET body = %request.Content.Read()
 SET page = %request.Get(&quot;page&quot;)</code></pre>
-<blockquote>
-<p>💡 <code>%request</code> là nguồn dữ liệu vào; nó không phải nơi để set response.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code>%request</code> là nguồn dữ liệu vào; nó không phải nơi để set response.</p>
+</div>
 <hr />
 <h2 id="response"><code>%response</code><a class="headerlink" href="#response" title="Permanent link">&para;</a></h2>
 <p><code>%response</code> dùng để định hình HTTP response:</p>
@@ -4938,12 +4940,12 @@ WRITE {&quot;error&quot;:&quot;Not found&quot;}.%ToJSON()</code></pre>
 <li>✅ <code>%response.Status</code> mới quyết định 200/201/404/500...</li>
 <li>✅ <code>%request</code> chứa body, query params, headers, và request data</li>
 <li>✅ <code>201 Created</code> phù hợp cho create; <code>204 No Content</code> hợp với delete/no body</li>
-<li>⚠️ REST code đúng business logic nhưng sai status code vẫn là thiết kế API chưa tốt</li>
-<li>⚠️ Đừng trộn responsibilities giữa <code>%request</code> và <code>%response</code></li>
+<li>⚠ REST code đúng business logic nhưng sai status code vẫn là thiết kế API chưa tốt</li>
+<li>⚠ Đừng trộn responsibilities giữa <code>%request</code> và <code>%response</code></li>
 <li>💡 Với exam, nếu câu hỏi hỏi "what should the endpoint return when a resource is created?" hãy nghĩ tới <strong>201 Created</strong></li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Read request body ---
 SET json = %request.Content.Read()
 

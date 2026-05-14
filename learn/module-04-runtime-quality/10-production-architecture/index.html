@@ -4445,7 +4445,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4488,7 +4488,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — scaling patterns, HA/DR decisions, workload isolation, and upgrade-aware topology</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Sau khi đã nắm namespace, database, globals, SQL, và runtime concerns cơ bản, topic 10 cần được học lại ở góc nhìn production. Lúc này các câu hỏi không còn là "data nằm ở đâu" mà là "hệ thống tăng trưởng thế nào", "reporting có ảnh hưởng primary không", và "failover hay upgrade sẽ tác động ra sao".</p>
+<p>Đây là lúc nhìn kiến trúc ở góc độ production. Trọng tâm chuyển từ 'data lưu ở đâu' sang bài toán 'scale hệ thống', 'cách ly reporting', và 'ảnh hưởng của failover/upgrade'.</p>
 <p>Trang này gom phần advanced architecture để học sau, khi người học đã có đủ ngữ cảnh về data model và vận hành. Nếu cần ôn lại mental model nền tảng trước khi đọc, quay lại <a href="../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
@@ -4552,12 +4552,12 @@
 <li>✅ Đây là phần revisit của topic 10 ở level production/intermediate</li>
 <li>✅ Scaling và HA nên được học sau khi đã hiểu data model và workload</li>
 <li>✅ ECP, sharding, mirroring, và async reporting giải các bài toán khác nhau</li>
-<li>⚠️ Đừng coi mọi yêu cầu tăng trưởng đều dẫn tới sharding</li>
-<li>⚠️ Upgrade, security, và reporting đều có thể ép bạn đổi database topology</li>
+<li>⚠ Đừng coi mọi yêu cầu tăng trưởng đều dẫn tới sharding</li>
+<li>⚠ Upgrade, security, và reporting đều có thể ép bạn đổi database topology</li>
 <li>💡 Nếu foundation trả lời "IRIS được tổ chức thế nào", thì topic này trả lời "IRIS nên được vận hành thế nào khi hệ thống lớn lên"</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check current namespace ---
 WRITE $NAMESPACE, !</code></pre>
 <pre class="objectscript"><code class="language-objectscript">// --- Check mirror role on the current instance ---

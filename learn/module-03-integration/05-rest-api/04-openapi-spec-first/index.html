@@ -1982,7 +1982,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4671,7 +4671,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4714,7 +4714,7 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — OpenAPI structure, generated classes, và documentation-first workflow cho REST APIs</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Spec-first REST giúp team xác định API contract trước khi viết business logic. Với IRIS, ý tưởng quan trọng là: <strong>import OpenAPI spec -&gt; generated classes -&gt; bạn giữ logic ở implementation layer</strong>. Exam thường hỏi format của spec, class nào được generate, và section nào định nghĩa schema cho request/response.</p>
+<p>Spec-first giúp xác định API contract trước. Workflow chính: <strong>import OpenAPI spec -&gt; IRIS tự sinh class -&gt; bạn viết logic ở implementation layer</strong>. Exam chú trọng format spec và cấu trúc schema.</p>
 <hr />
 <h2 id="openapi-as-the-contract">OpenAPI as the Contract<a class="headerlink" href="#openapi-as-the-contract" title="Permanent link">&para;</a></h2>
 <p>OpenAPI (trước đây hay gọi là Swagger) là file mô tả:</p>
@@ -4758,9 +4758,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ Nếu chỉnh trực tiếp generated spec/routing class, lần re-import sau rất dễ bị ghi đè.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Nếu chỉnh trực tiếp generated spec/routing class, lần re-import sau rất dễ bị ghi đè.</p>
+</div>
 <hr />
 <h2 id="openapi-structure">OpenAPI Structure<a class="headerlink" href="#openapi-structure" title="Permanent link">&para;</a></h2>
 <p>Trong OpenAPI 3.x, reusable data structures thường nằm ở:</p>
@@ -4840,11 +4841,11 @@
 <li>✅ Business logic nên nằm ở implementation layer, không nằm ở generated spec class</li>
 <li>✅ <code>components/schemas</code> là nơi đáng nhớ cho request/response data structures</li>
 <li>✅ Có thể lấy spec qua <code>GET /api/mgmnt/v1/&lt;namespace&gt;/spec/&lt;application&gt;</code></li>
-<li>⚠️ Đừng nhầm OpenAPI import với API Manager</li>
+<li>⚠ Đừng nhầm OpenAPI import với API Manager</li>
 <li>💡 Nếu đề hỏi "documentation-first" hoặc "contract-first", spec-first gần như là đáp án đúng</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <div class="language-http highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="err">GET http://localhost:52773/api/mgmnt/v1/USER/spec/bookinventory</span>
 </span></code></pre></div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">openapi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0.0</span>

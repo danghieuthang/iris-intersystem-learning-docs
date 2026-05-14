@@ -922,7 +922,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4613,7 +4613,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4656,7 +4656,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — namespaces, databases, mappings, and code/data separation basics</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS có kiến trúc phân tầng: một <strong>instance</strong> chứa nhiều <strong>namespace</strong> logic, và mỗi namespace ánh xạ tới một hoặc nhiều <strong>database</strong> vật lý lưu trữ globals và code thực sự trên disk. Đây là mental model quan trọng nhất để hiểu vì sao globals, classes, SQL, và REST application xuất hiện ở đúng nơi trong hệ thống.</p>
+<p>IRIS có kiến trúc phân tầng: một <strong>instance</strong> chứa nhiều <strong>namespace</strong> logic. Mỗi namespace ánh xạ tới các <strong>database</strong> vật lý (nơi lưu mã nguồn và globals trên disk). Đây là mental model cốt lõi khi làm việc với IRIS.</p>
 <p>Topic này chỉ giữ phần kiến trúc nền tảng để học trước ObjectScript, Classes, Globals, và SQL. Các quyết định production như sharding, mirroring, async reporting, và upgrade topology được chuyển sang module runtime ở giai đoạn sau.</p>
 <hr />
 <h2 id="namespaces-databases">Namespaces &amp; Databases<a class="headerlink" href="#namespaces-databases" title="Permanent link">&para;</a></h2>
@@ -4674,9 +4674,10 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    ├── Globals DB: MYAPP_DATA.IRIS.DAT
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    └── Code DB:    MYAPP_CODE.IRIS.DAT
 </span></code></pre></div>
-<blockquote>
-<p>⚠️ <code>%SYS</code> là namespace hệ thống — không dùng cho application code.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>%SYS</code> là namespace hệ thống — không dùng cho application code.</p>
+</div>
 <hr />
 <h2 id="mapping-basics">Mapping Basics<a class="headerlink" href="#mapping-basics" title="Permanent link">&para;</a></h2>
 <p>IRIS hỗ trợ mạnh mẽ việc ánh xạ (mapping) dữ liệu và code từ một Database vật lý sang một Namespace logic. Bạn cấu hình mapping thông qua Management Portal (<code>System Administration &gt; Configuration &gt; System Configuration &gt; Namespaces</code>).</p>
@@ -4786,12 +4787,12 @@
 <li>✅ Namespace = logical access point; Database = physical storage</li>
 <li>✅ Một namespace có thể dùng dữ liệu từ nhiều database nhờ mappings</li>
 <li>✅ Tách code DB và data DB là pattern cơ bản cần hiểu sớm</li>
-<li>⚠️ <code>%SYS</code> không phải nơi cho application data/code</li>
-<li>⚠️ Đừng nhảy ngay vào sharding hay mirroring khi chưa nắm namespace/database basics</li>
+<li>⚠ <code>%SYS</code> không phải nơi cho application data/code</li>
+<li>⚠ Đừng nhảy ngay vào sharding hay mirroring khi chưa nắm namespace/database basics</li>
 <li>💡 Học topic này trước để các topic sau như globals, SQL, và REST có ngữ cảnh rõ ràng hơn</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check current namespace ---
 WRITE $NAMESPACE, !
 

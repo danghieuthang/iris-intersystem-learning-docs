@@ -4562,7 +4562,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4605,8 +4605,8 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — Embedded Python, Native SDK, Python strategies for IRIS integration</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS là một nền tảng <strong>đa ngôn ngữ</strong>: ngoài Python, hệ sinh thái này còn làm việc với <strong>ObjectScript, SQL</strong>, và nhiều ngôn ngữ client/integration khác như <strong>Java, .NET, và JavaScript/Node.js</strong> thông qua các API và cơ chế tích hợp tương ứng. Tuy nhiên trong module này, ta <strong>chủ đích nhấn mạnh Python</strong> vì đây là lựa chọn rất thực tế cho data work, automation, AI/ML, và cũng là phần xuất hiện rõ trong nhóm năng lực tích hợp/dữ liệu của kỳ thi.</p>
-<p>Trong phạm vi Python, InterSystems IRIS hỗ trợ theo nhiều cách khác nhau, trong đó nổi bật nhất là <strong>Embedded Python</strong> — cho phép viết Python trực tiếp bên trong một ObjectScript class mà không cần rời khỏi môi trường IRIS. Điều này giúp tận dụng thư viện Python ngay bên trong tiến trình IRIS. Ngoài ra, IRIS còn cung cấp <strong>Native SDK for Python</strong> và <strong>DB-API</strong> để kết nối từ ứng dụng Python bên ngoài.</p>
+<p>Dù IRIS là nền tảng đa ngôn ngữ (ObjectScript, SQL, Java, .NET), module này tập trung vào <strong>Python</strong> vì tính phổ biến trong Data/AI và trọng số cao trong kỳ thi.</p>
+<p>Nổi bật nhất là <strong>Embedded Python</strong> (viết Python in-process ngay trong ObjectScript). Ngoài ra, IRIS cung cấp <strong>Native SDK</strong> và <strong>DB-API</strong> cho các client kết nối từ bên ngoài.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4677,9 +4677,10 @@ ClassMethod SqrtPy(n As %Double) As %Double [ Language = python ]
 }
 
 }</code></pre>
-<blockquote>
-<p>⚠️ Bên trong method có <code>Language = python</code>, bạn phải viết <strong>Python syntax</strong> (thụt lề, không dùng SET/WRITE...).</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Bên trong method có <code>Language = python</code>, bạn phải viết <strong>Python syntax</strong> (thụt lề, không dùng SET/WRITE...).</p>
+</div>
 <h3 id="goi-python-tu-objectscript">Gọi Python từ ObjectScript<a class="headerlink" href="#goi-python-tu-objectscript" title="Permanent link">&para;</a></h3>
 <p>Dùng <code>##class(%SYS.Python).Import()</code> để import một module Python và gọi hàm của nó:</p>
 <pre class="objectscript"><code class="language-objectscript">// Import Python&#x27;s math module
@@ -4706,9 +4707,10 @@ WRITE builtins.len(&quot;hello&quot;), !   // 5</code></pre>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </span></code></pre></div>
-<blockquote>
-<p>⚠️ Trong Embedded Python, ObjectScript method <code>%OpenId</code> được gọi là <code>_OpenId</code> (Python không cho phép tên bắt đầu bằng <code>%</code>).</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Trong Embedded Python, ObjectScript method <code>%OpenId</code> được gọi là <code>_OpenId</code> (Python không cho phép tên bắt đầu bằng <code>%</code>).</p>
+</div>
 <hr />
 <h2 id="native-sdk">Native SDK<a class="headerlink" href="#native-sdk" title="Permanent link">&para;</a></h2>
 <h3 id="ket-noi-tu-python-ben-ngoai-qua-intersystems-irispython">Kết nối từ Python bên ngoài qua <code>intersystems-irispython</code><a class="headerlink" href="#ket-noi-tu-python-ben-ngoai-qua-intersystems-irispython" title="Permanent link">&para;</a></h3>
@@ -4765,9 +4767,10 @@ WRITE builtins.len(&quot;hello&quot;), !   // 5</code></pre>
 </span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></code></pre></div>
-<blockquote>
-<p>💡 Theo mặc định, tên bảng SQL của class thường là <code>Package_Class</code> (<code>MyApp.Person</code> → <code>MyApp_Person</code>). Tuy nhiên class có thể override bằng tham số SQL mapping, nên đừng xem đây là luật tuyệt đối.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Theo mặc định, tên bảng SQL của class thường là <code>Package_Class</code> (<code>MyApp.Person</code> → <code>MyApp_Person</code>). Tuy nhiên class có thể override bằng tham số SQL mapping, nên đừng xem đây là luật tuyệt đối.</p>
+</div>
 <hr />
 <h2 id="when-to-use-which">When to Use Which<a class="headerlink" href="#when-to-use-which" title="Permanent link">&para;</a></h2>
 <p>Hướng dẫn chọn chiến lược phù hợp:</p>
@@ -4804,9 +4807,9 @@ WRITE builtins.len(&quot;hello&quot;), !   // 5</code></pre>
 <li>✅ <code>Language = python</code> trên một Method nghĩa là toàn bộ body phải viết bằng Python syntax</li>
 <li>✅ <code>import iris</code> bên trong Embedded Python cho phép truy cập class methods, objects, globals, và SQL của IRIS</li>
 <li>✅ Native SDK và DB-API hiện dùng chung package <strong><code>intersystems-irispython</code></strong></li>
-<li>⚠️ Embedded Python xuất hiện từ <strong>IRIS 2021.2+</strong>, nhưng version Python tương thích phụ thuộc bản IRIS và platform; nên kiểm tra docs/PyPI thay vì giả định "mọi Python 3.x đều dùng được"</li>
-<li>⚠️ Python method phải tuân theo <strong>Python indentation rules</strong> (dùng spaces, không dùng TAB của ObjectScript)</li>
-<li>⚠️ Tên method bắt đầu bằng <code>%</code> trong ObjectScript phải được gọi là <code>_</code> trong Python (ví dụ: <code>%OpenId</code> → <code>_OpenId</code>)</li>
+<li>⚠ Embedded Python xuất hiện từ <strong>IRIS 2021.2+</strong>, nhưng version Python tương thích phụ thuộc bản IRIS và platform; nên kiểm tra docs/PyPI thay vì giả định "mọi Python 3.x đều dùng được"</li>
+<li>⚠ Python method phải tuân theo <strong>Python indentation rules</strong> (dùng spaces, không dùng TAB của ObjectScript)</li>
+<li>⚠ Tên method bắt đầu bằng <code>%</code> trong ObjectScript phải được gọi là <code>_</code> trong Python (ví dụ: <code>%OpenId</code> → <code>_OpenId</code>)</li>
 <li>💡 Cho kỳ thi: nắm rõ <strong>4 chiến lược</strong> và khi nào dùng từng loại (T3.1 ability 2)</li>
 <li>💡 <code>##class(%SYS.Python).Import("moduleName")</code> tương đương với <code>import moduleName</code> trong Python</li>
 </ul>
@@ -4818,7 +4821,7 @@ WRITE builtins.len(&quot;hello&quot;), !   // 5</code></pre>
 <li><code>exercises\09_python\05_db-api\python_db_api.py</code> reuses <code>MyApp.PythonNative.Customer</code> from the Native SDK lab so you can practice SQL access from Python with <code>iris.dbapi</code>, including detail lookup by customer ID, aggregates, insert, and update flows.</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Import a Python module from ObjectScript ---
 SET math = ##class(%SYS.Python).Import(&quot;math&quot;)
 WRITE math.sqrt(16), !   // 4.0

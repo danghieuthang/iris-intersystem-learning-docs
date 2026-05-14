@@ -1629,7 +1629,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4527,7 +4527,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4570,7 +4570,7 @@
 <p><strong>Exam Domain:</strong> <code>T1.3 · Data Lifecycle</code> — So sánh các phương pháp truy xuất dữ liệu: SQL, Object, và MDX.</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS không chỉ mạnh ở mảng xử lý giao dịch (OLTP) mà còn tích hợp sẵn công cụ phân tích dữ liệu đa chiều (OLAP) thông qua tính năng <strong>InterSystems BI (DeepSee)</strong>. Để truy vấn các khối dữ liệu đa chiều (Cubes), chúng ta sử dụng ngôn ngữ <strong>MDX (Multi-Dimensional eXpressions)</strong> thay vì SQL.</p>
+<p>Bên cạnh xử lý giao dịch (OLTP), IRIS tích hợp sẵn công cụ phân tích đa chiều (OLAP) qua <strong>InterSystems BI</strong>. Ta dùng <strong>MDX</strong> thay vì SQL để truy vấn các Cubes dữ liệu.</p>
 <hr />
 <h2 id="sql-vs-object-vs-mdx">SQL vs. Object vs. MDX<a class="headerlink" href="#sql-vs-object-vs-mdx" title="Permanent link">&para;</a></h2>
 <p>Đề thi thường yêu cầu bạn chọn phương pháp truy xuất dữ liệu phù hợp với vòng đời dữ liệu (Data Lifecycle) và kịch bản sử dụng:</p>
@@ -4589,11 +4589,11 @@
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ <strong>MDX Syntax:</strong> Cú pháp của MDX tập trung vào trục (Axes) thay vì bảng. Ví dụ: <code>SELECT [Measures].[Sales] ON 0, [Time].[Year].Members ON 1 FROM [SalesCube]</code>.</li>
-<li>⚠️ <strong>Không dùng để cập nhật:</strong> MDX là ngôn ngữ chuyên dành cho việc đọc (read-only analytical queries). Bạn không dùng MDX để thay đổi dữ liệu gốc.</li>
+<li>⚠ <strong>Không dùng để cập nhật:</strong> MDX là ngôn ngữ chuyên dành cho việc đọc (read-only analytical queries). Bạn không dùng MDX để thay đổi dữ liệu gốc.</li>
 <li>💡 <strong>Đồng bộ hóa (Synchronization):</strong> Dữ liệu trong Cube phải được đồng bộ hóa với bảng nguồn (source class). Nếu cấu hình không đúng, dữ liệu trên Dashboard MDX sẽ bị cũ (stale).</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- 1. Thực thi một câu truy vấn MDX thông qua %DeepSee.ResultSet ---
 SET rs = ##class(%DeepSee.ResultSet).%New()
 SET sc = rs.%PrepareMDX(&quot;SELECT [Measures].[PatientCount] ON 0, [Location].[City].Members ON 1 FROM [PatientsCube]&quot;)

@@ -2599,7 +2599,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4705,7 +4705,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4748,7 +4748,7 @@
 <p><strong>Exam Domain:</strong> <code>T2 · Development Lifecycle</code> — cấu hình workspace, server connection, và debugger workflow trong VS Code</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>VS Code là IDE chính thức được InterSystems khuyến nghị cho phát triển IRIS hiện đại. Phần quan trọng nhất trong exam không chỉ là "biết có extension", mà là hiểu <strong>client-side vs server-side editing</strong>, cấu trúc <code>.vscode/settings.json</code>, và vai trò của debugger khi cần bám theo ObjectScript code trên server.</p>
+<p>VS Code là IDE chính thức. Với exam, trọng tâm là hiểu <strong>client-side vs server-side editing</strong>, cấu hình <code>.vscode/settings.json</code>, và cách attach debugger theo dõi tiến trình trên server.</p>
 <p>Trong thực tế, VS Code làm việc với IRIS qua <strong>ObjectScript extension</strong> và <strong>Source Code File REST API</strong>, vì vậy việc save, compile, và debug đều gắn với cấu hình workspace chứ không chỉ là editor UI.</p>
 <hr />
 <h2 id="workspace-configuration">Workspace Configuration<a class="headerlink" href="#workspace-configuration" title="Permanent link">&para;</a></h2>
@@ -4838,9 +4838,10 @@
 <li>dễ export/import nhất quán</li>
 <li>khớp với CI/CD và Docker workflow</li>
 </ul>
-<blockquote>
-<p>⚠️ Server-side editing tiện cho thử nhanh nhưng dễ làm code trên server lệch với repo nếu dùng kéo dài.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Server-side editing tiện cho thử nhanh nhưng dễ làm code trên server lệch với repo nếu dùng kéo dài.</p>
+</div>
 <hr />
 <h2 id="debugging-flow">Debugging Flow<a class="headerlink" href="#debugging-flow" title="Permanent link">&para;</a></h2>
 <p>Debugger của VS Code cho ObjectScript thường đi theo flow:</p>
@@ -4931,12 +4932,12 @@ WRITE &quot;Child PID: &quot;, $ZCHILD, !</code></pre>
 <li>✅ <code>objectscript.conn</code> chọn server và namespace active cho workspace hiện tại</li>
 <li>✅ <code>launch.json</code> giữ cấu hình attach/launch cho debugger</li>
 <li>✅ Client-side editing phù hợp hơn cho git và CI/CD</li>
-<li>⚠️ Save trong VS Code thường sync ngay lên IRIS server — đừng giả định file local và file server là hai bản tách rời</li>
-<li>⚠️ Debug background code cần để ý process context và <code>$ZCHILD</code></li>
+<li>⚠ Save trong VS Code thường sync ngay lên IRIS server — đừng giả định file local và file server là hai bản tách rời</li>
+<li>⚠ Debug background code cần để ý process context và <code>$ZCHILD</code></li>
 <li>💡 Management Portal vẫn là công cụ phụ trợ rất mạnh để kiểm tra runtime, SQL, security, và production state</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Show current namespace ---
 WRITE $NAMESPACE, !
 

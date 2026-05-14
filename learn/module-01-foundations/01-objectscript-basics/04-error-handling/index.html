@@ -1206,7 +1206,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4805,7 +4805,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4930,12 +4930,7 @@ CATCH ex {
 }</code></pre>
 <hr />
 <h2 id="dynamic-entities-and-invalid-json">Dynamic Entities and Invalid JSON<a class="headerlink" href="#dynamic-entities-and-invalid-json" title="Permanent link">&para;</a></h2>
-<p>Với <strong>dynamic entities</strong> như <code>%DynamicObject</code> / <code>%DynamicArray</code>, có một bẫy quan trọng:</p>
-<ul>
-<li>nhiều API kiểu <code>%Save()</code> trả về <code>%Status</code></li>
-<li>nhưng parse JSON bằng <code>%FromJSON()</code> có thể <strong>throw exception</strong> nếu JSON không hợp lệ</li>
-</ul>
-<p>Vì vậy, cách xử lý đúng là dùng <strong>TRY/CATCH</strong> quanh đoạn parse JSON.</p>
+<p>Khi parse JSON bằng <code>%FromJSON()</code>, hàm sẽ <strong>throw exception</strong> nếu chuỗi JSON không hợp lệ (không trả về <code>%Status</code>). Do đó, bạn bắt buộc phải dùng <strong>TRY/CATCH</strong> quanh đoạn parse JSON.</p>
 <pre class="objectscript"><code class="language-objectscript">ClassMethod ParseBody(json As %String, ByRef body As %DynamicObject) As %Status
 {
     TRY {
@@ -4945,7 +4940,7 @@ CATCH ex {
         QUIT $$$ERROR($$$GeneralError, &quot;Invalid JSON: &quot; _ ex.DisplayString())
     }
 }</code></pre>
-<p>Trong REST code, pattern thực tế thường là:</p>
+<p>Ví dụ trong REST handler:</p>
 <pre class="objectscript"><code class="language-objectscript">TRY {
     SET body = {}.%FromJSON(%request.Content.Read())
     SET name = body.name
@@ -4955,28 +4950,20 @@ CATCH ex {
     RETURN $$$OK
 }</code></pre>
 <h3 id="exam-takeaway">Exam Takeaway<a class="headerlink" href="#exam-takeaway" title="Permanent link">&para;</a></h3>
-<p>Nếu câu hỏi hỏi:</p>
-<blockquote>
-<p>“Which is the correct method to handle errors in code that uses dynamic entities, including exception handling for invalid JSON?”</p>
-</blockquote>
-<p>ý chính cần chọn là:</p>
+<p>Nếu câu hỏi nhắc đến xử lý lỗi của "dynamic entities" hoặc "invalid JSON":</p>
 <ol>
-<li><strong>Dùng TRY/CATCH</strong></li>
-<li>Bắt exception khi <code>%FromJSON()</code> parse JSON lỗi</li>
-<li>Nếu method public trả <code>%Status</code>, convert lỗi thành <code>%Status</code> hoặc trả HTTP 400 phù hợp</li>
+<li>Luôn dùng <strong>TRY/CATCH</strong>.</li>
+<li>Đừng giả định <code>%FromJSON()</code> trả về <code>%Status</code>. Với invalid JSON, bạn phải chuẩn bị cho <strong>exception path</strong>.</li>
+<li>Có thể dùng <code>ex.AsStatus()</code> để convert exception thành status hợp lệ nếu cần.</li>
 </ol>
-<blockquote>
-<p>⚠️ Không giả định <code>%FromJSON()</code> chỉ trả <code>%Status</code>. Với invalid JSON, bạn phải chuẩn bị cho <strong>exception path</strong>.</p>
-</blockquote>
 <hr />
 <h2 id="process-memory-defensive-coding">Process Memory &amp; Defensive Coding<a class="headerlink" href="#process-memory-defensive-coding" title="Permanent link">&para;</a></h2>
-<p>Một phần quan trọng của việc viết mã phòng thủ (Defensive Code - T4.1) là quản lý bộ nhớ của process. Mỗi session IRIS chạy trên một process riêng biệt và có giới hạn bộ nhớ cấp phát (process memory). </p>
-<p>Nếu bạn load một số lượng lớn objects vào RAM (ví dụ trong một vòng lặp <code>FOR</code>) mà không giải phóng chúng, process sẽ cạn kiệt bộ nhớ và gây ra lỗi <code>&lt;STORE&gt;</code>.</p>
+<p>Mỗi session IRIS chạy trên một process riêng với giới hạn bộ nhớ cố định. Nếu loop qua hàng ngàn objects mà không giải phóng, process sẽ bị cạn RAM và ném lỗi <code>&lt;STORE&gt;</code>.</p>
 <h3 id="best-practices">Best Practices:<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Kill local variables:</strong> Dùng lệnh <code>KILL</code> để dọn dẹp các mảng nội bộ (local arrays) lớn sau khi dùng xong.</li>
-<li><strong>Clear Object References:</strong> Nếu bạn đang lặp qua hàng ngàn records bằng <code>%OpenId()</code>, hãy nhớ set object variable về chuỗi rỗng (<code>SET obj = ""</code>) để kích hoạt Garbage Collector dọn dẹp bộ nhớ của object đó.</li>
-<li><strong>Theo dõi Memory:</strong> Dùng hàm <code>$SYSTEM.Process.Memory()</code> hoặc lớp <code>%SYS.ProcessQuery</code> để theo dõi lượng bộ nhớ mà process hiện tại đang sử dụng.</li>
+<li><strong>Clear Object References:</strong> Gán biến object bằng rỗng (<code>SET obj = ""</code>) để kích hoạt Garbage Collector dọn dẹp memory.</li>
+<li><strong>Kill local variables:</strong> Dùng lệnh <code>KILL</code> dọn dẹp các mảng (local arrays) lớn sau khi xử lý xong.</li>
+<li><strong>Theo dõi Memory:</strong> Dùng hàm <code>$SYSTEM.Process.Memory()</code> để kiểm tra mức sử dụng.</li>
 </ol>
 <hr />
 <h2 id="returning-errors-from-methods">Returning Errors from Methods<a class="headerlink" href="#returning-errors-from-methods" title="Permanent link">&para;</a></h2>
@@ -5023,10 +5010,10 @@ SET combined = $SYSTEM.Status.AppendStatus(sc1, sc2)</code></pre>
 <li>✅ Dynamic entity parse bằng <code>%FromJSON()</code> cần nghĩ theo <strong>exception handling</strong>, không chỉ <code>%Status</code></li>
 <li>✅ Method nên <code>RETURN %Status</code>, không phải void</li>
 <li>💡 Dùng <code>$$$ThrowOnError(sc)</code> trong TRY block để code gọn hơn</li>
-<li>⚠️ <code>DO person.%Save()</code> không kiểm tra lỗi — lỗi thầm lặng!</li>
+<li>⚠ <code>DO person.%Save()</code> không kiểm tra lỗi — lỗi thầm lặng!</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">; Test %Status
 SET sc = $$$OK
 WRITE &quot;$$$ISOK: &quot;, $$$ISOK(sc), !       ; 1

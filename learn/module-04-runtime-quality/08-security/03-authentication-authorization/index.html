@@ -2985,7 +2985,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4649,7 +4649,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4767,9 +4767,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ Unauthenticated không có nghĩa là "không cần security". Nó chỉ có nghĩa IRIS không bắt login ở bước auth mặc định.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Unauthenticated không có nghĩa là "không cần security". Nó chỉ có nghĩa IRIS không bắt login ở bước auth mặc định.</p>
+</div>
 <hr />
 <h2 id="least-privilege">Least Privilege<a class="headerlink" href="#least-privilege" title="Permanent link">&para;</a></h2>
 <p>Principle of least privilege là default nên chọn trong hầu hết câu hỏi thi:</p>
@@ -4835,12 +4836,12 @@ WRITE $ROLES, !</code></pre>
 <li>✅ Authentication xác minh identity; authorization quyết định allowed actions</li>
 <li>✅ Least privilege gần như luôn là best-practice answer</li>
 <li>✅ <code>$SYSTEM.Security.Check()</code> dùng để kiểm tra permission trong code</li>
-<li>⚠️ Unauthenticated mode vẫn cần authorization design phù hợp</li>
-<li>⚠️ Không dùng account đặc quyền cao cho application connection nếu không thật sự cần</li>
+<li>⚠ Unauthenticated mode vẫn cần authorization design phù hợp</li>
+<li>⚠ Không dùng account đặc quyền cao cho application connection nếu không thật sự cần</li>
 <li>💡 Nhiều câu exam cố tình trộn auth và authz — hãy tách chúng ra khi đọc câu hỏi</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Show current user and roles ---
 WRITE $USERNAME, !
 WRITE $ROLES, !

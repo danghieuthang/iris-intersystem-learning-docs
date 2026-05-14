@@ -4615,12 +4615,11 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p><strong>Business Service (BS)</strong> là "cửa vào" của Production — lắng nghe external system (file directory, HTTP endpoint, TCP port, message queue...), đọc data vào, đóng gói thành Message, rồi gửi vào Production để xử lý.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[External System]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      ↓ (Inbound Adapter polling / listening)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[Business Service]  ← OnProcessInput() xử lý tại đây
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      ↓ Ens.Request
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[Business Process / Business Operation]
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">[External System]
+      ↓ (Inbound Adapter polling / listening)
+[Business Service]  ← OnProcessInput() xử lý tại đây
+      ↓ Ens.Request
+[Business Process / Business Operation]</code></pre>
 <hr />
 <h2 id="class-structure">Class Structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">Class MyApp.BS.FileReader Extends Ens.BusinessService
@@ -4646,47 +4645,14 @@ Method OnProcessInput(pInput As %Stream.Object, pOutput As %RegisteredObject) As
 }</code></pre>
 <hr />
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Practice</th>
-<th>Chi tiết</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><strong>Viết Message class trước</strong></td>
-<td>Định nghĩa <code>Ens.Request</code> trước khi viết BS — biết rõ sẽ đóng gói data vào đâu</td>
-</tr>
-<tr>
-<td>2</td>
-<td><strong>BS chỉ đọc và forward</strong></td>
-<td>BS không xử lý business logic — chỉ đọc data, tạo message, gửi đi</td>
-</tr>
-<tr>
-<td>3</td>
-<td><strong>Validate input sớm</strong></td>
-<td>Check data hợp lệ trước khi tạo message — tránh đưa bad data vào Production</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>Luôn check <code>%Status</code></strong></td>
-<td>Đặc biệt khi đọc từ stream — handle lỗi để adapter có thể retry đúng cách</td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>Dùng adapter có sẵn</strong></td>
-<td>IRIS có sẵn adapter cho File, HTTP, TCP, SQL, SOAP, HL7 — không cần tự viết</td>
-</tr>
-<tr>
-<td>6</td>
-<td><strong>Cấu hình polling interval</strong></td>
-<td>File/SQL adapter dùng polling — cấu hình interval phù hợp trong Production config</td>
-</tr>
-</tbody>
-</table>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Viết Message class trước</strong>: Định nghĩa <code>Ens.Request</code> trước khi viết BS — biết rõ sẽ đóng gói data vào đâu.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>BS chỉ đọc và forward</strong>: BS không xử lý business logic — chỉ đọc data, tạo message, gửi đi.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Validate input sớm</strong>: Check data hợp lệ trước khi tạo message — tránh đưa bad data vào Production.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Luôn check <code>%Status</code></strong>: Xem <a href="../../../module-01-foundations/01-objectscript-basics/04-error-handling/">Error Handling Pattern</a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Dùng adapter có sẵn</strong>: IRIS có sẵn adapter cho File, HTTP, TCP, SQL, SOAP, HL7.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Cấu hình polling interval</strong>: File/SQL adapter dùng polling — cấu hình interval phù hợp trong Production config.</li>
+</ul>
 <hr />
 <h2 id="common-adapters">Common Adapters<a class="headerlink" href="#common-adapters" title="Permanent link">&para;</a></h2>
 <table>
@@ -4739,8 +4705,8 @@ IF $$$ISOK(tSC) {
 <li>✅ BS là "cửa vào" — mọi data từ ngoài phải đi qua BS để vào Production</li>
 <li>✅ <code>OnProcessInput()</code> được adapter gọi tự động khi có data mới</li>
 <li>✅ <code>..Adapter</code> là reference đến adapter instance — có thể đọc metadata (filename, headers...)</li>
-<li>⚠️ BS không được gọi BO trực tiếp — phải gửi qua BP hoặc gửi thẳng đến BO qua <code>SendRequestSync</code></li>
-<li>⚠️ Nếu <code>OnProcessInput()</code> trả về lỗi, adapter sẽ <strong>không xóa/acknowledge</strong> source data — file sẽ được đọc lại</li>
+<li>⚠ BS không được gọi BO trực tiếp — phải gửi qua BP hoặc gửi thẳng đến BO qua <code>SendRequestSync</code></li>
+<li>⚠ Nếu <code>OnProcessInput()</code> trả về lỗi, adapter sẽ <strong>không xóa/acknowledge</strong> source data — file sẽ được đọc lại</li>
 <li>💡 Dùng <code>..Adapter.FileName</code> (File adapter) để lấy tên file gốc khi cần log hoặc đặt tên output</li>
 </ul>
 <hr />

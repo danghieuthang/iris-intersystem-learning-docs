@@ -2963,7 +2963,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4661,7 +4661,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4810,12 +4810,12 @@ XECUTE code</code></pre>
 <li>✅ Parameterized SQL là cách chuẩn để chặn SQL injection</li>
 <li>✅ <code>XECUTE</code> và indirection với untrusted input là risk rất cao</li>
 <li>✅ Output cũng cần được encode/sanitize đúng context</li>
-<li>⚠️ "Internal tool" không đồng nghĩa với "safe to trust all input"</li>
-<li>⚠️ Generic error cho client tốt hơn lộ implementation details</li>
+<li>⚠ "Internal tool" không đồng nghĩa với "safe to trust all input"</li>
+<li>⚠ Generic error cho client tốt hơn lộ implementation details</li>
 <li>💡 Khi thấy input được nối vào code hoặc SQL string, hãy xem đó là red flag đầu tiên</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Dynamic SQL with parameters ---
 SET stmt = ##class(%SQL.Statement).%New()
 DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE Age &gt; ?&quot;)

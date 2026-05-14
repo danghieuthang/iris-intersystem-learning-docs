@@ -4456,7 +4456,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4522,8 +4522,7 @@
 </tbody>
 </table>
 <p>Dù theo cách nào, flow vẫn là:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>HTTP Request -&gt; CSP Web Application -&gt; Dispatch Class (UrlMap) -&gt; ClassMethod -&gt; Response
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">HTTP Request -&gt; CSP Web Application -&gt; Dispatch Class (UrlMap) -&gt; ClassMethod -&gt; Response</code></pre>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4663,12 +4662,12 @@ ClassMethod GetOne(id As %String) As %Status
 <li>✅ Request body đọc qua <code>%request.Content</code></li>
 <li>✅ JSON deep dive đã tách sang <a href="01-json-handling/">01-json-handling.md</a></li>
 <li>✅ HTTP semantics, REST security, và spec-first workflow đã tách thành subtopics riêng</li>
-<li>⚠️ Web Application <strong>phải</strong> được tạo trước — không tự có khi deploy class</li>
-<li>⚠️ CORS không bật mặc định — cần enable trong Management Portal nếu gọi từ browser</li>
+<li>⚠ Web Application <strong>phải</strong> được tạo trước — không tự có khi deploy class</li>
+<li>⚠ CORS không bật mặc định — cần enable trong Management Portal nếu gọi từ browser</li>
 <li>💡 Với payload JSON, chọn giữa dynamic entities và <code>%JSON.Adaptor</code> theo shape của dữ liệu</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Test REST endpoint từ Terminal (không cần HTTP) ---
 SET sc = ##class(MyApp.REST.Dispatch).GetAll()
 WRITE $SYSTEM.Status.GetErrorText(sc), !</code></pre>

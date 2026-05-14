@@ -2549,7 +2549,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4883,7 +4883,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4926,7 +4926,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — growth planning, global mappings, sharding, ECP, storage IOPS, and workload isolation</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Kiến trúc dữ liệu tốt không chỉ đúng ở hiện tại mà còn phải chịu được tăng trưởng về <strong>data volume</strong>, <strong>transaction rate</strong>, và <strong>workload diversity</strong>. Đây là phần advanced của topic 10, học sau foundations để người đọc đã có đủ ngữ cảnh về globals, SQL, và runtime behavior trước khi đi vào scale decisions.</p>
+<p>Kiến trúc dữ liệu cần chịu được tăng trưởng về <strong>volume, transaction rate</strong>, và <strong>workload</strong>. Đây là phần nâng cao, đòi hỏi người học đã nắm vững foundations để ra quyết định scale.</p>
 <p>Nếu cần refresh namespace/database/mapping basics, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Sau khi nắm scaling choices, đọc tiếp <a href="../02-ha-security-architecture/">HA, DR &amp; Security Architecture</a> để hoàn thiện bức tranh production topology.</p>
 <hr />
 <h2 id="scale-up-vs-scale-out">Scale-up vs Scale-out<a class="headerlink" href="#scale-up-vs-scale-out" title="Permanent link">&para;</a></h2>
@@ -5073,9 +5073,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ Sharding không phải giải pháp mặc định cho mọi hệ thống. Nếu bottleneck là design index/I/O/archival, hãy xử lý chúng trước.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Sharding không phải giải pháp mặc định cho mọi hệ thống. Nếu bottleneck là design index/I/O/archival, hãy xử lý chúng trước.</p>
+</div>
 <hr />
 <h2 id="ecp-enterprise-cache-protocol">ECP (Enterprise Cache Protocol)<a class="headerlink" href="#ecp-enterprise-cache-protocol" title="Permanent link">&para;</a></h2>
 <p>ECP cho phép application servers truy cập data trên data server IRIS từ xa.</p>
@@ -5190,12 +5191,12 @@
 <li>✅ Dedicated namespace/database per tenant thường tốt hơn khi isolation requirement cao</li>
 <li>✅ Sharding = scale-out dữ liệu; ECP = tách app tier và data tier</li>
 <li>✅ SSD/NVMe là hướng hợp lý khi IOPS requirement tăng mạnh</li>
-<li>⚠️ Đừng dùng sharding như phản xạ đầu tiên cho mọi bài toán tăng trưởng</li>
-<li>⚠️ BI/reporting workload nên được cô lập khỏi production nếu có thể</li>
+<li>⚠ Đừng dùng sharding như phản xạ đầu tiên cho mọi bài toán tăng trưởng</li>
+<li>⚠ BI/reporting workload nên được cô lập khỏi production nếu có thể</li>
 <li>💡 Khi đề nhắc growth + archive + access patterns, hãy nghĩ tới multi-database design trước</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check which database a mapped global uses (replace placeholders; run in %SYS) ---
 ZNSPACE &quot;%SYS&quot;
 SET sc = ##class(Config.MapGlobals).Get(&quot;&lt;NAMESPACE&gt;&quot;, &quot;&lt;GLOBAL_NAME&gt;&quot;, .props)

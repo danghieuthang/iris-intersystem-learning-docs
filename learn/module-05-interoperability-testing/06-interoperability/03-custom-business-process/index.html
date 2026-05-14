@@ -3184,7 +3184,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4560,7 +4560,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4615,12 +4615,11 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p><strong>Business Process (BP)</strong> là "bộ não" của Production — nhận message từ Business Service, quyết định routing (gửi đến BO nào), transform data, và orchestrate nhiều bước xử lý. BP có thể stateful (lưu trạng thái giữa các bước) hoặc stateless.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Business Service]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      ↓ Ens.Request
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[Business Process]  ← OnRequest() / BPL diagram xử lý tại đây
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      ↓ Ens.Request (có thể transform)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[Business Operation / Business Service khác]
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">[Business Service]
+      ↓ Ens.Request
+[Business Process]  ← OnRequest() / BPL diagram xử lý tại đây
+      ↓ Ens.Request (có thể transform)
+[Business Operation / Business Service khác]</code></pre>
 <hr />
 <h2 id="class-structure">Class Structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">Class MyApp.BP.Router Extends Ens.BusinessProcess
@@ -4669,44 +4668,15 @@ Method OnResponse(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.P
 </table>
 <hr />
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Practice</th>
-<th>Chi tiết</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><strong>Viết Message class trước</strong></td>
-<td>Định nghĩa <code>Ens.Request</code> / <code>Ens.Response</code> trước — giúp BP biết shape của data</td>
-</tr>
-<tr>
-<td>2</td>
-<td><strong>BP không nên chứa business logic phức tạp</strong></td>
-<td>BP là điều phối viên — logic nặng nên nằm trong BO</td>
-</tr>
-<tr>
-<td>3</td>
-<td><strong>Dùng <code>SendRequestSync</code> khi cần kết quả ngay</strong></td>
-<td>Phù hợp khi bước sau phụ thuộc vào kết quả bước trước</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>Dùng <code>SendRequestAsync</code> khi không cần chờ</strong></td>
-<td>Tăng throughput — BP tiếp tục xử lý ngay, không block</td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>Luôn check <code>%Status</code></strong></td>
-<td>Đặc biệt với <code>SendRequestSync</code> — lỗi ở đây sẽ khiến toàn bộ flow fail</td>
-</tr>
-</tbody>
-</table>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Viết Message class trước</strong>: Định nghĩa <code>Ens.Request</code> / <code>Ens.Response</code> trước — giúp BP biết shape của data.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>BP không nên chứa business logic phức tạp</strong>: BP là điều phối viên — logic nặng nên nằm trong BO.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Dùng <code>SendRequestSync</code> khi cần kết quả ngay</strong>: Phù hợp khi bước sau phụ thuộc vào kết quả bước trước.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Dùng <code>SendRequestAsync</code> khi không cần chờ</strong>: Tăng throughput — BP tiếp tục xử lý ngay, không block.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Luôn check <code>%Status</code></strong>: Xem <a href="../../../module-01-foundations/01-objectscript-basics/04-error-handling/">Error Handling Pattern</a>.</li>
+</ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// Pattern 1 — Content-based routing
 IF pRequest.Type = &quot;order&quot; {
     RETURN ..SendRequestSync(&quot;MyApp.BO.OrderProcessor&quot;, pRequest, .pResponse)
@@ -4729,10 +4699,10 @@ RETURN ..SendRequestSync(&quot;MyApp.BO.OrderProcessor&quot;, transformed, .pRes
 <li>✅ BP là stateful — có thể lưu context giữa các async call bằng properties</li>
 <li>✅ <code>SendRequestSync</code> blocks cho đến khi BO xử lý xong</li>
 <li>✅ <code>SendRequestAsync</code> trả về ngay — response được nhận qua <code>OnResponse()</code></li>
-<li>⚠️ Target name trong <code>SendRequestSync/Async</code> phải khớp với <strong>config name</strong> trong Production (không phải class name)</li>
-<li>⚠️ <code>OnRequest</code> signature bắt buộc dùng <code>%Library.Persistent</code> cho cả hai tham số — dùng <code>%RegisteredObject</code> sẽ báo lỗi compile <code>#5478</code></li>
-<li>⚠️ <code>MessageMap</code> XData <strong>không dùng cho hand-coded BP</strong> — chỉ dùng trong BPL hoặc Routing Engine. Hand-coded BP luôn override <code>OnRequest</code> trực tiếp</li>
-<li>⚠️ Đừng để BP làm quá nhiều việc — BP là router/orchestrator, không phải worker</li>
+<li>⚠ Target name trong <code>SendRequestSync/Async</code> phải khớp với <strong>config name</strong> trong Production (không phải class name)</li>
+<li>⚠ <code>OnRequest</code> signature bắt buộc dùng <code>%Library.Persistent</code> cho cả hai tham số — dùng <code>%RegisteredObject</code> sẽ báo lỗi compile <code>#5478</code></li>
+<li>⚠ <code>MessageMap</code> XData <strong>không dùng cho hand-coded BP</strong> — chỉ dùng trong BPL hoặc Routing Engine. Hand-coded BP luôn override <code>OnRequest</code> trực tiếp</li>
+<li>⚠ Đừng để BP làm quá nhiều việc — BP là router/orchestrator, không phải worker</li>
 <li>💡 Dùng <strong>Visual Trace</strong> trong Management Portal để xem message đi qua BP như thế nào</li>
 <li>💡 Dùng BPL khi logic đơn giản — xem 📄 <a href="../04-bpl-business-process/">04-bpl-business-process.md</a></li>
 </ul>

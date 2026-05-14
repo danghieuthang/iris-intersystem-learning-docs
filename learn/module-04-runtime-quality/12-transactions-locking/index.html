@@ -4534,7 +4534,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4577,7 +4577,7 @@
 <p><strong>Exam Domain:</strong> <code>T4 · Code</code> — data integrity with transactions/journaling (T4.3) and concurrency control with locking (T4.4)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>IRIS đảm bảo tính toàn vẹn dữ liệu thông qua <strong>transactions</strong> (TSTART / TCOMMIT / TROLLBACK) và <strong>journaling</strong> (ghi log mọi thay đổi global). Khi nhiều process cùng truy cập dữ liệu, <strong>LOCK command</strong> kiểm soát đồng thời để tránh xung đột. Đây là nền tảng của exam domain T4 — viết code an toàn, đáng tin cậy trong môi trường production.</p>
+<p>Tính toàn vẹn dữ liệu dựa vào <strong>transactions</strong> và <strong>journaling</strong>. Đồng thời, <strong>LOCK</strong> kiểm soát truy cập đồng thời. Đây là kỹ năng bắt buộc để viết code production an toàn.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4621,9 +4621,10 @@ TRY {
     TROLLBACK
     WRITE ex.DisplayString(), !
 }</code></pre>
-<blockquote>
-<p>⚠️ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — bạn phải gọi TROLLBACK một cách tường minh.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — bạn phải gọi TROLLBACK một cách tường minh.</p>
+</div>
 <hr />
 <h2 id="journaling">Journaling<a class="headerlink" href="#journaling" title="Permanent link">&para;</a></h2>
 <p><strong>Journal</strong> là write-ahead log ghi lại mọi thay đổi trên global. IRIS dùng journal cho:</p>
@@ -4671,9 +4672,10 @@ SET ^TEMP(&quot;key&quot;) = &quot;value&quot;
 TCOMMIT
 
 // Option 2: name temp globals with system-recognized prefixes (e.g. ^CacheTemp, ^||local)</code></pre>
-<blockquote>
-<p>💡 Journal files tích lũy theo thời gian — phải được purge định kỳ sau backup để tránh đầy disk.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Journal files tích lũy theo thời gian — phải được purge định kỳ sau backup để tránh đầy disk.</p>
+</div>
 <hr />
 <h2 id="automatic-transaction-rollbacks">Automatic Transaction Rollbacks<a class="headerlink" href="#automatic-transaction-rollbacks" title="Permanent link">&para;</a></h2>
 <p>Một số sự kiện khiến IRIS <strong>tự động</strong> rollback transaction đang mở:</p>
@@ -4684,9 +4686,10 @@ TCOMMIT
 <li><strong>Explicit TROLLBACK</strong> trong code</li>
 <li><code>$ZTRAP</code> / unhandled errors trong một số cấu hình</li>
 </ul>
-<blockquote>
-<p>⚠️ <code>%Save()</code> thất bại <strong>không</strong> nằm trong danh sách này — phải xử lý thủ công.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>%Save()</code> thất bại <strong>không</strong> nằm trong danh sách này — phải xử lý thủ công.</p>
+</div>
 <hr />
 <h2 id="lock-command">LOCK Command<a class="headerlink" href="#lock-command" title="Permanent link">&para;</a></h2>
 <p>LOCK dùng để kiểm soát đồng thời — ngăn nhiều process cùng sửa đổi một tài nguyên.</p>
@@ -4694,9 +4697,10 @@ TCOMMIT
 LOCK +^global(subscript)     // increment lock — add to existing locks
 LOCK -^global(subscript)     // decrement lock — release
 LOCK +^global(subscript):5   // try for 5 seconds; check $TEST after</code></pre>
-<blockquote>
-<p>⚠️ <code>LOCK</code> (không có <code>+</code>) <strong>thay thế toàn bộ</strong> locks hiện tại của process. Hầu như luôn dùng <code>LOCK +</code>.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>LOCK</code> (không có <code>+</code>) <strong>thay thế toàn bộ</strong> locks hiện tại của process. Hầu như luôn dùng <code>LOCK +</code>.</p>
+</div>
 <h3 id="pattern-chuan-lock-voi-timeout">Pattern chuẩn: lock với timeout<a class="headerlink" href="#pattern-chuan-lock-voi-timeout" title="Permanent link">&para;</a></h3>
 <pre class="objectscript"><code class="language-objectscript">// Acquire lock with timeout
 LOCK +^MyApp.PersonLock(id):5
@@ -4737,9 +4741,10 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <p>SQL cũng tạo lock ngầm:
 - <code>SELECT ... FOR UPDATE</code> → shared lock
 - <code>INSERT / UPDATE / DELETE</code> → intent lock</p>
-<blockquote>
-<p>💡 Luôn ưu tiên <strong>row-level lock</strong> trừ khi cần ngăn chặn mọi thay đổi trên table.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Luôn ưu tiên <strong>row-level lock</strong> trừ khi cần ngăn chặn mọi thay đổi trên table.</p>
+</div>
 <hr />
 <h2 id="lock-best-practices">Lock Best Practices<a class="headerlink" href="#lock-best-practices" title="Permanent link">&para;</a></h2>
 <p>Tránh deadlock và giảm contention:</p>
@@ -4789,14 +4794,14 @@ WRITE $ZSTORAGE, !</code></pre>
 <li>✅ Journaling trong transaction: thay đổi được ghi nhưng có thể đảo ngược cho đến khi TCOMMIT</li>
 <li>✅ Locking deep dive đã tách sang <a href="01-advanced-locking/">01-advanced-locking.md</a></li>
 <li>✅ Parallel work queue pattern đã tách sang <a href="02-work-queue-manager/">02-work-queue-manager.md</a></li>
-<li>⚠️ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — phải gọi tường minh</li>
-<li>⚠️ <code>LOCK</code> (không <code>+</code>) thay thế toàn bộ locks hiện tại — hầu như luôn dùng <code>LOCK +</code></li>
-<li>⚠️ Process death tự động rollback transaction đang mở VÀ giải phóng tất cả locks</li>
+<li>⚠ <code>%Save()</code> thất bại <strong>không</strong> tự động TROLLBACK — phải gọi tường minh</li>
+<li>⚠ <code>LOCK</code> (không <code>+</code>) thay thế toàn bộ locks hiện tại — hầu như luôn dùng <code>LOCK +</code></li>
+<li>⚠ Process death tự động rollback transaction đang mở VÀ giải phóng tất cả locks</li>
 <li>💡 Luôn ghép <code>LOCK +</code> với <code>LOCK -</code> và bọc trong TRY/CATCH</li>
 <li>💡 Dùng prefix <code>^CacheTemp</code> hoặc <code>TSTART:NoLog</code> cho global tạm không cần journaling</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Transaction with error handling ---
 TSTART
 TRY {

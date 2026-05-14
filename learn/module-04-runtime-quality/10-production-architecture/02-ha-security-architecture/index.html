@@ -2544,7 +2544,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4817,7 +4817,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4913,9 +4913,10 @@
 <li>failover pair phục vụ HA</li>
 <li>async member phù hợp cho reporting hoặc DR ở site khác</li>
 </ul>
-<blockquote>
-<p>⚠️ Connection string nên trỏ tới <strong>Virtual IP</strong> hoặc mirror-aware endpoint, không trỏ cứng vào IP vật lý của một node.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Connection string nên trỏ tới <strong>Virtual IP</strong> hoặc mirror-aware endpoint, không trỏ cứng vào IP vật lý của một node.</p>
+</div>
 <hr />
 <h2 id="async-reporting-and-dr">Async Reporting and DR<a class="headerlink" href="#async-reporting-and-dr" title="Permanent link">&para;</a></h2>
 <p>Async mirror member là pattern rất đáng nhớ cho exam.</p>
@@ -5060,12 +5061,12 @@
 <li>✅ Dùng Virtual IP giúp client không phải đổi connection string khi failover</li>
 <li>✅ Mirror cả code và data databases để tránh mismatch</li>
 <li>✅ Security requirements có thể dẫn tới physical database separation</li>
-<li>⚠️ Async member có lag, nên DR plan phải tính RPO thực tế</li>
-<li>⚠️ Không mirror <code>IRISTEMP</code> hay <code>IRISLOCALDATA</code></li>
+<li>⚠ Async member có lag, nên DR plan phải tính RPO thực tế</li>
+<li>⚠ Không mirror <code>IRISTEMP</code> hay <code>IRISLOCALDATA</code></li>
 <li>💡 Nếu đề hỏi vừa HA vừa BI isolation, async reporting member thường là đáp án rất mạnh</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check mirror status ---
 WRITE $SYSTEM.Mirror.GetMemberStatus(), !
 WRITE $SYSTEM.Mirror.IsPrimary(), !

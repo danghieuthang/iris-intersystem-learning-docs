@@ -1066,7 +1066,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4693,7 +4693,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4736,7 +4736,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — arrays là cấu trúc dữ liệu core, nền tảng của globals</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Array trong ObjectScript là cấu trúc dữ liệu đa chiều, sparse, không cần khai báo trước. Chúng là nền tảng của globals và được dùng rộng rãi để lưu trữ tạm thời trong process. Cú pháp và hàm thao tác (<code>$ORDER</code>, <code>$DATA</code>, <code>MERGE</code>) giống nhau cho cả local array và global.</p>
+<p>Array là cấu trúc dữ liệu đa chiều, sparse và không cần khai báo trước. Dùng để lưu dữ liệu tạm trong process. Cú pháp thao tác (<code>$ORDER</code>, <code>$DATA</code>, <code>MERGE</code>) hoàn toàn giống với Globals.</p>
 <h2 id="local-arrays">Local Arrays<a class="headerlink" href="#local-arrays" title="Permanent link">&para;</a></h2>
 <p>Khác với ngôn ngữ khác, array trong ObjectScript là <strong>đa chiều, sparse</strong> (không cần liên tục) và không cần khai báo trước.</p>
 <pre class="objectscript"><code class="language-objectscript">; Gán giá trị
@@ -4779,10 +4779,13 @@ FOR {
         WRITE &quot;  &quot;, field, &quot;: &quot;, person(id, field), !
     }
 }</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code>$ORDER</code> với argument rỗng <code>""</code> trả về key đầu tiên.</p>
 <blockquote>
-<p>💡 <code>$ORDER</code> với argument rỗng <code>""</code> trả về key đầu tiên.<br />
-Khi không còn key nào, trả về <code>""</code>.</p>
+<p>Khi không còn key nào, trả về <code>""</code>.</p>
 </blockquote>
+</div>
 <h3 id="reverse-traversal">Reverse Traversal<a class="headerlink" href="#reverse-traversal" title="Permanent link">&para;</a></h3>
 <pre class="objectscript"><code class="language-objectscript">; $ORDER(arr(key), -1) = key TRƯỚC key hiện tại
 SET key = $ORDER(arr(&quot;&quot;), -1)   ; key cuối cùng
@@ -4841,9 +4844,10 @@ Method ProcessData(ByRef pData)
 }
 // Gọi:
 DO ..ProcessData(.myArray)   ; chú ý dấu . trước biến</code></pre>
-<blockquote>
-<p>⚠️ Truyền array vào method/function phải dùng <strong>ByRef</strong> và gọi với dấu <code>.</code> (pass by reference).</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Truyền array vào method/function phải dùng <strong>ByRef</strong> và gọi với dấu <code>.</code> (pass by reference).</p>
+</div>
 <hr />
 <h2 id="counting-elements">Counting Elements<a class="headerlink" href="#counting-elements" title="Permanent link">&para;</a></h2>
 <p>ObjectScript không có hàm <code>length(arr)</code> — phải đếm thủ công hoặc tự track:</p>
@@ -4901,11 +4905,11 @@ WRITE &quot;Count: &quot;, arr, !</code></pre>
 <li>✅ Array index bắt đầu từ bất kỳ giá trị nào — số, chuỗi, âm đều được (sparse)</li>
 <li>✅ <code>$ORDER(arr(""), -1)</code> trả về key cuối cùng</li>
 <li>✅ <code>$DATA</code> = 11 nghĩa là node vừa có data vừa có children</li>
-<li>⚠️ Truyền array vào method phải dùng <code>ByRef</code> và gọi với dấu <code>.</code> — <code>DO ..Method(.myArr)</code></li>
-<li>⚠️ <code>KILL arr(1)</code> xóa cả subtree — không có cách undo</li>
+<li>⚠ Truyền array vào method phải dùng <code>ByRef</code> và gọi với dấu <code>.</code> — <code>DO ..Method(.myArr)</code></li>
+<li>⚠ <code>KILL arr(1)</code> xóa cả subtree — không có cách undo</li>
 <li>💡 Dùng array để lưu tạm dữ liệu trong process, dùng Global (<code>^</code>) để persist</li>
 </ul>
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">SET fruit(&quot;a&quot;) = &quot;Apple&quot;
 SET fruit(&quot;b&quot;) = &quot;Banana&quot;
 SET fruit(&quot;c&quot;) = &quot;Cherry&quot;

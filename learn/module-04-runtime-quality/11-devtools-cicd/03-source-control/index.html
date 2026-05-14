@@ -2672,7 +2672,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4739,7 +4739,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4831,9 +4831,10 @@
 <p>Endpoint thường gắn với:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/api/atelier/
 </span></code></pre></div>
-<blockquote>
-<p>💡 Đây là lý do save trong VS Code có thể cập nhật IRIS gần như ngay lập tức.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Đây là lý do save trong VS Code có thể cập nhật IRIS gần như ngay lập tức.</p>
+</div>
 <hr />
 <h2 id="server-side-integration">Server-side Integration<a class="headerlink" href="#server-side-integration" title="Permanent link">&para;</a></h2>
 <p>Server-side integration dùng framework <code>%Studio.SourceControl</code> và hook chạy ngay trong IRIS.</p>
@@ -4959,9 +4960,10 @@ DO $SYSTEM.OBJ.LoadDir(&quot;C:\deploy\src&quot;, &quot;/compile/displaylog/disp
 <li>thay index semantics</li>
 </ul>
 <p>... đều phải được test rất kỹ trước khi import lên environment có data thật.</p>
-<blockquote>
-<p>⚠️ "Compile được" không đồng nghĩa với "an toàn cho data đang tồn tại".</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>"Compile được" không đồng nghĩa với "an toàn cho data đang tồn tại".</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4969,12 +4971,12 @@ DO $SYSTEM.OBJ.LoadDir(&quot;C:\deploy\src&quot;, &quot;/compile/displaylog/disp
 <li>✅ Server-side integration = <code>%Studio.SourceControl</code> hooks chạy trong IRIS</li>
 <li>✅ <code>/api/atelier/</code> là endpoint quan trọng trong IDE/server synchronization</li>
 <li>✅ <code>GetDoc</code>, <code>PutDoc</code>, <code>GetModifiedDocNames</code>, <code>Compile</code> là các REST operations đáng nhớ</li>
-<li>⚠️ Schema change của persistent class có thể gây storage incompatibility</li>
-<li>⚠️ Import/update class vào production mà không test trước là rủi ro cao</li>
+<li>⚠ Schema change của persistent class có thể gây storage incompatibility</li>
+<li>⚠ Import/update class vào production mà không test trước là rủi ro cao</li>
 <li>💡 Backup export trước import lớn là thói quen rất đáng giữ</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Export current classes before import ---
 DO $SYSTEM.OBJ.Export(&quot;MyApp.*.cls&quot;, &quot;C:\backup\myapp.xml&quot;)
 

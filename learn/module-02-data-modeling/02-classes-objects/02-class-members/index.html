@@ -1416,7 +1416,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4771,7 +4771,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -5018,10 +5018,13 @@ WRITE ..#VERSION, !
 ; Truy cập từ bên ngoài:
 WRITE ##class(MyApp.Config).#VERSION, !
 WRITE $PARAMETER(&quot;MyApp.Config&quot;, &quot;VERSION&quot;), !</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Parameter hay được dùng trong subclass của <code>%CSP.REST</code> để cấu hình:</p>
 <blockquote>
-<p>💡 Parameter hay được dùng trong subclass của <code>%CSP.REST</code> để cấu hình:<br />
-<code>Parameter CONTENTTYPE = "application/json";</code></p>
+<p><code>Parameter CONTENTTYPE = "application/json";</code></p>
 </blockquote>
+</div>
 <hr />
 <h2 id="indices">Indices<a class="headerlink" href="#indices" title="Permanent link">&para;</a></h2>
 <p>Hướng dẫn IRIS xây dựng cấu trúc tra cứu cho SQL query. Xem <a href="../03-indices/"><code>03-indices.md</code></a> để biết chi tiết.</p>
@@ -5067,11 +5070,11 @@ WHILE rs.%Next() {
 <li>✅ <code>Required</code> keyword trên Property: <code>%Save()</code> thất bại nếu chưa set</li>
 <li>✅ <code>Calculated</code> + <code>Transient</code> = không lưu trữ; <code>Calculated</code> có getter/setter, <code>Transient</code> không</li>
 <li>✅ Parameter truy cập bằng <code>..#PARAM_NAME</code> (trong class) hoặc <code>##class(X).#PARAM_NAME</code> (ngoài)</li>
-<li>⚠️ Method <code>..Method()</code> — instance method; <code>##class(X).Method()</code> — class method. Không thể dùng <code>..</code> trong ClassMethod</li>
-<li>⚠️ <code>%OnBeforeSave</code> trả về error sẽ ngăn <code>%Save()</code> — đây là cách validate trước khi lưu</li>
+<li>⚠ Method <code>..Method()</code> — instance method; <code>##class(X).Method()</code> — class method. Không thể dùng <code>..</code> trong ClassMethod</li>
+<li>⚠ <code>%OnBeforeSave</code> trả về error sẽ ngăn <code>%Save()</code> — đây là cách validate trước khi lưu</li>
 <li>💡 Class Query tự sinh method <code>&lt;QueryName&gt;Func()</code> — gọi như ClassMethod bình thường</li>
 </ul>
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">; Liệt kê tất cả property của một class
 SET props = ##class(%Dictionary.ClassDefinition).%OpenId(&quot;MyApp.Person&quot;).Properties
 FOR i=1:1:props.Count() { WRITE props.GetAt(i).Name, ! }

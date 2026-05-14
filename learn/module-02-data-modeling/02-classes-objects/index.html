@@ -4516,7 +4516,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — class model, persistence, naming conventions, và object lifecycle decisions</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Classes là lớp trừu tượng trung tâm của ObjectScript: chúng quyết định data được biểu diễn ra sao, persist như thế nào, và application code tương tác với data qua object model ra sao. Topic này giữ overview cho class model; các mảng sâu hơn như index, stream, và object lifecycle được tách thành subtopics riêng để dễ ôn theo ability.</p>
+<p>Classes là lớp trừu tượng cốt lõi: quyết định cấu trúc data, cách lưu trữ và tương tác qua object model. Các mảng chuyên sâu (index, stream, lifecycle) được tách riêng để tiện ôn tập.</p>
 <hr />
 <h2 id="sub-topics">Sub-topics<a class="headerlink" href="#sub-topics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4684,9 +4684,10 @@ DO ##class(MyApp.Person).%DeleteId(1)</code></pre>
 <pre class="objectscript"><code class="language-objectscript">/// Doc comment — hiện trong class documentation
 // Single-line comment thông thường
 /* Multi-line comment */</code></pre>
-<blockquote>
-<p>⚠️ Dấu <code>;</code> chỉ dùng làm comment trong terminal / routine, không dùng trong <code>.cls</code> file.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Dấu <code>;</code> chỉ dùng làm comment trong terminal / routine, không dùng trong <code>.cls</code> file.</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4694,8 +4695,8 @@ DO ##class(MyApp.Person).%DeleteId(1)</code></pre>
 <li>✅ <code>##class(X)</code> = tham chiếu tới class X để gọi ClassMethod hoặc <code>%New()</code></li>
 <li>✅ Unique index tự sinh method <code>&lt;IndexName&gt;Open(value)</code></li>
 <li>✅ Object lifecycle deep dive đã tách sang <a href="05-object-lifecycle/">05-object-lifecycle.md</a></li>
-<li>⚠️ <code>%Save()</code> nên luôn check <code>%Status</code></li>
-<li>⚠️ <code>%SerialObject</code> không có đời sống độc lập khỏi parent</li>
+<li>⚠ <code>%Save()</code> nên luôn check <code>%Status</code></li>
+<li>⚠ <code>%SerialObject</code> không có đời sống độc lập khỏi parent</li>
 <li>💡 Học topic này theo flow: class categories -&gt; members -&gt; indices/streams -&gt; object lifecycle</li>
 </ul>
 <hr />

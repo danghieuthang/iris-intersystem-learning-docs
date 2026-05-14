@@ -1389,23 +1389,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Understanding Serial Classes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#class-type-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Class Type Comparison
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1423,7 +1406,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4527,23 +4510,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Understanding Serial Classes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#class-type-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Class Type Comparison
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -4561,7 +4527,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4604,56 +4570,25 @@
 <p><strong>Exam Domain:</strong> <code>T1.2 · Data Structures</code> — Khác biệt giữa Serial, Registered và Persistent classes.</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Trong InterSystems IRIS, class type quyết định cách dữ liệu được lưu trữ. Dù bạn có thể quen thuộc với <code>%Persistent</code> (lưu thành record trong database) và <code>%RegisteredObject</code> (chỉ tồn tại trên RAM), đề thi rất hay hỏi về <strong>Serial Classes</strong> (<code>%SerialObject</code>). Serial classes đóng vai trò như một "nhúng" (embedded) object bên trong một Persistent object.</p>
+<p>Class type quyết định cách lưu trữ. Bên cạnh <code>%Persistent</code> và <code>%RegisteredObject</code>, exam rất hay hỏi về <strong>Serial Classes</strong> (<code>%SerialObject</code>) — đóng vai trò như một object nhúng (embedded).</p>
 <hr />
 <h2 id="understanding-serial-classes">Understanding Serial Classes<a class="headerlink" href="#understanding-serial-classes" title="Permanent link">&para;</a></h2>
-<p>Một class kế thừa từ <code>%SerialObject</code> không có ID riêng của nó trong database và không thể được lưu độc lập (không có <code>%Save()</code> độc lập như <code>%Persistent</code>). Thay vào đó, dữ liệu của Serial class được mã hóa (serialized) thành một chuỗi và lưu trữ dưới dạng một thuộc tính (property) của class cha (Persistent class).</p>
-<p><strong>Ví dụ thực tế:</strong> Một object <code>Person</code> (Persistent) có thuộc tính <code>HomeAddress</code>. Nếu <code>HomeAddress</code> là một Persistent object riêng biệt, nó sẽ lưu ở một bảng khác và cần join. Nếu <code>HomeAddress</code> là một Serial object, dữ liệu địa chỉ (đường, thành phố, zipcode) sẽ được gói gọn và lưu chung vào cùng một record của <code>Person</code>.</p>
-<h3 id="class-type-comparison">Class Type Comparison<a class="headerlink" href="#class-type-comparison" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Class Type</th>
-<th>Superclass</th>
-<th>Can Save to Disk?</th>
-<th>Has Object ID?</th>
-<th>Use Case</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Registered</strong></td>
-<td><code>%RegisteredObject</code></td>
-<td>Không</td>
-<td>Không</td>
-<td>Business logic, transient data trên RAM.</td>
-</tr>
-<tr>
-<td><strong>Persistent</strong></td>
-<td><code>%Persistent</code></td>
-<td>Có</td>
-<td>Có</td>
-<td>Bảng dữ liệu chính, records có ID độc lập.</td>
-</tr>
-<tr>
-<td><strong>Serial</strong></td>
-<td><code>%SerialObject</code></td>
-<td>Có (chỉ khi đi kèm cha)</td>
-<td>Không</td>
-<td>Dữ liệu nhúng (embedded address, coordinate).</td>
-</tr>
-</tbody>
-</table>
+<p><code>%SerialObject</code> không có ID độc lập và không thể tự <code>%Save()</code>. Dữ liệu của nó được mã hóa thành chuỗi và lưu như một thuộc tính của class cha.</p>
+<p><strong>Ví dụ:</strong> Object <code>Person</code> có thuộc tính <code>HomeAddress</code> là Serial. Thay vì lưu ở bảng riêng (cần JOIN), data của <code>HomeAddress</code> được gộp chung vào record của <code>Person</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Để so sánh tổng quan giữa <code>%Persistent</code>, <code>%RegisteredObject</code>, và <code>%SerialObject</code>, vui lòng xem lại bảng tổng hợp tại <a href="../#class-categories-quick-summary">Class Categories — Quick Summary</a>.</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ <strong>Lưu trữ hiệu quả:</strong> Tránh các thao tác JOIN trong SQL bằng cách gộp dữ liệu thành một chuỗi duy nhất trên đĩa, đồng thời vẫn giữ được tính chất hướng đối tượng (object-oriented) trong ObjectScript.</li>
 <li>✅ <strong>SQL Projection:</strong> Khi bạn truy vấn SQL, thuộc tính Serial sẽ được bung ra thành các cột riêng rẽ mang tiền tố. Ví dụ: <code>HomeAddress_Street</code>, <code>HomeAddress_City</code>.</li>
-<li>⚠️ <strong>Không thể khởi tạo độc lập:</strong> Dù bạn có thể gọi <code>##class(MyApp.Address).%New()</code>, nhưng bạn không thể lưu nó trừ khi gán nó vào một thuộc tính của class Persistent.</li>
+<li>⚠ <strong>Không thể khởi tạo độc lập:</strong> Dù bạn có thể gọi <code>##class(MyApp.Address).%New()</code>, nhưng bạn không thể lưu nó trừ khi gán nó vào một thuộc tính của class Persistent.</li>
 <li>💡 <strong>Streams limitations:</strong> Không nên nhầm lẫn Serial với Stream. Stream dùng để lưu text/binary dung lượng lớn (quá giới hạn chuỗi), trong khi Serial dùng để nhóm các thuộc tính có cấu trúc thành một khối dữ liệu logic.</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- 1. Tạo và nhúng Serial Object ---
 SET person = ##class(MyApp.Person).%New()
 SET person.Name = &quot;John Doe&quot;

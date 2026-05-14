@@ -4604,7 +4604,7 @@
 <p><strong>Exam Domain:</strong> <code>T3.4 · Data Retrieval</code> — Tạo REST Services và quản lý thông qua InterSystems API Manager.</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Viết code REST API bằng lớp <code>%CSP.REST</code> hoặc theo mô hình <strong>Spec-first (OpenAPI)</strong> giải quyết bài toán "xây dựng API". Tuy nhiên, khi hệ thống mở rộng, bạn sẽ phải đối mặt với bài toán "quản lý API": làm sao để giới hạn số lượng request (rate limiting), cấp quyền (authentication/API keys), theo dõi log (tracing), và thu thập metric mà không phải sửa code trong từng endpoint.</p>
+<p>Khi hệ thống mở rộng, ngoài việc xây dựng API (bằng <code>%CSP.REST</code>), bạn cần giải quyết bài toán quản lý. IAM giúp giới hạn request (rate limiting), cấp quyền (auth), logging, và metrics mà không cần sửa code backend.</p>
 <p>Đó là lúc <strong>InterSystems API Manager (IAM)</strong> xuất hiện.</p>
 <hr />
 <h2 id="what-is-iam">What is IAM?<a class="headerlink" href="#what-is-iam" title="Permanent link">&para;</a></h2>
@@ -4638,7 +4638,7 @@
 <ul>
 <li>✅ <strong>API Gateway Pattern:</strong> IAM tách biệt business logic (trong IRIS) khỏi API management logic (rate limiting, security).</li>
 <li>✅ <strong>Plugins:</strong> Sức mạnh của IAM nằm ở hệ thống plugins dễ cấu hình qua UI (hoặc declarative config).</li>
-<li>⚠️ <strong>Không xử lý dữ liệu:</strong> IAM không phải là ESB (Enterprise Service Bus). Nó không nên dùng để transform dữ liệu phức tạp hay viết business logic. Nếu cần transform XML -&gt; JSON, hãy dùng <strong>Interoperability Productions</strong> của IRIS, không dùng IAM.</li>
+<li>⚠ <strong>Không xử lý dữ liệu:</strong> IAM không phải là ESB (Enterprise Service Bus). Nó không nên dùng để transform dữ liệu phức tạp hay viết business logic. Nếu cần transform XML -&gt; JSON, hãy dùng <strong>Interoperability Productions</strong> của IRIS, không dùng IAM.</li>
 <li>💡 Trong đề thi, nếu câu hỏi nhắc đến việc "thêm Rate Limiting mà không thay đổi code backend", đáp án 100% là dùng IAM.</li>
 </ul>
 <hr />

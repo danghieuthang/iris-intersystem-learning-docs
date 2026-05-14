@@ -1679,7 +1679,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4739,7 +4739,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4847,9 +4847,10 @@
 <li><strong>low selectivity value</strong> -&gt; condition lọc tốt hơn</li>
 <li>optimizer dùng selectivity để chọn access path và join order</li>
 </ul>
-<blockquote>
-<p>💡 Nếu statistics cũ, optimizer có thể hiểu sai selectivity và chọn plan kém.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Nếu statistics cũ, optimizer có thể hiểu sai selectivity và chọn plan kém.</p>
+</div>
 <hr />
 <h2 id="top-optimization">TOP Optimization<a class="headerlink" href="#top-optimization" title="Permanent link">&para;</a></h2>
 <p><code>TOP</code> trong IRIS có optimization behavior đáng nhớ, đặc biệt khi đi với <code>ORDER BY</code>.</p>
@@ -4941,12 +4942,12 @@
 <li>✅ Low selectivity value nghĩa là predicate lọc tốt hơn</li>
 <li>✅ <code>TOP</code> + <code>ORDER BY</code> tối ưu cho fastest time to first row</li>
 <li>✅ <code>TUNE TABLE</code> thu thập stats như extent size, map size, selectivity</li>
-<li>⚠️ Không chạy <code>TUNE TABLE</code> trước mọi query</li>
-<li>⚠️ Stats cũ có thể làm optimizer chọn plan sai</li>
+<li>⚠ Không chạy <code>TUNE TABLE</code> trước mọi query</li>
+<li>⚠ Stats cũ có thể làm optimizer chọn plan sai</li>
 <li>💡 Khi performance xấu bất ngờ sau bulk load, hãy nghĩ tới statistics trước</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Run EXPLAIN ---
 SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;EXPLAIN SELECT Name FROM MyApp_Person WHERE Age &gt; 25&quot;)
 WHILE rs.%Next() { WRITE rs.%GetData(1), ! }

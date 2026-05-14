@@ -1427,7 +1427,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4681,7 +4681,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4724,7 +4724,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — T1.2.4: xác định khi nào nên dùng Stream thay vì String</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Stream là kiểu dữ liệu cho nội dung không giới hạn kích thước trong IRIS. Trong khi <code>%String</code> có giới hạn ~3.6MB, Stream lưu dữ liệu trong global riêng và đọc/ghi theo từng chunk. Dùng Stream cho file upload, XML/JSON lớn, HTML response, và bất kỳ nội dung nào không biết trước kích thước.</p>
+<p>Stream dùng để lưu dữ liệu vượt mức ~3.6MB của <code>%String</code>. Dữ liệu lưu ở global riêng và đọc/ghi theo chunk, phù hợp cho file upload hay XML/JSON lớn.</p>
 <h2 id="stream-vs-string">Stream vs String<a class="headerlink" href="#stream-vs-string" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -4757,9 +4757,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>💡 <strong>Quy tắc thực tế:</strong> Nếu nội dung có thể vượt ~1MB, hoặc không giới hạn kích thước (upload file, HTML, XML, JSON blob lớn) → dùng Stream.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Quy tắc thực tế:</strong> Nếu nội dung có thể vượt ~1MB, hoặc không giới hạn kích thước (upload file, HTML, XML, JSON blob lớn) → dùng Stream.</p>
+</div>
 <hr />
 <h2 id="stream-classes">Stream Classes<a class="headerlink" href="#stream-classes" title="Permanent link">&para;</a></h2>
 <table>
@@ -4857,11 +4858,11 @@ WRITE doc.Content.IsEmpty(), !</code></pre>
 <li>✅ Stream không giới hạn kích thước; <code>%String</code> giới hạn ~3.6MB</li>
 <li>✅ <code>%Stream.GlobalCharacter</code> cho văn bản, <code>%Stream.GlobalBinary</code> cho nhị phân</li>
 <li>✅ <code>%request.Content</code> trong REST endpoint đã là stream — dùng <code>.Read()</code> để lấy content</li>
-<li>⚠️ Sau khi <code>Write()</code>, phải <code>Rewind()</code> trước khi <code>Read()</code> — stream position không tự reset</li>
-<li>⚠️ <code>stream.Read()</code> không có argument đọc toàn bộ một lần — có thể tốn memory với file lớn</li>
+<li>⚠ Sau khi <code>Write()</code>, phải <code>Rewind()</code> trước khi <code>Read()</code> — stream position không tự reset</li>
+<li>⚠ <code>stream.Read()</code> không có argument đọc toàn bộ một lần — có thể tốn memory với file lớn</li>
 <li>💡 Dùng <code>WHILE 'stream.AtEnd { SET chunk = stream.Read(32000) }</code> cho nội dung rất lớn</li>
 </ul>
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">; Tạo và ghi vào stream
 SET s = ##class(%Stream.GlobalCharacter).%New()
 DO s.Write(&quot;Xin &quot;)

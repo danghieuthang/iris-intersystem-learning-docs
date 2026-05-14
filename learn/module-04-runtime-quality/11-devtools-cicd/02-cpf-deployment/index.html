@@ -2655,7 +2655,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4761,7 +4761,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4880,9 +4880,10 @@
 <li><code>[ECPServers]</code></li>
 <li><code>[Sys.DefaultSettings]</code> (dùng để override giá trị mặc định của class properties trên toàn hệ thống mà không cần recompile code).</li>
 </ul>
-<blockquote>
-<p>⚠️ <code>Users</code> không nên được version như config thường; phần này nên đi qua security automation hoặc external identity flow.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>Users</code> không nên được version như config thường; phần này nên đi qua security automation hoặc external identity flow.</p>
+</div>
 <hr />
 <h2 id="merge-command">Merge Command<a class="headerlink" href="#merge-command" title="Permanent link">&para;</a></h2>
 <p>Trong automation, cú pháp shell ngắn gọn và dễ đọc nhất là:</p>
@@ -4990,12 +4991,12 @@ DO $SYSTEM.OBJ.LoadDir(&quot;C:\deploy\src&quot;, &quot;/compile/displaylog/disp
 <li>✅ CPF merge phù hợp cho config thay theo environment</li>
 <li>✅ <code>iris merge &lt;file&gt; quietly</code> hợp với automation scripts</li>
 <li>✅ <code>[config]</code>, <code>[Databases]</code>, <code>[Namespaces]</code>, <code>[ECPServers]</code> là các section merge hay gặp</li>
-<li>⚠️ Không đưa secrets và user credentials trực tiếp vào merge file versioned</li>
-<li>⚠️ Đừng hard-code config production vào image</li>
+<li>⚠ Không đưa secrets và user credentials trực tiếp vào merge file versioned</li>
+<li>⚠ Đừng hard-code config production vào image</li>
 <li>💡 Export backup trước import lớn là một rollback strategy thực dụng</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Export classes before a risky deployment ---
 DO $SYSTEM.OBJ.Export(&quot;MyApp.*.cls&quot;, &quot;C:\backup\myapp.xml&quot;)
 

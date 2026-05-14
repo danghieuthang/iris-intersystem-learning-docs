@@ -4848,7 +4848,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — thiết kế Business Process bằng BPL graphical designer trong Management Portal, không cần viết ObjectScript</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p><strong>BPL</strong> (Business Process Language) là cách tạo Business Process bằng giao diện đồ họa <strong>Business Process Designer</strong> trong Management Portal — kéo-thả activities vào canvas, IRIS tự sinh code ObjectScript từ diagram XML. Đây là <strong>cách implement thay thế</strong> cho Custom Business Process viết tay bằng ObjectScript, phù hợp cho flow đơn giản, sequential, dễ visualize và dễ đọc với non-developer.</p>
+<p><strong>BPL</strong> dùng giao diện đồ họa để kéo thả quy trình, từ đó sinh code tự động. Đây là phương pháp thay thế Business Process viết tay, rất phù hợp cho các flow tuần tự, đơn giản và trực quan.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Business Service]
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      ↓ Ens.Request
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[BPL Business Process]  ← diagram gồm: assign / if / call / sync / foreach
@@ -4867,24 +4867,24 @@
 <li>Đặt tên class (e.g., <code>MyApp.BP.OrderFlow</code>) → <strong>OK</strong></li>
 <li>Business Process Designer mở ra — bắt đầu kéo activities vào canvas</li>
 </ol>
-<blockquote>
-<p>⚠️ Đừng edit file <code>.cls</code> của BPL trực tiếp — luôn dùng Designer vì file được generate từ XML diagram.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Đừng edit file <code>.cls</code> của BPL trực tiếp — luôn dùng Designer vì file được generate từ XML diagram.</p>
+</div>
 <hr />
 <h2 id="bpl-activities">BPL Activities<a class="headerlink" href="#bpl-activities" title="Permanent link">&para;</a></h2>
 <h3 id="assign">Assign<a class="headerlink" href="#assign" title="Permanent link">&para;</a></h3>
 <p>Gán giá trị cho context property hoặc biến.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Activity: assign
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Property: context.Status
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Value:     &quot;Approved&quot;
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Action:    set        ← set / append / clear
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Activity: assign
+Property: context.Status
+Value:     &quot;Approved&quot;
+Action:    set        ← set / append / clear</code></pre>
 <p>Dùng để: copy field từ request vào context, set giá trị mặc định, transform đơn giản.</p>
 <h3 id="if-else">If / Else<a class="headerlink" href="#if-else" title="Permanent link">&para;</a></h3>
 <p>Rẽ nhánh dựa trên điều kiện.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>condition: request.Priority = &quot;urgent&quot;
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  → TRUE branch:  gọi BO.ExpressProcessor
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  → FALSE branch: gọi BO.StandardProcessor
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>condition: request.Priority = &quot;urgent&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  → TRUE branch:  gọi BO.ExpressProcessor
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  → FALSE branch: gọi BO.StandardProcessor
 </span></code></pre></div>
 <ul>
 <li>Condition viết bằng <strong>ObjectScript expression</strong> (trả về 1/0)</li>
@@ -4921,19 +4921,19 @@
 <p>Response lưu tự động vào <code>callrequest</code> / <code>callresponse</code> context variables.</p>
 <h3 id="sync">Sync<a class="headerlink" href="#sync" title="Permanent link">&para;</a></h3>
 <p>Chờ tất cả các <strong>async <code>call</code></strong> trước đó hoàn thành trước khi tiếp tục.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[call async → BO.Logger]
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[call async → BO.Auditor]
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[sync]              ← chờ cả 2 xong rồi mới tiếp tục
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[assign context.Done = 1]
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[call async → BO.Logger]
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[call async → BO.Auditor]
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>[sync]              ← chờ cả 2 xong rồi mới tiếp tục
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>[assign context.Done = 1]
 </span></code></pre></div>
 <blockquote>
 <p><strong>Sync</strong> chỉ có tác dụng với các <code>call</code> <strong>async</strong> — nếu dùng với sync call thì không cần thiết.</p>
 </blockquote>
 <h3 id="for-each-loop">For Each (Loop)<a class="headerlink" href="#for-each-loop" title="Permanent link">&para;</a></h3>
 <p>Lặp qua một <strong>list</strong> hoặc <strong>array</strong> trong context.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Activity:   foreach
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Key:        context.CurrentItem    ← biến giữ từng phần tử
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Collection: context.ItemList       ← collection cần lặp
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Activity:   foreach
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Key:        context.CurrentItem    ← biến giữ từng phần tử
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Collection: context.ItemList       ← collection cần lặp
 </span></code></pre></div>
 <p>Bên trong vòng lặp: đặt các activities xử lý <code>context.CurrentItem</code>.</p>
 <hr />
@@ -4964,10 +4964,9 @@
 </tbody>
 </table>
 <h3 id="truy-cap-trong-activities">Truy cập trong activities<a class="headerlink" href="#truy-cap-trong-activities" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>context.OrderTotal          ← đọc/ghi trong Assign, If condition
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>request.FieldName           ← input message (read-only)
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>response.FieldName          ← output message (write để set response)
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">context.OrderTotal          ← đọc/ghi trong Assign, If condition
+request.FieldName           ← input message (read-only)
+response.FieldName          ← output message (write để set response)</code></pre>
 <blockquote>
 <p>Context sống trong suốt vòng đời của BPL instance — kể cả khi BP bị suspend rồi resume (stateful).</p>
 </blockquote>
@@ -5023,8 +5022,8 @@
 <li>✅ Context là stateful — tồn tại xuyên suốt vòng đời BP, kể cả khi suspend/resume</li>
 <li>✅ <code>call</code> activity có thể sync (block) hoặc async (fire-and-forget) — cấu hình qua checkbox</li>
 <li>✅ <code>sync</code> activity dùng để chờ nhiều async <code>call</code> cùng lúc trước khi tiếp tục</li>
-<li>⚠️ Đừng edit file <code>.cls</code> của BPL trực tiếp — luôn dùng Business Process Designer</li>
-<li>⚠️ Target trong <code>call</code> activity phải khớp <strong>config name</strong> trong Production, không phải class name</li>
+<li>⚠ Đừng edit file <code>.cls</code> của BPL trực tiếp — luôn dùng Business Process Designer</li>
+<li>⚠ Target trong <code>call</code> activity phải khớp <strong>config name</strong> trong Production, không phải class name</li>
 <li>💡 Dùng Visual Trace để xem từng activity đã execute và giá trị context tại mỗi bước</li>
 <li>💡 BPL phù hợp cho flow đơn giản — dùng ObjectScript class khi cần logic phức tạp, điều kiện động</li>
 </ul>

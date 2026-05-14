@@ -4593,12 +4593,11 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p><strong>Business Operation (BO)</strong> là component gửi dữ liệu ra hệ thống bên ngoài (database, HTTP endpoint, file, HL7...). Nếu Business Service là <strong>điểm vào</strong> của Production, thì BO là <strong>điểm ra</strong> — nhận message từ Business Process qua Message Queue, xử lý, và optionally trả về response.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Business Process]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      ↓ Ens.Request
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[Business Operation]  ← OnMessage() xử lý tại đây
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      ↓ (Outbound Adapter)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[External System]
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">[Business Process]
+      ↓ Ens.Request
+[Business Operation]  ← OnMessage() xử lý tại đây
+      ↓ (Outbound Adapter)
+[External System]</code></pre>
 <hr />
 <h2 id="class-structure">Class Structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">Class MyApp.BO.EmailSender Extends Ens.BusinessOperation
@@ -4632,47 +4631,14 @@ Method SendEmail(pRequest As MyApp.Msg.EmailRequest) As %Status
 }</code></pre>
 <hr />
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Practice</th>
-<th>Chi tiết</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><strong>Viết Message class trước</strong></td>
-<td>Viết <code>Ens.Request</code> / <code>Ens.Response</code> trước khi viết BO — IDE autocomplete giúp tránh typo</td>
-</tr>
-<tr>
-<td>2</td>
-<td><strong>Tách nhiều method</strong></td>
-<td><code>OnMessage()</code> chỉ điều phối — logic cụ thể nằm trong helper methods</td>
-</tr>
-<tr>
-<td>3</td>
-<td><strong>Response không bắt buộc</strong></td>
-<td>Không phải lúc nào cũng cần return message — tùy adapter và downstream</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>Luôn check <code>%Status</code></strong></td>
-<td>Kiểm tra mọi status, handle error phù hợp — IRIS sẽ retry nếu BO trả về lỗi</td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>Dùng Record Mapper cho CSV</strong></td>
-<td>Với file delimited (CSV), dùng Record Mapper thay vì tự parse</td>
-</tr>
-<tr>
-<td>6</td>
-<td><strong>Dùng class có sẵn cho HL7</strong></td>
-<td>Dùng <code>EnsLib.HL7.Operation.TCPOperation</code> để gửi HL7 V2 qua TCP</td>
-</tr>
-</tbody>
-</table>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Viết Message class trước</strong>: Viết <code>Ens.Request</code> / <code>Ens.Response</code> trước khi viết BO — IDE autocomplete giúp tránh typo.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Tách nhiều method</strong>: <code>OnMessage()</code> chỉ điều phối — logic cụ thể nằm trong helper methods.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Response không bắt buộc</strong>: Không phải lúc nào cũng cần return message — tùy adapter và downstream.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Luôn check <code>%Status</code></strong>: Xem <a href="../../../module-01-foundations/01-objectscript-basics/04-error-handling/">Error Handling Pattern</a>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Dùng Record Mapper cho CSV</strong>: Với file delimited (CSV), dùng Record Mapper thay vì tự parse.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Dùng class có sẵn cho HL7</strong>: Dùng <code>EnsLib.HL7.Operation.TCPOperation</code> để gửi HL7 V2 qua TCP.</li>
+</ul>
 <hr />
 <h2 id="common-adapters">Common Adapters<a class="headerlink" href="#common-adapters" title="Permanent link">&para;</a></h2>
 <table>
@@ -4711,8 +4677,8 @@ Method SendEmail(pRequest As MyApp.Msg.EmailRequest) As %Status
 <li>✅ <code>OnMessage()</code> là entry point duy nhất — IRIS gọi method này khi có message mới</li>
 <li>✅ Tách helper methods để dễ test và tái sử dụng</li>
 <li>✅ <code>..Adapter</code> là reference đến adapter instance — dùng để gọi downstream system</li>
-<li>⚠️ Nếu <code>OnMessage()</code> trả về lỗi (<code>$$$ISERR</code>), IRIS sẽ <strong>retry</strong> theo cấu hình — tránh side effect trùng lặp</li>
-<li>⚠️ Response (<code>pResponse</code>) là <code>Output</code> parameter — phải <code>SET</code> chứ không phải <code>RETURN</code></li>
+<li>⚠ Nếu <code>OnMessage()</code> trả về lỗi (<code>$$$ISERR</code>), IRIS sẽ <strong>retry</strong> theo cấu hình — tránh side effect trùng lặp</li>
+<li>⚠ Response (<code>pResponse</code>) là <code>Output</code> parameter — phải <code>SET</code> chứ không phải <code>RETURN</code></li>
 <li>💡 Dùng <code>EnsLib.HL7.Operation.TCPOperation</code> thay vì tự viết cho HL7 — đã handle framing và retry</li>
 </ul>
 <hr />

@@ -2734,10 +2734,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-write-image-journal-wij" class="md-nav__link">
+  <a href="#write-image-journal-wij" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Write Image Journal (WIJ)
+        Write Image Journal (WIJ)
       
     </span>
   </a>
@@ -2745,10 +2745,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-journaling-transaction-journaling" class="md-nav__link">
+  <a href="#journaling-transaction-journaling" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Journaling (Transaction Journaling)
+        Journaling (Transaction Journaling)
       
     </span>
   </a>
@@ -4502,10 +4502,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-write-image-journal-wij" class="md-nav__link">
+  <a href="#write-image-journal-wij" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Write Image Journal (WIJ)
+        Write Image Journal (WIJ)
       
     </span>
   </a>
@@ -4513,10 +4513,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-journaling-transaction-journaling" class="md-nav__link">
+  <a href="#journaling-transaction-journaling" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Journaling (Transaction Journaling)
+        Journaling (Transaction Journaling)
       
     </span>
   </a>
@@ -4573,15 +4573,14 @@
 <p>InterSystems IRIS bảo vệ dữ liệu khỏi các sự cố như cúp điện hoặc crash hệ thống bằng 2 cơ chế độc lập nhưng bổ trợ cho nhau: <strong>WIJ (Write Image Journal)</strong> và <strong>Journaling (Transaction Journaling)</strong>.</p>
 <p>Đề thi thường yêu cầu bạn phân biệt rõ nhiệm vụ của từng cái và chúng được dùng trong tình huống phục hồi nào.</p>
 <hr />
-<h2 id="1-write-image-journal-wij">1. Write Image Journal (WIJ)<a class="headerlink" href="#1-write-image-journal-wij" title="Permanent link">&para;</a></h2>
-<p>WIJ là một cơ chế hoạt động ở mức Database blocks. 
-Mỗi khi IRIS chuẩn bị ghi các database blocks đã bị thay đổi (từ vùng nhớ đệm Global buffers) xuống đĩa cứng (Database file <code>.IRIS.DAT</code>), nó sẽ ghi bản sao chép của các block này vào tệp WIJ <strong>trước</strong>. Quá trình này đảm bảo an toàn tuyệt đối ở cấp độ vật lý.</p>
+<h2 id="write-image-journal-wij">Write Image Journal (WIJ)<a class="headerlink" href="#write-image-journal-wij" title="Permanent link">&para;</a></h2>
+<p>WIJ hoạt động ở cấp độ <strong>Database block</strong>. Trước khi ghi block từ memory xuống đĩa (<code>.IRIS.DAT</code>), IRIS luôn ghi bản sao vào tệp WIJ để đảm bảo an toàn vật lý.</p>
 <ul>
 <li><strong>Mục đích:</strong> Bảo vệ database khỏi lỗi vật lý (corruption) nếu hệ thống sập <em>đang trong lúc</em> IRIS đang ghi dữ liệu xuống disk.</li>
 <li><strong>Phục hồi:</strong> Khi khởi động lại sau sự cố (crash recovery), IRIS kiểm tra WIJ. Nếu phát hiện tệp WIJ chứa các block chưa được cập nhật hoàn chỉnh xuống <code>.IRIS.DAT</code>, nó sẽ tự động dùng WIJ để đè (overwrite) lên database.</li>
 <li><strong>Đặc điểm:</strong> Hoạt động ngầm định, bạn không thể "tắt" WIJ.</li>
 </ul>
-<h2 id="2-journaling-transaction-journaling">2. Journaling (Transaction Journaling)<a class="headerlink" href="#2-journaling-transaction-journaling" title="Permanent link">&para;</a></h2>
+<h2 id="journaling-transaction-journaling">Journaling (Transaction Journaling)<a class="headerlink" href="#journaling-transaction-journaling" title="Permanent link">&para;</a></h2>
 <p>Khác với WIJ (lưu raw blocks), Journaling lưu trữ <strong>mặt logic</strong> của các thao tác dữ liệu (như SET <code>^Data(1)="A"</code>, KILL <code>^Temp</code>).</p>
 <ul>
 <li><strong>Mục đích:</strong> </li>
@@ -4596,7 +4595,7 @@ Mỗi khi IRIS chuẩn bị ghi các database blocks đã bị thay đổi (từ
 <ul>
 <li>✅ <strong>WIJ:</strong> Khôi phục cấu trúc database vật lý ngay lập tức khi crash.</li>
 <li>✅ <strong>Journaling:</strong> Khôi phục dữ liệu logic, hỗ trợ TROLLBACK và Mirroring.</li>
-<li>⚠️ Khi bạn chạy lệnh <code>TSTART</code>, IRIS ghi nhận thao tác vào Journal file. Tuy nhiên, nếu bạn thực hiện một thay đổi trên một Database đang bị <strong>TẮT</strong> Journaling, thay đổi đó sẽ <strong>KHÔNG THỂ ROLLBACK</strong> dù nằm trong <code>TSTART</code>.</li>
+<li>⚠ Khi bạn chạy lệnh <code>TSTART</code>, IRIS ghi nhận thao tác vào Journal file. Tuy nhiên, nếu bạn thực hiện một thay đổi trên một Database đang bị <strong>TẮT</strong> Journaling, thay đổi đó sẽ <strong>KHÔNG THỂ ROLLBACK</strong> dù nằm trong <code>TSTART</code>.</li>
 <li>💡 <strong>Switch Journal:</strong> Khi file Journal đạt kích thước tối đa, IRIS sẽ tự động cắt sang file mới (Switch Journal). </li>
 </ul>
 <hr />

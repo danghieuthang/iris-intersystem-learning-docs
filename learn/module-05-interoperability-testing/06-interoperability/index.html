@@ -4506,7 +4506,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4550,16 +4550,15 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p><strong>Interoperability</strong> là framework tích hợp của IRIS, cho phép kết nối hệ thống bên ngoài (file, HTTP, HL7, database...) thông qua mô hình <strong>Production</strong>. Một Production là container chạy các component giao tiếp với nhau qua Message Queue — đảm bảo reliable delivery, retry, và audit log đầy đủ.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[External System]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      ↓
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>[Business Service]   ← nhận data từ ngoài (inbound adapter)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      ↓  Message
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[Business Process]   ← routing, transformation, orchestration
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>      ↓  Message
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>[Business Operation] ← gửi data ra ngoài (outbound adapter)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      ↓
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>[External System]
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">[External System]
+      ↓
+[Business Service]   ← nhận data từ ngoài (inbound adapter)
+      ↓  Message
+[Business Process]   ← routing, transformation, orchestration
+      ↓  Message
+[Business Operation] ← gửi data ra ngoài (outbound adapter)
+      ↓
+[External System]</code></pre>
 <hr />
 <h2 id="the-three-components">The Three Components<a class="headerlink" href="#the-three-components" title="Permanent link">&para;</a></h2>
 <table>
@@ -4689,12 +4688,12 @@ Method OnMessage(pRequest As MyApp.Msg.FileData, Output pResponse As %Library.Pe
 <li>✅ Production là container — start/stop toàn bộ component cùng lúc</li>
 <li>✅ Mọi component giao tiếp qua Message (không call trực tiếp)</li>
 <li>✅ Message được lưu vào DB — hỗ trợ retry tự động khi lỗi</li>
-<li>⚠️ Component name trong <code>SendRequestSync</code> phải khớp <strong>chính xác</strong> với config name trong Production, không phải class name</li>
-<li>⚠️ <code>Ens.Request</code> và <code>Ens.Response</code> là hai base class khác nhau — dùng đúng loại</li>
+<li>⚠ Component name trong <code>SendRequestSync</code> phải khớp <strong>chính xác</strong> với config name trong Production, không phải class name</li>
+<li>⚠ <code>Ens.Request</code> và <code>Ens.Response</code> là hai base class khác nhau — dùng đúng loại</li>
 <li>💡 Dùng <strong>Event Log</strong> trong Management Portal → Interoperability để debug message flow</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Start/Stop Production ---
 DO ##class(Ens.Director).StartProduction(&quot;MyApp.Production&quot;)
 DO ##class(Ens.Director).StopProduction()

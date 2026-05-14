@@ -2957,7 +2957,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4705,7 +4705,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4777,9 +4777,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ TLS <strong>không</strong> thay thế database encryption. Nó chỉ bảo vệ dữ liệu khi truyền qua network.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>TLS <strong>không</strong> thay thế database encryption. Nó chỉ bảo vệ dữ liệu khi truyền qua network.</p>
+</div>
 <hr />
 <h2 id="database-encryption">Database Encryption<a class="headerlink" href="#database-encryption" title="Permanent link">&para;</a></h2>
 <p>Database encryption bảo vệ nội dung database file nếu storage media hoặc backup file bị lộ.</p>
@@ -4826,9 +4827,10 @@
 <li>giải mã ở đúng boundary được phép</li>
 <li>không log plaintext nhạy cảm</li>
 </ol>
-<blockquote>
-<p>💡 Đây là pattern hay gặp khi chỉ một phần nhỏ của record cần protection mạnh hơn phần còn lại.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Đây là pattern hay gặp khi chỉ một phần nhỏ của record cần protection mạnh hơn phần còn lại.</p>
+</div>
 <hr />
 <h2 id="secrets-and-key-handling">Secrets and Key Handling<a class="headerlink" href="#secrets-and-key-handling" title="Permanent link">&para;</a></h2>
 <p>Best practice:</p>
@@ -4875,12 +4877,12 @@
 <li>✅ TLS = data in transit; database encryption = data at rest</li>
 <li>✅ Data element encryption hợp khi chỉ một số value cần bảo vệ mạnh</li>
 <li>✅ Secrets và keys không nên nằm trong repo hoặc merge files versioned</li>
-<li>⚠️ Bật TLS thôi chưa giải quyết bài toán mất cắp backup/database file</li>
-<li>⚠️ Encryption phải đi cùng authz và audit, không phải một giải pháp đơn độc</li>
+<li>⚠ Bật TLS thôi chưa giải quyết bài toán mất cắp backup/database file</li>
+<li>⚠ Encryption phải đi cùng authz và audit, không phải một giải pháp đơn độc</li>
 <li>💡 Với exam, hãy luôn hỏi: đang bảo vệ network traffic, file on disk, hay field/value cụ thể?</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Pseudocode shape for protecting a sensitive value ---
 SET plaintext = &quot;secret-value&quot;
 // Encrypt before persist using approved platform/service pattern

@@ -2781,7 +2781,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4683,7 +4683,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4822,9 +4822,10 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <li><code>TCOMMIT</code></li>
 <li>release lock</li>
 </ol>
-<blockquote>
-<p>⚠️ Đừng giả định transaction tự giải quyết mọi race condition nếu không có locking phù hợp.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Đừng giả định transaction tự giải quyết mọi race condition nếu không có locking phù hợp.</p>
+</div>
 <hr />
 <h2 id="lock-related-exam-traps">Lock-related Exam Traps<a class="headerlink" href="#lock-related-exam-traps" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4839,12 +4840,12 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <li>✅ Row-level locking thường tốt hơn table-level locking</li>
 <li>✅ <code>LOCK +resource:timeout</code> là pattern an toàn hơn chờ vô hạn</li>
 <li>✅ Consistent ordering là một trong các cách tránh deadlock hiệu quả nhất</li>
-<li>⚠️ Transaction không thay thế locking</li>
-<li>⚠️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp</li>
+<li>⚠ Transaction không thay thế locking</li>
+<li>⚠ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp</li>
 <li>💡 Khi câu hỏi nhấn mạnh throughput hoặc concurrent users, broad lock thường là đáp án xấu hơn</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Lock one logical record with timeout ---
 LOCK +^OrderLock(orderId):5
 IF &#x27;$TEST { WRITE &quot;Timeout&quot;, !  QUIT }

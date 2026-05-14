@@ -1954,7 +1954,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4671,7 +4671,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4714,7 +4714,7 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — authentication methods, web application security, JWT/OAuth overview, và CORS trong REST services</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>REST security trên IRIS không nằm hết trong dispatch class. Một phần lớn được quyết định ở <strong>Web Applications</strong> và security configuration của hệ thống. Exam hay đánh vào các điểm như: auth method nào IRIS hỗ trợ, CORS bật bằng gì, JWT/OAuth gắn vào đâu, và sự khác nhau giữa application security với business logic.</p>
+<p>REST security chủ yếu được cấu hình ở <strong>Web Applications</strong> và hệ thống, không chỉ ở dispatch class. Exam thường hỏi về auth methods, CORS, JWT/OAuth, và sự phân tách giữa application security với business logic.</p>
 <hr />
 <h2 id="where-rest-security-is-configured">Where REST Security Is Configured<a class="headerlink" href="#where-rest-security-is-configured" title="Permanent link">&para;</a></h2>
 <table>
@@ -4743,9 +4743,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>✅ Nếu câu hỏi hỏi "where do you configure authentication for a REST service?", thường phải nghĩ tới <strong>Web Applications</strong>.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Fact</p>
+<p>Nếu câu hỏi hỏi "where do you configure authentication for a REST service?", thường phải nghĩ tới <strong>Web Applications</strong>.</p>
+</div>
 <hr />
 <h2 id="supported-authentication-patterns">Supported Authentication Patterns<a class="headerlink" href="#supported-authentication-patterns" title="Permanent link">&para;</a></h2>
 <table>
@@ -4822,9 +4823,10 @@
 <p>Trong <code>%CSP.REST</code>, parameter quan trọng nên nhớ:</p>
 <pre class="objectscript"><code class="language-objectscript">Parameter HandleCorsRequest = 1;</code></pre>
 <p>Điều này giúp class xử lý preflight <code>OPTIONS</code> request và trả CORS headers phù hợp hơn.</p>
-<blockquote>
-<p>⚠️ Chỉ viết business endpoint mà quên CORS handling sẽ làm browser client fail dù API logic vẫn đúng.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Chỉ viết business endpoint mà quên CORS handling sẽ làm browser client fail dù API logic vẫn đúng.</p>
+</div>
 <hr />
 <h2 id="web-application-setup-checklist">Web Application Setup Checklist<a class="headerlink" href="#web-application-setup-checklist" title="Permanent link">&para;</a></h2>
 <table>
@@ -4892,12 +4894,12 @@
 <li>✅ IRIS REST security có thể dùng Basic, Kerberos, JWT, OAuth 2.0</li>
 <li>✅ JWT/OAuth token nên đi trong <code>Authorization</code> header</li>
 <li>✅ <code>Parameter HandleCorsRequest = 1;</code> là detail rất đáng nhớ cho CORS</li>
-<li>⚠️ CORS là browser concern; không phải mọi HTTP client đều cần nó</li>
-<li>⚠️ Unauthenticated mode vẫn đòi hỏi security design chủ động</li>
+<li>⚠ CORS là browser concern; không phải mọi HTTP client đều cần nó</li>
+<li>⚠ Unauthenticated mode vẫn đòi hỏi security design chủ động</li>
 <li>💡 Hãy tách ba lớp khi đọc đề: authentication, authorization, và transport security</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">Class MyApp.REST.Dispatch Extends %CSP.REST
 {
 Parameter HandleCorsRequest = 1;

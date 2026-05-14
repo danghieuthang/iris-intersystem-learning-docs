@@ -2256,7 +2256,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4739,7 +4739,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4816,9 +4816,10 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>✅ Nếu câu hỏi nói "enable TLS/SSL for the whole connection", đáp án nên nghĩ tới là <strong>level <code>10</code></strong>.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Fact</p>
+<p>Nếu câu hỏi nói "enable TLS/SSL for the whole connection", đáp án nên nghĩ tới là <strong>level <code>10</code></strong>.</p>
+</div>
 <hr />
 <h2 id="jdbc-url-and-tls">JDBC URL and TLS<a class="headerlink" href="#jdbc-url-and-tls" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>jdbc:IRIS://db.example.com:1972/MYAPP?connectionSecurityLevel=10&amp;sslServerName=iris-prod
@@ -4956,12 +4957,12 @@
 <li>✅ JDBC levels <code>1/2/3</code> thuộc Kerberos family, không phải TLS</li>
 <li>✅ TLS handshake lỗi thường là trust/certificate mismatch</li>
 <li>✅ <code>IRISDataSource</code> hay dùng <code>setServerName</code>, <code>setPortNumber</code>, <code>setDatabaseName</code>, <code>setConnectionSecurityLevel</code></li>
-<li>⚠️ Namespace sai không tạo ra SSL certificate verification error</li>
-<li>⚠️ ODBC TLS config thường đi qua DSN + SSL config file, không giống JDBC URL</li>
+<li>⚠ Namespace sai không tạo ra SSL certificate verification error</li>
+<li>⚠ ODBC TLS config thường đi qua DSN + SSL config file, không giống JDBC URL</li>
 <li>💡 Khi đọc câu hỏi, hãy tách rõ: đang hỏi <strong>transport security</strong>, <strong>auth method</strong>, hay <strong>config location</strong></li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Check SuperServer port before external connection testing ---
 ZNSPACE &quot;%SYS&quot;
 WRITE ##class(Security.System).Get(&quot;SuperServerPort&quot;), !</code></pre>

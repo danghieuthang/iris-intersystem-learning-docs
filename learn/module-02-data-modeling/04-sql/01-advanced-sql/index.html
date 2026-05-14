@@ -1606,7 +1606,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4649,7 +4649,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4775,11 +4775,11 @@
 <li>✅ <code>%ID</code> là pseudo-column hệ thống luôn có sẵn</li>
 <li>✅ JSON có thể được build trực tiếp trong SQL bằng <code>JSON_OBJECT</code> / <code>JSON_ARRAY</code></li>
 <li>✅ Query optimization và SQL security đã được tách sang subtopics riêng</li>
-<li>⚠️ Arrow syntax ngắn hơn JOIN nhưng vẫn cần hiểu relationship thật sự phía dưới</li>
+<li>⚠ Arrow syntax ngắn hơn JOIN nhưng vẫn cần hiểu relationship thật sự phía dưới</li>
 <li>💡 Arrow syntax <code>-&gt;</code> là một trong các IRIS-specific SQL features dễ nhận diện nhất trong exam</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Quick Dynamic SQL ---
 SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name, Age FROM MyApp_Person WHERE Age &gt; 25&quot;)
 WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), &quot; - &quot;, rs.%Get(&quot;Age&quot;), ! }

@@ -2030,10 +2030,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-embedded-python" class="md-nav__link">
+  <a href="#embedded-python" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Embedded Python
+        Embedded Python
       
     </span>
   </a>
@@ -2041,10 +2041,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-native-api-for-python" class="md-nav__link">
+  <a href="#native-api-for-python" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Native API for Python
+        Native API for Python
       
     </span>
   </a>
@@ -2052,10 +2052,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-python-db-api-pyodbcjdbc" class="md-nav__link">
+  <a href="#python-db-api-pyodbcjdbc" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Python DB-API (PyODBC/JDBC)
+        Python DB-API (PyODBC/JDBC)
       
     </span>
   </a>
@@ -2082,7 +2082,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4553,10 +4553,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-embedded-python" class="md-nav__link">
+  <a href="#embedded-python" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Embedded Python
+        Embedded Python
       
     </span>
   </a>
@@ -4564,10 +4564,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-native-api-for-python" class="md-nav__link">
+  <a href="#native-api-for-python" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Native API for Python
+        Native API for Python
       
     </span>
   </a>
@@ -4575,10 +4575,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-python-db-api-pyodbcjdbc" class="md-nav__link">
+  <a href="#python-db-api-pyodbcjdbc" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Python DB-API (PyODBC/JDBC)
+        Python DB-API (PyODBC/JDBC)
       
     </span>
   </a>
@@ -4605,7 +4605,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4648,10 +4648,10 @@
 <p><strong>Exam Domain:</strong> <code>T3.1 · Data Retrieval</code> — Sử dụng Python với InterSystems IRIS (Embedded Python, Native API, DB-API)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>InterSystems IRIS hỗ trợ mạnh mẽ hệ sinh thái Python. Tuy nhiên, thay vì chỉ có một cách kết nối duy nhất, IRIS cung cấp <strong>ba phương pháp (environments)</strong> khác nhau để chạy Python, tuỳ thuộc vào kịch bản sử dụng. Việc chọn đúng công cụ là câu hỏi chắc chắn sẽ xuất hiện trong bài thi.</p>
+<p>IRIS không chỉ có một cách chạy Python. Tùy kịch bản, bạn sẽ chọn một trong <strong>ba môi trường (environments)</strong> tích hợp khác nhau. Việc chọn đúng công cụ chắc chắn sẽ xuất hiện trong bài thi.</p>
 <hr />
 <h2 id="3-phuong-phap-tich-hop-python">3 Phương pháp Tích hợp Python<a class="headerlink" href="#3-phuong-phap-tich-hop-python" title="Permanent link">&para;</a></h2>
-<h3 id="1-embedded-python">1. Embedded Python<a class="headerlink" href="#1-embedded-python" title="Permanent link">&para;</a></h3>
+<h3 id="embedded-python">Embedded Python<a class="headerlink" href="#embedded-python" title="Permanent link">&para;</a></h3>
 <p>Đây là phương pháp mạnh mẽ nhất. Python runtime được khởi chạy <strong>bên trong (embedded)</strong> chính process của IRIS. Nó chia sẻ cùng một vùng nhớ (memory space) với ObjectScript.</p>
 <ul>
 <li><strong>Đặc điểm:</strong> Code Python có thể trực tiếp gọi các class của IRIS (thông qua thư viện <code>iris</code>) giống hệt như ObjectScript. ObjectScript cũng có thể gọi Python ngược lại.</li>
@@ -4660,7 +4660,7 @@
 <li>Khi muốn viết các methods của Class IRIS hoàn toàn bằng Python (chỉ cần thêm <code>Language = python</code> vào method).</li>
 <li><strong>Lưu ý:</strong> Chạy trong server IRIS, không qua mạng (no network latency).</li>
 </ul>
-<h3 id="2-native-api-for-python">2. Native API for Python<a class="headerlink" href="#2-native-api-for-python" title="Permanent link">&para;</a></h3>
+<h3 id="native-api-for-python">Native API for Python<a class="headerlink" href="#native-api-for-python" title="Permanent link">&para;</a></h3>
 <p>Đây là cách các ứng dụng Python <strong>bên ngoài</strong> giao tiếp với IRIS. </p>
 <ul>
 <li><strong>Đặc điểm:</strong> Chạy trên một process Python hoàn toàn độc lập (có thể ở máy chủ khác). Kết nối qua TCP/IP thông qua port của IRIS (SuperServer port, thường là 51773).</li>
@@ -4668,7 +4668,7 @@
 <li>Khi bạn có một ứng dụng Python có sẵn (ví dụ: Django, Flask) và muốn gọi trực tiếp các methods ObjectScript hoặc thao tác trực tiếp với <strong>Globals</strong> của IRIS mà không cần dùng SQL.</li>
 <li><strong>Lưu ý:</strong> Có network latency. Phải dùng module <code>irisnative</code>.</li>
 </ul>
-<h3 id="3-python-db-api-pyodbcjdbc">3. Python DB-API (PyODBC/JDBC)<a class="headerlink" href="#3-python-db-api-pyodbcjdbc" title="Permanent link">&para;</a></h3>
+<h3 id="python-db-api-pyodbcjdbc">Python DB-API (PyODBC/JDBC)<a class="headerlink" href="#python-db-api-pyodbcjdbc" title="Permanent link">&para;</a></h3>
 <p>Đây là phương thức kết nối cơ sở dữ liệu quan hệ tiêu chuẩn.</p>
 <ul>
 <li><strong>Đặc điểm:</strong> Ứng dụng Python bên ngoài sử dụng SQL để truy vấn IRIS thông qua driver ODBC hoặc JDBC.</li>
@@ -4681,11 +4681,11 @@
 <ul>
 <li>✅ <strong>Embedded Python:</strong> Share chung context bộ nhớ, không tốn chi phí network, lý tưởng để viết Business Logic bằng Python bên trong IRIS.</li>
 <li>✅ <strong>Native API:</strong> Dùng khi ứng dụng Python độc lập muốn gọi Method của ObjectScript hoặc chọc thẳng vào Globals.</li>
-<li>⚠️ <strong>Lỗi phổ biến:</strong> Cố gắng dùng Native API khi cả code Python và DB đều chạy chung server và cần performance tối đa. (Trong trường hợp này, Embedded Python sẽ tốt hơn nhiều).</li>
+<li>⚠ <strong>Lỗi phổ biến:</strong> Cố gắng dùng Native API khi cả code Python và DB đều chạy chung server và cần performance tối đa. (Trong trường hợp này, Embedded Python sẽ tốt hơn nhiều).</li>
 <li>💡 <strong>Scope Variable:</strong> Trong Embedded Python, <code>iris.cls(...)</code> dùng để gọi class, còn <code>iris.system</code> hoặc <code>iris.routine</code> dùng để truy xuất các module đặc thù của ObjectScript.</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- 1. Gọi Python từ ObjectScript (Embedded Python) ---
 ClassMethod SayHello(name As %String) As %String [ Language = python ]
 {

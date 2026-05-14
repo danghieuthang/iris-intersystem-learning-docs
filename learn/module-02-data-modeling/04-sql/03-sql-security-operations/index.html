@@ -1587,10 +1587,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dynamic-sql-vs-embedded-sql" class="md-nav__link">
+  <a href="#privilege-checking-dynamic-vs-embedded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dynamic SQL vs Embedded SQL
+        Privilege Checking: Dynamic vs Embedded
       
     </span>
   </a>
@@ -1701,7 +1701,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4613,10 +4613,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dynamic-sql-vs-embedded-sql" class="md-nav__link">
+  <a href="#privilege-checking-dynamic-vs-embedded" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Dynamic SQL vs Embedded SQL
+        Privilege Checking: Dynamic vs Embedded
       
     </span>
   </a>
@@ -4727,7 +4727,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4799,24 +4799,20 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ Embedded SQL không tự làm authorization cho bạn.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Embedded SQL không tự làm authorization cho bạn.</p>
+</div>
 <hr />
-<h2 id="dynamic-sql-vs-embedded-sql">Dynamic SQL vs Embedded SQL<a class="headerlink" href="#dynamic-sql-vs-embedded-sql" title="Permanent link">&para;</a></h2>
-<pre class="objectscript"><code class="language-objectscript">// Dynamic SQL
-SET stmt = ##class(%SQL.Statement).%New()
-DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE %ID = ?&quot;)
-SET rs = stmt.%Execute(1)</code></pre>
-<pre class="objectscript"><code class="language-objectscript">// Embedded SQL
-SET id = 1
-&amp;sql(SELECT Name INTO :name FROM MyApp_Person WHERE %ID = :id)</code></pre>
-<p>Dynamic SQL phù hợp khi bạn muốn:</p>
+<h2 id="privilege-checking-dynamic-vs-embedded">Privilege Checking: Dynamic vs Embedded<a class="headerlink" href="#privilege-checking-dynamic-vs-embedded" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Xem lại phần so sánh cú pháp và luồng hoạt động cơ bản tại <a href="../">04 · SQL in IRIS</a>.</p>
+</blockquote>
+<p>Về mặt bảo mật, sự khác biệt lớn nhất giữa hai phương pháp này là <strong>Authorization</strong>:</p>
 <ul>
-<li>build query ở runtime</li>
-<li>tận dụng privilege checking built-in</li>
+<li><strong>Dynamic SQL</strong>: Hệ thống tự động thực thi (enforce) <strong>privilege checking</strong> (theo <code>GRANT</code>/<code>REVOKE</code>). Nếu process user không có quyền trên bảng, query sẽ bị từ chối.</li>
+<li><strong>Embedded SQL</strong>: Hệ thống <strong>không</strong> tự động kiểm tra quyền (do query được nhúng và compile thành native ObjectScript code). Ứng dụng phải tự chịu trách nhiệm lập trình thêm logic kiểm tra phân quyền (authorization logic) trước khi gọi Embedded SQL.</li>
 </ul>
-<p>Embedded SQL phù hợp khi query cố định và app tự chịu trách nhiệm authz logic.</p>
 <hr />
 <h2 id="grant-and-revoke">GRANT and REVOKE<a class="headerlink" href="#grant-and-revoke" title="Permanent link">&para;</a></h2>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">Patient</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">Billing</span>
@@ -4852,9 +4848,10 @@ SET id = 1
 <li>trả error message thân thiện hơn</li>
 <li>tránh thử query rồi mới bắt lỗi privilege</li>
 </ul>
-<blockquote>
-<p>💡 Với exam, <code>%CHECKPRIV</code> thường là đáp án tốt hơn TRY/CATCH around query nếu câu hỏi hỏi về <strong>pre-check</strong>.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Với exam, <code>%CHECKPRIV</code> thường là đáp án tốt hơn TRY/CATCH around query nếu câu hỏi hỏi về <strong>pre-check</strong>.</p>
+</div>
 <hr />
 <h2 id="arrow-syntax-and-privileges">Arrow Syntax and Privileges<a class="headerlink" href="#arrow-syntax-and-privileges" title="Permanent link">&para;</a></h2>
 <p>Khi dùng <code>-&gt;</code> implicit join, application không chỉ đọc source table.</p>
@@ -4918,12 +4915,12 @@ SET id = 1
 <li>✅ <code>WITH GRANT OPTION</code> cho phép recipient cấp tiếp privilege</li>
 <li>✅ <code>%CHECKPRIV</code> phù hợp để verify privilege trước operation</li>
 <li>✅ Cached queries là prepared-plan reuse, không phải cached result data</li>
-<li>⚠️ Arrow syntax <code>-&gt;</code> vẫn phải tôn trọng privilege model</li>
-<li>⚠️ Đừng giả định compile-time validation của Embedded SQL đồng nghĩa với runtime authorization</li>
+<li>⚠ Arrow syntax <code>-&gt;</code> vẫn phải tôn trọng privilege model</li>
+<li>⚠ Đừng giả định compile-time validation của Embedded SQL đồng nghĩa với runtime authorization</li>
 <li>💡 Khi câu hỏi nhấn mạnh "before executing", hãy nghĩ tới pre-check thay vì query-first</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Dynamic SQL with privilege checking ---
 SET stmt = ##class(%SQL.Statement).%New()
 DO stmt.%Prepare(&quot;SELECT Name FROM MyApp_Person WHERE %ID = ?&quot;)

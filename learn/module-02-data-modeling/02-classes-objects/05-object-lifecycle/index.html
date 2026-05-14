@@ -1551,7 +1551,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4873,7 +4873,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4916,7 +4916,7 @@
 <p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — <code>%New</code>, <code>%OpenId</code>, <code>%Save</code>, callbacks, swizzling, và quyết định vòng đời object</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Khi làm việc với object trong IRIS, phần dễ bỏ sót không phải cú pháp tạo class mà là <strong>vòng đời của instance</strong>: object được tạo khi nào, vào memory ra sao, save theo transaction như thế nào, và reference object được load lúc nào. Exam thường hỏi vào <code>%New</code>, <code>%OpenId</code>, <code>%Save</code>, callback flow, và <strong>swizzling</strong>.</p>
+<p>Khi làm việc với object, điều quan trọng nhất là hiểu <strong>vòng đời của instance</strong> (memory, transaction, object references). Exam tập trung vào <code>%New</code>, <code>%OpenId</code>, <code>%Save</code>, callback flow, và <strong>swizzling</strong>.</p>
 <hr />
 <h2 id="create-open-and-check-existence">Create, Open, and Check Existence<a class="headerlink" href="#create-open-and-check-existence" title="Permanent link">&para;</a></h2>
 <table>
@@ -4954,9 +4954,10 @@ SET person = ##class(MyApp.Person).%OpenId(1)
 
 // --- Check existence ---
 WRITE ##class(MyApp.Person).%ExistsId(1), !</code></pre>
-<blockquote>
-<p>⚠️ <code>%New()</code> chỉ tạo object trong memory. Chỉ sau <code>%Save()</code> object mới được persist.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>%New()</code> chỉ tạo object trong memory. Chỉ sau <code>%Save()</code> object mới được persist.</p>
+</div>
 <hr />
 <h2 id="save-and-saveset"><code>%Save()</code> and SaveSet<a class="headerlink" href="#save-and-saveset" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">SET person = ##class(MyApp.Person).%New()
@@ -4979,9 +4980,10 @@ IF $$$ISERR(sc) {
 <li>toàn bộ operation chạy như <strong>một transaction</strong></li>
 <li>nếu một object fail validation/save, toàn bộ save rollback</li>
 </ul>
-<blockquote>
-<p>✅ Đây là điểm rất quan trọng: <code>%Save()</code> của object graph có transactional behavior, không chỉ save từng mảnh rời rạc.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Fact</p>
+<p>Đây là điểm rất quan trọng: <code>%Save()</code> của object graph có transactional behavior, không chỉ save từng mảnh rời rạc.</p>
+</div>
 <hr />
 <h2 id="save-related-callbacks">Save-related Callbacks<a class="headerlink" href="#save-related-callbacks" title="Permanent link">&para;</a></h2>
 <p>Trong flow save, IRIS có thể gọi nhiều callback quan trọng:</p>
@@ -5065,9 +5067,10 @@ IF person = &quot;&quot; {
 <li>nếu IRIS không acquire được lock cần thiết, <code>%OpenId()</code> có thể fail</li>
 <li>reopen với concurrency khác có thể raise/lower current concurrency setting</li>
 </ul>
-<blockquote>
-<p>⚠️ Đây là concurrency ở <strong>object opening level</strong>, không thay thế hoàn toàn cho design locking/transaction tổng thể.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Đây là concurrency ở <strong>object opening level</strong>, không thay thế hoàn toàn cho design locking/transaction tổng thể.</p>
+</div>
 <hr />
 <h2 id="swizzling-lazy-loading">Swizzling (Lazy Loading)<a class="headerlink" href="#swizzling-lazy-loading" title="Permanent link">&para;</a></h2>
 <p>Nếu object đã mở có property tham chiếu tới object persistent khác, object được tham chiếu sẽ được <strong>tự động open khi bạn chạm tới nó</strong>. Đây là <strong>swizzling</strong>.</p>
@@ -5158,12 +5161,12 @@ WRITE emp.Company.Name, !</code></pre>
 <li>✅ <code>%Save()</code> dùng SaveSet và save toàn bộ graph như một transaction</li>
 <li>✅ Callback lifecycle quan trọng gồm <code>%OnValidateObject()</code>, <code>%OnBeforeSave()</code>, <code>%OnAfterSave()</code>, <code>%OnSaveFinally()</code></li>
 <li>✅ Swizzling = lazy loading của referenced persistent object</li>
-<li>⚠️ Trong cùng process, <code>%OpenId()</code> cùng ID thường trả cùng object instance đang ở memory</li>
-<li>⚠️ Swizzling tiện nhưng có thể tạo I/O bất ngờ trong loop lớn</li>
+<li>⚠ Trong cùng process, <code>%OpenId()</code> cùng ID thường trả cùng object instance đang ở memory</li>
+<li>⚠ Swizzling tiện nhưng có thể tạo I/O bất ngờ trong loop lớn</li>
 <li>💡 Nếu cần "quay về trạng thái trên disk", nghĩ tới <code>%Reload()</code> thay vì open lại rồi mong có object mới</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Create and save ---
 SET person = ##class(MyApp.Person).%New()
 SET person.Name = &quot;Alice&quot;

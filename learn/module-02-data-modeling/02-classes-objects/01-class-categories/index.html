@@ -1321,7 +1321,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4637,7 +4637,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4805,9 +4805,10 @@ DO ##class(MyApp.Person).%KillExtent()       ; xóa TẤT CẢ (cẩn thận!)</
 SET v = ##class(MyApp.Validator).%New()
 DO v.Rules.Insert(&quot;notEmpty&quot;)
 WRITE v.Validate(&quot;test&quot;)</code></pre>
-<blockquote>
-<p>💡 Dùng cho: service object, validator, DTO, bất cứ thứ gì không cần lưu trữ.</p>
-</blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Dùng cho: service object, validator, DTO, bất cứ thứ gì không cần lưu trữ.</p>
+</div>
 <hr />
 <h2 id="serialobject">%SerialObject<a class="headerlink" href="#serialobject" title="Permanent link">&para;</a></h2>
 <p>Lưu <strong>nhúng bên trong</strong> một persistent object — không có ID riêng.</p>
@@ -4832,9 +4833,10 @@ SET p.Address.City   = &quot;Hà Nội&quot;
 DO p.%Save()   ; Address được lưu cùng Person — không cần %Save() riêng</code></pre>
 <p><strong>Cách lưu trữ trong global:</strong><br />
 Tất cả fields của Address được serialize và lưu trong cùng row với Person — không tạo bảng riêng.</p>
-<blockquote>
-<p>⚠️ <code>%SerialObject</code> không thể mở bằng ID (vì không có). Chỉ truy cập qua parent.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p><code>%SerialObject</code> không thể mở bằng ID (vì không có). Chỉ truy cập qua parent.</p>
+</div>
 <hr />
 <h2 id="abstract-class">Abstract Class<a class="headerlink" href="#abstract-class" title="Permanent link">&para;</a></h2>
 <p>Định nghĩa interface/hành vi chung. Không thể khởi tạo trực tiếp.</p>
@@ -4883,26 +4885,25 @@ Class MyApp.Dog Extends MyApp.Animal
 Class MyApp.Person Extends (%Persistent, %JSON.Adaptor, %Populate)</code></pre>
 <hr />
 <h2 id="decision-tree">Decision Tree<a class="headerlink" href="#decision-tree" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Dữ liệu có cần tồn tại sau khi process kết thúc không?
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── KHÔNG → %Registered (chỉ trong memory)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>└── CÓ   → Object có cần ID riêng không?
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>            ├── KHÔNG → %SerialObject (nhúng vào parent)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            └── CÓ   → %Persistent
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                        └── Class có được khởi tạo trực tiếp không?
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                            ├── KHÔNG → Thêm keyword [ Abstract ]
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                            └── CÓ   → %Persistent thông thường
-</span></code></pre></div>
+<pre class="objectscript"><code class="language-objectscript">Dữ liệu có cần tồn tại sau khi process kết thúc không?
+├── KHÔNG → %Registered (chỉ trong memory)
+└── CÓ   → Object có cần ID riêng không?
+            ├── KHÔNG → %SerialObject (nhúng vào parent)
+            └── CÓ   → %Persistent
+                        └── Class có được khởi tạo trực tiếp không?
+                            ├── KHÔNG → Thêm keyword [ Abstract ]
+                            └── CÓ   → %Persistent thông thường</code></pre>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ <code>%Persistent</code> có <code>%ID</code> riêng, lưu xuống database với <code>%Save()</code></li>
 <li>✅ <code>%SerialObject</code> lưu inline trong parent — không cần và không có <code>%Save()</code> riêng</li>
 <li>✅ <code>%Registered</code> chỉ trong memory — dùng cho validator, DTO, helper object</li>
-<li>⚠️ Abstract class không thể <code>%New()</code> — chỉ dùng để subclass</li>
-<li>⚠️ <code>%SerialObject</code> không có ID — không thể truy xuất độc lập</li>
+<li>⚠ Abstract class không thể <code>%New()</code> — chỉ dùng để subclass</li>
+<li>⚠ <code>%SerialObject</code> không có ID — không thể truy xuất độc lập</li>
 <li>💡 <code>%JSON.Adaptor</code> là mixin phổ biến nhất — thêm tự do vào bất kỳ class nào</li>
 </ul>
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">; Kiểm tra class có phải là Persistent không
 WRITE $CLASSMETHOD(&quot;MyApp.Person&quot;, &quot;%IsA&quot;, &quot;%Persistent&quot;), !  ; 1 = có
 

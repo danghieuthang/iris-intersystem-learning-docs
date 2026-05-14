@@ -4467,7 +4467,7 @@
   <a href="#terminal-snippets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🖥️ Terminal Snippets
+        🖥 Terminal Snippets
       
     </span>
   </a>
@@ -4510,7 +4510,7 @@
 <p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — Dynamic SQL, Embedded SQL, và Class Query từ ObjectScript</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>IRIS hỗ trợ SQL đầy đủ và tích hợp chặt chẽ với ObjectScript. Có 3 cách dùng SQL từ code: Dynamic SQL (linh hoạt, runtime), Embedded SQL (compile-time check, nhanh hơn), và Class Query (đặt tên trong class, tái sử dụng). Table name trong SQL tương ứng với class name nhưng dùng <code>_</code> thay vì <code>.</code> (ví dụ: <code>MyApp.Person</code> -&gt; <code>MyApp_Person</code>).</p>
+<p>IRIS hỗ trợ SQL tích hợp sâu với ObjectScript qua 3 cách: Dynamic SQL (linh hoạt, runtime), Embedded SQL (compile-time, nhanh), và Class Query (tái sử dụng). Bảng SQL dùng <code>_</code> thay vì <code>.</code> so với tên class.</p>
 <p>IRIS hỗ trợ 3 cách dùng SQL từ ObjectScript:</p>
 <table>
 <thead>
@@ -4624,12 +4624,12 @@ IF SQLCODE = 0 { WRITE name, &quot; - &quot;, age, ! }</code></pre>
 <li>✅ Embedded SQL dùng <code>:var</code>, Dynamic SQL dùng <code>?</code></li>
 <li>✅ <code>SQLCODE</code> và <code>%msg</code> tự động được set sau mỗi <code>&amp;sql(...)</code></li>
 <li>✅ Phần optimize và security/operations đã tách thành subtopics riêng</li>
-<li>⚠️ Không nối string trực tiếp vào Dynamic SQL query</li>
-<li>⚠️ Embedded SQL cursor phải <code>OPEN</code> -&gt; <code>FETCH</code> -&gt; <code>CLOSE</code> đúng thứ tự</li>
+<li>⚠ Không nối string trực tiếp vào Dynamic SQL query</li>
+<li>⚠ Embedded SQL cursor phải <code>OPEN</code> -&gt; <code>FETCH</code> -&gt; <code>CLOSE</code> đúng thứ tự</li>
 <li>💡 Class Query tự sinh method <code>&lt;QueryName&gt;Func()</code> để tái sử dụng query</li>
 </ul>
 <hr />
-<h2 id="terminal-snippets">🖥️ Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
+<h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
 <pre class="objectscript"><code class="language-objectscript">// --- Quick Dynamic SQL ---
 SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT Name, Age FROM MyApp_Person WHERE Age &gt; 25&quot;)
 WHILE rs.%Next() { WRITE rs.%Get(&quot;Name&quot;), &quot; - &quot;, rs.%Get(&quot;Age&quot;), ! }
