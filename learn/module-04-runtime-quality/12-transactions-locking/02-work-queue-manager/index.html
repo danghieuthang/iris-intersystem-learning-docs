@@ -4723,7 +4723,7 @@
 
 <h1 id="work-queue-manager">Work Queue Manager<a class="headerlink" href="#work-queue-manager" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T4 · Code</code> — dùng <code>%SYSTEM.WorkMgr</code> để chia nhỏ công việc độc lập sang nhiều worker process</p>
+<p><strong>Exam Domain:</strong> <code>T4.1 · Defensive Code</code> — dùng <code>%SYSTEM.WorkMgr</code> để chia nhỏ công việc độc lập sang nhiều worker process (T4.1.4 — manage background processes)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Work Queue Manager là cơ chế giúp phân phối công việc sang nhiều process để tăng throughput. Đây là phần dễ bị bỏ sót khi chỉ học <code>LOCK</code> và <code>TSTART</code>, nhưng exam có thể hỏi khá trực tiếp về <strong>Initialize</strong>, <strong>Queue</strong>, <strong>Setup/TearDown</strong>, <strong>WaitForComplete</strong>, và callback flow.</p>
