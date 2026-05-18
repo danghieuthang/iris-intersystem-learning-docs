@@ -18,7 +18,7 @@
         <link rel="prev" href="../02-work-queue-manager/">
       
       
-        <link rel="next" href="../../08-security/">
+        <link rel="next" href="../05-memory-system-limits/">
       
       
         
@@ -2544,6 +2544,8 @@
       
         
       
+        
+      
     
     
     
@@ -2756,6 +2758,61 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#transactional-vs-non-transactional-journaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional vs Non-Transactional Journaling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trollback-1-vs-trollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TROLLBACK 1 vs TROLLBACK
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-khong-uoc-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations Không Được Rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollfail-khi-rollback-that-bai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROLLFAIL — Khi Rollback Thất Bại
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#journal-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journal Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-points" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2781,6 +2838,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -4524,6 +4609,61 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#transactional-vs-non-transactional-journaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional vs Non-Transactional Journaling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trollback-1-vs-trollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TROLLBACK 1 vs TROLLBACK
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-khong-uoc-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operations Không Được Rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollfail-khi-rollback-that-bai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROLLFAIL — Khi Rollback Thất Bại
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#journal-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journal Optimization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-points" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4580,29 +4720,148 @@
 <li><strong>Phục hồi:</strong> Khi khởi động lại sau sự cố (crash recovery), IRIS kiểm tra WIJ. Nếu phát hiện tệp WIJ chứa các block chưa được cập nhật hoàn chỉnh xuống <code>.IRIS.DAT</code>, nó sẽ tự động dùng WIJ để đè (overwrite) lên database.</li>
 <li><strong>Đặc điểm:</strong> Hoạt động ngầm định, bạn không thể "tắt" WIJ.</li>
 </ul>
+<hr />
 <h2 id="journaling-transaction-journaling">Journaling (Transaction Journaling)<a class="headerlink" href="#journaling-transaction-journaling" title="Permanent link">&para;</a></h2>
 <p>Khác với WIJ (lưu raw blocks), Journaling lưu trữ <strong>mặt logic</strong> của các thao tác dữ liệu (như SET <code>^Data(1)="A"</code>, KILL <code>^Temp</code>).</p>
 <ul>
-<li><strong>Mục đích:</strong> </li>
+<li><strong>Mục đích:</strong></li>
 <li>Cho phép khôi phục dữ liệu ở cấp độ giao dịch logic (Logical recovery).</li>
 <li>Cho phép <strong>Rollback</strong> các transactions (<code>TSTART</code> / <code>TROLLBACK</code>).</li>
 <li>Hỗ trợ High Availability (như Mirroring và Shadowing).</li>
-<li><strong>Phục hồi:</strong> Dùng khi database file bị hỏng hoàn toàn (phải restore từ backup tuần trước) và bạn cần chạy lại (replay) toàn bộ các thao tác đã xảy ra kể từ thời điểm backup. Hoặc dùng khi một giao dịch bị lỗi giữa chừng và cần TROLLBACK.</li>
-<li><strong>Đặc điểm:</strong> Từng Database (trong Management Portal) có thể được cấu hình <strong>Bật (Yes)</strong> hoặc <strong>Tắt (No)</strong> Journaling. Global tạm (như <code>^IRIS.Temp</code>) thường tắt Journaling để tăng hiệu năng.</li>
+<li><strong>Phục hồi:</strong> Dùng khi database file bị hỏng hoàn toàn (phải restore từ backup) và bạn cần chạy lại (replay) toàn bộ các thao tác đã xảy ra kể từ thời điểm backup. Hoặc dùng khi một giao dịch bị lỗi giữa chừng và cần TROLLBACK.</li>
+<li><strong>Đặc điểm:</strong> Từng Database (trong Management Portal) có thể được cấu hình <strong>Bật (Yes)</strong> hoặc <strong>Tắt (No)</strong> Journaling. Global tạm thường tắt Journaling để tăng hiệu năng.</li>
+</ul>
+<hr />
+<h2 id="transactional-vs-non-transactional-journaling">Transactional vs Non-Transactional Journaling<a class="headerlink" href="#transactional-vs-non-transactional-journaling" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap Quan Trọng Nhất của T4.3</p>
+<p><strong>Transactional updates (bên trong <code>TSTART</code>) LUÔN được journaled — bất kể Database Journal State là Yes hay No.</strong>
+Non-transactional updates chỉ được journaled nếu DB Journal State = Yes.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Context</th>
+<th>Journaled?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bên trong TSTART, DB journal = Yes</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Bên trong TSTART, DB journal = <strong>No</strong></td>
+<td>✅ <strong>Yes (luôn luôn!)</strong></td>
+</tr>
+<tr>
+<td>Bên ngoài transaction, DB journal = Yes</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Bên ngoài transaction, DB journal = No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td>Global trong IRISTEMP</td>
+<td>❌ <strong>Never</strong> (dù trong transaction)</td>
+</tr>
+</tbody>
+</table>
+<p>Điều này đảm bảo ACID compliance: IRIS phải có khả năng rollback transactional changes về pre-TSTART state.</p>
+<hr />
+<h2 id="trollback-1-vs-trollback">TROLLBACK 1 vs TROLLBACK<a class="headerlink" href="#trollback-1-vs-trollback" title="Permanent link">&para;</a></h2>
+<pre class="objectscript"><code class="language-objectscript">TSTART          // $TLEVEL = 1
+  TSTART        // $TLEVEL = 2
+  SET ^Data = &quot;inner&quot;
+  TROLLBACK 1   // roll back chỉ level 2, $TLEVEL = 1
+TCOMMIT         // commit level 1 — nhưng inner rollback được preserve</code></pre>
+<ul>
+<li><strong><code>TROLLBACK</code></strong> (không argument): roll back TẤT CẢ transactions, reset <code>$TLEVEL</code> về 0.</li>
+<li><strong><code>TROLLBACK 1</code></strong>: roll back 1 nesting level, <code>$TLEVEL</code> giảm 1.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha — Nested Transaction</p>
+<p>Nếu bạn TCOMMIT inner transaction rồi TROLLBACK outer transaction → <strong>inner changes cũng bị roll back</strong>. Vì commitment thật sự chỉ xảy ra khi <code>$TLEVEL</code> về 0.</p>
+</div>
+<hr />
+<h2 id="operations-khong-uoc-rollback">Operations Không Được Rollback<a class="headerlink" href="#operations-khong-uoc-rollback" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: $INCREMENT và $SEQUENCE</p>
+<p>Các operations sau <strong>KHÔNG thể rollback</strong> dù nằm trong TSTART:</p>
+<ul>
+<li><code>$INCREMENT(^global)</code> — atomic nhưng không transactional</li>
+<li><code>$SEQUENCE(^global)</code> — tương tự <code>$INCREMENT</code></li>
+<li>Thay đổi local variables</li>
+<li>Thay đổi current namespace</li>
+<li>LOCK operations</li>
+</ul>
+</div>
+<pre class="objectscript"><code class="language-objectscript">TSTART
+SET ^counter = $INCREMENT(^counter)  // counter tăng ngay, KHÔNG rollback được
+SET ^data = &quot;something&quot;              // data này CÓ rollback được
+TROLLBACK
+// ^counter vẫn đã tăng! ^data đã được restore về giá trị cũ</code></pre>
+<hr />
+<h2 id="rollfail-khi-rollback-that-bai">ROLLFAIL — Khi Rollback Thất Bại<a class="headerlink" href="#rollfail-khi-rollback-that-bai" title="Permanent link">&para;</a></h2>
+<p>Khi <code>TROLLBACK</code> không thể hoàn thành rollback operation, IRIS phát sinh lỗi <strong>ROLLFAIL</strong>.</p>
+<p><strong>Nguyên nhân thường gặp:</strong></p>
+<ul>
+<li>Journal files không tồn tại hoặc bị corrupt</li>
+<li>Database bị dismount trong lúc transaction đang active</li>
+<li>Journaling bị tắt trước khi database changes được thực hiện</li>
+</ul>
+<p><strong>System behavior (tùy <code>Freeze on error</code> setting):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Freeze on error</th>
+<th>Behavior khi ROLLFAIL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No</strong> (default)</td>
+<td>Process nhận ROLLFAIL error, transaction đóng, locks được release. Hệ thống tiếp tục chạy — đánh đổi data integrity lấy availability</td>
+</tr>
+<tr>
+<td><strong>Yes</strong></td>
+<td>Process halt, CLNDMN retry rollback. Hệ thống có thể hang với locks bị giữ — đánh đổi availability lấy data integrity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="journal-optimization">Journal Optimization<a class="headerlink" href="#journal-optimization" title="Permanent link">&para;</a></h2>
+<p><strong>Map temporary data vào IRISTEMP:</strong></p>
+<pre class="objectscript"><code class="language-objectscript">// IRISTEMP globals KHÔNG bao giờ được journal — dùng cho working data tạm
+SET ^IRISTEMP($JOB, &quot;cache&quot;) = someValue
+// Sau khi process kết thúc, data tự cleanup</code></pre>
+<p><strong>Best practices:</strong></p>
+<ul>
+<li>Đặt primary và alternate journal directories trên <strong>physical drives riêng biệt</strong> (khác với databases và WIJ)</li>
+<li>Enable <code>CompressFiles</code> setting (mặc định enabled) để tiết kiệm disk space</li>
+<li>Tắt journaling cho databases chứa data có thể reconstruct (chỉ khi thực sự cần thiết)</li>
+<li>Chỉ purge journal files đã closed <strong>trước</strong> last successful backup</li>
 </ul>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ <strong>WIJ:</strong> Khôi phục cấu trúc database vật lý ngay lập tức khi crash.</li>
 <li>✅ <strong>Journaling:</strong> Khôi phục dữ liệu logic, hỗ trợ TROLLBACK và Mirroring.</li>
-<li>⚠️ Khi bạn chạy lệnh <code>TSTART</code>, IRIS ghi nhận thao tác vào Journal file. Tuy nhiên, nếu bạn thực hiện một thay đổi trên một Database đang bị <strong>TẮT</strong> Journaling, thay đổi đó sẽ <strong>KHÔNG THỂ ROLLBACK</strong> dù nằm trong <code>TSTART</code>.</li>
-<li>💡 <strong>Switch Journal:</strong> Khi file Journal đạt kích thước tối đa, IRIS sẽ tự động cắt sang file mới (Switch Journal). </li>
+<li>✅ <strong>Transactional updates LUÔN được journaled</strong> — bất kể DB journal state là Yes hay No.</li>
+<li>⚠️ Global trong <strong>IRISTEMP không bao giờ được journaled</strong> — kể cả khi trong transaction.</li>
+<li>⚠️ <strong><code>$INCREMENT</code> và <code>$SEQUENCE</code> KHÔNG rollback</strong> dù nằm trong TSTART.</li>
+<li>⚠️ <strong>ROLLFAIL</strong> xảy ra khi journal unavailable → behavior phụ thuộc vào <code>Freeze on error</code>.</li>
+<li>💡 <strong>Switch Journal:</strong> Khi file Journal đạt kích thước tối đa, IRIS sẽ tự động cắt sang file mới.</li>
 </ul>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_wij">Official Docs — Write Image Journal (WIJ)</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/Doc.View.cls?KEY=GCDI_journal">Official Docs — Journaling</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI_journal_overview#GCDI_journal_overview_auto">Automatic Journaling of Transactions</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCDI_journal_overview#GCDI_journal_overview_rollback">Rolling Back Incomplete Transactions</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_ctrollback">TROLLBACK Command</a></li>
 </ul>
 
 
@@ -4656,13 +4915,13 @@
         
         
           
-          <a href="../../08-security/" class="md-footer__link md-footer__link--next" aria-label="Sau: 🧭 Overview">
+          <a href="../05-memory-system-limits/" class="md-footer__link md-footer__link--next" aria-label="Sau: 05 · Memory Configuration &amp; System Limits">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Sau
               </span>
               <div class="md-ellipsis">
-                🧭 Overview
+                05 · Memory Configuration & System Limits
               </div>
             </div>
             <div class="md-footer__button md-icon">

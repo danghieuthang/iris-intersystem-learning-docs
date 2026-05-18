@@ -1627,10 +1627,32 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#when-to-run-it" class="md-nav__link">
+  <a href="#options" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to Run It
+        Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privileges-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges Required
       
     </span>
   </a>
@@ -1643,10 +1665,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tune-table-side-effects" class="md-nav__link">
+  <a href="#checkpriv-kiem-tra-privilege-programmatically" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE TABLE Side Effects
+        %CHECKPRIV — Kiểm Tra Privilege Programmatically
       
     </span>
   </a>
@@ -1654,10 +1676,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#statement-index" class="md-nav__link">
+  <a href="#sql-statement-index-statistics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Statement Index
+        SQL Statement Index Statistics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arrow-syntax-privilege-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arrow Syntax Privilege Requirements
       
     </span>
   </a>
@@ -2754,6 +2787,8 @@
       
         
       
+        
+      
     
     
     
@@ -2879,6 +2914,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../module-04-runtime-quality/12-transactions-locking/05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -4687,10 +4750,32 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#when-to-run-it" class="md-nav__link">
+  <a href="#options" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to Run It
+        Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privileges-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges Required
       
     </span>
   </a>
@@ -4703,10 +4788,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tune-table-side-effects" class="md-nav__link">
+  <a href="#checkpriv-kiem-tra-privilege-programmatically" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TUNE TABLE Side Effects
+        %CHECKPRIV — Kiểm Tra Privilege Programmatically
       
     </span>
   </a>
@@ -4714,10 +4799,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#statement-index" class="md-nav__link">
+  <a href="#sql-statement-index-statistics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Statement Index
+        SQL Statement Index Statistics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arrow-syntax-privilege-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arrow Syntax Privilege Requirements
       
     </span>
   </a>
@@ -4779,10 +4875,10 @@
 
 <h1 id="query-optimization">Query Optimization<a class="headerlink" href="#query-optimization" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T3 · Data Retrieval</code> — EXPLAIN, Show Plan, selectivity, TOP optimization, TuneTable, và Statement Index</p>
+<p><strong>Exam Domain:</strong> <code>T3.3 · SQL with IRIS</code> — EXPLAIN, Show Plan, selectivity, TOP optimization, TuneTable, %CHECKPRIV, SHOW STATEMENT, Statement Index</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>IRIS query optimization xoay quanh một ý đơn giản: optimizer chỉ chọn plan tốt nếu nó có <strong>statistics hợp lý</strong> và query có shape phù hợp. Exam thường hỏi vào các khái niệm như <strong>Show Plan</strong>, <strong>selectivity</strong>, <strong>TOP với ORDER BY</strong>, và <strong>TUNE TABLE</strong>.</p>
+<p>IRIS query optimization xoay quanh một ý đơn giản: optimizer chỉ chọn plan tốt nếu nó có <strong>statistics hợp lý</strong> và query có shape phù hợp. Exam thường hỏi vào các khái niệm như <strong>Show Plan</strong>, <strong>selectivity</strong>, <strong>TOP với ORDER BY</strong>, <strong>TUNE TABLE</strong>, <strong>%CHECKPRIV</strong>, và <strong>SHOW STATEMENT</strong>.</p>
 <hr />
 <h2 id="explain-and-show-plan">EXPLAIN and Show Plan<a class="headerlink" href="#explain-and-show-plan" title="Permanent link">&para;</a></h2>
 <p><code>EXPLAIN</code> cho bạn thấy query plan mà không chạy query thật.</p>
@@ -4790,11 +4886,22 @@
 </span></code></pre></div>
 <p>Trong Management Portal, <strong>Show Plan</strong> cũng phục vụ mục tiêu tương tự:</p>
 <ul>
-<li>validate syntax</li>
-<li>check table/entity existence</li>
+<li>validate syntax và check table/entity existence</li>
 <li>xem access strategy và index usage</li>
 <li>không cần thực thi full query</li>
 </ul>
+<p><strong>Với Dynamic SQL — <code>SET executemode=deferred</code>:</strong></p>
+<pre class="objectscript"><code class="language-objectscript">// Prepare query nhưng KHÔNG execute — chỉ tạo plan
+SET stmt = ##class(%SQL.Statement).%New()
+SET stmt.%SelectMode = 0
+DO stmt.%Prepare(&quot;SELECT Name FROM MyApp.Person WHERE Age &gt; ?&quot;)
+
+// Sau đó dùng SHOW STATEMENT trong SQL Shell để xem plan:
+// SHOW STATEMENT</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Tip: SHOW STATEMENT trong SQL Shell</p>
+<p>Sau khi prepare một query, lệnh <code>SHOW STATEMENT</code> trong SQL Shell hiển thị query text, preparation status, và execution plan — <strong>không tiêu tốn execution resources</strong>.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -4810,6 +4917,10 @@
 <tr>
 <td>Show Plan</td>
 <td>visual analysis trong Management Portal</td>
+</tr>
+<tr>
+<td><code>SHOW STATEMENT</code></td>
+<td>dynamic SQL shell — xem plan của prepared statement</td>
 </tr>
 </tbody>
 </table>
@@ -4844,7 +4955,7 @@
 <h3 id="selectivity">Selectivity<a class="headerlink" href="#selectivity" title="Permanent link">&para;</a></h3>
 <p>Selectivity cho biết predicate lọc được bao nhiêu dữ liệu.</p>
 <ul>
-<li><strong>low selectivity value</strong> -&gt; condition lọc tốt hơn</li>
+<li><strong>low selectivity value</strong> → condition lọc tốt hơn</li>
 <li>optimizer dùng selectivity để chọn access path và join order</li>
 </ul>
 <div class="admonition tip">
@@ -4858,30 +4969,49 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">Sample</span><span class="p">.</span><span class="n">Person</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Name</span>
 </span></code></pre></div>
-<p>Khi kết hợp với <code>ORDER BY</code>, optimizer có thể ưu tiên:</p>
-<blockquote>
-<p><strong>fastest time to first row</strong> thay vì fastest time to return all rows</p>
-</blockquote>
-<p>Điều này rất hợp cho:</p>
-<ul>
-<li>paginated UI</li>
-<li>dashboard</li>
-<li>query chỉ cần vài row đầu</li>
-</ul>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: TOP + ORDER BY thay đổi optimization goal</p>
+<p>Khi kết hợp <code>TOP</code> với <code>ORDER BY</code>, optimizer chuyển từ <strong>"fastest time to return ALL rows"</strong> sang <strong>"fastest time to return FIRST row"</strong>.</p>
+</div>
+<p>Điều này rất hợp cho paginated UI, dashboard, và queries chỉ cần vài row đầu.</p>
+<p><strong><code>TOP ALL</code></strong> — cho phép dùng <code>ORDER BY</code> trong subquery hoặc <code>CREATE VIEW</code> mà không giới hạn số rows.</p>
 <h3 id="dynamic-top">Dynamic TOP<a class="headerlink" href="#dynamic-top" title="Permanent link">&para;</a></h3>
-<p>Trong Dynamic SQL, <code>TOP ?</code> là pattern hợp lệ.</p>
+<p>Trong Dynamic SQL, <code>TOP ?</code> là pattern hợp lệ. TOP values không có ngoặc đơn được cache như parameter variables, cho phép reuse với different limits mà không cần re-prepare.</p>
 <hr />
 <h2 id="tune-table">TUNE TABLE<a class="headerlink" href="#tune-table" title="Permanent link">&para;</a></h2>
 <p><code>TUNE TABLE</code> thu thập statistics cho optimizer:</p>
 <ul>
-<li>map size</li>
-<li>extent size</li>
-<li>field selectivity</li>
+<li>map size, extent size, field selectivity</li>
 </ul>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">TUNE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">MyApp_Person</span>
 </span></code></pre></div>
-<pre class="objectscript"><code class="language-objectscript">DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)</code></pre>
-<h3 id="when-to-run-it">When to Run It<a class="headerlink" href="#when-to-run-it" title="Permanent link">&para;</a></h3>
+<pre class="objectscript"><code class="language-objectscript">// Programmatic method
+DO $SYSTEM.SQL.Stats.Table.GatherTableStats(&quot;MyApp.Person&quot;)</code></pre>
+<h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%SAMPLE_PERCENT</code></td>
+<td>% rows cần sample (hữu ích khi outlier values không đều)</td>
+</tr>
+<tr>
+<td><code>%CLEAR_VALUES</code></td>
+<td>Xóa existing statistics khỏi class và table definitions</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: Khi nào TUNE TABLE recompile cached queries?</p>
+<p>TUNE TABLE <strong>chỉ recompile</strong> cached queries nếu statistics thực sự thay đổi.
+Nếu data distribution không đổi → không purge, không recompile → tránh unnecessary overhead.</p>
+</div>
+<h3 id="when-to-run">When to Run<a class="headerlink" href="#when-to-run" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -4895,7 +5025,7 @@
 <td>✅</td>
 </tr>
 <tr>
-<td>schema or distribution change</td>
+<td>schema hoặc distribution change</td>
 <td>✅</td>
 </tr>
 <tr>
@@ -4903,48 +5033,64 @@
 <td>✅</td>
 </tr>
 <tr>
-<td>before every query</td>
+<td>trước mọi query</td>
 <td>❌</td>
 </tr>
 </tbody>
 </table>
+<h3 id="privileges-required">Privileges Required<a class="headerlink" href="#privileges-required" title="Permanent link">&para;</a></h3>
+<p><code>TUNE TABLE</code> cần <strong><code>%ALTER_TABLE</code></strong> administrative privilege và <strong><code>%ALTER</code></strong> privilege trên table cụ thể. Table owner tự động có <code>%ALTER</code> privilege.</p>
 <hr />
-<h2 id="tune-table-side-effects"><code>TUNE TABLE</code> Side Effects<a class="headerlink" href="#tune-table-side-effects" title="Permanent link">&para;</a></h2>
-<p>Nếu statistics thay đổi đáng kể:</p>
-<ul>
-<li>cached queries tham chiếu table có thể được recompiled</li>
-</ul>
-<p>Nếu values không đổi đáng kể:</p>
-<ul>
-<li>không cần purge/recompile không cần thiết</li>
-</ul>
-<p>Điểm này quan trọng vì <code>TUNE TABLE</code> không chỉ là "collect stats", mà còn ảnh hưởng optimizer state cho query cache.</p>
+<h2 id="checkpriv-kiem-tra-privilege-programmatically">%CHECKPRIV — Kiểm Tra Privilege Programmatically<a class="headerlink" href="#checkpriv-kiem-tra-privilege-programmatically" title="Permanent link">&para;</a></h2>
+<p><code>%CHECKPRIV</code> là SQL function cho phép verify SQL privileges trước khi execute operations:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Trả về 1 nếu user có SELECT privilege, 0 nếu không</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">%</span><span class="n">CHECKPRIV</span><span class="p">(</span><span class="s1">&#39;SELECT&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Sample</span><span class="p">.</span><span class="n">Person</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Khi nào dùng %CHECKPRIV</p>
+<p>Dùng khi application cần cung cấp feedback phù hợp cho user thiếu quyền trước khi thực hiện operations — thay vì để SQL fail với privilege error.</p>
+</div>
 <hr />
-<h2 id="statement-index">Statement Index<a class="headerlink" href="#statement-index" title="Permanent link">&para;</a></h2>
-<p>SQL Statement Index giúp nhìn thấy:</p>
+<h2 id="sql-statement-index-statistics">SQL Statement Index Statistics<a class="headerlink" href="#sql-statement-index-statistics" title="Permanent link">&para;</a></h2>
+<p>SQL Statement Index tracks execution patterns của queries theo thời gian:</p>
 <ul>
-<li>câu query nào chạy nhiều</li>
-<li>total / average execution time</li>
-<li>row counts</li>
-<li>index usage patterns</li>
+<li><strong>Execution frequency</strong> — câu query đã chạy bao nhiêu lần</li>
+<li><strong>Total / Average execution time</strong> — phân tích bottleneck</li>
+<li><strong>Row counts</strong> — rows returned per execution</li>
+<li><strong>Index utilization</strong> — index nào được dùng, index nào không</li>
 </ul>
-<p>Đây là nơi rất hữu ích để tìm:</p>
-<ul>
-<li>slow queries cần tối ưu</li>
-<li>queries gọi quá nhiều</li>
-<li>index không mang lại hiệu quả như mong đợi</li>
-</ul>
+<p><strong>Trong SQL Shell — <code>SHOW STATEMENT</code>:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>// Sau khi prepare và/hoặc execute một query trong SQL Shell:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SHOW STATEMENT
+</span></code></pre></div>
+<p>Giúp identify:
+- slow queries cần tối ưu
+- queries gọi quá nhiều
+- indexes không mang lại hiệu quả như mong đợi
+- queries prepared nhiều lần có thể share cached statement</p>
+<hr />
+<h2 id="arrow-syntax-privilege-requirements">Arrow Syntax Privilege Requirements<a class="headerlink" href="#arrow-syntax-privilege-requirements" title="Permanent link">&para;</a></h2>
+<p>Arrow syntax (<code>-&gt;</code>) cho implicit joins có yêu cầu privilege đặc biệt:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Company</span><span class="o">-&gt;</span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Sample</span><span class="p">.</span><span class="n">Employee</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: Arrow Syntax cần SELECT trên ID column</p>
+<p>Arrow syntax cần <code>SELECT</code> privilege trên <strong>cả hai tables</strong>, bao gồm <strong>column-level privilege trên ID field</strong> của table được reference. Thiếu bất kỳ privilege nào sẽ fail dù đã có SELECT trên main table.</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ <code>EXPLAIN</code> và Show Plan cho phép phân tích plan mà không cần chạy full query</li>
 <li>✅ <code>Read master map</code> thường là full scan; <code>Read index</code> là tín hiệu tốt hơn</li>
 <li>✅ Low selectivity value nghĩa là predicate lọc tốt hơn</li>
-<li>✅ <code>TOP</code> + <code>ORDER BY</code> tối ưu cho fastest time to first row</li>
+<li>✅ <code>TOP</code> + <code>ORDER BY</code> → optimization goal chuyển thành <strong>fastest first row</strong></li>
 <li>✅ <code>TUNE TABLE</code> thu thập stats như extent size, map size, selectivity</li>
-<li>⚠️ Không chạy <code>TUNE TABLE</code> trước mọi query</li>
+<li>✅ <strong><code>%CHECKPRIV</code></strong> kiểm tra SQL privilege programmatically</li>
+<li>✅ <strong><code>SHOW STATEMENT</code></strong> trong SQL Shell xem plan của prepared statement</li>
+<li>⚠️ TUNE TABLE <strong>chỉ recompile</strong> cached queries nếu statistics thực sự thay đổi</li>
+<li>⚠️ Arrow syntax cần SELECT privilege trên <strong>ID column</strong> của referenced table</li>
 <li>⚠️ Stats cũ có thể làm optimizer chọn plan sai</li>
-<li>💡 Khi performance xấu bất ngờ sau bulk load, hãy nghĩ tới statistics trước</li>
+<li>💡 Khi performance xấu bất ngờ sau bulk load, hãy nghĩ tới TUNE TABLE trước</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
@@ -4953,17 +5099,29 @@ SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;EXPLAIN SELECT Name FROM MyA
 WHILE rs.%Next() { WRITE rs.%GetData(1), ! }
 
 // --- Gather table statistics ---
-DO ##class(%SYSTEM.SQL).TuneTable(&quot;MyApp.Person&quot;, 1)
+DO $SYSTEM.SQL.Stats.Table.GatherTableStats(&quot;MyApp.Person&quot;)
 
-// --- Read a prepared plan ---
+// --- TUNE TABLE với sampling ---
+// Trong SQL Shell:
+// TUNE TABLE MyApp_Person %SAMPLE_PERCENT = 50
+
+// --- Check privilege programmatically ---
+SET rs = ##class(%SQL.Statement).%ExecDirect(,&quot;SELECT %CHECKPRIV(&#x27;SELECT&#x27;) FROM Sample.Person&quot;)
+DO rs.%Next()
+WRITE &quot;Has SELECT privilege: &quot;, rs.%GetData(1), !
+
+// --- Dynamic SQL với deferred mode (xem plan không execute) ---
 SET stmt = ##class(%SQL.Statement).%New()
 DO stmt.%Prepare(&quot;SELECT TOP ? Name FROM MyApp_Person ORDER BY Name&quot;)
-WRITE stmt.%GetImplementationClass().GetPlan(), !</code></pre>
+// Sau đó trong SQL Shell: SHOW STATEMENT</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_tunetable">TUNE TABLE Reference</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQLOPT_tablestat">Table Statistics for Query Optimizer</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_top">TOP Clause</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_shell#GSQL_shell_showstatement">SHOW STATEMENT</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_implicit#GSQL_implicit_arrow_privs">Arrow Syntax Privileges</a></li>
 </ul>
 
 

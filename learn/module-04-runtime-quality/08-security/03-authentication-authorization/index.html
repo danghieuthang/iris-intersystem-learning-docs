@@ -2542,6 +2542,8 @@
       
         
       
+        
+      
     
     
     
@@ -2667,6 +2669,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12-transactions-locking/05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -2953,6 +2983,28 @@
     <span class="md-ellipsis">
       
         Permission Checks in Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#escalation-roles-matching-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escalation Roles (Matching Roles)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
       
     </span>
   </a>
@@ -4624,6 +4676,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#escalation-roles-matching-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escalation Roles (Matching Roles)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#web-applications-and-authorization" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4735,6 +4809,10 @@
 </table>
 <p>Chuỗi quan hệ cần nhớ:</p>
 <p><strong>User -&gt; Role -&gt; Privilege -&gt; Resource</strong></p>
+<div class="admonition note">
+<p class="admonition-title">SQL vs System Privileges</p>
+<p>SQL privileges (table/column level) và system privileges là <strong>hai cơ chế riêng biệt</strong>. Holding một SQL privilege tự động cấp các system privileges liên quan — nhưng chiều ngược lại <strong>không</strong> đúng.</p>
+</div>
 <hr />
 <h2 id="authentication-modes">Authentication Modes<a class="headerlink" href="#authentication-modes" title="Permanent link">&para;</a></h2>
 <table>
@@ -4816,6 +4894,33 @@ WRITE $ROLES, !</code></pre>
 <li>validate role/resource expectation trong admin tooling</li>
 </ul>
 <hr />
+<h2 id="escalation-roles-matching-roles">Escalation Roles (Matching Roles)<a class="headerlink" href="#escalation-roles-matching-roles" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: Privilege Escalation</p>
+<p><strong>Escalation roles</strong> (cấu hình trong tab "Matching Roles" của Web Application) cho phép application thực hiện operations <strong>thay mặt user</strong> mà bản thân user không có quyền trực tiếp.</p>
+</div>
+<p>Ví dụ: một REST API cần ghi vào database, nhưng user chỉ có quyền đọc. Web application có thể được cấu hình Matching Role để escalate write privilege chỉ trong context của application đó.</p>
+<p><strong>Khi nào cần Escalation Roles:</strong>
+- Application cần thực hiện actions người dùng không có quyền
+- Multi-tier application với authorization tập trung ở application layer
+- Service account cần quyền cao hơn user thường</p>
+<div class="admonition warning">
+<p class="admonition-title">Cảnh báo</p>
+<p>Escalation roles bypass normal user permissions. Chỉ dùng khi thực sự cần thiết và document rõ lý do.</p>
+</div>
+<hr />
+<h2 id="auditing">Auditing<a class="headerlink" href="#auditing" title="Permanent link">&para;</a></h2>
+<p>IRIS cung cấp audit logging cho security events. Enable trong Management Portal: <strong>System Administration &gt; Security &gt; Auditing</strong>.</p>
+<pre class="objectscript"><code class="language-objectscript">// Custom audit event cho application-specific security events
+DO ##class(%SYS.Auditing).WriteAuditRecord(&quot;AppAudit&quot;, &quot;DataAccess&quot;,
+    &quot;User accessed sensitive record: &quot;_recordId)</code></pre>
+<p><strong>Events nên audit:</strong>
+- Login/logout
+- Role/privilege changes
+- Sensitive data access
+- Administrative operations
+- Custom application security events</p>
+<hr />
 <h2 id="web-applications-and-authorization">Web Applications and Authorization<a class="headerlink" href="#web-applications-and-authorization" title="Permanent link">&para;</a></h2>
 <p>Với REST/CSP/web app:</p>
 <ul>
@@ -4838,6 +4943,7 @@ WRITE $ROLES, !</code></pre>
 <li>✅ <code>$SYSTEM.Security.Check()</code> dùng để kiểm tra permission trong code</li>
 <li>⚠️ Unauthenticated mode vẫn cần authorization design phù hợp</li>
 <li>⚠️ Không dùng account đặc quyền cao cho application connection nếu không thật sự cần</li>
+<li>⚠️ <strong>Escalation roles (Matching Roles)</strong> bypass normal user permissions — dùng thận trọng</li>
 <li>💡 Nhiều câu exam cố tình trộn auth và authz — hãy tách chúng ra khi đọc câu hỏi</li>
 </ul>
 <hr />
@@ -4849,6 +4955,9 @@ WRITE $ROLES, !
 // --- Check a privilege on a resource ---
 WRITE $SYSTEM.Security.Check(&quot;%DB_USER&quot;, &quot;USE&quot;), !
 
+// --- Custom audit event ---
+DO ##class(%SYS.Auditing).WriteAuditRecord(&quot;MyApp&quot;, &quot;SensitiveOp&quot;, &quot;Details here&quot;)
+
 // --- Switch to a known namespace during admin checks ---
 ZNSPACE &quot;USER&quot;
 WRITE $NAMESPACE, !</code></pre>
@@ -4858,6 +4967,8 @@ WRITE $NAMESPACE, !</code></pre>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AAUTHN">Authentication</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=AAUTHZ">Authorization</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCAS_intro">InterSystems Security Overview</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_roles">Roles and Privileges</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_audit">Auditing</a></li>
 </ul>
 
 

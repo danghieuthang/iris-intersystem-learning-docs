@@ -1869,6 +1869,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#xdata-mapping-kiem-soat-serialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XData Mapping — Kiểm soát Serialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#when-jsonadaptor-fits-best" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2760,6 +2782,8 @@
       
         
       
+        
+      
     
     
     
@@ -2885,6 +2909,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../module-04-runtime-quality/12-transactions-locking/05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -4682,6 +4734,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#xdata-mapping-kiem-soat-serialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XData Mapping — Kiểm soát Serialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#when-jsonadaptor-fits-best" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4804,14 +4878,25 @@ SET obj = {}
 SET obj.name = &quot;Alice&quot;
 SET obj.age = 30
 
+// DynamicArray operations
 SET arr = []
-DO arr.%Push(obj)
+DO arr.%Push(obj)          // Thêm vào cuối
+DO arr.%Push(&quot;extra&quot;)
+SET last = arr.%Pop()      // Lấy và xóa phần tử cuối
+WRITE arr.%Size(), !        // Số lượng phần tử
+
+// Iterate array
+SET iter = arr.%GetIterator()
+WHILE iter.%GetNext(.key, .value) {
+    WRITE key, &quot;: &quot;, value, !
+}
 
 // Serialize
 WRITE obj.%ToJSON()
 
 // Deserialize
-SET obj = {}.%FromJSON(jsonString)</code></pre>
+SET obj = {}.%FromJSON(jsonString)
+SET arr = [].%FromJSON(jsonArrayString)</code></pre>
 <h3 id="when-dynamic-entities-fit-best">When Dynamic Entities Fit Best<a class="headerlink" href="#when-dynamic-entities-fit-best" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4867,15 +4952,83 @@ SET obj = {}.%FromJSON(jsonString)</code></pre>
 {
     Property Name As %String;
     Property Age As %Integer;
+    // Property bị exclude khỏi JSON:
+    Property PasswordHash As %String [ Private ];
 }</code></pre>
-<pre class="objectscript"><code class="language-objectscript">// Export object as JSON
-SET person = ##class(MyApp.Person).%OpenId(1)
+<h3 id="xdata-mapping-kiem-soat-serialization">XData Mapping — Kiểm soát Serialization<a class="headerlink" href="#xdata-mapping-kiem-soat-serialization" title="Permanent link">&para;</a></h3>
+<p>Dùng XData block <code>%JSON.Mapping</code> để customize cách property được serialize/deserialize:</p>
+<pre class="objectscript"><code class="language-objectscript">Class MyApp.Order Extends (%Persistent, %JSON.Adaptor)
+{
+    Property OrderId As %Integer;
+    Property CustomerName As %String;
+    Property TotalAmount As %Decimal;
+    Property CreatedAt As %TimeStamp;
+
+    XData %JSON.Mapping
+    {
+        {
+            &quot;properties&quot;: {
+                &quot;OrderId&quot;       : { &quot;name&quot; : &quot;id&quot; },
+                &quot;CustomerName&quot;  : { &quot;name&quot; : &quot;customer&quot; },
+                &quot;TotalAmount&quot;   : { &quot;name&quot; : &quot;total&quot; },
+                &quot;CreatedAt&quot;     : { &quot;exclude&quot; : true }
+            }
+        }
+    }
+}
+// Serialized JSON sẽ dùng &quot;id&quot;, &quot;customer&quot;, &quot;total&quot;
+// CreatedAt sẽ không xuất hiện trong output</code></pre>
+<p><strong>Options được dùng trong XData mapping:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Đổi tên property trong JSON output</td>
+</tr>
+<tr>
+<td><code>exclude</code></td>
+<td>Án property khỏi JSON output</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td>Validation: field phải có khi import</td>
+</tr>
+<tr>
+<td><code>dateFormat</code></td>
+<td>Customize date serialization format</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-methods">Core Methods<a class="headerlink" href="#core-methods" title="Permanent link">&para;</a></h3>
+<pre class="objectscript"><code class="language-objectscript">// Export object as JSON to output device
 DO person.%JSONExport()
 
-// Import JSON into object
+// Export to string
+SET jsonStr = &quot;&quot;
+DO person.%JSONExportToString(.jsonStr)
+
+// Export to file
+DO person.%JSONExportToFile(&quot;/tmp/person.json&quot;)
+
+// Import JSON string
 SET person = ##class(MyApp.Person).%New()
-DO person.%JSONImport(jsonString)
-SET sc = person.%Save()</code></pre>
+SET sc = person.%JSONImport(jsonString)
+
+// Import from file (less network/memory overhead for large payloads)
+SET sc = person.%JSONImportFromFile(&quot;/tmp/input.json&quot;)
+
+// Import via %FromJSON static-like
+SET sc = ##class(MyApp.Person).%JSONImport(jsonString, .person)</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Import từ file</p>
+<p><code>%JSONImportFromFile()</code> rất hữu |ích khi xử lý large JSON payloads mà bạn muốn tránh load toàn bộ vào string trước.</p>
+</div>
 <h3 id="when-jsonadaptor-fits-best">When <code>%JSON.Adaptor</code> Fits Best<a class="headerlink" href="#when-jsonadaptor-fits-best" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4896,6 +5049,10 @@ SET sc = person.%Save()</code></pre>
 <tr>
 <td>Persistent object already exists</td>
 <td>Export/import integrates naturally</td>
+</tr>
+<tr>
+<td>Need to rename/exclude fields</td>
+<td>XData mapping block</td>
 </tr>
 </tbody>
 </table>

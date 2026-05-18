@@ -2544,6 +2544,8 @@
       
         
       
+        
+      
     
     
     
@@ -2706,15 +2708,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#basic-flow" class="md-nav__link">
+  <a href="#basic-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic Flow
+        Basic Workflow
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic Flow">
+    <nav class="md-nav" aria-label="Basic Workflow">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2734,6 +2736,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sync-vs-waitforcomplete-vs-waitone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync vs WaitForComplete vs WaitOne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup-and-teardown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2745,10 +2758,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#waitforcomplete-vs-wait" class="md-nav__link">
+  <a href="#categories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        WaitForComplete() vs Wait()
+        Categories
       
     </span>
   </a>
@@ -2767,6 +2780,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#detach-attach-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detach / Attach Pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#practical-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2774,23 +2798,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Practical Constraints">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#you-still-need-good-chunk-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        You Still Need Good Chunk Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2851,6 +2858,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -4580,15 +4615,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#basic-flow" class="md-nav__link">
+  <a href="#basic-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic Flow
+        Basic Workflow
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic Flow">
+    <nav class="md-nav" aria-label="Basic Workflow">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -4608,6 +4643,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sync-vs-waitforcomplete-vs-waitone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync vs WaitForComplete vs WaitOne
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup-and-teardown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4619,10 +4665,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#waitforcomplete-vs-wait" class="md-nav__link">
+  <a href="#categories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        WaitForComplete() vs Wait()
+        Categories
       
     </span>
   </a>
@@ -4641,6 +4687,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#detach-attach-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detach / Attach Pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#practical-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4648,23 +4705,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Practical Constraints">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#you-still-need-good-chunk-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        You Still Need Good Chunk Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -4723,28 +4763,35 @@
 
 <h1 id="work-queue-manager">Work Queue Manager<a class="headerlink" href="#work-queue-manager" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T4.1 · Defensive Code</code> — dùng <code>%SYSTEM.WorkMgr</code> để chia nhỏ công việc độc lập sang nhiều worker process (T4.1.4 — manage background processes)</p>
+<p><strong>Exam Domain:</strong> <code>T4.4 · Concurrency Controls</code> — dùng <code>%SYSTEM.WorkMgr</code> để phân phối công việc độc lập sang nhiều worker processes (T4.4.4)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Work Queue Manager là cơ chế giúp phân phối công việc sang nhiều process để tăng throughput. Đây là phần dễ bị bỏ sót khi chỉ học <code>LOCK</code> và <code>TSTART</code>, nhưng exam có thể hỏi khá trực tiếp về <strong>Initialize</strong>, <strong>Queue</strong>, <strong>Setup/TearDown</strong>, <strong>WaitForComplete</strong>, và callback flow.</p>
-<p>IRIS cung cấp interface chính qua class <strong><code>%SYSTEM.WorkMgr</code></strong>.</p>
+<p>Work Queue Manager là cơ chế giúp phân phối công việc sang nhiều process để tăng throughput. Đây là phần dễ bị bỏ sót khi chỉ học <code>LOCK</code> và <code>TSTART</code>, nhưng exam có thể hỏi khá trực tiếp về <strong>Initialize</strong>, <strong>Queue</strong>, <strong>Setup/TearDown</strong>, <strong>Sync</strong>, <strong>Categories</strong>, và <strong>Detach/Attach</strong>.</p>
+<p>IRIS cung cấp interface chính qua class <strong><code>%SYSTEM.WorkMgr</code></strong> (accessed through <code>$SYSTEM.WorkMgr</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">WQM vs LOCK</p>
+<p><strong>LOCK</strong> điều phối truy cập <em>cạnh tranh</em> vào shared data.
+<strong>Work Queue Manager</strong> chủ động <em>phân phối</em> công việc để đạt parallelism.
+Đây là hai công cụ cho hai vấn đề khác nhau.</p>
+</div>
 <hr />
-<h2 id="basic-flow">Basic Flow<a class="headerlink" href="#basic-flow" title="Permanent link">&para;</a></h2>
-<p>Flow sử dụng điển hình:</p>
-<ol>
-<li><code>Initialize()</code> để lấy queue object</li>
-<li><code>Queue()</code> hoặc <code>QueueCallback()</code> cho từng unit of work</li>
-<li><code>WaitForComplete()</code> để đợi toàn bộ work hoàn thành</li>
-</ol>
-<pre class="objectscript"><code class="language-objectscript">SET queue = $SYSTEM.WorkMgr.Initialize(&quot;/multicompile=1&quot;, .sc)
-IF $$$ISERR(sc) QUIT
+<h2 id="basic-workflow">Basic Workflow<a class="headerlink" href="#basic-workflow" title="Permanent link">&para;</a></h2>
+<p>4 bước cốt lõi:</p>
+<pre class="objectscript"><code class="language-objectscript">// 1. Initialize — lấy queue handle
+SET queue = $SYSTEM.WorkMgr.Initialize(,.sc)
+IF $$$ISERR(sc) { WRITE $SYSTEM.Status.GetErrorText(sc), !  QUIT }
 
+// 2. Queue — submit work items
 FOR i=1:1:100 {
     SET sc = queue.Queue(&quot;##class(MyApp.Batch).ProcessOne&quot;, i)
     IF $$$ISERR(sc) QUIT
 }
 
-SET sc = queue.WaitForComplete()</code></pre>
+// 3. Sync — block đến khi tất cả work hoàn thành
+SET sc = queue.Sync()
+
+// 4. Check errors
+IF $$$ISERR(sc) { WRITE $SYSTEM.Status.GetErrorText(sc), ! }</code></pre>
 <h3 id="good-fit">Good Fit<a class="headerlink" href="#good-fit" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4763,8 +4810,16 @@ SET sc = queue.WaitForComplete()</code></pre>
 <td>✅</td>
 </tr>
 <tr>
+<td>I/O-bound parallel (report generation, API fan-out)</td>
+<td>✅</td>
+</tr>
+<tr>
 <td>Work units phụ thuộc thứ tự tuyệt đối</td>
 <td>❌</td>
+</tr>
+<tr>
+<td>Sub-second interactive requests</td>
+<td>❌ (overhead quá cao)</td>
 </tr>
 <tr>
 <td>Shared mutable state không khóa cẩn thận</td>
@@ -4773,79 +4828,136 @@ SET sc = queue.WaitForComplete()</code></pre>
 </tbody>
 </table>
 <hr />
-<h2 id="setup-and-teardown">Setup and TearDown<a class="headerlink" href="#setup-and-teardown" title="Permanent link">&para;</a></h2>
-<p>Nếu worker cần chuẩn bị context trước khi xử lý item đầu tiên hoặc cần restore state khi rời queue, dùng:</p>
-<ul>
-<li><code>Setup()</code></li>
-<li><code>TearDown()</code></li>
-</ul>
-<pre class="objectscript"><code class="language-objectscript">SET sc = queue.Setup(&quot;##class(MyApp.Batch).WorkerSetup&quot;)
-SET sc = queue.TearDown(&quot;##class(MyApp.Batch).WorkerTearDown&quot;)</code></pre>
-<p>Đây là pattern phù hợp khi:</p>
-<ul>
-<li>mở resource per-worker</li>
-<li>preload context</li>
-<li>setup namespace/config riêng cho worker flow</li>
-</ul>
-<hr />
-<h2 id="waitforcomplete-vs-wait"><code>WaitForComplete()</code> vs <code>Wait()</code><a class="headerlink" href="#waitforcomplete-vs-wait" title="Permanent link">&para;</a></h2>
+<h2 id="sync-vs-waitforcomplete-vs-waitone">Sync vs WaitForComplete vs WaitOne<a class="headerlink" href="#sync-vs-waitforcomplete-vs-waitone" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>Use</th>
+<th>Behavior</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>WaitForComplete()</code></td>
-<td>đợi cho tới khi toàn bộ queued work hoàn tất</td>
+<td><code>queue.Sync()</code></td>
+<td>Block đến khi TẤT CẢ work hoàn thành. Return first error nếu có.</td>
 </tr>
 <tr>
-<td><code>Wait()</code></td>
-<td>đợi event/callback signal và có thể return sớm hơn</td>
+<td><code>queue.WaitForComplete()</code></td>
+<td>Tương tự <code>Sync()</code> — alias</td>
+</tr>
+<tr>
+<td><code>queue.WaitOne(timeout)</code></td>
+<td>Return ngay khi <strong>BẤT KỲ</strong> một item hoàn thành — cho streaming/incremental patterns</td>
 </tr>
 </tbody>
 </table>
-<p>Nếu bài toán chỉ cần "queue xong rồi đợi toàn bộ", <code>WaitForComplete()</code> là câu trả lời tự nhiên hơn.</p>
+<hr />
+<h2 id="setup-and-teardown">Setup and TearDown<a class="headerlink" href="#setup-and-teardown" title="Permanent link">&para;</a></h2>
+<p>Nếu worker cần chuẩn bị context <strong>một lần</strong> trước khi xử lý item đầu tiên (ví dụ: open DB connection, load config), dùng Setup/TearDown.</p>
+<pre class="objectscript"><code class="language-objectscript">// Callbacks chạy MỘT LẦN per worker job, KHÔNG phải per work item
+SET sc = queue.Setup(&quot;##class(MyApp.Batch).WorkerSetup&quot;)
+SET sc = queue.Teardown(&quot;##class(MyApp.Batch).WorkerTeardown&quot;)</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Setup/Teardown vs per-item initialization</p>
+<p>Đặt expensive initialization (open connection, load lookup tables) vào <code>Setup()</code>, không phải trong mỗi work method. Setup chạy một lần per worker — không phải mỗi lần Queue() được xử lý.</p>
+</div>
+<hr />
+<h2 id="categories">Categories<a class="headerlink" href="#categories" title="Permanent link">&para;</a></h2>
+<p>Categories kiểm soát <strong>worker pool nào</strong> xử lý queue:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEFAULT</code></td>
+<td>General-purpose workers (1 worker per CPU core mặc định)</td>
+</tr>
+<tr>
+<td><code>SQL</code></td>
+<td>Reserved cho parallel query executor của IRIS — <strong>không dùng cho user code</strong></td>
+</tr>
+<tr>
+<td>Custom</td>
+<td>Define qua <code>$SYSTEM.WorkMgr.Setup()</code> hoặc Management Portal</td>
+</tr>
+</tbody>
+</table>
+<pre class="objectscript"><code class="language-objectscript">// Khởi tạo queue với specific category
+SET queue = $SYSTEM.WorkMgr.Initialize(&quot;MY_BATCH_CATEGORY&quot;, .sc)
+
+// Custom category cho low-priority jobs (4 workers max)
+DO $SYSTEM.WorkMgr.Setup(&quot;LOW_PRIORITY&quot;, 4)</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: SQL Category</p>
+<p>Category <code>SQL</code> là reserved cho IRIS internal parallel query execution. Đừng dùng <code>SQL</code> category cho user-defined work queues.</p>
+</div>
 <hr />
 <h2 id="callback-pattern">Callback Pattern<a class="headerlink" href="#callback-pattern" title="Permanent link">&para;</a></h2>
-<p><code>QueueCallback()</code> cho phép queue một callback để chạy ở master process khi work item hoàn thành.</p>
+<p><code>QueueCallback()</code> cho phép queue một callback để chạy ở <strong>master process</strong> khi work item hoàn thành:</p>
+<pre class="objectscript"><code class="language-objectscript">// Work item + callback
+SET sc = queue.QueueCallback(&quot;##class(MyApp.Batch).OnItemComplete&quot;,
+                              &quot;##class(MyApp.Batch).ProcessOne&quot;, i)
+
+// Callback có thể set %exit=1 để signal early termination</code></pre>
 <p>Điều này hữu ích khi:</p>
 <ul>
 <li>cần aggregate progress</li>
-<li>cần quyết định dừng sớm</li>
-<li>muốn callback set <code>%exit=1</code> rồi dùng <code>Wait()</code> để return control sớm</li>
+<li>cần quyết định dừng sớm (early exit)</li>
+<li>muốn collect results as they complete với <code>WaitOne()</code></li>
 </ul>
 <hr />
+<h2 id="detach-attach-pattern">Detach / Attach Pattern<a class="headerlink" href="#detach-attach-pattern" title="Permanent link">&para;</a></h2>
+<p>Cho phép queue <strong>survive</strong> qua process restart:</p>
+<pre class="objectscript"><code class="language-objectscript">// Detach queue từ current process — nhận token
+SET token = queue.Detach()
+
+// ... current process có thể kết thúc ...
+
+// Attach lại từ process khác (ví dụ: sau restart)
+SET queue = $SYSTEM.WorkMgr.Attach(token)
+SET sc = queue.Sync()</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Khi nào dùng Detach/Attach</p>
+<p>Useful cho long-running batch jobs cần survive process restarts, hoặc khi một process khởi tạo work và process khác cần wait for completion.</p>
+</div>
+<hr />
 <h2 id="practical-constraints">Practical Constraints<a class="headerlink" href="#practical-constraints" title="Permanent link">&para;</a></h2>
-<p>Work Queue Manager không magic away concurrency problems.</p>
-<h3 id="you-still-need-good-chunk-design">You Still Need Good Chunk Design<a class="headerlink" href="#you-still-need-good-chunk-design" title="Permanent link">&para;</a></h3>
+<p>Work Queue Manager không magic away concurrency problems:</p>
 <ul>
-<li>work units nên <strong>độc lập</strong></li>
-<li>không nên giả định order xử lý</li>
+<li>work units nên <strong>độc lập</strong> — không assume thứ tự xử lý</li>
 <li>nếu nhiều worker cùng đụng shared global, vẫn cần locking hợp lý</li>
-<li>chunk quá nhỏ sẽ làm overhead framework nổi bật hơn lợi ích</li>
+<li>chunk quá nhỏ sẽ làm overhead framework nổi bật hơn lợi ích (worker job startup is non-trivial)</li>
 </ul>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
-<li>✅ <code>%SYSTEM.WorkMgr</code> là interface chính cho Work Queue Manager</li>
-<li>✅ Flow cơ bản là <code>Initialize -&gt; Queue -&gt; WaitForComplete</code></li>
-<li>✅ <code>Setup()</code> và <code>TearDown()</code> dùng cho worker context lifecycle</li>
-<li>✅ <code>QueueCallback()</code> + <code>Wait()</code> hợp khi cần callback-driven control</li>
+<li>✅ <code>$SYSTEM.WorkMgr</code> là interface chính cho Work Queue Manager</li>
+<li>✅ Flow cơ bản: <code>Initialize() → Queue() → Sync()</code></li>
+<li>✅ <code>Setup()</code> và <code>Teardown()</code> chạy <strong>một lần per worker</strong>, không phải per work item</li>
+<li>✅ <strong>Categories</strong> (DEFAULT, SQL, custom) kiểm soát worker pool — <code>SQL</code> là reserved</li>
+<li>✅ <strong>Detach/Attach</strong> cho phép queue survive process restarts</li>
+<li>✅ <code>WaitOne()</code> cho streaming/incremental result patterns</li>
 <li>⚠️ Work items nên độc lập; đừng phụ thuộc order xử lý</li>
-<li>⚠️ Nếu workers chạm shared state, bạn vẫn phải thiết kế locking đúng</li>
-<li>💡 Khi câu hỏi hỏi "parallelize many independent tasks", Work Queue Manager thường là hướng đúng hơn tự spawn thủ công quá nhiều process</li>
+<li>⚠️ Nếu workers chạm shared state, vẫn phải thiết kế locking đúng</li>
+<li>⚠️ Không dùng WQM cho sub-second interactive requests</li>
+<li>💡 Khi câu hỏi hỏi "parallelize many independent tasks", Work Queue Manager thường là hướng đúng</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<pre class="objectscript"><code class="language-objectscript">// --- Initialize a work queue ---
-SET queue = $SYSTEM.WorkMgr.Initialize(&quot;/multicompile=1&quot;, .sc)
+<pre class="objectscript"><code class="language-objectscript">// --- Initialize a work queue (default category) ---
+SET queue = $SYSTEM.WorkMgr.Initialize(,.sc)
 IF $$$ISERR(sc) {
     WRITE $SYSTEM.Status.GetErrorText(sc), !
     QUIT
 }
+
+// --- Setup/Teardown per worker ---
+SET sc = queue.Setup(&quot;##class(MyApp.Batch).WorkerSetup&quot;)
+SET sc = queue.Teardown(&quot;##class(MyApp.Batch).WorkerTeardown&quot;)
 
 // --- Queue independent tasks ---
 FOR i=1:1:10 {
@@ -4853,14 +4965,27 @@ FOR i=1:1:10 {
     IF $$$ISERR(sc) QUIT
 }
 
-// --- Wait for all work to finish ---
-SET sc = queue.WaitForComplete()
-WRITE $SYSTEM.Status.GetErrorText(sc), !</code></pre>
+// --- Wait for all work ---
+SET sc = queue.Sync()
+IF $$$ISERR(sc) { WRITE $SYSTEM.Status.GetErrorText(sc), ! }
+
+// --- Custom category ---
+SET queue = $SYSTEM.WorkMgr.Initialize(&quot;MY_CATEGORY&quot;, .sc)
+
+// --- Detach/Attach ---
+SET token = queue.Detach()
+// ... later, from another process ...
+SET queue = $SYSTEM.WorkMgr.Attach(token)
+SET sc = queue.Sync()</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro">Introduction to the Work Queue Manager</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_jobs">About Worker Jobs</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_using_callbacks">Using Callbacks</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_setup_teardown">Setup and Teardown Processing</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_categories">Managing Categories</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&amp;CLASSNAME=%25SYSTEM.WorkMgr">%SYSTEM.WorkMgr class reference</a></li>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GWORK_intro">Parallel Processing with Work Queue Manager</a></li>
 </ul>
 
 

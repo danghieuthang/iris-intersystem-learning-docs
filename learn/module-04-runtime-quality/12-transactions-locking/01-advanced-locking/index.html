@@ -2544,6 +2544,8 @@
       
         
       
+        
+      
     
     
     
@@ -2678,6 +2680,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lock-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lock Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lock Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-lock-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hierarchical Lock Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lock-scope-decisions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2745,6 +2775,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#immediate-unlock-trong-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Unlock trong Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql-lock-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL Lock Escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nolock-bypass-sql-automatic-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        %NOLOCK — Bypass SQL Automatic Locking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#locks-and-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2756,10 +2819,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lock-related-exam-traps" class="md-nav__link">
+  <a href="#lock-table-monitoring" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lock-related Exam Traps
+        Lock Table Monitoring
       
     </span>
   </a>
@@ -2851,6 +2914,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -4580,6 +4671,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lock-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lock Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lock Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-lock-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hierarchical Lock Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lock-scope-decisions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4647,6 +4766,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#immediate-unlock-trong-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Unlock trong Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql-lock-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL Lock Escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nolock-bypass-sql-automatic-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        %NOLOCK — Bypass SQL Automatic Locking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#locks-and-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4658,10 +4810,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#lock-related-exam-traps" class="md-nav__link">
+  <a href="#lock-table-monitoring" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lock-related Exam Traps
+        Lock Table Monitoring
       
     </span>
   </a>
@@ -4723,11 +4875,52 @@
 
 <h1 id="advanced-locking">Advanced Locking<a class="headerlink" href="#advanced-locking" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T4.4 · Concurrency Controls</code> — locking nuance, timeout patterns, lock ordering, và practical concurrency decisions (T4.4.1–T4.4.3)</p>
+<p><strong>Exam Domain:</strong> <code>T4.4 · Concurrency Controls</code> — locking nuance, lock types, timeout patterns, deadlock avoidance, %NOLOCK, immediate unlock, và SQL lock escalation (T4.4.1–T4.4.3)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Phần index của topic này đã cover LOCK basics. Subtopic này tập trung vào phần <strong>dễ ra câu tricky hơn</strong>: khi nào row lock tốt hơn table lock, cách tránh deadlock, và vì sao timeout + consistent ordering là best practice.</p>
-<p>Mục tiêu không phải nhớ mọi internal detail, mà hiểu đúng cách dùng lock trong application code thật.</p>
+<p>Phần index của topic này đã cover LOCK basics. Subtopic này tập trung vào phần <strong>dễ ra câu tricky hơn</strong>: lock types, khi nào row lock tốt hơn table lock, cách tránh deadlock, %NOLOCK trong SQL, và immediate unlock trong transactions.</p>
+<hr />
+<h2 id="lock-types">Lock Types<a class="headerlink" href="#lock-types" title="Permanent link">&para;</a></h2>
+<p>IRIS hỗ trợ 3 loại lock với indicator syntax khác nhau:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Syntax</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Exclusive</strong></td>
+<td><code>LOCK +^data</code> (default)</td>
+<td>Chỉ 1 process giữ lock; block tất cả process khác</td>
+</tr>
+<tr>
+<td><strong>Shared</strong></td>
+<td><code>LOCK +^data#"S"</code></td>
+<td>Nhiều process cùng giữ; block exclusive lock</td>
+</tr>
+<tr>
+<td><strong>Escalating</strong></td>
+<td><code>LOCK +^data#"E"</code></td>
+<td>Tự động escalate lên parent node khi đạt threshold (default 1000)</td>
+</tr>
+<tr>
+<td><strong>Immediate unlock</strong></td>
+<td><code>LOCK -^data#"I"</code></td>
+<td>Unlock <strong>ngay lập tức</strong> ngay cả trong transaction</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hierarchical-lock-behavior">Hierarchical Lock Behavior<a class="headerlink" href="#hierarchical-lock-behavior" title="Permanent link">&para;</a></h3>
+<pre class="objectscript"><code class="language-objectscript">// Khi bạn lock ^student(1,2):
+LOCK +^student(1,2):5
+
+// Explicit lock: ^student(1,2)
+// Implicit block: các process khác KHÔNG thể lock ^student(1) (parent)
+//                 hay ^student(1,2,3) (child)
+// Nhưng: các process khác VẪN có thể lock ^student(2) (sibling)</code></pre>
 <hr />
 <h2 id="lock-scope-decisions">Lock Scope Decisions<a class="headerlink" href="#lock-scope-decisions" title="Permanent link">&para;</a></h2>
 <table>
@@ -4780,6 +4973,12 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <li>process A lock record 1 rồi chờ record 2</li>
 <li>process B lock record 2 rồi chờ record 1</li>
 </ol>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap: Shared → Exclusive Upgrade</p>
+<p>Nếu Process A và Process B cùng giữ <strong>shared lock</strong> trên <code>^data(1)</code>, và cả hai đều request <strong>exclusive lock</strong> với <code>LOCK +^data(1)#"E"</code>:
+→ Deadlock! Cả hai chờ nhau release shared lock.</p>
+<p><strong>Solution:</strong> Dùng <code>LOCK ^data(1)</code> (không có <code>+</code>) để release shared lock trước khi request exclusive.</p>
+</div>
 <h3 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -4791,7 +4990,7 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 <tbody>
 <tr>
 <td>consistent lock ordering</td>
-<td>giảm vòng chờ</td>
+<td>giảm vòng chờ circular wait</td>
 </tr>
 <tr>
 <td>hold lock ngắn nhất có thể</td>
@@ -4808,40 +5007,95 @@ LOCK -^MyApp.PersonLock(id)</code></pre>
 </tbody>
 </table>
 <hr />
+<h2 id="immediate-unlock-trong-transactions">Immediate Unlock trong Transactions<a class="headerlink" href="#immediate-unlock-trong-transactions" title="Permanent link">&para;</a></h2>
+<p>Mặc định, lock trong transaction được <strong>deferred</strong> — không release cho đến khi TCOMMIT/TROLLBACK.</p>
+<pre class="objectscript"><code class="language-objectscript">// Trong transaction, unlock bị defer đến cuối transaction:
+TSTART
+LOCK +^data(1):5
+// ... work ...
+LOCK -^data(1)    // lock CHƯA thực sự release — defer đến TCOMMIT
+TCOMMIT           // chỉ lúc này ^data(1) mới được release
+
+// Để unlock NGAY trong transaction:
+LOCK -^data(1)#&quot;I&quot;    // #&quot;I&quot; = immediate unlock, bỏ qua transaction deferral</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Khi nào dùng #\"I\"</p>
+<p>Dùng khi bạn muốn release lock sớm trong transaction để tăng concurrency, trong khi vẫn tiếp tục transaction cho các operations khác.</p>
+</div>
+<hr />
+<h2 id="sql-lock-escalation">SQL Lock Escalation<a class="headerlink" href="#sql-lock-escalation" title="Permanent link">&para;</a></h2>
+<p>IRIS quản lý row vs table locks tự động trong SQL DML:</p>
+<ul>
+<li><strong>Row-level</strong> (default): mỗi INSERT/UPDATE/DELETE trong transaction acquire một lock</li>
+<li><strong>Table-level</strong>: khi số locks vượt <strong>LockThreshold</strong> (default = 1000), tự động escalate lên table lock</li>
+</ul>
+<pre class="objectscript"><code class="language-objectscript">// Xem current threshold
+WRITE $SYSTEM.SQL.Util.GetOption(&quot;LockThreshold&quot;), !
+
+// Thay đổi threshold (thay đổi cả current value và config file)
+DO $SYSTEM.SQL.Util.SetOption(&quot;LockThreshold&quot;, 500)</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Lock Escalation Impact</p>
+<p>Khi escalate lên table lock → <strong>toàn bộ table bị block</strong> cho các processes khác trong duration của transaction. Cân nhắc LockThreshold phù hợp với workload.</p>
+</div>
+<hr />
+<h2 id="nolock-bypass-sql-automatic-locking">%NOLOCK — Bypass SQL Automatic Locking<a class="headerlink" href="#nolock-bypass-sql-automatic-locking" title="Permanent link">&para;</a></h2>
+<p>Khi bạn có external lock management hoặc read-only operations:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Bypass automatic row locking cho INSERT</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">INSERT</span><span class="w"> </span><span class="o">%</span><span class="n">NOLOCK</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span><span class="w"> </span><span class="p">(</span><span class="n">Name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">-- SELECT không cần locks (read-only, không cần consistency guarantee)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">%</span><span class="n">NOLOCK</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">MyApp</span><span class="p">.</span><span class="n">Person</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Dùng %NOLOCK cẩn thận</p>
+<p><code>%NOLOCK</code> bỏ qua automatic locking hoàn toàn. Chỉ dùng khi bạn đảm bảo external locking hoặc chấp nhận dirty reads.</p>
+</div>
+<hr />
 <h2 id="locks-and-transactions">Locks and Transactions<a class="headerlink" href="#locks-and-transactions" title="Permanent link">&para;</a></h2>
 <p>Transactions và locks liên quan nhau nhưng không phải cùng một thứ:</p>
 <ul>
 <li>transaction bảo vệ atomicity/rollback</li>
 <li>lock bảo vệ concurrent access</li>
 </ul>
-<p>Một operation có thể cần cả hai:</p>
-<ol>
-<li>lock record logical key</li>
-<li><code>TSTART</code></li>
-<li>update data</li>
-<li><code>TCOMMIT</code></li>
-<li>release lock</li>
-</ol>
+<p>Pattern chuẩn cho critical section:</p>
+<pre class="objectscript"><code class="language-objectscript">LOCK +^MyApp.PersonLock(id):5
+IF &#x27;$TEST { WRITE &quot;Lock timeout&quot;, !  QUIT }
+TSTART
+TRY {
+    // ... critical section
+    TCOMMIT
+} CATCH ex {
+    TROLLBACK
+}
+LOCK -^MyApp.PersonLock(id)    // release sau TCOMMIT/TROLLBACK</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">Gotcha</p>
 <p>Đừng giả định transaction tự giải quyết mọi race condition nếu không có locking phù hợp.</p>
 </div>
 <hr />
-<h2 id="lock-related-exam-traps">Lock-related Exam Traps<a class="headerlink" href="#lock-related-exam-traps" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>LOCK</code> không có <code>+</code> sẽ thay toàn bộ lock set hiện tại</li>
-<li><code>%Save()</code> fail không có nghĩa mọi concurrency issue tự biến mất</li>
-<li>timeout check đi qua <code>$TEST</code></li>
-<li>broad lock thường dễ viết nhưng thường không phải thiết kế tốt nhất</li>
-</ul>
+<h2 id="lock-table-monitoring">Lock Table Monitoring<a class="headerlink" href="#lock-table-monitoring" title="Permanent link">&para;</a></h2>
+<pre class="objectscript"><code class="language-objectscript">// Từ %SYS namespace:
+DO ^LOCKTAB    // interactive lock table viewer
+
+// Management Portal: System Operation &gt; Locks &gt; View Locks</code></pre>
+<p><strong>Lock states cần biết:</strong>
+- <code>Exclusive/n</code> — exclusive lock, n = count
+- <code>Shared/n</code> — shared lock, n = processes holding
+- <code>WaitExclusiveExact</code> — process đang chờ exclusive lock trên chính node này
+- <code>-&gt;Delock</code> — marked for deferred unlock (trong transaction)</p>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
-<li>✅ Row-level locking thường tốt hơn table-level locking</li>
+<li>✅ Exclusive (default), Shared (<code>#"S"</code>), Escalating (<code>#"E"</code>) là 3 lock types chính</li>
 <li>✅ <code>LOCK +resource:timeout</code> là pattern an toàn hơn chờ vô hạn</li>
-<li>✅ Consistent ordering là một trong các cách tránh deadlock hiệu quả nhất</li>
+<li>✅ Consistent lock ordering là một trong các cách tránh deadlock hiệu quả nhất</li>
+<li>✅ <strong><code>#"I"</code> (immediate unlock)</strong> — release lock ngay trong transaction, bỏ qua deferral</li>
+<li>✅ <strong><code>%NOLOCK</code></strong> bypass automatic SQL locking — dùng khi có external lock management</li>
+<li>✅ <code>$SYSTEM.SQL.Util.SetOption("LockThreshold", value)</code> điều chỉnh escalation threshold</li>
 <li>⚠️ Transaction không thay thế locking</li>
-<li>⚠️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp</li>
+<li>⚠️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp — thay toàn bộ lock set</li>
+<li>⚠️ Shared→Exclusive upgrade với <code>+</code> có thể gây deadlock</li>
 <li>💡 Khi câu hỏi nhấn mạnh throughput hoặc concurrent users, broad lock thường là đáp án xấu hơn</li>
 </ul>
 <hr />
@@ -4858,11 +5112,32 @@ LOCK -^OrderLock(orderId)
 SET first = $SELECT(id1&lt;id2:id1,1:id2)
 SET second = $SELECT(id1&lt;id2:id2,1:id1)
 LOCK +^MyLock(first):5
-LOCK +^MyLock(second):5</code></pre>
+LOCK +^MyLock(second):5
+
+// --- Shared lock ---
+LOCK +^data(1)#&quot;S&quot;:5
+
+// --- Immediate unlock in transaction ---
+TSTART
+LOCK +^data(1):5
+// ... process data(1) ...
+LOCK -^data(1)#&quot;I&quot;      // release ngay, không đợi TCOMMIT
+// ... tiếp tục transaction cho việc khác ...
+TCOMMIT
+
+// --- View lock table ---
+DO ^LOCKTAB              // chạy từ %SYS namespace
+
+// --- SQL LockThreshold ---
+WRITE $SYSTEM.SQL.Util.GetOption(&quot;LockThreshold&quot;), !
+DO $SYSTEM.SQL.Util.SetOption(&quot;LockThreshold&quot;, 500)</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCOS_commands#GCOS_commands_lock">LOCK Command Reference</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_clock">LOCK Command Reference</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_lockbasics">Lock Basics</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_lockbasics#GAPPS_lockbasics_deadlocks">Avoiding Deadlocks</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_modify#GSQL_modify_transaction_size">Transaction Size and Lock Threshold</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GAPPS_tp">Transaction Processing</a></li>
 </ul>
 

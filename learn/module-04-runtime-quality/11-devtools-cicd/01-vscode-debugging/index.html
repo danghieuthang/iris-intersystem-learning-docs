@@ -2552,6 +2552,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#terminal-debugging-zbreak-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminal Debugging — ZBREAK / BREAK
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#management-portal-in-the-dev-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2581,6 +2592,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Background Jobs and Debug Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batchflag-large-dataset-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BatchFlag — Large Dataset Jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2737,6 +2765,8 @@
       
         
       
+        
+      
     
     
     
@@ -2862,6 +2892,34 @@
     
   
     03 · Journaling & Write Image Journal (WIJ)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../12-transactions-locking/05-memory-system-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Memory Configuration & System Limits
   
 
     
@@ -4658,6 +4716,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#terminal-debugging-zbreak-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminal Debugging — ZBREAK / BREAK
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#management-portal-in-the-dev-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4687,6 +4756,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Background Jobs and Debug Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batchflag-large-dataset-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BatchFlag — Large Dataset Jobs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4868,6 +4954,57 @@
 </span></code></pre></div>
 <p><code>launch.json</code> không thay thế <code>settings.json</code>; nó chỉ mô tả <strong>cách khởi chạy hoặc attach debug</strong>.</p>
 <hr />
+<h2 id="terminal-debugging-zbreak-break">Terminal Debugging — ZBREAK / BREAK<a class="headerlink" href="#terminal-debugging-zbreak-break" title="Permanent link">&para;</a></h2>
+<p>Khi không có VS Code (ví dụ: debug trực tiếp trong Terminal hoặc SSH session), dùng <strong>ZBREAK</strong> và <strong>BREAK</strong> để set breakpoints trong ObjectScript code:</p>
+<pre class="objectscript"><code class="language-objectscript">// Set breakpoint tại label trong routine
+ZBREAK &quot;MyLabel^MyRoutine&quot;
+
+// Breakpoint với điều kiện
+ZBREAK &quot;MyLabel^MyRoutine&quot;:condition
+
+// Xem call stack hiện tại
+WRITE $STACK, !
+WRITE $STACK(-1, &quot;PLACE&quot;), !   // caller location
+WRITE $STACK(-1, &quot;MCODE&quot;), !   // source line
+
+// $ESTACK — execution level (tương tự stack depth)
+WRITE $ESTACK, !</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">ZBREAK vs VS Code Debugger</p>
+<p>VS Code Debugger: tốt cho interactive development, step-through, watch variables.
+ZBREAK: tốt cho debugging trong production-like environment, scripted conditions, terminal-only access.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ZBREAK "label^routine"</code></td>
+<td>Set breakpoint tại location</td>
+</tr>
+<tr>
+<td><code>ZBREAK "label^routine":cond</code></td>
+<td>Conditional breakpoint</td>
+</tr>
+<tr>
+<td><code>BREAK</code></td>
+<td>Trigger breakpoint ngay lập tức</td>
+</tr>
+<tr>
+<td><code>$STACK</code></td>
+<td>Số levels trong call stack</td>
+</tr>
+<tr>
+<td><code>$STACK(-1,"PLACE")</code></td>
+<td>Location của frame trên stack</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="management-portal-in-the-dev-workflow">Management Portal in the Dev Workflow<a class="headerlink" href="#management-portal-in-the-dev-workflow" title="Permanent link">&para;</a></h2>
 <p>VS Code là IDE chính, nhưng Management Portal vẫn là công cụ rất quan trọng khi debug hoặc kiểm tra hệ thống:</p>
 <table>
@@ -4925,6 +5062,23 @@ IF &#x27;$TEST {
 }
 WRITE &quot;Child PID: &quot;, $ZCHILD, !</code></pre>
 <p>Nếu cần chạy child job ở namespace cụ thể, có thể dùng parameterized JOB syntax thay vì giả định child luôn ở cùng namespace hiện tại.</p>
+<h3 id="batchflag-large-dataset-jobs">BatchFlag — Large Dataset Jobs<a class="headerlink" href="#batchflag-large-dataset-jobs" title="Permanent link">&para;</a></h3>
+<p>Cho các background jobs xử lý lượng lớn dữ liệu, set <strong>BatchFlag</strong> để tối ưu behavior:</p>
+<pre class="objectscript"><code class="language-objectscript">// Trong background job process:
+DO $SYSTEM.Process.SetBatchFlag(1)   // enable batch mode
+// ... xử lý large dataset ...
+DO $SYSTEM.Process.SetBatchFlag(0)   // restore
+
+// Đọc giá trị hiện tại:
+WRITE $SYSTEM.Process.BatchFlag(), !</code></pre>
+<p>BatchFlag ảnh hưởng đến:
+- Behavior của lock conflicts (không prompt user)
+- Output handling (suppress terminal output)
+- Phù hợp với unattended background processing</p>
+<div class="admonition tip">
+<p class="admonition-title">NFS không support làm IRIS volume</p>
+<p><strong>Exam Trap:</strong> NFS (Network File System) <strong>không được support</strong> làm storage volume cho IRIS database files (<code>.IRIS.DAT</code>, WIJ, journal files). Luôn dùng local block storage hoặc SAN.</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4932,8 +5086,11 @@ WRITE &quot;Child PID: &quot;, $ZCHILD, !</code></pre>
 <li>✅ <code>objectscript.conn</code> chọn server và namespace active cho workspace hiện tại</li>
 <li>✅ <code>launch.json</code> giữ cấu hình attach/launch cho debugger</li>
 <li>✅ Client-side editing phù hợp hơn cho git và CI/CD</li>
+<li>✅ <strong><code>ZBREAK "label^routine"</code></strong> — set terminal breakpoints; <code>ZBREAK "label":cond</code> cho conditional</li>
+<li>✅ <strong><code>$SYSTEM.Process.SetBatchFlag(1)</code></strong> — optimize unattended large-data background jobs</li>
 <li>⚠️ Save trong VS Code thường sync ngay lên IRIS server — đừng giả định file local và file server là hai bản tách rời</li>
 <li>⚠️ Debug background code cần để ý process context và <code>$ZCHILD</code></li>
+<li>⚠️ <strong>NFS không support làm IRIS storage volume</strong> — luôn dùng local block storage hoặc SAN</li>
 <li>💡 Management Portal vẫn là công cụ phụ trợ rất mạnh để kiểm tra runtime, SQL, security, và production state</li>
 </ul>
 <hr />
