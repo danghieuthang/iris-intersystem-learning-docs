@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ha-dr-security-architecture" class="md-skip">
+        <a href="#02-ha-security-architecture" class="md-skip">
           Bỏ qua
         </a>
       
@@ -2374,6 +2374,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ha-vs-dr-hai-bai-toan-khac-nhau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA vs DR — Hai Bài Toán Khác Nhau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mirroring-basics" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2384,6 +2395,17 @@
   
     <nav class="md-nav" aria-label="Mirroring Basics">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sync-failover-vs-async-member-so-sanh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync Failover vs Async Member — So Sánh
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#core-thinking" class="md-nav__link">
@@ -4677,6 +4699,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ha-vs-dr-hai-bai-toan-khac-nhau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA vs DR — Hai Bài Toán Khác Nhau
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mirroring-basics" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4687,6 +4720,17 @@
   
     <nav class="md-nav" aria-label="Mirroring Basics">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sync-failover-vs-async-member-so-sanh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync Failover vs Async Member — So Sánh
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#core-thinking" class="md-nav__link">
@@ -4885,26 +4929,43 @@
   
 
 
-<h1 id="ha-dr-security-architecture">HA, DR &amp; Security Architecture<a class="headerlink" href="#ha-dr-security-architecture" title="Permanent link">&para;</a></h1>
+<h1 id="02-ha-security-architecture">02 · HA &amp; Security Architecture<a class="headerlink" href="#02-ha-security-architecture" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — mirroring, async reporting, DR implications, upgrade strategy, and security-driven physical separation</p>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — mirroring, async reporting, DR implications, upgrade strategy, and security-driven physical separation (T1.1.4 · T1.1.6 · T1.1.7)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Hai khái niệm nền tảng cần nắm rõ trước:</p>
-<ul>
-<li><strong>HA (High Availability)</strong> — đảm bảo hệ thống tiếp tục hoạt động khi một node bị lỗi; đo bằng <em>uptime</em> và <em>failover time</em>. IRIS thực hiện HA qua <strong>mirroring</strong> với một failover pair (primary + backup).</li>
-<li><strong>DR (Disaster Recovery)</strong> — khả năng phục hồi sau thảm họa (mất cả site, thiên tai, ransomware); đo bằng <strong>RTO</strong> <em>(Recovery Time Objective — thời gian tối đa có thể chịu downtime)</em> và <strong>RPO</strong> <em>(Recovery Point Objective — lượng dữ liệu tối đa có thể mất)</em>. IRIS thực hiện DR qua <strong>async mirror member</strong> ở site thứ hai hoặc qua backup/restore.</li>
-</ul>
-<p>Khi kiến trúc bước vào production thật, câu hỏi không chỉ là "data để ở đâu" mà còn là:</p>
-<ul>
-<li>failover như thế nào? <em>(HA)</em></li>
-<li>reporting có ảnh hưởng production không?</li>
-<li>security/compliance có yêu cầu tách vật lý không?</li>
-<li>upgrade sẽ tác động ra sao?</li>
-<li>mất site toàn bộ thì phục hồi thế nào? <em>(DR)</em></li>
-</ul>
-<p>Subtopic này gom các quyết định kiến trúc xoay quanh <strong>HA, DR, security separation, và upgrade planning</strong>. Nó được đặt ở module runtime để người học tiếp cận sau khi đã hiểu data model, workload, và deployment basics.</p>
-<p>Nếu cần refresh namespace/database separation trước, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Nếu cần phân biệt rõ ECP, sharding, và reporting isolation, đọc song song với <a href="../01-scaling-patterns/">Production Scaling Patterns</a>.</p>
+<p>Subtopic này gom các quyết định kiến trúc xoay quanh <strong>HA, DR, security separation, và upgrade planning</strong> — những bài toán chỉ xuất hiện khi hệ thống đã vào production thật. Nó được đặt ở module runtime để người học tiếp cận sau khi đã hiểu data model, workload, và deployment basics.</p>
+<p>Nếu cần refresh namespace/database separation trước, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Nếu cần phân biệt rõ ECP, sharding, và reporting isolation, đọc song song với <a href="../01-scaling-patterns/">01 · Scaling Patterns</a>.</p>
+<hr />
+<h2 id="ha-vs-dr-hai-bai-toan-khac-nhau">HA vs DR — Hai Bài Toán Khác Nhau<a class="headerlink" href="#ha-vs-dr-hai-bai-toan-khac-nhau" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Bài toán</th>
+<th>Đo bằng</th>
+<th>IRIS solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HA (High Availability)</strong></td>
+<td>hệ thống tiếp tục khi một node lỗi</td>
+<td>uptime, failover time</td>
+<td>Mirror failover pair (primary + backup)</td>
+</tr>
+<tr>
+<td><strong>DR (Disaster Recovery)</strong></td>
+<td>phục hồi sau thảm họa (mất cả site)</td>
+<td><strong>RTO</strong> — thời gian downtime tối đa; <strong>RPO</strong> — lượng data tối đa có thể mất</td>
+<td>Async mirror member ở site xa hoặc backup/restore</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Exam Hint</p>
+<p>HA = failover nhanh, gần như không mất data. DR = phục hồi sau thảm họa, chấp nhận lag/mất data theo RPO. Nếu đề hỏi "gần real-time reporting không ảnh hưởng production" → async member, không phải HA failover pair.</p>
+</div>
 <hr />
 <h2 id="mirroring-basics">Mirroring Basics<a class="headerlink" href="#mirroring-basics" title="Permanent link">&para;</a></h2>
 <table>
@@ -4921,7 +4982,7 @@
 </tr>
 <tr>
 <td><strong>Backup / Failover member</strong></td>
-<td>standby cho HA</td>
+<td>standby cho HA — sync replication, zero RPO</td>
 </tr>
 <tr>
 <td><strong>Async member</strong></td>
@@ -4929,24 +4990,66 @@
 </tr>
 <tr>
 <td><strong>Arbiter</strong></td>
-<td>tie-breaker để tránh split-brain</td>
+<td>tie-breaker để tránh split-brain khi primary và backup mất liên lạc</td>
 </tr>
 <tr>
 <td><strong>Virtual IP</strong></td>
-<td>endpoint ổn định cho client connection</td>
+<td>endpoint ổn định cho client connection sau failover</td>
 </tr>
 </tbody>
 </table>
+<h3 id="sync-failover-vs-async-member-so-sanh">Sync Failover vs Async Member — So Sánh<a class="headerlink" href="#sync-failover-vs-async-member-so-sanh" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Sync Failover member</th>
+<th>Async member</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Replication mode</td>
+<td>Synchronous — primary chờ backup xác nhận</td>
+<td>Asynchronous — có độ trễ (lag)</td>
+</tr>
+<tr>
+<td>RPO (data loss nếu failover)</td>
+<td>Gần như zero</td>
+<td>Bằng replication lag tại thời điểm fail</td>
+</tr>
+<tr>
+<td>Failover time</td>
+<td>Vài giây (automatic)</td>
+<td>Thủ công hoặc cần trigger</td>
+</tr>
+<tr>
+<td>Primary purpose</td>
+<td>HA — uptime</td>
+<td>DR hoặc reporting isolation</td>
+</tr>
+<tr>
+<td>Read workload</td>
+<td>Không serve read mặc định (standby)</td>
+<td>Có thể serve read (reporting)</td>
+</tr>
+<tr>
+<td>Số lượng</td>
+<td>1 backup per mirror set</td>
+<td>Nhiều async members</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Connection string nên trỏ tới <strong>Virtual IP</strong> hoặc mirror-aware endpoint, không trỏ cứng vào IP vật lý của một node — khi failover xảy ra, IP vật lý của primary thay đổi.</p>
+</div>
 <h3 id="core-thinking">Core Thinking<a class="headerlink" href="#core-thinking" title="Permanent link">&para;</a></h3>
 <ul>
 <li>mirroring dùng journal shipping / replication logic</li>
-<li>failover pair phục vụ HA</li>
-<li>async member phù hợp cho reporting hoặc DR ở site khác</li>
+<li>failover pair phục vụ HA — sync, zero RPO</li>
+<li>async member phù hợp cho reporting hoặc DR ở site khác — có lag, RPO ≠ 0</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Gotcha</p>
-<p>Connection string nên trỏ tới <strong>Virtual IP</strong> hoặc mirror-aware endpoint, không trỏ cứng vào IP vật lý của một node.</p>
-</div>
 <hr />
 <h2 id="async-reporting-and-dr">Async Reporting and DR<a class="headerlink" href="#async-reporting-and-dr" title="Permanent link">&para;</a></h2>
 <p>Async mirror member là pattern rất đáng nhớ cho exam.</p>
@@ -4995,11 +5098,18 @@
 <hr />
 <h2 id="same-mirror-set-vs-fragmented-ha">Same Mirror Set vs Fragmented HA<a class="headerlink" href="#same-mirror-set-vs-fragmented-ha" title="Permanent link">&para;</a></h2>
 <p>Nếu nhiều database cùng thuộc một ứng dụng HA-critical, thường tốt hơn khi chúng nằm trong <strong>cùng mirror set</strong> để failover nhất quán.</p>
-<p>Điều này giảm rủi ro:</p>
+<p><strong>Ví dụ:</strong> Ứng dụng <code>MYAPP</code> dùng 3 databases:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>MYAPP_CODE    ← code DB
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>MYAPP_DATA    ← data DB
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>MYAPP_AUDIT   ← audit DB
+</span></code></pre></div>
+<p>Nếu <code>MYAPP_DATA</code> và <code>MYAPP_CODE</code> nằm trong <strong>các mirror set khác nhau</strong>, sau failover có thể xảy ra tình huống:</p>
 <ul>
-<li>app data đã failover nhưng reference/code database chưa đồng bộ</li>
-<li>operational behavior khác nhau giữa các database cùng một app boundary</li>
+<li><code>MYAPP_DATA</code> đã failover sang backup node (version mới)</li>
+<li><code>MYAPP_CODE</code> vẫn ở primary (version cũ)</li>
+<li>→ Code/data mismatch, application lỗi</li>
 </ul>
+<p>Giữ cả 3 trong cùng một mirror set đảm bảo failover đồng bộ.</p>
 <hr />
 <h2 id="security-driven-physical-separation">Security-driven Physical Separation<a class="headerlink" href="#security-driven-physical-separation" title="Permanent link">&para;</a></h2>
 <p>Một số yêu cầu security/compliance tác động thẳng tới database architecture:</p>
@@ -5038,6 +5148,10 @@
 <li>restore/failover procedure phải tương thích với encrypted databases</li>
 <li>security material không nên bị hard-code vào artifact hoặc config versioned</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Exam Trap</p>
+<p>Nếu database được <strong>encrypted</strong>, key phải accessible trên <strong>cả primary lẫn backup member</strong> — nếu key chỉ có ở primary, backup không thể mount database sau failover. Đây là điều kiện kiến trúc phải plan từ đầu, không phải sau.</p>
+</div>
 <hr />
 <h2 id="upgrade-architecture-implications">Upgrade Architecture Implications<a class="headerlink" href="#upgrade-architecture-implications" title="Permanent link">&para;</a></h2>
 <p>Khi upgrade IRIS:</p>
@@ -5081,18 +5195,24 @@
 <td>upgrade hệ lớn cần downtime tối thiểu</td>
 <td>mirror-assisted upgrade strategy</td>
 </tr>
+<tr>
+<td>nhiều DB cùng một app HA-critical</td>
+<td>giữ trong cùng một mirror set</td>
+</tr>
 </tbody>
 </table>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ Mirroring là core HA pattern của IRIS</li>
-<li>✅ Async mirror member rất hợp cho reporting và DR</li>
+<li>✅ Sync failover member = zero RPO; Async member = có lag, phù hợp DR/reporting</li>
 <li>✅ Dùng Virtual IP giúp client không phải đổi connection string khi failover</li>
 <li>✅ Mirror cả code và data databases để tránh mismatch</li>
 <li>✅ Security requirements có thể dẫn tới physical database separation</li>
-<li>⚠️ Async member có lag, nên DR plan phải tính RPO thực tế</li>
-<li>⚠️ Không mirror <code>IRISTEMP</code> hay <code>IRISLOCALDATA</code></li>
+<li>✅ Các DB cùng một app HA-critical nên nằm trong cùng một mirror set</li>
+<li>⚠️️ Async member có lag — DR plan phải tính RPO thực tế, không phải zero</li>
+<li>⚠️️ Không mirror <code>IRISTEMP</code> hay <code>IRISLOCALDATA</code></li>
+<li>⚠️️ Database encrypted → encryption key phải available trên cả primary và backup</li>
 <li>💡 Nếu đề hỏi vừa HA vừa BI isolation, async reporting member thường là đáp án rất mạnh</li>
 </ul>
 <hr />
@@ -5101,15 +5221,20 @@
 WRITE $SYSTEM.Mirror.GetMemberStatus(), !
 WRITE $SYSTEM.Mirror.IsPrimary(), !
 WRITE $SYSTEM.Mirror.GetMemberType(), !</code></pre>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># --- Example CPF merge in deployment/upgrade workflows ---</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Replace &lt;environment&gt; with dev, test, or prod before running.</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\&lt;environment&gt;-delta.cpf&quot;</span>
+<pre class="objectscript"><code class="language-objectscript">// --- List databases in a mirror set (run in %SYS) ---
+ZNSPACE &quot;%SYS&quot;
+SET rs = ##class(Config.MirrorMember).DatabaseList(&quot;&lt;MIRROR_NAME&gt;&quot;, .sc)
+// Hoặc dùng Management Portal: Mirror Monitor &gt; Databases</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># --- Example CPF merge in deployment/upgrade workflows ---</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Replace &lt;environment&gt; with dev, test, or prod before running.</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>iris<span class="w"> </span>merge<span class="w"> </span>IRIS<span class="w"> </span><span class="s2">&quot;D:\configs\&lt;environment&gt;-delta.cpf&quot;</span>
 </span></code></pre></div>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror">Mirroring for High Availability</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GHA_mirror_set">Mirror Sets and Async Reporting</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCAS_database_encryption">Encryption and Databases</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCI">Upgrade Planning</a></li>
 </ul>
 

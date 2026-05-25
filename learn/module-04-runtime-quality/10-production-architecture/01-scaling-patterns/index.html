@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#production-scaling-patterns" class="md-skip">
+        <a href="#01-scaling-patterns" class="md-skip">
           Bỏ qua
         </a>
       
@@ -2532,6 +2532,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="BI and Reporting Isolation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iris-bi-vs-objectsql-khi-nao-dung-cai-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IRIS BI vs Object/SQL — Khi Nào Dùng Cái Nào
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-settings-system-limits-t115" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config Settings &amp; System Limits (T1.1.5)
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4896,6 +4924,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="BI and Reporting Isolation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iris-bi-vs-objectsql-khi-nao-dung-cai-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IRIS BI vs Object/SQL — Khi Nào Dùng Cái Nào
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-settings-system-limits-t115" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config Settings &amp; System Limits (T1.1.5)
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4951,13 +5007,13 @@
   
 
 
-<h1 id="production-scaling-patterns">Production Scaling Patterns<a class="headerlink" href="#production-scaling-patterns" title="Permanent link">&para;</a></h1>
+<h1 id="01-scaling-patterns">01 · Scaling Patterns<a class="headerlink" href="#01-scaling-patterns" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — growth planning, global mappings, sharding, ECP, storage IOPS, and workload isolation</p>
+<p><strong>Exam Domain:</strong> <code>T1 · Architecture</code> — growth planning, global mappings, sharding, ECP, storage IOPS, workload isolation, config implications (T1.1.2 · T1.1.3 · T1.1.5 · T1.1.9 · T1.3.3)</p>
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Kiến trúc dữ liệu cần chịu được tăng trưởng về <strong>volume, transaction rate</strong>, và <strong>workload</strong>. Đây là phần nâng cao, đòi hỏi người học đã nắm vững foundations để ra quyết định scale.</p>
-<p>Nếu cần refresh namespace/database/mapping basics, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Sau khi nắm scaling choices, đọc tiếp <a href="../02-ha-security-architecture/">HA, DR &amp; Security Architecture</a> để hoàn thiện bức tranh production topology.</p>
+<p>Nếu cần refresh namespace/database/mapping basics, xem lại <a href="../../../module-01-foundations/10-architecture/">10 · Architecture Foundations</a>. Sau khi nắm scaling choices, đọc tiếp <a href="../02-ha-security-architecture/">HA &amp; Security Architecture</a> để hoàn thiện bức tranh production topology.</p>
 <hr />
 <h2 id="scale-up-vs-scale-out">Scale-up vs Scale-out<a class="headerlink" href="#scale-up-vs-scale-out" title="Permanent link">&para;</a></h2>
 <table>
@@ -5078,6 +5134,10 @@
 </tbody>
 </table>
 <p>Với yêu cầu backup/restore, policy, resource allocation độc lập theo tenant, <strong>database + namespace tách riêng cho từng tenant</strong> thường là hướng tốt hơn.</p>
+<div class="admonition tip">
+<p class="admonition-title">Exam Hint</p>
+<p>Khi đề hỏi về "customer data isolation", "separate backup per client", hoặc "independent retention policy" — đây thường là signal để chọn dedicated database/namespace per tenant thay vì single-DB + tenant column.</p>
+</div>
 <hr />
 <h2 id="sharding">Sharding<a class="headerlink" href="#sharding" title="Permanent link">&para;</a></h2>
 <p><strong>Sharding</strong> chia dữ liệu trên nhiều nodes dựa trên partitioning rules.</p>
@@ -5183,13 +5243,7 @@
 <p>Buffer tuning giúp giảm read I/O, nhưng <strong>không thể xóa nhu cầu durable write I/O</strong>.</p>
 <hr />
 <h2 id="bi-and-reporting-isolation">BI and Reporting Isolation<a class="headerlink" href="#bi-and-reporting-isolation" title="Permanent link">&para;</a></h2>
-<p>Analytical queries thường gây:</p>
-<ul>
-<li>CPU contention</li>
-<li>I/O contention</li>
-<li>memory contention</li>
-</ul>
-<p>Các pattern tốt hơn query thẳng production:</p>
+<p>Analytical queries thường gây CPU, I/O, và memory contention trên production. Các pattern cô lập reporting:</p>
 <table>
 <thead>
 <tr>
@@ -5200,7 +5254,7 @@
 <tbody>
 <tr>
 <td>async mirror reporting member</td>
-<td>near-real-time read isolation</td>
+<td>near-real-time read isolation — xem chi tiết ở <a href="../02-ha-security-architecture/">02 · HA &amp; Security Architecture</a></td>
 </tr>
 <tr>
 <td>copied database on separate instance</td>
@@ -5213,6 +5267,81 @@
 </tbody>
 </table>
 <p>ECP không thay thế hoàn toàn reporting isolation cho BI workloads.</p>
+<h3 id="iris-bi-vs-objectsql-khi-nao-dung-cai-nao">IRIS BI vs Object/SQL — Khi Nào Dùng Cái Nào<a class="headerlink" href="#iris-bi-vs-objectsql-khi-nao-dung-cai-nao" title="Permanent link">&para;</a></h3>
+<p><code>T1.1.9</code> — Exam thường hỏi về trade-off giữa các phương pháp truy xuất:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Dùng khi</th>
+<th>Không phù hợp khi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Object API</strong> (<code>%OpenId</code>, <code>%Save</code>)</td>
+<td>CRUD từng record, cần lifecycle hooks</td>
+<td>bulk read/write, analytical aggregation</td>
+</tr>
+<tr>
+<td><strong>SQL</strong> (<code>SELECT</code>, <code>UPDATE</code>)</td>
+<td>bulk operations, reporting truyền thống</td>
+<td>drill-down đa chiều, BI dashboard</td>
+</tr>
+<tr>
+<td><strong>MDX / IRIS BI Cube</strong></td>
+<td>aggregation, drill-down, slice-and-dice trên cubes</td>
+<td>update data, transactional workload</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Exam Hint</p>
+<p>Nếu đề hỏi "phương pháp nào phù hợp để build BI dashboard với drill-down" → MDX/IRIS BI. Nếu hỏi về "batch update hàng triệu record" → SQL. Xem thêm <a href="../../../module-02-data-modeling/04-sql/04-mdx-bi/">04 · MDX &amp; BI</a>.</p>
+</div>
+<hr />
+<h2 id="config-settings-system-limits-t115">Config Settings &amp; System Limits (T1.1.5)<a class="headerlink" href="#config-settings-system-limits-t115" title="Permanent link">&para;</a></h2>
+<p>Một số config ở cấp instance có ảnh hưởng trực tiếp tới kiến trúc và sizing:</p>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>What it controls</th>
+<th>Architectural implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Global buffer</strong></td>
+<td>cache cho database pages trong memory</td>
+<td>sizing quá nhỏ → tăng I/O đáng kể</td>
+</tr>
+<tr>
+<td><strong>Routine buffer</strong></td>
+<td>cache cho compiled routines</td>
+<td>ít tác động hơn global buffer trên workload data-heavy</td>
+</tr>
+<tr>
+<td><strong>$ZSTORAGE</strong> (per-process memory limit)</td>
+<td>RAM tối đa mỗi process được dùng</td>
+<td>process xử lý data lớn cần tăng limit này</td>
+</tr>
+<tr>
+<td><strong>Lock table size</strong></td>
+<td>số lượng lock records hệ thống giữ được</td>
+<td>nếu đầy → LOCK command fail với error</td>
+</tr>
+<tr>
+<td><strong>Maximum database size</strong></td>
+<td>giới hạn vật lý của một database file</td>
+<td>cần monitor và plan split khi gần limit</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Gotcha</p>
+<p>Global buffer sizing là một trong các quyết định có ảnh hưởng lớn nhất tới performance. Một hệ thống có 32GB RAM nhưng chỉ cấp 256MB global buffer sẽ liên tục phải đọc từ disk.</p>
+</div>
 <hr />
 <h2 id="key-points">Key Points<a class="headerlink" href="#key-points" title="Permanent link">&para;</a></h2>
 <ul>
@@ -5221,29 +5350,37 @@
 <li>✅ Dedicated namespace/database per tenant thường tốt hơn khi isolation requirement cao</li>
 <li>✅ Sharding = scale-out dữ liệu; ECP = tách app tier và data tier</li>
 <li>✅ SSD/NVMe là hướng hợp lý khi IOPS requirement tăng mạnh</li>
-<li>⚠️ Đừng dùng sharding như phản xạ đầu tiên cho mọi bài toán tăng trưởng</li>
-<li>⚠️ BI/reporting workload nên được cô lập khỏi production nếu có thể</li>
+<li>✅ MDX/IRIS BI dùng cho analytical drill-down; Object API cho CRUD; SQL cho bulk operations</li>
+<li>✅ Global buffer sizing có ảnh hưởng lớn tới performance — cần plan theo workload</li>
+<li>⚠️️ Đừng dùng sharding như phản xạ đầu tiên cho mọi bài toán tăng trưởng</li>
+<li>⚠️️ BI/reporting workload nên được cô lập khỏi production nếu có thể</li>
+<li>⚠️️ $ZSTORAGE giới hạn RAM per-process — process lớn cần tăng limit này</li>
 <li>💡 Khi đề nhắc growth + archive + access patterns, hãy nghĩ tới multi-database design trước</li>
 </ul>
 <hr />
 <h2 id="terminal-snippets">🖥 Terminal Snippets<a class="headerlink" href="#terminal-snippets" title="Permanent link">&para;</a></h2>
-<pre class="objectscript"><code class="language-objectscript">// --- Check which database a mapped global uses (replace placeholders; run in %SYS) ---
+<pre class="objectscript"><code class="language-objectscript">// --- Check which database a mapped global uses (run in %SYS) ---
 ZNSPACE &quot;%SYS&quot;
 SET sc = ##class(Config.MapGlobals).Get(&quot;&lt;NAMESPACE&gt;&quot;, &quot;&lt;GLOBAL_NAME&gt;&quot;, .props)
 WRITE sc, !
 ZWRITE props
 
-// --- Check process memory limit ---
+// --- Check per-process memory limit ---
 WRITE $ZSTORAGE, !
 
-// --- Check lock table usage ---
-WRITE ##class(%SYSTEM.Lock).GetLockTableUsed(), !</code></pre>
+// --- Check database size (run in %SYS) ---
+SET db = ##class(SYS.Database).%OpenId(&quot;&lt;DB_PATH&gt;&quot;)
+WRITE db.Size, !           // in MB
+WRITE db.MaxSize, !        // configured maximum</code></pre>
+<pre class="objectscript"><code class="language-objectscript">// --- Check global buffer hit ratio (run in %SYS) ---
+WRITE $SYSTEM.Config.GetParam(&quot;Memory&quot;, &quot;globals&quot;), !</code></pre>
 <hr />
 <h2 id="resources">🔗 Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSA_config_namespace_addmap">Configuring Namespaces and Global Mappings</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_sharding">Horizontal Scaling with Sharding</a></li>
 <li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSCALE_scalability#GSCALE_scalability_oview_horizontal_user">Distributed Caching with ECP</a></li>
+<li><a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GCAS_memory">Memory and Cache Configuration</a></li>
 </ul>
 
 

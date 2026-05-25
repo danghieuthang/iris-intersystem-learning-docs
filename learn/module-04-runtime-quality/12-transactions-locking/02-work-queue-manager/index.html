@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#work-queue-manager" class="md-skip">
+        <a href="#02-work-queue-manager" class="md-skip">
           Bỏ qua
         </a>
       
@@ -4761,7 +4761,7 @@
   
 
 
-<h1 id="work-queue-manager">Work Queue Manager<a class="headerlink" href="#work-queue-manager" title="Permanent link">&para;</a></h1>
+<h1 id="02-work-queue-manager">02 · Work Queue Manager<a class="headerlink" href="#02-work-queue-manager" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Exam Domain:</strong> <code>T4.4 · Concurrency Controls</code> — dùng <code>%SYSTEM.WorkMgr</code> để phân phối công việc độc lập sang nhiều worker processes (T4.4.4)</p>
 </blockquote>
@@ -4941,9 +4941,9 @@ SET sc = queue.Sync()</code></pre>
 <li>✅ <strong>Categories</strong> (DEFAULT, SQL, custom) kiểm soát worker pool — <code>SQL</code> là reserved</li>
 <li>✅ <strong>Detach/Attach</strong> cho phép queue survive process restarts</li>
 <li>✅ <code>WaitOne()</code> cho streaming/incremental result patterns</li>
-<li>⚠️ Work items nên độc lập; đừng phụ thuộc order xử lý</li>
-<li>⚠️ Nếu workers chạm shared state, vẫn phải thiết kế locking đúng</li>
-<li>⚠️ Không dùng WQM cho sub-second interactive requests</li>
+<li>⚠️️ Work items nên độc lập; đừng phụ thuộc order xử lý</li>
+<li>⚠️️ Nếu workers chạm shared state, vẫn phải thiết kế locking đúng</li>
+<li>⚠️️ Không dùng WQM cho sub-second interactive requests</li>
 <li>💡 Khi câu hỏi hỏi "parallelize many independent tasks", Work Queue Manager thường là hướng đúng</li>
 </ul>
 <hr />

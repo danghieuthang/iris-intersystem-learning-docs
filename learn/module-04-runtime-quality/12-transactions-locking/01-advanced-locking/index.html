@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#advanced-locking" class="md-skip">
+        <a href="#01-advanced-locking" class="md-skip">
           Bỏ qua
         </a>
       
@@ -4873,7 +4873,7 @@
   
 
 
-<h1 id="advanced-locking">Advanced Locking<a class="headerlink" href="#advanced-locking" title="Permanent link">&para;</a></h1>
+<h1 id="01-advanced-locking">01 · Advanced Locking<a class="headerlink" href="#01-advanced-locking" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Exam Domain:</strong> <code>T4.4 · Concurrency Controls</code> — locking nuance, lock types, timeout patterns, deadlock avoidance, %NOLOCK, immediate unlock, và SQL lock escalation (T4.4.1–T4.4.3)</p>
 </blockquote>
@@ -5093,9 +5093,9 @@ DO ^LOCKTAB    // interactive lock table viewer
 <li>✅ <strong><code>#"I"</code> (immediate unlock)</strong> — release lock ngay trong transaction, bỏ qua deferral</li>
 <li>✅ <strong><code>%NOLOCK</code></strong> bypass automatic SQL locking — dùng khi có external lock management</li>
 <li>✅ <code>$SYSTEM.SQL.Util.SetOption("LockThreshold", value)</code> điều chỉnh escalation threshold</li>
-<li>⚠️ Transaction không thay thế locking</li>
-<li>⚠️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp — thay toàn bộ lock set</li>
-<li>⚠️ Shared→Exclusive upgrade với <code>+</code> có thể gây deadlock</li>
+<li>⚠️️ Transaction không thay thế locking</li>
+<li>⚠️️ <code>LOCK</code> không có <code>+</code> là bẫy rất hay gặp — thay toàn bộ lock set</li>
+<li>⚠️️ Shared→Exclusive upgrade với <code>+</code> có thể gây deadlock</li>
 <li>💡 Khi câu hỏi nhấn mạnh throughput hoặc concurrent users, broad lock thường là đáp án xấu hơn</li>
 </ul>
 <hr />
